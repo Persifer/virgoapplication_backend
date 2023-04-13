@@ -6,6 +6,9 @@ import jakarta.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
+/*
+* La classe in questione si occupa di gestire le relazioni molti a molti e, nello specifico,
+* */
 @Embeddable
 public class RuoloUtenteCompoundKey implements Serializable {
 

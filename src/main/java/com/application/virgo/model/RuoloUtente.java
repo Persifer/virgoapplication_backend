@@ -11,12 +11,12 @@ public class RuoloUtente {
     private RuoloUtenteCompoundKey idRuoloUtente;
 
     @ManyToOne
-    @MapsId("idUtente")
+    @MapsId("idUtente") // serve a mappare la colonna id_utente con la colonna idUtente dell'embeddedId
     @JoinColumn(name="id_utente")
     private Utente utente;
 
     @ManyToOne
-    @MapsId("idRuolo")
+    @MapsId("idRuolo") // serve a mappare la colonna id_ruolo con la colonna idRuolo dell'embeddedId
     @JoinColumn(name="id_ruolo")
     private Ruolo ruolo;
 

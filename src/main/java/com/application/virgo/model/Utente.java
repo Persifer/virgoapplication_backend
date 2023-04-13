@@ -29,11 +29,31 @@ public class Utente {
 
     private String genere;
 
+    // Creazione della relazione uno a molti (lato molti) tra l'utente e l'immobile.
+    // L'annotazione permettte di dichiarare il tipo di relazione tra le due entità e il tipo di attributo che verrà
+    // usato come chiave della relazione. Il parametro mappedBy permette di indicare la variabile che usiamo per rappresentare
+    // la classe padre all'interno della nostra classe figlio cioè la variabile della classe immobile (classe figlia) che ci permetterà
+    // di raggiungere la classe utente (classe padre) associata a quell'immboile
     @OneToMany(mappedBy = "idImmobile")
     private List<Immobile> immobiliUtente;
 
+    // Creazione della relazione molti a molti (lato uno a molti) tra l'utente e ruolo.
+    // L'annotazione permettte di dichiarare il tipo di relazione tra le due entità e il tipo di attributo che verrà
+    // usato come chiave della relazione. I
     @OneToMany(mappedBy = "utente")
     private Set<RuoloUtente> userRoles;
+
+    // Creazione della relazione uno a molti (lato molti) tra l'utente e offerta (in questo caso sono le offerte proposte dall'utente).
+    // L'annotazione permettte di dichiarare il tipo di relazione tra le due entità e il tipo di attributo che verrà
+    // usato come chiave della relazione
+    @OneToMany(mappedBy = "idOfferente")
+    private Set<Offerta> listaOfferteInviate;
+
+    // Creazione della relazione uno a molti (lato molti) tra l'utente e offerta (in questo caso sono le offerte ricevute dall'utente).
+    // L'annotazione permettte di dichiarare il tipo di relazione tra le due entità e il tipo di attributo che verrà
+    // usato come chiave della relazione
+    @OneToMany(mappedBy = "idBeneficiario")
+    private Set<Offerta> listaOfferteRicevute;
 
     public Utente() {}
     public Utente(Long idUtente, String nome, String cognome, String email, String password,
