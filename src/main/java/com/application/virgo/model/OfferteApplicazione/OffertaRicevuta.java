@@ -1,15 +1,17 @@
-package com.application.virgo.model;
+package com.application.virgo.model.OfferteApplicazione;
 
+import com.application.virgo.model.Immobile;
+import com.application.virgo.model.Utente;
 import jakarta.persistence.*;
 
 import java.sql.Date;
 
 @Entity
-public class Offerta {
+public class OffertaRicevuta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idOfferta;
+    private Long idPropostaDiOfferta;
 
     private Date data_proposta;
     private Date data_accettazione;
@@ -21,34 +23,34 @@ public class Offerta {
     // Colui che propone un'offerta d'acquisto
     @ManyToOne
     @JoinColumn(name = "id_utente")
-    private Utente idOfferente;
+    private Utente idBeneficiario;
 
     // Colui che riceve l'offerta di acquisto
     @ManyToOne
-    @JoinColumn(name = "id_utente")
-    private Utente idBeneficiario;
+    @JoinColumn(name = "id_immobile")
+    private Immobile idImmobileInteressato;
 
-    public Offerta() {
+    public OffertaRicevuta() {
     }
 
-    public Offerta(Long idOfferta, Date data_proposta, Date data_accettazione, Date data_declino,
-                   Float prezzo_proposto, String commento, Utente idOfferente, Utente idBeneficiario) {
-        this.idOfferta = idOfferta;
+    public OffertaRicevuta(Long idOfferta, Date data_proposta, Date data_accettazione, Date data_declino,
+                           Float prezzo_proposto, String commento, Utente idOfferente, Immobile idImmobileProposta) {
+        this.idPropostaDiOfferta = idOfferta;
         this.data_proposta = data_proposta;
         this.data_accettazione = data_accettazione;
         this.data_declino = data_declino;
         this.prezzo_proposto = prezzo_proposto;
         this.commento = commento;
-        this.idOfferente = idOfferente;
-        this.idBeneficiario = idBeneficiario;
+        this.idBeneficiario = idOfferente;
+        this.idImmobileInteressato = idImmobileProposta;
     }
 
-    public Long getIdOfferta() {
-        return idOfferta;
+    public Long getIdPropostaDiOfferta() {
+        return idPropostaDiOfferta;
     }
 
-    public void setIdOfferta(Long idOfferta) {
-        this.idOfferta = idOfferta;
+    public void setIdPropostaDiOfferta(Long idOfferta) {
+        this.idPropostaDiOfferta = idOfferta;
     }
 
     public Date getData_proposta() {
@@ -91,19 +93,19 @@ public class Offerta {
         this.commento = commento;
     }
 
-    public Utente getIdOfferente() {
-        return idOfferente;
-    }
-
-    public void setIdOfferente(Utente idOfferente) {
-        this.idOfferente = idOfferente;
-    }
-
     public Utente getIdBeneficiario() {
         return idBeneficiario;
     }
 
-    public void setIdBeneficiario(Utente idBeneficiario) {
-        this.idBeneficiario = idBeneficiario;
+    public void setIdBeneficiario(Utente idOfferente) {
+        this.idBeneficiario = idOfferente;
+    }
+
+    public Immobile getIdImmobileInteressato() {
+        return idImmobileInteressato;
+    }
+
+    public void setIdImmobileInteressato(Immobile idImmobileProposta) {
+        this.idImmobileInteressato = idImmobileProposta;
     }
 }

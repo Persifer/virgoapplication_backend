@@ -19,6 +19,7 @@ public class VirgoApplication {
 	*  3. Implementa security
 	*  4. Capisci se serve avere la compoundKey per la relazione tra utente e ruolo
 	*  5. Inserisci i commenti a supporto della relazione tra utente e ruolo
+	*  6. Implementa l'entità contratto all'interno del database
 	* */
 
 }

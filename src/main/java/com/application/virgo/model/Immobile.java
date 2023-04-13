@@ -1,8 +1,11 @@
 package com.application.virgo.model;
 
+import com.application.virgo.model.OfferteApplicazione.OffertaRicevuta;
+import com.application.virgo.model.OfferteApplicazione.PropostaDiOfferta;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 public class Immobile {
@@ -20,6 +23,14 @@ public class Immobile {
     @ManyToOne
     @JoinColumn(name="idUtente")
     private Utente idProprietario;
+
+    // Proposte in cui è presente il singolo immobile
+    @OneToMany(mappedBy = "idImmobileProposta")
+    private Set<PropostaDiOfferta> proposteLegateImmobile;
+
+    // Proposte in cui è presente il singolo immobile
+    @OneToMany(mappedBy = "idImmobileInteressato")
+    private Set<OffertaRicevuta> offerteLegateImmobile;
 
     public Immobile() {
     }
