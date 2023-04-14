@@ -16,10 +16,12 @@ public class VirgoApplication {
 	* TODO
 	*  1. Implementa controller
 	*  2. Implementa service
-	*  3. Implementa security
+	*  3. Implementa spring security
+	* 	3.1 Inserisci l'interfaccia UserDetails all'interno della classe utente
 	*  4. Capisci se serve avere la compoundKey per la relazione tra utente e ruolo
 	*  5. Inserisci i commenti a supporto della relazione tra utente e ruolo
-	*  6. Implementa l'entità contratto all'interno del database
+	*
+	*
 	* */
 
 }

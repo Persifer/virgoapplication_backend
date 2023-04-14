@@ -1,5 +1,6 @@
 package com.application.virgo.model;
 
+import com.application.virgo.model.ComposedRelationship.RuoloUtente;
 import jakarta.persistence.*;
 
 import java.util.Set;

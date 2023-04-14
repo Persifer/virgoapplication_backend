@@ -1,8 +1,9 @@
-package com.application.virgo.model;
+package com.application.virgo.model.ComposedRelationship;
 
-import com.application.virgo.model.CompoundKey.RuoloUtenteCompoundKey;
+import com.application.virgo.model.ComposedRelationship.CompoundKey.RuoloUtenteCompoundKey;
+import com.application.virgo.model.Ruolo;
+import com.application.virgo.model.Utente;
 import jakarta.persistence.*;
-import org.springframework.data.repository.cdi.Eager;
 
 @Entity
 public class RuoloUtente {

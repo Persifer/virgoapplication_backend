@@ -1,7 +1,8 @@
 package com.application.virgo.model;
 
-import com.application.virgo.model.OfferteApplicazione.OffertaRicevuta;
-import com.application.virgo.model.OfferteApplicazione.PropostaDiOfferta;
+import com.application.virgo.model.ComposedRelationship.ContrattoUtente;
+import com.application.virgo.model.ComposedRelationship.OfferteUtente;
+import com.application.virgo.model.ComposedRelationship.RuoloUtente;
 import jakarta.persistence.*;
 
 
@@ -44,18 +45,12 @@ public class Utente {
     // usato come chiave della relazione. I
     @OneToMany(mappedBy = "utente")
     private Set<RuoloUtente> userRoles;
-//
-//    // Creazione della relazione uno a molti (lato molti) tra l'utente e offerta (in questo caso sono le offerte proposte dall'utente).
-//    // L'annotazione permettte di dichiarare il tipo di relazione tra le due entità e il tipo di attributo che verrà
-//    // usato come chiave della relazione
-//    @OneToMany(mappedBy = "idOfferente")
-//    private Set<PropostaDiOfferta> listaOfferteInviate;
-//
-//    // Creazione della relazione uno a molti (lato molti) tra l'utente e offerta (in questo caso sono le offerte ricevute dall'utente).
-//    // L'annotazione permettte di dichiarare il tipo di relazione tra le due entità e il tipo di attributo che verrà
-//    // usato come chiave della relazione
-//    @OneToMany(mappedBy = "idImmobileInteressato")
-//    private Set<OffertaRicevuta> listaOfferteRicevute;
+
+    @OneToMany(mappedBy = "utenteInteressato")
+    private Set<ContrattoUtente> contrattiUtente;
+
+    @OneToMany(mappedBy = "utenteOfferta")
+    private Set<OfferteUtente> offerteUtente;
 
     public Utente() {}
     public Utente(Long idUtente, String nome, String cognome, String email, String password,

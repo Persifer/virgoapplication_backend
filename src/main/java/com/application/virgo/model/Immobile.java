@@ -1,7 +1,5 @@
 package com.application.virgo.model;
 
-import com.application.virgo.model.OfferteApplicazione.OffertaRicevuta;
-import com.application.virgo.model.OfferteApplicazione.PropostaDiOfferta;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -25,12 +23,11 @@ public class Immobile {
     private Utente idProprietario;
 
     // Proposte in cui è presente il singolo immobile
-    @OneToMany(mappedBy = "idImmobileProposta")
-    private Set<PropostaDiOfferta> proposteLegateImmobile;
-
-    // Proposte in cui è presente il singolo immobile
     @OneToMany(mappedBy = "idImmobileInteressato")
-    private Set<OffertaRicevuta> offerteLegateImmobile;
+    private Set<Offerta> proposteLegateImmobile;
+
+    @OneToOne(mappedBy = "immobileInteressato")
+    private Contratto contratto;
 
     public Immobile() {
     }

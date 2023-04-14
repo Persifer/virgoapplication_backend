@@ -1,4 +1,4 @@
-package com.application.virgo.model.CompoundKey;
+package com.application.virgo.model.ComposedRelationship.CompoundKey;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -13,12 +13,12 @@ import java.util.Objects;
 public class RuoloUtenteCompoundKey implements Serializable {
 
     @Column(name = "id_utente")
-    private Integer idUtente;
+    private Long idUtente;
 
     @Column(name = "id_ruolo")
-    private Integer idRuolo;
+    private Long idRuolo;
 
-    public RuoloUtenteCompoundKey(Integer idUtente, Integer idRuolo) {
+    public RuoloUtenteCompoundKey(Long idUtente, Long idRuolo) {
         this.idUtente = idUtente;
         this.idRuolo = idRuolo;
     }
@@ -40,19 +40,19 @@ public class RuoloUtenteCompoundKey implements Serializable {
         return Objects.hash(idUtente, idRuolo);
     }
 
-    public Integer getIdUtente() {
+    public Long getIdUtente() {
         return idUtente;
     }
 
-    public void setIdUtente(Integer idUtente) {
+    public void setIdUtente(Long idUtente) {
         this.idUtente = idUtente;
     }
 
-    public Integer getIdRuolo() {
+    public Long getIdRuolo() {
         return idRuolo;
     }
 
-    public void setIdRuolo(Integer idRuolo) {
+    public void setIdRuolo(Long idRuolo) {
         this.idRuolo = idRuolo;
     }
 }
