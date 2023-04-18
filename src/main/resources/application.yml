@@ -7,3 +7,6 @@ spring:
     hibernate:
       ddl-auto: create-drop
 
+  data:
+    rest:
+      basePath: /site

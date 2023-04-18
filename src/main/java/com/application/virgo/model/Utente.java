@@ -4,6 +4,7 @@ import com.application.virgo.model.ComposedRelationship.ContrattoUtente;
 import com.application.virgo.model.ComposedRelationship.OfferteUtente;
 import com.application.virgo.model.ComposedRelationship.RuoloUtente;
 import jakarta.persistence.*;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 
 import java.sql.Date;
@@ -18,6 +19,7 @@ public class Utente {
 
     private String nome;
     private String cognome;
+    @Column(nullable = false)
     private String email;
     private String password;
 
