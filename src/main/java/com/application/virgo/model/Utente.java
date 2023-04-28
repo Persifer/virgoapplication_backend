@@ -32,7 +32,6 @@ public class Utente {
 
     private Date dataNascita;
 
-    private String genere;
 
     // Creazione della relazione uno a molti (lato molti) tra l'utente e l'immobile.
     // L'annotazione permettte di dichiarare il tipo di relazione tra le due entità e il tipo di attributo che verrà
@@ -67,9 +66,20 @@ public class Utente {
         this.citta = citta;
         this.provincia = provincia;
         this.dataNascita = dataNascita;
-        this.genere = genere;
         this.immobiliUtente = immobiliUtente;
     }
+    public Utente(String nome, String cognome, String email, String via,
+                     String cap, String citta, String provincia, Date dataNascita) {
+        this.nome = nome;
+        this.cognome = cognome;
+        this.email = email;
+        this.via = via;
+        this.cap = cap;
+        this.citta = citta;
+        this.provincia = provincia;
+        this.dataNascita = dataNascita;
+    }
+
 
     public Long getIdUtente() {
         return idUtente;
@@ -149,14 +159,6 @@ public class Utente {
 
     public void setDataNascita(Date dataNascita) {
         this.dataNascita = dataNascita;
-    }
-
-    public String getGenere() {
-        return genere;
-    }
-
-    public void setGenere(String genere) {
-        this.genere = genere;
     }
 
     public List<Immobile> getImmobiliUtente() {

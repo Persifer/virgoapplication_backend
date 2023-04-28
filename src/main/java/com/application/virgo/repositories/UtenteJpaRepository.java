@@ -9,4 +9,6 @@ import java.util.Optional;
 public interface UtenteJpaRepository extends JpaRepository<Utente, Long> {
 
     public Optional<Utente> getUtenteByEmailAndPassword(String email, String password);
+
+    public  Optional<Utente> getUtenteByIdUtente(Long idUtente);
 }

@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 
 @SpringBootApplication(scanBasePackages = {"com.application.virgo.service","com.application.virgo.controller",
-		"com.application.virgo.configuration"})
+		"com.application.virgo.configuration", "com.application.virgo.DTO"})
 @EnableJpaRepositories(basePackages = {"com.application.virgo.repositories"} )
 @EntityScan( basePackages = {"com.application.virgo.model"} )
 public class VirgoApplication {

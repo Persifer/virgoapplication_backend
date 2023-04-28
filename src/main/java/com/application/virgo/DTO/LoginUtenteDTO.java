@@ -1,4 +1,4 @@
-package com.application.virgo.controller.DTO;
+package com.application.virgo.DTO;
 
 public class LoginUtenteDTO {
 

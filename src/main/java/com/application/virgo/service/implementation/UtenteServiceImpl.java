@@ -1,6 +1,9 @@
 package com.application.virgo.service.implementation;
 
-import com.application.virgo.controller.DTO.LoginUtenteDTO;
+import com.application.virgo.DTO.LoginUtenteDTO;
+
+import com.application.virgo.DTO.Mapper.UtenteMapper;
+import com.application.virgo.DTO.UtenteDTO;
 import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.Utente;
 import com.application.virgo.repositories.UtenteJpaRepository;
@@ -22,16 +25,42 @@ public class UtenteServiceImpl implements UtenteService {
     @Autowired
     private UtenteJpaRepository utenteRepo;
 
+    @Autowired
+    private UtenteMapper mapperUtente;
+
     // metodo che restituisce un utente tramite l'email e la password
     @Override
     public Optional<Utente> getUtenteByEmailAndPassword(String username, String password) {
         return Optional.empty();
     }
 
+    @Override
+    public Optional<UtenteDTO> getUtenteById(Long idUtenteToFound) throws UtenteException{
+        Optional<Utente> tempUtente = utenteRepo.getUtenteByIdUtente(idUtenteToFound);
+        if(tempUtente.isPresent()){
+            return Optional.of(mapperUtente.apply(tempUtente.get()));
+        }else{
+            throw new UtenteException("Utente non trovato!");
+        }
+
+    }
+
     // fa l'update delle informazioni di un utente identificato tramite id
     @Override
-    public Optional<Utente> updateUtenteInfoById(Long idUtente, Utente newUtente) {
-        return Optional.empty();
+    public Optional<Utente> updateUtenteInfoById(Long idUtente, UtenteDTO updatedUtenteDto) throws UtenteException{
+        Optional<Utente> tempUtente = utenteRepo.findById(idUtente);
+        if(tempUtente.isPresent()){
+            Utente utenteToUpdate = tempUtente.get();
+           Utente updatedUtente = null;
+           if(updatedUtente != null){
+               utenteRepo.save(updatedUtente);
+               return Optional.of(updatedUtente);
+           }else{
+               throw new UtenteException("Errore nella modifica dei dati dell'utente");
+           }
+        }else{
+            throw new UtenteException("L'utente che si vuole modificare non esiste");
+        }
     }
 
     // permette di registrare un nuovo utente all'interno del database
