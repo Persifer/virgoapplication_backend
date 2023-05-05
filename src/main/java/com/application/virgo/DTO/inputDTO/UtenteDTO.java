@@ -1,4 +1,4 @@
-package com.application.virgo.DTO;
+package com.application.virgo.DTO.inputDTO;
 
 import com.application.virgo.model.Immobile;
 import lombok.AllArgsConstructor;

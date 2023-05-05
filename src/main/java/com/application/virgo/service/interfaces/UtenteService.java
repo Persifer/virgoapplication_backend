@@ -1,7 +1,7 @@
 package com.application.virgo.service.interfaces;
 
-import com.application.virgo.DTO.LoginUtenteDTO;
-import com.application.virgo.DTO.UtenteDTO;
+import com.application.virgo.DTO.inputDTO.LoginUtenteDTO;
+import com.application.virgo.DTO.inputDTO.UtenteDTO;
 import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.Utente;
 
@@ -18,4 +18,5 @@ public interface UtenteService {
     public Optional<Utente> registrationHandler(Utente newUtente) throws UtenteException;
     public Optional<Utente> loginHandler(LoginUtenteDTO tempUtente) throws UtenteException;
 
+    Optional<Utente> getUtenteClassById(Long idProprietario) throws UtenteException;
 }

@@ -1,9 +1,9 @@
 package com.application.virgo.service.implementation;
 
-import com.application.virgo.DTO.LoginUtenteDTO;
+import com.application.virgo.DTO.inputDTO.LoginUtenteDTO;
 
 import com.application.virgo.DTO.Mapper.UtenteMapper;
-import com.application.virgo.DTO.UtenteDTO;
+import com.application.virgo.DTO.inputDTO.UtenteDTO;
 import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.Utente;
 import com.application.virgo.repositories.UtenteJpaRepository;
@@ -39,6 +39,16 @@ public class UtenteServiceImpl implements UtenteService {
         Optional<Utente> tempUtente = utenteRepo.getUtenteByIdUtente(idUtenteToFound);
         if(tempUtente.isPresent()){
             return Optional.of(mapperUtente.apply(tempUtente.get()));
+        }else{
+            throw new UtenteException("Utente non trovato!");
+        }
+
+    }
+
+    public Optional<Utente> getUtenteClassById(Long idUtenteToFound) throws UtenteException{
+        Optional<Utente> tempUtente = utenteRepo.getUtenteByIdUtente(idUtenteToFound);
+        if(tempUtente.isPresent()){
+            return tempUtente;
         }else{
             throw new UtenteException("Utente non trovato!");
         }

@@ -1,11 +1,13 @@
 package com.application.virgo.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.Set;
 
 @Entity
+@AllArgsConstructor
 public class Immobile {
 
     @Id
@@ -15,12 +17,13 @@ public class Immobile {
     private Date dataUltimoRestauro;
     private Date dataAcquisizione;
     private Date dataCreazioneImmobile;
+    private String descrizione;
 
     private Float prezzo;
 
     @ManyToOne
     @JoinColumn(name="idUtente")
-    private Utente idProprietario;
+    private Utente proprietario;
 
     // Proposte in cui è presente il singolo immobile
     @OneToMany(mappedBy = "idImmobileInteressato")
@@ -32,13 +35,12 @@ public class Immobile {
     public Immobile() {
     }
 
-    public Immobile(Long idImmobile, Date dataUltimoRestauro, Date dataAcquisizione, Date dataCreazioneImmobile, Float prezzo, Utente idProprietario) {
-        this.idImmobile = idImmobile;
+    public Immobile(Date dataUltimoRestauro, Date dataAcquisizione, Date dataCreazioneImmobile, String descrizione, Float prezzo) {
         this.dataUltimoRestauro = dataUltimoRestauro;
         this.dataAcquisizione = dataAcquisizione;
         this.dataCreazioneImmobile = dataCreazioneImmobile;
+        this.descrizione = descrizione;
         this.prezzo = prezzo;
-        this.idProprietario = idProprietario;
     }
 
     public Long getIdImmobile() {
@@ -81,11 +83,35 @@ public class Immobile {
         this.prezzo = prezzo;
     }
 
-    public Utente getIdProprietario() {
-        return idProprietario;
+    public Utente getProprietario() {
+        return proprietario;
     }
 
-    public void setIdProprietario(Utente idProprietario) {
-        this.idProprietario = idProprietario;
+    public void setProprietario(Utente proprietario) {
+        this.proprietario = proprietario;
+    }
+
+    public String getDescrizione() {
+        return descrizione;
+    }
+
+    public void setDescrizione(String descrizione) {
+        this.descrizione = descrizione;
+    }
+
+    public Set<Offerta> getProposteLegateImmobile() {
+        return proposteLegateImmobile;
+    }
+
+    public void setProposteLegateImmobile(Set<Offerta> proposteLegateImmobile) {
+        this.proposteLegateImmobile = proposteLegateImmobile;
+    }
+
+    public Contratto getContratto() {
+        return contratto;
+    }
+
+    public void setContratto(Contratto contratto) {
+        this.contratto = contratto;
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 
 @SpringBootApplication(scanBasePackages = {"com.application.virgo.service","com.application.virgo.controller",
-		"com.application.virgo.configuration", "com.application.virgo.DTO"})
+		"com.application.virgo.configuration", "com.application.virgo.DTO.Mapper"})
 @EnableJpaRepositories(basePackages = {"com.application.virgo.repositories"} )
 @EntityScan( basePackages = {"com.application.virgo.model"} )
 public class VirgoApplication {
@@ -23,6 +23,8 @@ public class VirgoApplication {
 	*  2. Implementa service
 	* 	2.1 Implementa i metodi per gestire registrazione e login come si vede. Vedi Baeldung
 	* 	2.2 Implementa nel modo corretto registrazione e login utente
+	* 	2.3 SERVICE IMMOBILE
+	* 		2.3.1 Implementa dentro createNewImmobile i metodi per un corretto inserimento dei dati
 	*  3. Implementa spring security
 	* 	3.1 Inserisci l'interfaccia UserDetails all'interno della classe utente
 	*  4. Capisci se serve avere la compoundKey per la relazione tra utente e ruolo

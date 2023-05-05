@@ -55,7 +55,7 @@ public class Utente {
 
     public Utente() {}
     public Utente(Long idUtente, String nome, String cognome, String email, String password,
-                  String via, String cap, String citta, String provincia, Date dataNascita, String genere, List<Immobile> immobiliUtente) {
+                  String via, String cap, String citta, String provincia, Date dataNascita, List<Immobile> immobiliUtente) {
         this.idUtente = idUtente;
         this.nome = nome;
         this.cognome = cognome;

@@ -1,6 +1,6 @@
 package com.application.virgo.controller;
 
-import com.application.virgo.DTO.LoginUtenteDTO;
+import com.application.virgo.DTO.inputDTO.LoginUtenteDTO;
 import com.application.virgo.exception.UtenteException;
 import com.application.virgo.service.interfaces.UtenteService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,12 +1,13 @@
 package com.application.virgo.DTO.Mapper;
 
-import com.application.virgo.DTO.UtenteDTO;
+import com.application.virgo.DTO.inputDTO.UtenteDTO;
 import com.application.virgo.model.Utente;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.function.Function;
 
-@Service
+@Component
 public class UtenteMapper implements Function<Utente, UtenteDTO> {
     @Override
     public UtenteDTO apply(Utente utente) {
