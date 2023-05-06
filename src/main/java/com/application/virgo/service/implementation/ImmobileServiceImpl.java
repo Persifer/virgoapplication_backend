@@ -95,6 +95,11 @@ public class ImmobileServiceImpl implements ImmobileService {
     }
 
     @Override
+    public Optional<Immobile> updateImmobileInformation(ImmobileDTO tempUpdatedImmobile) throws ImmobileException {
+        return Optional.empty();
+    }
+
+    @Override
     public List<Immobile> getAllImmobili() {
         return null;
     }

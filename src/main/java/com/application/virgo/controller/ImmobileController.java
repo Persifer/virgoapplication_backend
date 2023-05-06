@@ -64,6 +64,7 @@ public class ImmobileController {
     }
 
 //    // TODO -> recupera dati utente dalla sessione
+    // TODO -> recupero tutti gli immobili e recupero immobili tramite filtri
 //    @PutMapping("/updateInfo/{id_immobile}")
 //    public ResponseEntity<String> modifyImmobileInfo(@RequestBody ImmobileDTO tempUpdatedimmobileDTO){
 //
