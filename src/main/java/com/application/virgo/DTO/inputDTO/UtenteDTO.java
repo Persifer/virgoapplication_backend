@@ -1,7 +1,6 @@
 package com.application.virgo.DTO.inputDTO;
 
 import com.application.virgo.model.Immobile;
-import lombok.AllArgsConstructor;
 
 import java.sql.Date;
 import java.util.List;
