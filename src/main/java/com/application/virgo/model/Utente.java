@@ -82,6 +82,19 @@ public class Utente {
         this.dataNascita = dataNascita;
     }
 
+    public Utente(String nome, String cognome, String email, String password,
+                  String via, String cap, String citta, String provincia, Date dataNascita) {
+        this.nome = nome;
+        this.cognome = cognome;
+        this.email = email;
+        this.password = password;
+        this.via = via;
+        this.cap = cap;
+        this.citta = citta;
+        this.provincia = provincia;
+        this.dataNascita = dataNascita;
+    }
+
 
     public Long getIdUtente() {
         return idUtente;

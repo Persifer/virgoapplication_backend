@@ -1,9 +1,16 @@
 package com.application.virgo.exec;
 
+import com.application.virgo.model.Utente;
+import com.application.virgo.repositories.UtenteJpaRepository;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.sql.Date;
 
 
 @SpringBootApplication(scanBasePackages = {"com.application.virgo.service","com.application.virgo.controller",
@@ -15,6 +22,29 @@ public class VirgoApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(VirgoApplication.class, args);
 	}
+
+	@Bean
+	CommandLineRunner commandLineRunner(UtenteJpaRepository utenteRepo, PasswordEncoder encoder) {
+		return args -> {
+			utenteRepo.save(new Utente(
+					"Antonio",
+					"Giorgino",
+					"antonio@mail.it",
+					encoder.encode("password"),
+					"via",
+					"cap",
+					"citta",
+					"provincia",
+					Date.valueOf("2001-02-02")
+			));
+
+		};
+	}
+
+	/*
+	*     public Utente(String nome, String cognome, String email, String password,
+                  String via, String cap, String citta, String provincia, Date dataNascita)*/
+}
 
 	/*
 	* TODO
@@ -33,4 +63,4 @@ public class VirgoApplication {
 	*
 	* */
 
-}
+

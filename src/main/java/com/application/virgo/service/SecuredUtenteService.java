@@ -6,7 +6,9 @@ import com.application.virgo.service.interfaces.UtenteService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
+@Service
 public class SecuredUtenteService implements UserDetailsService {
 
 
@@ -23,5 +25,7 @@ public class SecuredUtenteService implements UserDetailsService {
                 .map(SecuredUser::new)
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found: " + username));
     }
+
+
 
 }
