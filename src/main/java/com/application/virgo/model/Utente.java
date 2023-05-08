@@ -4,6 +4,7 @@ import com.application.virgo.model.ComposedRelationship.ContrattoUtente;
 import com.application.virgo.model.ComposedRelationship.OfferteUtente;
 import com.application.virgo.model.ComposedRelationship.RuoloUtente;
 import jakarta.persistence.*;
+import lombok.Data;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
 
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@Data
 public class Utente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -168,4 +170,6 @@ public class Utente {
     public void setImmobiliUtente(List<Immobile> immobiliUtente) {
         this.immobiliUtente = immobiliUtente;
     }
+
+
 }
