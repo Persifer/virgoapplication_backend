@@ -1,6 +1,6 @@
 package com.application.virgo.service;
 
-import com.application.virgo.security.SecuredUser;
+import com.application.virgo.wrapperclass.SecuredUser;
 import com.application.virgo.repositories.UtenteJpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
