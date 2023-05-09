@@ -1,9 +1,10 @@
 package com.application.virgo.configuration;
 
 import com.application.virgo.repositories.UtenteJpaRepository;
-import com.application.virgo.service.SecuredUtenteService;
+import com.application.virgo.service.implementation.SecuredUtenteService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -31,11 +32,9 @@ public class VirgoSecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))
-                .authorizeRequests(auth -> auth
-                        .requestMatchers("/registration").permitAll()
-                        .anyRequest().authenticated()
-                )
+                //.csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))
+                .authorizeHttpRequests()
+                .requestMatchers(HttpMethod.POST, "/registration/*").permitAll()
              /*   // Enable custom login
                 .formLogin()
                     .loginPage("/login")
@@ -48,8 +47,10 @@ public class VirgoSecurityConfiguration {
                     .logoutSuccessUrl("/login")
                     .permitAll()
                 .and() */
-                .headers(headers -> headers.frameOptions().sameOrigin())
-                .httpBasic(withDefaults())
+                //.headers(headers -> headers.frameOptions().sameOrigin())
+//                .and()
+//                .httpBasic(withDefaults())
+                .and()
                 .build();
     }
 

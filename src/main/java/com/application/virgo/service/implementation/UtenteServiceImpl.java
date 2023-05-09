@@ -5,14 +5,22 @@ import com.application.virgo.DTO.inputDTO.LoginUtenteDTO;
 import com.application.virgo.DTO.Mapper.UtenteMapper;
 import com.application.virgo.DTO.inputDTO.UtenteDTO;
 import com.application.virgo.exception.UtenteException;
+import com.application.virgo.model.Ruolo;
 import com.application.virgo.model.Utente;
+import com.application.virgo.repositories.RuoloJpaRepository;
 import com.application.virgo.repositories.UtenteJpaRepository;
 import com.application.virgo.service.interfaces.UtenteService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Optional;
+import java.util.Set;
+
+import static com.application.virgo.utilities.Constants.*;
 
 /* La classe UserService è la classe che permette il controller di interfacciarsi
 * con il database. Tramite i suoi metodi permette una gestione controllata e corretta
@@ -20,15 +28,16 @@ import java.util.Optional;
 * */
 @Service
 @Transactional
+@AllArgsConstructor
 public class UtenteServiceImpl implements UtenteService {
 
     // Preleva in modo automatico l'istanza della classe UtenteJpaRepository per gestire la comunicazione
     // tra database e classe java
-    @Autowired
-    private UtenteJpaRepository utenteRepo;
 
-    @Autowired
+    private UtenteJpaRepository utenteRepo;
+    private PasswordEncoder passwordEncoder;
     private UtenteMapper mapperUtente;
+    private RuoloJpaRepository ruoloRepo;
 
     // metodo che restituisce un utente tramite l'email e la password
     @Override
@@ -78,7 +87,25 @@ public class UtenteServiceImpl implements UtenteService {
     // permette di registrare un nuovo utente all'interno del database
     @Override
     public Optional<Utente> registrationHandler(Utente newUtente) throws UtenteException {
-        return Optional.of(utenteRepo.save(newUtente));
+        // Controllo che la data di nascita inserita correttamente
+        if(newUtente.getDataNascita().toLocalDate().isBefore(LocalDate.now())){
+            // codifico la password tramtie l'encoder
+            newUtente.setPassword(passwordEncoder.encode(newUtente.getPassword()));
+            // seleziono il ruolo
+            Optional<Ruolo> tempRuolo = ruoloRepo.getRuoloByRuolo(USER_ROLE);
+            // controllo se il ruolo è presente
+            if(tempRuolo.isPresent()){
+                //  setto il ruolo dell'utente
+                newUtente.setUserRole(Set.of(tempRuolo.get()));
+                return Optional.of(utenteRepo.save(newUtente));
+            }else{
+                throw new UtenteException("Ruolo non trovato");
+            }
+
+        }else{
+            throw new UtenteException("La data di nascita deve essere minore di quella inserita!");
+        }
+
     }
 
     // permette ad un utente registrato di eseguire il login

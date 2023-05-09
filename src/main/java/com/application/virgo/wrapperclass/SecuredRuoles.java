@@ -1,4 +1,4 @@
-package com.application.virgo.security;
+package com.application.virgo.wrapperclass;
 
 import com.application.virgo.model.Ruolo;
 import org.springframework.security.core.GrantedAuthority;

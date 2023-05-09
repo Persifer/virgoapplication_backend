@@ -1,4 +1,4 @@
-package com.application.virgo.service;
+package com.application.virgo.service.implementation;
 
 import com.application.virgo.wrapperclass.SecuredUser;
 import com.application.virgo.repositories.UtenteJpaRepository;

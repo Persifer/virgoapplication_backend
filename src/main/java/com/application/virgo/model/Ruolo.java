@@ -25,6 +25,10 @@ public class Ruolo {
         this.ruolo = ruolo;
     }
 
+    public Ruolo( String ruolo) {
+        this.ruolo = ruolo;
+    }
+
     public Long getIdRuolo() {
         return idRuolo;
     }

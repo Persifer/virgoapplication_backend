@@ -1,4 +1,4 @@
-package com.application.virgo.security;
+package com.application.virgo.wrapperclass;
 
 import com.application.virgo.model.Utente;
 import org.springframework.security.core.GrantedAuthority;

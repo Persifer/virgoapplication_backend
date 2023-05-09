@@ -1,6 +1,8 @@
 package com.application.virgo.exec;
 
+import com.application.virgo.model.Ruolo;
 import com.application.virgo.model.Utente;
+import com.application.virgo.repositories.RuoloJpaRepository;
 import com.application.virgo.repositories.UtenteJpaRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -13,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.sql.Date;
 
 
-@SpringBootApplication(scanBasePackages = {"com.application.virgo"})
+@SpringBootApplication
 @EnableJpaRepositories(basePackages = {"com.application.virgo.repositories"} )
 @EntityScan( basePackages = {"com.application.virgo.model"} )
 public class VirgoApplication {
@@ -23,20 +25,10 @@ public class VirgoApplication {
 	}
 
 	@Bean
-	CommandLineRunner commandLineRunner(UtenteJpaRepository utenteRepo, PasswordEncoder encoder) {
+	CommandLineRunner commandLineRunner(RuoloJpaRepository ruoloRepo ) {
 		return args -> {
-			utenteRepo.save(new Utente(
-					"Antonio",
-					"Giorgino",
-					"antonio@mail.it",
-					encoder.encode("password"),
-					"via",
-					"cap",
-					"citta",
-					"provincia",
-					Date.valueOf("2001-02-02")
-			));
-
+			ruoloRepo.save(new Ruolo("ROLE_USER"));
+			ruoloRepo.save(new Ruolo("ROLE_ADMIN"));
 		};
 	}
 

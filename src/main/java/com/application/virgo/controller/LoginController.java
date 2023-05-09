@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.application.virgo.utilities.Constants.CONTROLLER_OUTPUT;
 
-@Controller
+@RestController
 @RequestMapping(path = "/login", produces = CONTROLLER_OUTPUT)
 public class LoginController {
 

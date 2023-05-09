@@ -8,7 +8,7 @@ import javax.crypto.spec.OAEPParameterSpec;
 import java.util.Optional;
 import java.util.stream.DoubleStream;
 
-@Repository
+
 public interface UtenteJpaRepository extends JpaRepository<Utente, Long> {
 
     public Optional<Utente> getUtenteByEmailAndPassword(String email, String password);
