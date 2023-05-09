@@ -5,17 +5,20 @@ import com.application.virgo.DTO.outputDTO.GetImmobileInfoDTO;
 import com.application.virgo.exception.ImmobileException;
 import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.Immobile;
+import com.application.virgo.security.SecuredUser;
 import com.application.virgo.service.interfaces.ImmobileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 import static com.application.virgo.utilities.Constants.CONTROLLER_OUTPUT;
 
-@RestController
+@Controller
 @RequestMapping(path="/site/immobile", produces = CONTROLLER_OUTPUT)
 public class ImmobileController {
 
@@ -23,11 +26,11 @@ public class ImmobileController {
     private ImmobileService immobileService;
 
     // Mapper per la creazione di un nuovo immobile associato ad singolo utente proprietario
-    @PostMapping("/addnew/{id_utente}")
+    @PostMapping("/addnew")
     public ResponseEntity<String> createNewImmobile(@RequestBody ImmobileDTO tempNewImmobile,
-                                                    @PathVariable("id_utente") String idProprietario){
+                                                    @AuthenticationPrincipal SecuredUser securedUser){
         try{
-            tempNewImmobile.setIdProprietario(Long.parseLong(idProprietario));
+            tempNewImmobile.setIdProprietario(securedUser.getUtenteInformation().getIdUtente());
 
             Optional<ImmobileDTO> newImmobile = immobileService.createNewImmobile(tempNewImmobile);
             if(newImmobile.isPresent()){
@@ -46,7 +49,8 @@ public class ImmobileController {
     // Mapper che permette di reperire i dati di un singolo immobile associato ad un utente tramite l'uso di GetImmobileInfoDTO
     // il DTO
     @GetMapping("/viewImmobile/{id_immobile}")
-    public ResponseEntity<GetImmobileInfoDTO> getImmobileInformation(@PathVariable("id_immobile") String idImmobile){
+    public ResponseEntity<GetImmobileInfoDTO> getImmobileInformation(@PathVariable("id_immobile") String idImmobile,
+                                                                     @AuthenticationPrincipal SecuredUser securedUser){
         try{
 
             Optional<GetImmobileInfoDTO> storedImmobile = immobileService.getImmobileById(idImmobile);

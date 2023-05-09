@@ -10,6 +10,7 @@ import com.application.virgo.repositories.UtenteJpaRepository;
 import com.application.virgo.service.interfaces.UtenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -18,6 +19,7 @@ import java.util.Optional;
 * di tutte le operazioni possibili che un utente può fare
 * */
 @Service
+@Transactional
 public class UtenteServiceImpl implements UtenteService {
 
     // Preleva in modo automatico l'istanza della classe UtenteJpaRepository per gestire la comunicazione

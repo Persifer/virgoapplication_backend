@@ -6,6 +6,7 @@ import com.application.virgo.service.interfaces.UtenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -14,7 +15,7 @@ import java.util.Optional;
 * Classe controller che si occupa di gestire tutte le richieste legate ad un utente
 * Al suo interno ci sono tutti i metodi che servono per gestire l'aggiornamento di utente, la visualizzazione delle caht, contratti ed altro
 * */
-@RestController
+@Controller
 @RequestMapping("/site/utente")
 public class UtenteController {
 

@@ -2,10 +2,8 @@ package com.application.virgo.model;
 
 import com.application.virgo.model.ComposedRelationship.ContrattoUtente;
 import com.application.virgo.model.ComposedRelationship.OfferteUtente;
-import com.application.virgo.model.ComposedRelationship.RuoloUtente;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
 
 import java.sql.Date;
@@ -45,9 +43,13 @@ public class Utente {
 
     // Creazione della relazione molti a molti (lato uno a molti) tra l'utente e ruolo.
     // L'annotazione permettte di dichiarare il tipo di relazione tra le due entità e il tipo di attributo che verrà
-    // usato come chiave della relazione. I
-    @OneToMany(mappedBy = "utente")
-    private Set<RuoloUtente> userRoles;
+    // usato come chiave della relazione.
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "utente_ruolo",
+            joinColumns = @JoinColumn(name = "utente_id"),
+            inverseJoinColumns = @JoinColumn(name = "ruolo_id")
+    )
+    private Set<Ruolo> userRole;
 
     @OneToMany(mappedBy = "utenteInteressato")
     private Set<ContrattoUtente> contrattiUtente;

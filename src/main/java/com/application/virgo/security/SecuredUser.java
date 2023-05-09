@@ -1,15 +1,14 @@
-package com.application.virgo.model;
+package com.application.virgo.security;
 
+import com.application.virgo.model.Utente;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 public class SecuredUser implements UserDetails {
+
 
     private final Utente utenteInformation;
 
@@ -28,7 +27,14 @@ public class SecuredUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return utenteInformation.getUserRole()
+                .stream()
+                .map(SecuredRuoles::new)
+                .collect(Collectors.toList());
+    }
+
+    public Utente getUtenteInformation() {
+        return utenteInformation;
     }
 
     @Override
