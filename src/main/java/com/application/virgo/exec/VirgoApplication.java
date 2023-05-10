@@ -15,9 +15,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.sql.Date;
 
 
-@SpringBootApplication
-@EnableJpaRepositories(basePackages = {"com.application.virgo.repositories"} )
-@EntityScan( basePackages = {"com.application.virgo.model"} )
+@SpringBootApplication(scanBasePackages = "com.application.virgo")
+@EnableJpaRepositories(basePackages = "com.application.virgo.repositories")
+@EntityScan(basePackages = "com.application.virgo.model")
 public class VirgoApplication {
 
 	public static void main(String[] args) {

@@ -35,6 +35,7 @@ public class LoginController {
 
     @GetMapping
     public String get(){
+        System.out.print("Dentro login controller");
         return "login";
     }
 }

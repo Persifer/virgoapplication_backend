@@ -87,6 +87,7 @@ public class UtenteServiceImpl implements UtenteService {
     // permette di registrare un nuovo utente all'interno del database
     @Override
     public Optional<Utente> registrationHandler(Utente newUtente) throws UtenteException {
+        System.out.println("Dentro registration handler");
         // Controllo che la data di nascita inserita correttamente
         if(newUtente.getDataNascita().toLocalDate().isBefore(LocalDate.now())){
             // codifico la password tramtie l'encoder

@@ -19,6 +19,7 @@ public class RegistrationController {
 
     @PostMapping
     public ResponseEntity<String> registration(@RequestBody Utente newUtente){
+        System.out.print("Dentro Registration controller");
         try{
             utenteService.registrationHandler(newUtente);
             return new ResponseEntity<String>("[*] Utente registrato correttamente [*] ", HttpStatus.OK);
