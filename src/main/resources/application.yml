@@ -1,4 +1,8 @@
 spring:
+  thymeleaf:
+    enabled: true
+    prefix: classpath:/templates/
+    suffix: .html
   datasource:
     url: jdbc:postgresql://localhost:5432/virgoapplication
     username: postgres

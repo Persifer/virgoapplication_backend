@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Benvenuto in Virgo</title>
+</head>
+<body>
+<h1>Benvenuto in Virgo, entra nel nostro sito</h1>
+
+<form action="/login" method="post">
+    <div>
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="username" required>
+
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+    <div>
+        <button type="submit">Accedi</button>
+    </div>
+</form>
+
+<p>Se non hai un account, <a href="/registration">Registrati!</a></p>
+</body>
+</html>

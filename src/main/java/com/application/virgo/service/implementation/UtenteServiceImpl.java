@@ -84,4 +84,9 @@ public class UtenteServiceImpl implements UtenteService {
     public Optional<Utente> loginHandler(LoginUtenteDTO tempUtente) throws UtenteException{
         return utenteRepo.getUtenteByEmailAndPassword(tempUtente.getEmail(), tempUtente.getPassword());
     }
+
+    @Override
+    public boolean login(String email, String password) throws UtenteException {
+        return false;
+    }
 }

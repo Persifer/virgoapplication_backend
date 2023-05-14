@@ -9,14 +9,14 @@ import java.util.Optional;
 
 public interface UtenteService {
 
-    public Optional<Utente> getUtenteByEmailAndPassword(String username, String password);
+    Optional<Utente> getUtenteByEmailAndPassword(String username, String password);
 
-    public Optional<UtenteDTO> getUtenteById(Long idUtenteToFound) throws UtenteException;
+    Optional<UtenteDTO> getUtenteById(Long idUtenteToFound) throws UtenteException;
 
-    public Optional<Utente> updateUtenteInfoById(Long idUtente, UtenteDTO newUtente) throws UtenteException;
+    Optional<Utente> updateUtenteInfoById(Long idUtente, UtenteDTO newUtente) throws UtenteException;
 
-    public Optional<Utente> registrationHandler(Utente newUtente) throws UtenteException;
-    public Optional<Utente> loginHandler(LoginUtenteDTO tempUtente) throws UtenteException;
-
+    Optional<Utente> registrationHandler(Utente newUtente) throws UtenteException;
+    Optional<Utente> loginHandler(LoginUtenteDTO tempUtente) throws UtenteException;
+    boolean login(String email, String password) throws UtenteException;
     Optional<Utente> getUtenteClassById(Long idProprietario) throws UtenteException;
 }
