@@ -4,8 +4,6 @@ import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.Utente;
 import com.application.virgo.service.interfaces.UtenteService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +19,19 @@ public class RegistrationController {
         return "Registrazione";
     }
 
-    @PostMapping
+    @PostMapping()
+    public String postActionRegister(@ModelAttribute Utente newUtente) {
+        try {
+            utenteService.registrationHandler(newUtente);
+            return "redirect:/login";
+        } catch (UtenteException e) {
+            e.printStackTrace();
+            return "redirect:/registration";
+        }
+    }
+
+
+    /*@PostMapping
     public ResponseEntity<String> registration(@RequestBody Utente newUtente){
         try{
             utenteService.registrationHandler(newUtente);
@@ -33,17 +43,6 @@ public class RegistrationController {
 
             return new ResponseEntity<>(error.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
-
-    @PostMapping
-    public String postActionRegister(@RequestBody Utente newUtente) {
-        try {
-            utenteService.registrationHandler(newUtente);
-            return "redirect:/login";
-        } catch (UtenteException e) {
-            e.printStackTrace();
-            return "redirect:/registration";
-        }
-    }
+    }*/
 
 }
