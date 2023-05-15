@@ -1,6 +1,5 @@
 package com.application.virgo.model;
 
-import com.application.virgo.model.ComposedRelationship.RuoloUtente;
 import jakarta.persistence.*;
 
 import java.util.Set;
@@ -11,16 +10,22 @@ public class Ruolo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idRuolo;
+
     private String ruolo;
 
-    @OneToMany(mappedBy = "ruolo")
-    private Set<RuoloUtente> ruoliPerUtente;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Utente> roleForUser;
+
 
     public Ruolo() {
     }
 
     public Ruolo(Long idRuolo, String ruolo) {
         this.idRuolo = idRuolo;
+        this.ruolo = ruolo;
+    }
+
+    public Ruolo( String ruolo) {
         this.ruolo = ruolo;
     }
 

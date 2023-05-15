@@ -12,6 +12,7 @@ import com.application.virgo.service.interfaces.ImmobileService;
 import com.application.virgo.service.interfaces.UtenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.sql.Date;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class ImmobileServiceImpl implements ImmobileService {
 
     //TODO -> Implementa pagination all'interno di get all immobili

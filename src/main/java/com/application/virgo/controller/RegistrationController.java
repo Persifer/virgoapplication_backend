@@ -3,7 +3,13 @@ package com.application.virgo.controller;
 import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.Utente;
 import com.application.virgo.service.interfaces.UtenteService;
+
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +39,7 @@ public class RegistrationController {
 
     /*@PostMapping
     public ResponseEntity<String> registration(@RequestBody Utente newUtente){
+        System.out.print("Dentro Registration controller");
         try{
             utenteService.registrationHandler(newUtente);
             return new ResponseEntity<>("[*] Utente registrato correttamente [*] ", HttpStatus.OK);

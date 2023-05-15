@@ -2,9 +2,8 @@ package com.application.virgo.model;
 
 import com.application.virgo.model.ComposedRelationship.ContrattoUtente;
 import com.application.virgo.model.ComposedRelationship.OfferteUtente;
-import com.application.virgo.model.ComposedRelationship.RuoloUtente;
 import jakarta.persistence.*;
-import org.springframework.boot.context.properties.bind.DefaultValue;
+import lombok.Data;
 
 
 import java.sql.Date;
@@ -12,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@Data
 public class Utente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,9 +43,13 @@ public class Utente {
 
     // Creazione della relazione molti a molti (lato uno a molti) tra l'utente e ruolo.
     // L'annotazione permettte di dichiarare il tipo di relazione tra le due entità e il tipo di attributo che verrà
-    // usato come chiave della relazione. I
-    @OneToMany(mappedBy = "utente")
-    private Set<RuoloUtente> userRoles;
+    // usato come chiave della relazione.
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "utente_ruolo",
+            joinColumns = @JoinColumn(name = "utente_id"),
+            inverseJoinColumns = @JoinColumn(name = "ruolo_id")
+    )
+    private Set<Ruolo> userRole;
 
     @OneToMany(mappedBy = "utenteInteressato")
     private Set<ContrattoUtente> contrattiUtente;
@@ -73,6 +77,19 @@ public class Utente {
         this.nome = nome;
         this.cognome = cognome;
         this.email = email;
+        this.via = via;
+        this.cap = cap;
+        this.citta = citta;
+        this.provincia = provincia;
+        this.dataNascita = dataNascita;
+    }
+
+    public Utente(String nome, String cognome, String email, String password,
+                  String via, String cap, String citta, String provincia, Date dataNascita) {
+        this.nome = nome;
+        this.cognome = cognome;
+        this.email = email;
+        this.password = password;
         this.via = via;
         this.cap = cap;
         this.citta = citta;
@@ -168,4 +185,6 @@ public class Utente {
     public void setImmobiliUtente(List<Immobile> immobiliUtente) {
         this.immobiliUtente = immobiliUtente;
     }
+
+
 }
