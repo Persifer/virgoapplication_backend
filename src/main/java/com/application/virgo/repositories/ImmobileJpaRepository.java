@@ -9,4 +9,6 @@ import java.util.Optional;
 public interface ImmobileJpaRepository extends JpaRepository<Immobile, Long> {
 
     public Optional<Immobile> getImmobilesByIdImmobile(Long idImmobile);
+
+    public Long countByIdImmobile();
 }

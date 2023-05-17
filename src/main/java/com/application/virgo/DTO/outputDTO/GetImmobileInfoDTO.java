@@ -25,6 +25,10 @@ public class GetImmobileInfoDTO {
         this.prezzo = prezzo;
     }
 
+    public GetImmobileInfoDTO() {
+
+    }
+
     public String getNomeProprietario() {
 
         return nomeProprietario;

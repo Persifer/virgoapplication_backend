@@ -46,10 +46,9 @@ public class VirgoApplication {
 	* 	2.2 Implementa nel modo corretto registrazione e login utente
 	* 	2.3 SERVICE IMMOBILE
 	* 		2.3.1 Implementa dentro createNewImmobile i metodi per un corretto inserimento dei dati
-	*  3. Implementa spring security
-	* 	3.1 Inserisci l'interfaccia UserDetails all'interno della classe utente
-	*  4. Capisci se serve avere la compoundKey per la relazione tra utente e ruolo
-	*  5. Inserisci i commenti a supporto della relazione tra utente e ruolo
+	*  3. Inserisci paginazione per prelevare gli immobili
+	*  4. Inserisci i commenti a supporto della relazione tra utente e ruolo
+	*  5. Capisci che tipo di DTO utilizzare per la registrazione di un utente
 	*
 	*
 	* */

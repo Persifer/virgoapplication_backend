@@ -1,5 +1,6 @@
 package com.application.virgo.service.implementation;
 
+import com.application.virgo.DTO.Mapper.ImmobileInformationMapper;
 import com.application.virgo.DTO.Mapper.ImmobileMapper;
 import com.application.virgo.DTO.inputDTO.ImmobileDTO;
 import com.application.virgo.DTO.outputDTO.GetImmobileInfoDTO;
@@ -11,6 +12,8 @@ import com.application.virgo.repositories.ImmobileJpaRepository;
 import com.application.virgo.service.interfaces.ImmobileService;
 import com.application.virgo.service.interfaces.UtenteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +21,7 @@ import java.time.LocalDate;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -29,12 +33,14 @@ public class ImmobileServiceImpl implements ImmobileService {
     private final ImmobileJpaRepository immobileRepo;
     private final ImmobileMapper mapperImmobile;
     private final UtenteService utenteService;
+    private final ImmobileInformationMapper mapperInformation;
 
     @Autowired
-    public ImmobileServiceImpl(ImmobileJpaRepository immobileRepo, ImmobileMapper mapperImmobile, UtenteService utenteService){
+    public ImmobileServiceImpl(ImmobileJpaRepository immobileRepo, ImmobileMapper mapperImmobile, UtenteService utenteService, ImmobileInformationMapper mapperInformation){
         this.immobileRepo = immobileRepo;
         this.mapperImmobile = mapperImmobile;
         this.utenteService = utenteService;
+        this.mapperInformation = mapperInformation;
     }
 
     @Override
@@ -102,17 +108,28 @@ public class ImmobileServiceImpl implements ImmobileService {
     }
 
     @Override
-    public List<Immobile> getAllImmobili() {
+    public List<GetImmobileInfoDTO> getAllImmobiliPaginated(Long inidiceIniziale, Long pageSize) throws ImmobileException{
+
+        if(inidiceIniziale > immobileRepo.countByIdImmobile() - pageSize){
+            if(pageSize > 20){
+                Page<Immobile> listImmobili = immobileRepo.findAll(PageRequest.of(inidiceIniziale.intValue(), pageSize.intValue()));
+                // converte con la stream una page di immobili in una lista di getImmobileInfoDTO
+                return listImmobili.stream().map(mapperInformation).collect(Collectors.toList());
+            }else {
+                throw new ImmobileException("Attenzione il numero dell'elemento da cui partire è troppo alto");
+            }
+        }else{
+            throw new ImmobileException("Attenzione il numero dell'elemento da cui partire è troppo alto");
+        }
+    }
+
+    @Override
+    public List<GetImmobileInfoDTO> getFilteredImmobiliPaginated(String filter) {
         return null;
     }
 
     @Override
-    public List<Immobile> getFilteredImmobili(String filter) {
-        return null;
-    }
-
-    @Override
-    public List<Immobile> getImmobiliByKeyword(String keyword) {
+    public List<GetImmobileInfoDTO> getImmobiliByKeyword(String keyword) {
         return null;
     }
 }

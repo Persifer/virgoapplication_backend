@@ -28,7 +28,8 @@ public class VirgoSecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, UserDetailsService userDetailsService) throws Exception {
         http.authorizeHttpRequests()
-                .requestMatchers("/registration").permitAll();
+                .requestMatchers("/registration").permitAll()
+                .anyRequest().authenticated();
 
         http.rememberMe()
                 .key("session")

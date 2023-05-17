@@ -5,6 +5,7 @@ import com.application.virgo.DTO.outputDTO.GetImmobileInfoDTO;
 import com.application.virgo.exception.ImmobileException;
 import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.Immobile;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,9 +18,9 @@ public interface ImmobileService {
 
     public Optional<Immobile> updateImmobileInformation(ImmobileDTO tempUpdatedImmobile) throws ImmobileException;
 
-    public List<Immobile> getAllImmobili();
+    public List<GetImmobileInfoDTO> getAllImmobiliPaginated(Long inidiceIniziale, Long pageSize) throws ImmobileException;
 
-    public List<Immobile> getFilteredImmobili(String filter);
+    public List<GetImmobileInfoDTO> getFilteredImmobiliPaginated(String filter);
 
-    public List<Immobile> getImmobiliByKeyword(String keyword);
+    public List<GetImmobileInfoDTO> getImmobiliByKeyword(String keyword);
 }

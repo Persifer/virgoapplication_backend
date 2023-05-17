@@ -6,26 +6,34 @@ import com.application.virgo.exception.ImmobileException;
 import com.application.virgo.exception.UtenteException;
 import com.application.virgo.wrapperclass.SecuredUser;
 import com.application.virgo.service.interfaces.ImmobileService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.constraints.Max;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.application.virgo.utilities.Constants.CONTROLLER_OUTPUT;
 
 @Controller
-@RequestMapping(path="/site/immobile", produces = CONTROLLER_OUTPUT)
+@RequestMapping(path="/site/", produces = CONTROLLER_OUTPUT)
+@Validated
 public class ImmobileController {
 
-    @Autowired
-    private ImmobileService immobileService;
+    private final ImmobileService immobileService;
+    private static final String URL_SUFFIX = "/immobile/";
+
+    public ImmobileController(ImmobileService immobileService) {
+        this.immobileService = immobileService;
+    }
 
     // Mapper per la creazione di un nuovo immobile associato ad singolo utente proprietario
-    @PostMapping("/addnew")
+                // /immobile/addnew
+    @PostMapping(URL_SUFFIX + "addnew")
     public ResponseEntity<String> createNewImmobile(@RequestBody ImmobileDTO tempNewImmobile,
                                                     @AuthenticationPrincipal SecuredUser securedUser){
         try{
@@ -47,7 +55,7 @@ public class ImmobileController {
 
     // Mapper che permette di reperire i dati di un singolo immobile associato ad un utente tramite l'uso di GetImmobileInfoDTO
     // il DTO
-    @GetMapping("/viewImmobile/{id_immobile}")
+    @GetMapping(URL_SUFFIX+"/viewImmobile/{id_immobile}")
     public ResponseEntity<GetImmobileInfoDTO> getImmobileInformation(@PathVariable("id_immobile") String idImmobile,
                                                                      @AuthenticationPrincipal SecuredUser securedUser){
         try{
@@ -63,6 +71,23 @@ public class ImmobileController {
             return new ResponseEntity<GetImmobileInfoDTO>((GetImmobileInfoDTO) null, HttpStatus.BAD_REQUEST);
         }catch (Exception error){
             return new ResponseEntity<GetImmobileInfoDTO>((GetImmobileInfoDTO) null, HttpStatus.METHOD_NOT_ALLOWED);
+        }
+    }
+
+    @GetMapping("/list/{offset}/{pageSize}")
+    public ResponseEntity<List<GetImmobileInfoDTO>> getListImmobili(@PathVariable Long offset,
+                                                                        @PathVariable @Max(20) Long pageSize ){
+        try{
+            List<GetImmobileInfoDTO> foundedImmobili = immobileService.getAllImmobiliPaginated(offset, pageSize);
+            if(!foundedImmobili.isEmpty()){
+                return new ResponseEntity<List<GetImmobileInfoDTO>>(foundedImmobili, HttpStatus.BAD_REQUEST);
+            }else{
+                return new ResponseEntity<List<GetImmobileInfoDTO>>(List.of(), HttpStatus.BAD_REQUEST);
+            }
+        }catch (ImmobileException error){
+            return new ResponseEntity<List<GetImmobileInfoDTO>>(List.of(), HttpStatus.BAD_REQUEST);
+        }catch (Exception error){
+            return new ResponseEntity<List<GetImmobileInfoDTO>>(List.of(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

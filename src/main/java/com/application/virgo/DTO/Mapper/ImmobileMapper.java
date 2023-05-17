@@ -1,6 +1,7 @@
 package com.application.virgo.DTO.Mapper;
 
 import com.application.virgo.DTO.inputDTO.ImmobileDTO;
+import com.application.virgo.DTO.outputDTO.GetImmobileInfoDTO;
 import com.application.virgo.model.Immobile;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;

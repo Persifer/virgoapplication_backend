@@ -69,19 +69,22 @@ public class UtenteServiceImpl implements UtenteService {
     // fa l'update delle informazioni di un utente identificato tramite id
     @Override
     public Optional<Utente> updateUtenteInfoById(Long idUtente, UtenteDTO updatedUtenteDto) throws UtenteException{
-        Optional<Utente> tempUtente = utenteRepo.findById(idUtente);
+        /*Optional<Utente> tempUtente = utenteRepo.findById(idUtente);
         if(tempUtente.isPresent()){
+
             Utente utenteToUpdate = tempUtente.get();
-           Utente updatedUtente = null;
-           if(updatedUtente != null){
-               utenteRepo.save(updatedUtente);
-               return Optional.of(updatedUtente);
-           }else{
-               throw new UtenteException("Errore nella modifica dei dati dell'utente");
-           }
+            utenteToUpdate = mapperUtente.apply(updatedUtenteDto);
+
+                utenteRepo.save(updatedUtente);
+                return Optional.of(updatedUtente);
+            }else{
+                throw new UtenteException("Errore nella modifica dei dati dell'utente");
+            }
         }else{
             throw new UtenteException("L'utente che si vuole modificare non esiste");
-        }
+        }*/
+
+        return Optional.empty();
     }
 
     // permette di registrare un nuovo utente all'interno del database
