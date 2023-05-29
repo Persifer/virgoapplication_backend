@@ -21,6 +21,9 @@ public class Immobile {
 
     private Float prezzo;
 
+    @Column(columnDefinition = "boolean default false")
+    private Boolean isEnabled;
+
     @ManyToOne
     @JoinColumn(name="idUtente")
     private Utente proprietario;
@@ -113,5 +116,13 @@ public class Immobile {
 
     public void setContratto(Contratto contratto) {
         this.contratto = contratto;
+    }
+
+    public Boolean getEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        isEnabled = enabled;
     }
 }

@@ -36,7 +36,8 @@ public class ImmobileServiceImpl implements ImmobileService {
     private final ImmobileInformationMapper mapperInformation;
 
     @Autowired
-    public ImmobileServiceImpl(ImmobileJpaRepository immobileRepo, ImmobileMapper mapperImmobile, UtenteService utenteService, ImmobileInformationMapper mapperInformation){
+    public ImmobileServiceImpl(ImmobileJpaRepository immobileRepo, ImmobileMapper mapperImmobile,
+                               UtenteService utenteService, ImmobileInformationMapper mapperInformation){
         this.immobileRepo = immobileRepo;
         this.mapperImmobile = mapperImmobile;
         this.utenteService = utenteService;
@@ -44,13 +45,12 @@ public class ImmobileServiceImpl implements ImmobileService {
     }
 
     @Override
-    public Optional<ImmobileDTO> createNewImmobile(ImmobileDTO tempNewImmobile)
+    public Optional<ImmobileDTO> createNewImmobile(ImmobileDTO tempNewImmobile, Utente utenteProprietario)
         throws ImmobileException, UtenteException {
         // Prelevo l'utente dal db
         // TODO: Cambia prendendo i dati dell'utente dalla sessione di spring, COSI NON HA SENSO
-        Optional<Utente> utenteProprietario = utenteService.getUtenteClassById(tempNewImmobile.getIdProprietario());
         LocalDate todayDate = LocalDate.now();
-        if(utenteProprietario.isPresent()){
+        if(utenteProprietario != null){
             //Controllo che le data di acquisizione sia minore di quella odierna
             if(tempNewImmobile.getDataAcquisizione().isBefore(todayDate)){
                 //Controllo che le data di ultimo restuaro sia minore di quella odierna, può capitare che un restauro sia ancora in corso
@@ -60,18 +60,16 @@ public class ImmobileServiceImpl implements ImmobileService {
                     tempNewImmobile.setDataCreazioneImmobile(todayDate);
                     // Conversione da ImmobileDTO a Immobile
                     Immobile newImmobile = mapperImmobile.apply(tempNewImmobile);
-                    newImmobile.setProprietario(utenteProprietario.get());
+                    newImmobile.setProprietario(utenteProprietario);
                     // Salvataggio dell'immobile
                     immobileRepo.save(newImmobile);
                     return Optional.of(tempNewImmobile);
                 }else{
                     throw new ImmobileException("La data di ultimo restauro immobile è superiore a quella odierna!");
                 }
-
             }else{
                 throw new ImmobileException("La data di acqusizione immobile è superiore a quella odierna!");
             }
-
         }else{
             throw new UtenteException("Utente proprietario non trovato");
         }
@@ -79,22 +77,13 @@ public class ImmobileServiceImpl implements ImmobileService {
     }
 
     @Override
-    public Optional<GetImmobileInfoDTO> getImmobileById(String idImmobile) throws ImmobileException{
-        Long convertedIdImmobile = Long.parseLong(idImmobile);
+    public Optional<GetImmobileInfoDTO> getImmobileById(Long idImmobile) throws ImmobileException{
 
-        Optional<Immobile> tempImmobile = immobileRepo.getImmobilesByIdImmobile(convertedIdImmobile);
+        Optional<Immobile> tempImmobile = immobileRepo.getImmobilesByIdImmobile(idImmobile);
         if(tempImmobile.isPresent()){
             Immobile requestedImmobile = tempImmobile.get();
+            return Optional.of(mapperInformation.apply(requestedImmobile));
 
-            return Optional.of(new GetImmobileInfoDTO(
-                    requestedImmobile.getProprietario().getNome(),
-                    requestedImmobile.getProprietario().getCognome(),
-                    requestedImmobile.getDataUltimoRestauro(),
-                    requestedImmobile.getDataAcquisizione(),
-                    requestedImmobile.getDataCreazioneImmobile(),
-                    requestedImmobile.getDescrizione(),
-                    requestedImmobile.getPrezzo()
-            ));
         }else{
             throw new ImmobileException("L'immobile cercato non esiste!");
         }
@@ -102,9 +91,62 @@ public class ImmobileServiceImpl implements ImmobileService {
 
     }
 
+    //Restituisce i dati da modificare di un singolo immobile
     @Override
-    public Optional<Immobile> updateImmobileInformation(ImmobileDTO tempUpdatedImmobile) throws ImmobileException {
-        return Optional.empty();
+    public Optional<ImmobileDTO> getImmobileByIdToUpdate(Long idImmobile, Utente authUser)
+            throws ImmobileException, UtenteException {
+        Optional<Immobile> tempToUpdateImmobile = immobileRepo.getImmobilesByIdImmobile(idImmobile);
+        if(tempToUpdateImmobile.isPresent()){
+
+            Immobile toUpdateImmobile = tempToUpdateImmobile.get();
+            // controllo che il proprietario dell'immobile selezionato sia lo stesso di quello loggato che, si presume, sia l'utente
+            // proprietario dell'immobile
+            if(toUpdateImmobile.getProprietario().getIdUtente().equals(authUser.getIdUtente())){
+                ImmobileDTO immobileToUpdate = mapperImmobile.apply(toUpdateImmobile);
+                return Optional.of(immobileToUpdate);
+            }else{
+                throw new UtenteException("Non sei autorizzato a modificare i dati di questo immobile!");
+            }
+        }else{
+            throw new ImmobileException("L'immobile selezionato non esiste");
+        }
+    }
+
+    @Override
+    public Optional<Immobile> updateImmobileInformation(ImmobileDTO tempUpdatedImmobile, Utente authUser, Long idImmobileToUpdate)
+            throws ImmobileException, UtenteException {
+        Optional<Immobile> tempToCheckImmobile = immobileRepo.getImmobilesByIdImmobile(idImmobileToUpdate);
+        if(tempToCheckImmobile.isPresent()){
+            Immobile toCheckImmobile = tempToCheckImmobile.get();
+            // controllo che il proprietario dell'immobile selezionato sia lo stesso di quello loggato che, si presume, sia l'utente
+            // proprietario dell'immobile
+            if(toCheckImmobile.getProprietario().getIdUtente().equals(authUser.getIdUtente())){
+
+                if(!toCheckImmobile.getDataAcquisizione().equals(tempUpdatedImmobile.getDataAcquisizione())){
+                    toCheckImmobile.setDataAcquisizione(tempUpdatedImmobile.getDataAcquisizione());
+                }
+
+                if(!toCheckImmobile.getDataUltimoRestauro().equals(tempUpdatedImmobile.getDataUltimoRestauro())){
+                    toCheckImmobile.setDataUltimoRestauro(tempUpdatedImmobile.getDataUltimoRestauro());
+                }
+
+                if(!toCheckImmobile.getDescrizione().equals(tempUpdatedImmobile.getDescrizione())){
+                    toCheckImmobile.setDescrizione(tempUpdatedImmobile.getDescrizione());
+                }
+
+                if(!toCheckImmobile.getPrezzo().equals(tempUpdatedImmobile.getPrezzo())){
+                    toCheckImmobile.setPrezzo(tempUpdatedImmobile.getPrezzo());
+                }
+
+                immobileRepo.save(toCheckImmobile);
+                return Optional.of(toCheckImmobile);
+            }else{
+                throw new UtenteException("Non sei autorizzato a modificare i dati di questo immobile!");
+            }
+        }else{
+            throw new ImmobileException("L'immobile selezionato non esiste");
+        }
+
     }
 
     @Override

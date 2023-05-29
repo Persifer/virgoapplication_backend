@@ -12,9 +12,6 @@ import java.time.LocalDate;
 * */
 public class ImmobileDTO {
 
-    private Long idProprietario;
-
-    @NotNull
     private LocalDate dataUltimoRestauro;
     @NotNull
     private LocalDate dataAcquisizione;
@@ -27,9 +24,8 @@ public class ImmobileDTO {
     public ImmobileDTO() {
     }
 
-    public ImmobileDTO(Long idProprietario, LocalDate dataUltimoRestauro, LocalDate dataAcquisizione,
+    public ImmobileDTO(LocalDate dataUltimoRestauro, LocalDate dataAcquisizione,
                        String descrizione, Float prezzo) {
-        this.idProprietario = idProprietario;
         this.dataUltimoRestauro = dataUltimoRestauro;
         this.dataAcquisizione = dataAcquisizione;
         this.dataCreazioneImmobile = null;
@@ -43,14 +39,6 @@ public class ImmobileDTO {
 
     public void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
-    }
-
-    public Long getIdProprietario() {
-        return idProprietario;
-    }
-
-    public void setIdProprietario(Long idProprietario) {
-        this.idProprietario = idProprietario;
     }
 
     public LocalDate getDataUltimoRestauro() {
