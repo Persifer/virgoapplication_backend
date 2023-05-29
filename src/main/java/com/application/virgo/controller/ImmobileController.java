@@ -33,8 +33,8 @@ public class ImmobileController {
 
     // Mapper per la creazione di un nuovo immobile associato ad singolo utente proprietario
                 // /immobile/addnew
-    @PostMapping(URL_SUFFIX + "addnew")
-    public ResponseEntity<String> createNewImmobile(@RequestBody ImmobileDTO tempNewImmobile,
+    @PostMapping(URL_SUFFIX + "/addnew")
+    public ResponseEntity<String> createNewImmobile(@ModelAttribute ImmobileDTO tempNewImmobile,
                                                     @AuthenticationPrincipal SecuredUser securedUser){
         try{
             tempNewImmobile.setIdProprietario(securedUser.getUtenteInformation().getIdUtente());

@@ -1,6 +1,8 @@
 package com.application.virgo.DTO.inputDTO;
 
 import com.application.virgo.model.Immobile;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -9,16 +11,29 @@ import java.util.List;
 
 public class UtenteDTO {
 
+    @NotNull
+    @Pattern(regexp = "[A-z]")
     private String nome;
+    @NotNull
+    @Pattern(regexp = "[A-z]")
     private String cognome;
-    //@Column(nullable = false)
+    @NotNull
+    @Pattern(regexp = "^[_A-Za-z0-9-+]+(.[_A-Za-z0-9-]+)*@+[A-Za-z0-9-]+(.[A-Za-z0-9]+)*(.[A-Za-z]{2,})$")
     private String email;
+    @NotNull
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d#@$!%*?&]{6,16}$")
     private String password;
 
     // ======== RESIDENZA =========
+    @NotNull
     private String via;
+    @NotNull
+    @Pattern(regexp = "[0-9]{6}")
     private String cap;
+    @NotNull
     private String citta;
+    @NotNull
+    @Pattern(regexp = "[A-Z]{2}")
     private String provincia;
 // ============================
 

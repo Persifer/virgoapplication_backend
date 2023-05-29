@@ -3,10 +3,13 @@ package com.application.virgo.controller;
 import com.application.virgo.DTO.inputDTO.UtenteDTO;
 import com.application.virgo.exception.UtenteException;
 import com.application.virgo.service.interfaces.UtenteService;
+import com.application.virgo.wrapperclass.SecuredUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -17,13 +20,14 @@ import java.util.Optional;
 * */
 @Controller
 @RequestMapping("/site/utente")
+@Validated
 public class UtenteController {
 
     @Autowired
     private UtenteService utenteService;
     @PutMapping("/updateData/{id_utente}")
     public ResponseEntity<String> updateUtenteInformation(@PathVariable("id_utente") String idUtenteDaModificare,
-                                                          @RequestBody UtenteDTO updatedUtente){
+                                                          @ModelAttribute UtenteDTO updatedUtente, @AuthenticationPrincipal SecuredUser authenticatedUtente){
         try{
             utenteService.updateUtenteInfoById(Long.parseLong(idUtenteDaModificare), updatedUtente);
             return new ResponseEntity<String>("Utente aggiornato correttamente", HttpStatus.OK);

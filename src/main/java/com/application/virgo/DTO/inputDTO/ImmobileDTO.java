@@ -1,5 +1,7 @@
 package com.application.virgo.DTO.inputDTO;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.sql.Date;
 import java.time.LocalDate;
 
@@ -12,11 +14,14 @@ public class ImmobileDTO {
 
     private Long idProprietario;
 
+    @NotNull
     private LocalDate dataUltimoRestauro;
+    @NotNull
     private LocalDate dataAcquisizione;
     private LocalDate dataCreazioneImmobile;
 
     private String descrizione;
+    @NotNull
     private Float prezzo;
 
     public ImmobileDTO() {
