@@ -12,10 +12,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 
-import java.sql.Date;
-
-
-@SpringBootApplication(scanBasePackages = "com.application.virgo")
+@SpringBootApplication(scanBasePackages = {"com.application.virgo.controller",
+										   "com.application.virgo.service",
+		"com.application.virgo.DTO", "com.application.virgo.wrapperclass", "com.application.virgo.configuration"
+})
 @EnableJpaRepositories(basePackages = "com.application.virgo.repositories")
 @EntityScan(basePackages = "com.application.virgo.model")
 public class VirgoApplication {
@@ -24,13 +24,13 @@ public class VirgoApplication {
 		SpringApplication.run(VirgoApplication.class, args);
 	}
 
-	@Bean
-	CommandLineRunner commandLineRunner(RuoloJpaRepository ruoloRepo ) {
-		return args -> {
-			ruoloRepo.save(new Ruolo("ROLE_USER"));
-			ruoloRepo.save(new Ruolo("ROLE_ADMIN"));
-		};
-	}
+//	@Bean
+//	CommandLineRunner commandLineRunner(RuoloJpaRepository ruoloRepo ) {
+//		return args -> {
+//			ruoloRepo.save(new Ruolo("ROLE_USER"));
+//			ruoloRepo.save(new Ruolo("ROLE_ADMIN"));
+//		};
+//	}
 
 	/*
 	*     public Utente(String nome, String cognome, String email, String password,

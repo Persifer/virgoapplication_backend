@@ -5,32 +5,27 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class SecuredUser implements UserDetails {
 
 
     private final Utente utenteInformation;
+    private final List<SecuredRoles> authorities;;
 
     public SecuredUser(Utente utenteInformation) {
         this.utenteInformation = utenteInformation;
+        this.authorities = utenteInformation.getUserRole()
+                .stream()
+                .map(SecuredRoles::new)
+                .collect(Collectors.toList());
     }
 
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return Arrays.stream(utenteInformation
-//                        .getUserRoles()
-//                        .split("|"))
-//                .map(SimpleGrantedAuthority::new)
-//                .toList();
-//    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return utenteInformation.getUserRole()
-                .stream()
-                .map(SecuredRuoles::new)
-                .collect(Collectors.toList());
+        return authorities;
     }
 
     public Utente getUtenteInformation() {

@@ -20,7 +20,7 @@ import java.util.Optional;
 import static com.application.virgo.utilities.Constants.CONTROLLER_OUTPUT;
 
 @Controller
-@RequestMapping(path="/site/", produces = CONTROLLER_OUTPUT)
+@RequestMapping(path="/site")
 @Validated
 public class ImmobileController {
 
@@ -74,6 +74,9 @@ public class ImmobileController {
         }
     }
 
+    // Permette di prendere le informazioni dal database senza riempire troppo la memoria heap di Java tramite paginazione
+    // Offset -> indice da cui iniziare a prendere
+    // PageSize -> quanti elementi prendere
     @GetMapping("/list/{offset}/{pageSize}")
     public ResponseEntity<List<GetImmobileInfoDTO>> getListImmobili(@PathVariable Long offset,
                                                                         @PathVariable @Max(20) Long pageSize ){

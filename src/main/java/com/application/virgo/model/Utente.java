@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -30,7 +30,9 @@ public class Utente {
     private String provincia;
 // ============================
 
-    private Date dataNascita;
+    private LocalDate dataNascita;
+
+
 
 
     // Creazione della relazione uno a molti (lato molti) tra l'utente e l'immobile.
@@ -59,7 +61,7 @@ public class Utente {
 
     public Utente() {}
     public Utente(Long idUtente, String nome, String cognome, String email, String password,
-                  String via, String cap, String citta, String provincia, Date dataNascita, List<Immobile> immobiliUtente) {
+                  String via, String cap, String citta, String provincia, LocalDate dataNascita, List<Immobile> immobiliUtente) {
         this.idUtente = idUtente;
         this.nome = nome;
         this.cognome = cognome;
@@ -73,7 +75,7 @@ public class Utente {
         this.immobiliUtente = immobiliUtente;
     }
     public Utente(String nome, String cognome, String email, String via,
-                     String cap, String citta, String provincia, Date dataNascita) {
+                     String cap, String citta, String provincia, LocalDate dataNascita) {
         this.nome = nome;
         this.cognome = cognome;
         this.email = email;
@@ -85,7 +87,7 @@ public class Utente {
     }
 
     public Utente(String nome, String cognome, String email, String password,
-                  String via, String cap, String citta, String provincia, Date dataNascita) {
+                  String via, String cap, String citta, String provincia, LocalDate dataNascita) {
         this.nome = nome;
         this.cognome = cognome;
         this.email = email;
@@ -170,11 +172,11 @@ public class Utente {
         this.provincia = provincia;
     }
 
-    public Date getDataNascita() {
+    public LocalDate getDataNascita() {
         return dataNascita;
     }
 
-    public void setDataNascita(Date dataNascita) {
+    public void setDataNascita(LocalDate dataNascita) {
         this.dataNascita = dataNascita;
     }
 

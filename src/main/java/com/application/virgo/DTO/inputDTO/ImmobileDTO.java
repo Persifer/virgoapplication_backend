@@ -1,6 +1,7 @@
 package com.application.virgo.DTO.inputDTO;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 /*
 * Classe creata come Data Transfer Object dato in input per la creazione di un nuovo immobile.
@@ -11,9 +12,9 @@ public class ImmobileDTO {
 
     private Long idProprietario;
 
-    private Date dataUltimoRestauro;
-    private Date dataAcquisizione;
-    private Date dataCreazioneImmobile;
+    private LocalDate dataUltimoRestauro;
+    private LocalDate dataAcquisizione;
+    private LocalDate dataCreazioneImmobile;
 
     private String descrizione;
     private Float prezzo;
@@ -21,7 +22,7 @@ public class ImmobileDTO {
     public ImmobileDTO() {
     }
 
-    public ImmobileDTO(Long idProprietario, Date dataUltimoRestauro, Date dataAcquisizione,
+    public ImmobileDTO(Long idProprietario, LocalDate dataUltimoRestauro, LocalDate dataAcquisizione,
                        String descrizione, Float prezzo) {
         this.idProprietario = idProprietario;
         this.dataUltimoRestauro = dataUltimoRestauro;
@@ -47,27 +48,27 @@ public class ImmobileDTO {
         this.idProprietario = idProprietario;
     }
 
-    public Date getDataUltimoRestauro() {
+    public LocalDate getDataUltimoRestauro() {
         return dataUltimoRestauro;
     }
 
-    public void setDataUltimoRestauro(Date dataUltimoRestauro) {
+    public void setDataUltimoRestauro(LocalDate dataUltimoRestauro) {
         this.dataUltimoRestauro = dataUltimoRestauro;
     }
 
-    public Date getDataAcquisizione() {
+    public LocalDate getDataAcquisizione() {
         return dataAcquisizione;
     }
 
-    public void setDataAcquisizione(Date dataAcquisizione) {
+    public void setDataAcquisizione(LocalDate dataAcquisizione) {
         this.dataAcquisizione = dataAcquisizione;
     }
 
-    public Date getDataCreazioneImmobile() {
+    public LocalDate getDataCreazioneImmobile() {
         return dataCreazioneImmobile;
     }
 
-    public void setDataCreazioneImmobile(Date dataCreazioneImmobile) {
+    public void setDataCreazioneImmobile(LocalDate dataCreazioneImmobile) {
         this.dataCreazioneImmobile = dataCreazioneImmobile;
     }
 

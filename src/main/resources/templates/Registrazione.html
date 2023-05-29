@@ -7,7 +7,7 @@
     <body>
         <h1>Registrati ed inizia a vedere i nostri immobili, sono i migliori!</h1>
 
-        <form action="/registration" method="POST">
+        <form th:action="@{/registration}" method="post">
             <div>
                 <label for="nome">Nome:</label>
                 <input type="text" id="nome" name="nome" required>
@@ -45,7 +45,7 @@
                 <input type="date" id="dataNascita" name="dataNascita" required>
             </div>
             <div>
-                <button type="submit">Registrati</button>
+                <input class="btn btn-primary flex-fill" type="submit" value="Registrati">
             </div>
         </form>
     </body>

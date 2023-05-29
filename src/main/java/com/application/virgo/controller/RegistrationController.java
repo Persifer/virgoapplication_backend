@@ -1,5 +1,7 @@
 package com.application.virgo.controller;
 
+
+import com.application.virgo.DTO.inputDTO.UtenteDTO;
 import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.Utente;
 import com.application.virgo.service.interfaces.UtenteService;
@@ -8,27 +10,33 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequiredArgsConstructor
 @RequestMapping("/registration")
 public class RegistrationController {
 
     private final UtenteService utenteService;
 
+    public RegistrationController(UtenteService utenteService) {
+        this.utenteService = utenteService;
+    }
+
     @GetMapping
     public String get() {
+        //model.addAttribute("newUtente", newUtente);
         return "Registrazione";
     }
 
     @PostMapping()
-    public String postActionRegister(@ModelAttribute Utente newUtente) {
+    public String postActionRegister(@ModelAttribute UtenteDTO newUtente) {
+        System.out.print("Dentro l'handler \n\t=> "+ newUtente.toString());
         try {
-            utenteService.registrationHandler(newUtente);
+            System.out.print("Prima del service");
+            utenteService.tryRegistrationHandler(newUtente);
             return "redirect:/login";
         } catch (UtenteException e) {
             e.printStackTrace();

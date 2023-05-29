@@ -52,12 +52,12 @@ public class ImmobileServiceImpl implements ImmobileService {
         LocalDate todayDate = LocalDate.now();
         if(utenteProprietario.isPresent()){
             //Controllo che le data di acquisizione sia minore di quella odierna
-            if(tempNewImmobile.getDataAcquisizione().toLocalDate().isBefore(todayDate)){
+            if(tempNewImmobile.getDataAcquisizione().isBefore(todayDate)){
                 //Controllo che le data di ultimo restuaro sia minore di quella odierna, può capitare che un restauro sia ancora in corso
                 // ma meglio evitare
-                if(tempNewImmobile.getDataUltimoRestauro().toLocalDate().isBefore(todayDate)){
+                if(tempNewImmobile.getDataUltimoRestauro().isBefore(todayDate)){
                     // Inserisco la data di inserimento
-                    tempNewImmobile.setDataCreazioneImmobile(Date.valueOf(todayDate));
+                    tempNewImmobile.setDataCreazioneImmobile(todayDate);
                     // Conversione da ImmobileDTO a Immobile
                     Immobile newImmobile = mapperImmobile.apply(tempNewImmobile);
                     newImmobile.setProprietario(utenteProprietario.get());

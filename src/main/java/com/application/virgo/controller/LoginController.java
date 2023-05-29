@@ -16,27 +16,15 @@ import static com.application.virgo.utilities.Constants.CONTROLLER_OUTPUT;
 @RequestMapping(path = "/login")
 public class LoginController {
 
+
     @GetMapping
     public String get() {
         return "Login";
     }
 
-   /* @GetMapping
-=======
-    /* @GetMapping
->>>>>>> security
-    public ResponseEntity<String> login(@RequestBody LoginUtenteDTO newUtente){
-        try{
-            utenteService.loginHandler(newUtente);
-            return new ResponseEntity<String>("[*] Utente loggato correttamente [*] ", HttpStatus.OK);
-        }catch (UtenteException error){
-
-            return new ResponseEntity<String>(error.getMessage(), HttpStatus.BAD_REQUEST);
-        }catch (Exception error){
-
-            return new ResponseEntity<String>(error.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-<<<<<<< HEAD
-    }*/
+    @GetMapping("/success")
+    public String getSuccess() {
+        return "redirect:/vai";
+    }
 
 }

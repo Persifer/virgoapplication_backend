@@ -3,6 +3,7 @@ package com.application.virgo.DTO.inputDTO;
 import com.application.virgo.model.Immobile;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -21,10 +22,10 @@ public class UtenteDTO {
     private String provincia;
 // ============================
 
-    private Date dataNascita;
+    private LocalDate dataNascita;
 
     public UtenteDTO(String nome, String cognome, String email, String via,
-                     String cap, String citta, String provincia, Date dataNascita) {
+                     String cap, String citta, String provincia, LocalDate dataNascita) {
         this.nome = nome;
         this.cognome = cognome;
         this.email = email;
@@ -99,11 +100,11 @@ public class UtenteDTO {
         this.provincia = provincia;
     }
 
-    public Date getDataNascita() {
+    public LocalDate getDataNascita() {
         return dataNascita;
     }
 
-    public void setDataNascita(Date dataNascita) {
+    public void setDataNascita(LocalDate dataNascita) {
         this.dataNascita = dataNascita;
     }
 }

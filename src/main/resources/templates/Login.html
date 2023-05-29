@@ -1,27 +1,25 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Benvenuto in Virgo</title>
-</head>
-<body>
-<h1>Benvenuto in Virgo, entra nel nostro sito</h1>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 
-<form action="/login" method="post">
-    <div>
-        <label for="email">Email:</label>
-        <input type="text" id="email" name="username" required>
+    <head>
+        <title>Virgo login</title>
+    </head>
 
-    </div>
-    <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-    </div>
-    <div>
-        <button type="submit">Accedi</button>
-    </div>
-</form>
+    <body>
 
-<p>Se non hai un account, <a href="/registration">Registrati!</a></p>
-</body>
+        <div th:if="${param.error}">
+            Invalid username and password.
+        </div>
+        <div th:if="${param.logout}">
+            You have been logged out.
+        </div>
+
+        <form th:action="@{/login}" method="post">
+            <div><label> User Name : <input type="text" name="username"/> </label></div>
+            <div><label> Password: <input type="password" name="password"/> </label></div>
+            <div><input type="submit" value="Sign In"/></div>
+        </form>
+
+    </body>
+
 </html>

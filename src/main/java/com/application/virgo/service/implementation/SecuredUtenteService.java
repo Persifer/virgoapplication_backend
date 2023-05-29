@@ -1,14 +1,17 @@
 package com.application.virgo.service.implementation;
 
+import com.application.virgo.model.Utente;
+import com.application.virgo.utilities.Util;
 import com.application.virgo.wrapperclass.SecuredUser;
 import com.application.virgo.repositories.UtenteJpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Component
+@Service
 public class SecuredUtenteService implements UserDetailsService {
 
 
@@ -21,10 +24,10 @@ public class SecuredUtenteService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return utenteRepo
+        Utente u= utenteRepo
                 .findByEmail(username)
-                .map(SecuredUser::new)
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found: " + username));
+        return Util.convertBy(u);
     }
 
 

@@ -16,7 +16,8 @@ public interface UtenteService {
     Optional<Utente> updateUtenteInfoById(Long idUtente, UtenteDTO newUtente) throws UtenteException;
 
     Optional<Utente> registrationHandler(Utente newUtente) throws UtenteException;
-    Optional<Utente> loginHandler(LoginUtenteDTO tempUtente) throws UtenteException;
-    boolean login(String email, String password) throws UtenteException;
+
+    Optional<Utente> tryRegistrationHandler(UtenteDTO newUtente) throws UtenteException;
+
     Optional<Utente> getUtenteClassById(Long idProprietario) throws UtenteException;
 }

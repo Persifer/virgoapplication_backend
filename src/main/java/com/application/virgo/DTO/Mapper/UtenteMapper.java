@@ -28,6 +28,7 @@ public class UtenteMapper implements Function<Utente, UtenteDTO> {
                 utente.getNome(),
                 utente.getCognome(),
                 utente.getEmail(),
+                utente.getPassword(),
                 utente.getVia(),
                 utente.getCap(),
                 utente.getCitta(),
