@@ -44,6 +44,9 @@ public class Immobile {
     @OneToOne(mappedBy = "immobileInteressato")
     private Contratto contratto;
 
+    @OneToMany(mappedBy = "idDomanda")
+    private Set<Domanda> domandeImmobile;
+
     public Immobile(LocalDate dataUltimoRestauro, LocalDate dataAcquisizione, LocalDate dataCreazioneImmobile,
                     String descrizione, Float prezzo, String via, String cap, String citta, String provincia) {
         this.dataUltimoRestauro = dataUltimoRestauro;
