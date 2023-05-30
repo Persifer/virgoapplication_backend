@@ -12,8 +12,8 @@ public class DomandaImmobileMapper implements Function<Domanda, DomandaImmobileD
     public DomandaImmobileDTO apply(Domanda domanda) {
         DomandaImmobileDTO domandaDTO = new DomandaImmobileDTO();
 
-        domandaDTO.setNomeProprietario(domanda.getProprietarioCommento().getNome());
-        domandaDTO.setCognomeProprietario(domanda.getProprietarioCommento().getCognome());
+        domandaDTO.setNomeProprietario(domanda.getProprietarioDomanda().getNome());
+        domandaDTO.setCognomeProprietario(domanda.getProprietarioDomanda().getCognome());
 
         domandaDTO.setContenuto(domanda.getContenuto());
         domandaDTO.setDataPubblicazione(domanda.getDataPubblicazione().toString());

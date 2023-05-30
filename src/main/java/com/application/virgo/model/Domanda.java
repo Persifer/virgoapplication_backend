@@ -25,11 +25,14 @@ public class Domanda {
 
     @ManyToOne
     @JoinColumn(name="idUtente")
-    private Utente proprietarioCommento;
+    private Utente proprietarioDomanda;
 
     @ManyToOne
     @JoinColumn(name="idImmobile")
     private Immobile immobileInteressato;
+
+    @OneToOne(mappedBy = "domandaDiRiferimento")
+    private Risposta risposta;
 
     public Domanda(String contenuto, LocalDate dataPubblicazione) {
         this.contenuto = contenuto;
