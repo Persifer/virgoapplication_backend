@@ -15,5 +15,7 @@ public class DomandaImmobileDTO {
     private String contenuto;
     private String dataPubblicazione;
 
+    private String risposta;
+    private String dataRisposta;
 
 }

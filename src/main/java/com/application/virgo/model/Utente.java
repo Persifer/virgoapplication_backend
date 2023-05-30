@@ -62,6 +62,9 @@ public class Utente {
     @OneToMany(mappedBy = "idDomanda")
     private Set<Domanda> domandeUtente;
 
+    @OneToMany(mappedBy = "idRisposta")
+    private Set<Risposta> risposteUtente;
+
     public Utente() {}
     public Utente(Long idUtente, String nome, String cognome, String email, String password,
                   String via, String cap, String citta, String provincia, LocalDate dataNascita, List<Immobile> immobiliUtente) {
