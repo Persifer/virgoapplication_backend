@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public interface ImmobileService {
 
-// ======================================== HOME PAGE =================================================================
+// =========================================== HOME PAGE ===============================================================
 
     public Optional<ImmobileDTO> createNewImmobile(ImmobileDTO tempNewImmobile, Utente proprietario)
             throws ImmobileException, UtenteException;
@@ -33,11 +33,11 @@ public interface ImmobileService {
 
     public List<GetImmobileInfoDTO> getImmobiliByKeyword(String keyword);
 
-//    ==================================================================================================================
+// =====================================================================================================================
 
 // ======================================== HOME PAGE ==================================================================
 
 //    public List<>
-    
+
 
 }

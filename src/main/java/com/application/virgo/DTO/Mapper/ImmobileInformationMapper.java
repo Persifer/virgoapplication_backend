@@ -16,10 +16,17 @@ public class ImmobileInformationMapper implements Function<Immobile, GetImmobile
 
         immobileDto.setNomeProprietario(immobile.getProprietario().getNome() != null ? immobile.getProprietario().getNome() : null);
         immobileDto.setNomeProprietario(immobile.getProprietario().getCognome() != null ? immobile.getProprietario().getCognome() : null);
+
         immobileDto.setDescrizione(immobile.getDescrizione() != null ? immobile.getDescrizione() : null);
         immobileDto.setDataUltimoRestauro(immobile.getDataUltimoRestauro() != null ? immobile.getDataUltimoRestauro() : null);
         immobileDto.setDataAcquisizione(immobile.getDataAcquisizione() != null ? immobile.getDataAcquisizione() : null);
         immobileDto.setPrezzo(immobile.getPrezzo() != null ? immobile.getPrezzo() : null);
+
+        immobileDto.setCap(immobile.getCap() != null ? immobile.getCap() : "");
+        immobileDto.setVia(immobile.getVia() != null ? immobile.getVia() : "");
+        immobileDto.setProvincia(immobile.getProvincia() != null ? immobile.getProvincia() : "");
+        immobileDto.setCitta(immobile.getCitta() != null ? immobile.getCitta() : "");
+
 
         return immobileDto;
     }

@@ -115,31 +115,93 @@ public class ImmobileServiceImpl implements ImmobileService {
     @Override
     public Optional<Immobile> updateImmobileInformation(ImmobileDTO tempUpdatedImmobile, Utente authUser, Long idImmobileToUpdate)
             throws ImmobileException, UtenteException {
+        // prelevo i dati dell'immobile di cui vorrei aggiornare i dati per il confronto
         Optional<Immobile> tempToCheckImmobile = immobileRepo.getImmobilesByIdImmobile(idImmobileToUpdate);
+        String error = "";
+        // sel'immobile esiste allora continuo
         if(tempToCheckImmobile.isPresent()){
+            //prendo la classe immobile dentro l'optional
             Immobile toCheckImmobile = tempToCheckImmobile.get();
             // controllo che il proprietario dell'immobile selezionato sia lo stesso di quello loggato che, si presume, sia l'utente
             // proprietario dell'immobile
             if(toCheckImmobile.getProprietario().getIdUtente().equals(authUser.getIdUtente())){
 
+                // controllo quali sono i campi che sono stati cambiati
                 if(!toCheckImmobile.getDataAcquisizione().equals(tempUpdatedImmobile.getDataAcquisizione())){
-                    toCheckImmobile.setDataAcquisizione(tempUpdatedImmobile.getDataAcquisizione());
+                    if(tempUpdatedImmobile.getDataAcquisizione() != null ||
+                            tempUpdatedImmobile.getDataAcquisizione().isAfter(LocalDate.now())){
+                        toCheckImmobile.setDataAcquisizione(tempUpdatedImmobile.getDataAcquisizione());
+                    }else{
+                        error += "La data di acquisizione non esiste oppure è troppo grande!\n";
+                    }
                 }
 
                 if(!toCheckImmobile.getDataUltimoRestauro().equals(tempUpdatedImmobile.getDataUltimoRestauro())){
+                    // è possibile che l'ultimo restuaro sia programmato e non ancora avvenuto oppure non sia presente
                     toCheckImmobile.setDataUltimoRestauro(tempUpdatedImmobile.getDataUltimoRestauro());
                 }
 
                 if(!toCheckImmobile.getDescrizione().equals(tempUpdatedImmobile.getDescrizione())){
-                    toCheckImmobile.setDescrizione(tempUpdatedImmobile.getDescrizione());
+                    // do la possibilità all'utente di togliere la descrizione
+                    if(tempUpdatedImmobile.getDescrizione().isEmpty() || tempUpdatedImmobile.getDescrizione().isBlank()
+                        || tempUpdatedImmobile.getDescrizione() == null)
+                    {
+                        toCheckImmobile.setDescrizione("");
+                    }else{
+                        toCheckImmobile.setDescrizione(tempUpdatedImmobile.getDescrizione());
+                    }
                 }
-
+// ============================================= RESIDENZA =============================================================
                 if(!toCheckImmobile.getPrezzo().equals(tempUpdatedImmobile.getPrezzo())){
-                    toCheckImmobile.setPrezzo(tempUpdatedImmobile.getPrezzo());
+                    if(tempUpdatedImmobile.getPrezzo() != null){
+                        toCheckImmobile.setPrezzo(tempUpdatedImmobile.getPrezzo());
+                    }else{
+                        error += "Il prezzo non può essere vuoto!\n";
+                    }
                 }
 
-                immobileRepo.save(toCheckImmobile);
-                return Optional.of(toCheckImmobile);
+                if(!toCheckImmobile.getCap().equals(tempUpdatedImmobile.getCap())){
+                    if(tempUpdatedImmobile.getPrezzo() != null){
+                        toCheckImmobile.setCap(tempUpdatedImmobile.getCap());
+                    }else{
+                        error += "Il CAP non può essere vuoto!\n";
+                    }
+                }
+
+                if(!toCheckImmobile.getCitta().equals(tempUpdatedImmobile.getCitta())){
+                    if(tempUpdatedImmobile.getPrezzo() != null){
+                        toCheckImmobile.setCitta(tempUpdatedImmobile.getCitta());
+                    }else{
+                        error += "La città non può essere vuota!\n";
+                    }
+                }
+
+                if(!toCheckImmobile.getProvincia().equals(tempUpdatedImmobile.getProvincia())){
+                    if(tempUpdatedImmobile.getPrezzo() != null){
+                        toCheckImmobile.setProvincia(tempUpdatedImmobile.getProvincia());
+                    }else{
+                        error += "La provincia non può essere vuota!\n";
+                    }
+                }
+
+                if(!toCheckImmobile.getVia().equals(tempUpdatedImmobile.getVia())){
+                    if(tempUpdatedImmobile.getPrezzo() != null){
+                        toCheckImmobile.setVia(tempUpdatedImmobile.getVia());
+                    }else{
+                        error += "La via non può essere vuota!\n";
+                    }
+                }
+
+// =====================================================================================================================
+
+                if(error.isBlank() || error.isEmpty()){
+
+                    immobileRepo.save(toCheckImmobile);
+                    return Optional.of(toCheckImmobile);
+                }else{
+                    throw new ImmobileException(error);
+                }
+
             }else{
                 throw new UtenteException("Non sei autorizzato a modificare i dati di questo immobile!");
             }

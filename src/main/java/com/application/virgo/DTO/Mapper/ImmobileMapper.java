@@ -21,11 +21,15 @@ public class ImmobileMapper implements Function<Immobile, ImmobileDTO> {
 
         ImmobileDTO immobileDto = new ImmobileDTO();
 
-//        immobileDto.setIdProprietario(immobile.getProprietario().getIdUtente() != null ? immobile.getProprietario().getIdUtente() : null);
         immobileDto.setDescrizione(immobile.getDescrizione() != null ? immobile.getDescrizione() : null);
         immobileDto.setDataUltimoRestauro(immobile.getDataUltimoRestauro() != null ? immobile.getDataUltimoRestauro() : null);
         immobileDto.setDataAcquisizione(immobile.getDataAcquisizione() != null ? immobile.getDataAcquisizione() : null);
         immobileDto.setPrezzo(immobile.getPrezzo() != null ? immobile.getPrezzo() : null);
+
+        immobileDto.setCap(immobile.getCap() != null ? immobile.getCap() : "");
+        immobileDto.setVia(immobile.getVia() != null ? immobile.getVia() : "");
+        immobileDto.setProvincia(immobile.getProvincia() != null ? immobile.getProvincia() : "");
+        immobileDto.setCitta(immobile.getCitta() != null ? immobile.getCitta() : "");
 
         return immobileDto;
     }
@@ -38,6 +42,11 @@ public class ImmobileMapper implements Function<Immobile, ImmobileDTO> {
         newImmobile.setDataUltimoRestauro(immobile.getDataUltimoRestauro() != null ? immobile.getDataUltimoRestauro() : null);
         newImmobile.setDataAcquisizione(immobile.getDataAcquisizione() != null ? immobile.getDataAcquisizione() : null);
         newImmobile.setPrezzo(immobile.getPrezzo() != null ? immobile.getPrezzo() : null);
+
+        newImmobile.setCap(immobile.getCap() != null ? immobile.getCap() : "");
+        newImmobile.setVia(immobile.getVia() != null ? immobile.getVia() : "");
+        newImmobile.setProvincia(immobile.getProvincia() != null ? immobile.getProvincia() : "");
+        newImmobile.setCitta(immobile.getCitta() != null ? immobile.getCitta() : "");
 
         return newImmobile;
     }

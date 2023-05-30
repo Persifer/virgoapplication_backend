@@ -1,6 +1,10 @@
 package com.application.virgo.DTO.inputDTO;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -10,6 +14,9 @@ import java.time.LocalDate;
 * Al suo interno troviamo, oltre ai dati di un immobile, un campo che memorizza l'id dell'utente
 * proprietario del immobile
 * */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ImmobileDTO {
 
     private LocalDate dataUltimoRestauro;
@@ -21,55 +28,18 @@ public class ImmobileDTO {
     @NotNull
     private Float prezzo;
 
-    public ImmobileDTO() {
-    }
+// ======== RESIDENZA =========
+    @NotNull
+    private String via;
+    @NotNull
+    @Pattern(regexp = "[0-9]{6}")
+    private String cap;
+    @NotNull
+    private String citta;
+    @NotNull
+    @Pattern(regexp = "[A-Z]{2}")
+    private String provincia;
+// ============================
 
-    public ImmobileDTO(LocalDate dataUltimoRestauro, LocalDate dataAcquisizione,
-                       String descrizione, Float prezzo) {
-        this.dataUltimoRestauro = dataUltimoRestauro;
-        this.dataAcquisizione = dataAcquisizione;
-        this.dataCreazioneImmobile = null;
-        this.descrizione = descrizione;
-        this.prezzo = prezzo;
-    }
 
-    public String getDescrizione() {
-        return descrizione;
-    }
-
-    public void setDescrizione(String descrizione) {
-        this.descrizione = descrizione;
-    }
-
-    public LocalDate getDataUltimoRestauro() {
-        return dataUltimoRestauro;
-    }
-
-    public void setDataUltimoRestauro(LocalDate dataUltimoRestauro) {
-        this.dataUltimoRestauro = dataUltimoRestauro;
-    }
-
-    public LocalDate getDataAcquisizione() {
-        return dataAcquisizione;
-    }
-
-    public void setDataAcquisizione(LocalDate dataAcquisizione) {
-        this.dataAcquisizione = dataAcquisizione;
-    }
-
-    public LocalDate getDataCreazioneImmobile() {
-        return dataCreazioneImmobile;
-    }
-
-    public void setDataCreazioneImmobile(LocalDate dataCreazioneImmobile) {
-        this.dataCreazioneImmobile = dataCreazioneImmobile;
-    }
-
-    public Float getPrezzo() {
-        return prezzo;
-    }
-
-    public void setPrezzo(Float prezzo) {
-        this.prezzo = prezzo;
-    }
 }

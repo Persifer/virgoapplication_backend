@@ -2,12 +2,14 @@ package com.application.virgo.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
 public class Immobile {
 
     @Id
@@ -20,6 +22,13 @@ public class Immobile {
     private String descrizione;
 
     private Float prezzo;
+
+// ======== RESIDENZA =========
+    private String via;
+    private String cap;
+    private String citta;
+    private String provincia;
+// ============================
 
     @Column(columnDefinition = "boolean default false")
     private Boolean isEnabled;
@@ -35,15 +44,17 @@ public class Immobile {
     @OneToOne(mappedBy = "immobileInteressato")
     private Contratto contratto;
 
-    public Immobile() {
-    }
-
-    public Immobile(LocalDate dataUltimoRestauro, LocalDate dataAcquisizione, LocalDate dataCreazioneImmobile, String descrizione, Float prezzo) {
+    public Immobile(LocalDate dataUltimoRestauro, LocalDate dataAcquisizione, LocalDate dataCreazioneImmobile,
+                    String descrizione, Float prezzo, String via, String cap, String citta, String provincia) {
         this.dataUltimoRestauro = dataUltimoRestauro;
         this.dataAcquisizione = dataAcquisizione;
         this.dataCreazioneImmobile = dataCreazioneImmobile;
         this.descrizione = descrizione;
         this.prezzo = prezzo;
+        this.via = via;
+        this.cap = cap;
+        this.citta = citta;
+        this.provincia = provincia;
     }
 
     public Long getIdImmobile() {
@@ -124,5 +135,37 @@ public class Immobile {
 
     public void setEnabled(Boolean enabled) {
         isEnabled = enabled;
+    }
+
+    public String getVia() {
+        return via;
+    }
+
+    public void setVia(String via) {
+        this.via = via;
+    }
+
+    public String getCap() {
+        return cap;
+    }
+
+    public void setCap(String cap) {
+        this.cap = cap;
+    }
+
+    public String getCitta() {
+        return citta;
+    }
+
+    public void setCitta(String citta) {
+        this.citta = citta;
+    }
+
+    public String getProvincia() {
+        return provincia;
+    }
+
+    public void setProvincia(String provincia) {
+        this.provincia = provincia;
     }
 }

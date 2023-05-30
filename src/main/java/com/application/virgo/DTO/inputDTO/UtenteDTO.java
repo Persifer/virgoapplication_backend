@@ -24,7 +24,7 @@ public class UtenteDTO {
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d#@$!%*?&]{6,16}$")
     private String password;
 
-    // ======== RESIDENZA =========
+// ======== RESIDENZA =========
     @NotNull
     private String via;
     @NotNull
