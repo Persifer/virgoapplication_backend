@@ -2,7 +2,6 @@ package com.application.virgo.controller;
 
 import com.application.virgo.DTO.inputDTO.DomandaDTO;
 import com.application.virgo.DTO.inputDTO.ImmobileDTO;
-import com.application.virgo.DTO.outputDTO.DomandaImmobileDTO;
 import com.application.virgo.DTO.outputDTO.GetImmobileInfoDTO;
 import com.application.virgo.DTO.outputDTO.GetUtenteImmobiliDTO;
 import com.application.virgo.exception.ImmobileException;
@@ -18,11 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URL;
 import java.util.List;
 import java.util.Optional;
-
-import static com.application.virgo.utilities.Constants.CONTROLLER_OUTPUT;
 
 @Controller
 @RequestMapping(path="/site/immobile")
@@ -45,18 +41,18 @@ public class ImmobileController {
             if(authenticatedUser != null){
                 Optional<ImmobileDTO> newImmobile = immobileService.createNewImmobile(tempNewImmobile, authenticatedUser.getUtenteInformation());
                 if(newImmobile.isPresent()){
-                    return new ResponseEntity<String>("Immobile registrato correttamente", HttpStatus.OK);
+                    return new ResponseEntity<>("Immobile registrato correttamente", HttpStatus.OK);
                 }else{
-                    return new ResponseEntity<String>("Errore nella registrazione di un nuovo immobile", HttpStatus.BAD_REQUEST);
+                    return new ResponseEntity<>("Errore nella registrazione di un nuovo immobile", HttpStatus.BAD_REQUEST);
                 }
             }else{
-                return new ResponseEntity<String>("Effettuare il login per creare un nuovo immboile", HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>("Effettuare il login per creare un nuovo immboile", HttpStatus.UNAUTHORIZED);
             }
 
         }catch (ImmobileException | UtenteException error){
-            return new ResponseEntity<String>(error.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(error.getMessage(), HttpStatus.BAD_REQUEST);
         }catch (Exception error){
-            return new ResponseEntity<String>(error.getMessage(), HttpStatus.METHOD_NOT_ALLOWED);
+            return new ResponseEntity<>(error.getMessage(), HttpStatus.METHOD_NOT_ALLOWED);
         }
     }
 
@@ -97,19 +93,19 @@ public class ImmobileController {
                 // se l'utente è autenticato allora posso vedere i dati del singolo immobile
                 Optional<ImmobileDTO> storedImmobile = immobileService.getImmobileByIdToUpdate(idImmobile, authenticatedUser.getUtenteInformation());
                 if(storedImmobile.isPresent()){
-                    return new ResponseEntity<ImmobileDTO>(storedImmobile.get(), HttpStatus.OK);
+                    return new ResponseEntity<>(storedImmobile.get(), HttpStatus.OK);
                 }else{
-                    return new ResponseEntity<ImmobileDTO>((ImmobileDTO) null, HttpStatus.BAD_REQUEST);
+                    return new ResponseEntity<>((ImmobileDTO) null, HttpStatus.BAD_REQUEST);
                 }
             }else{
-                return new ResponseEntity<ImmobileDTO>((ImmobileDTO) null, HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>((ImmobileDTO) null, HttpStatus.UNAUTHORIZED);
             }
 
 
         }catch (ImmobileException error){
-            return new ResponseEntity<ImmobileDTO>((ImmobileDTO) null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>((ImmobileDTO) null, HttpStatus.BAD_REQUEST);
         }catch (Exception error){
-            return new ResponseEntity<ImmobileDTO>((ImmobileDTO) null, HttpStatus.METHOD_NOT_ALLOWED);
+            return new ResponseEntity<>((ImmobileDTO) null, HttpStatus.METHOD_NOT_ALLOWED);
         }
     }
 
@@ -148,18 +144,18 @@ public class ImmobileController {
             if(securedUser != null){
                 List<GetImmobileInfoDTO> foundedImmobili = immobileService.getAllImmobiliPaginated(offset, pageSize);
                 if(!foundedImmobili.isEmpty()){
-                    return new ResponseEntity<List<GetImmobileInfoDTO>>(foundedImmobili, HttpStatus.BAD_REQUEST);
+                    return new ResponseEntity<>(foundedImmobili, HttpStatus.BAD_REQUEST);
                 }else{
-                    return new ResponseEntity<List<GetImmobileInfoDTO>>(List.of(), HttpStatus.BAD_REQUEST);
+                    return new ResponseEntity<>(List.of(), HttpStatus.BAD_REQUEST);
                 }
             }else{
-                return new ResponseEntity<List<GetImmobileInfoDTO>>(List.of(), HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>(List.of(), HttpStatus.UNAUTHORIZED);
             }
 
         }catch (ImmobileException error){
-            return new ResponseEntity<List<GetImmobileInfoDTO>>(List.of(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(List.of(), HttpStatus.BAD_REQUEST);
         }catch (Exception error){
-            return new ResponseEntity<List<GetImmobileInfoDTO>>(List.of(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(List.of(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -174,20 +170,20 @@ public class ImmobileController {
                 Optional<Immobile> newImmobile = immobileService.updateImmobileInformation(tempUpdatedimmobileDTO,
                                                                         authenticatedUser.getUtenteInformation(), idImmobile);
                 if(newImmobile.isPresent()){
-                    return new ResponseEntity<String>("Immobile registrato correttamente", HttpStatus.OK);
+                    return new ResponseEntity<>("Immobile registrato correttamente", HttpStatus.OK);
                 }else{
-                    return new ResponseEntity<String>("Errore nella registrazione di un nuovo immobile", HttpStatus.BAD_REQUEST);
+                    return new ResponseEntity<>("Errore nella registrazione di un nuovo immobile", HttpStatus.BAD_REQUEST);
                 }
             }else{
-                return new ResponseEntity<String>("Effettuare il login per creare un nuovo immboile", HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>("Effettuare il login per creare un nuovo immboile", HttpStatus.UNAUTHORIZED);
             }
 
         }catch (UtenteException error){
-            return new ResponseEntity<String>(error.getMessage(), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(error.getMessage(), HttpStatus.UNAUTHORIZED);
         }        catch (ImmobileException error){
-            return new ResponseEntity<String>(error.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(error.getMessage(), HttpStatus.BAD_REQUEST);
         }catch (Exception error){
-            return new ResponseEntity<String>(error.getMessage(), HttpStatus.METHOD_NOT_ALLOWED);
+            return new ResponseEntity<>(error.getMessage(), HttpStatus.METHOD_NOT_ALLOWED);
         }
 
     }
