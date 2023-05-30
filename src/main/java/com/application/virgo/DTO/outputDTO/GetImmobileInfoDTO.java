@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -14,6 +15,8 @@ public class GetImmobileInfoDTO {
 
     private String nomeProprietario;
     private String cognomeProprietario;
+
+    private String email;
 
     private LocalDate dataUltimoRestauro;
     private LocalDate dataAcquisizione;
@@ -28,5 +31,7 @@ public class GetImmobileInfoDTO {
     private String citta;
     private String provincia;
 // ============================
+
+    private List<DomandaImmobileDTO> listaDomandeImmobile;
 
 }

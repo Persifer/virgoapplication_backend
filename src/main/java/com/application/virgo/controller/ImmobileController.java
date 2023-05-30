@@ -2,6 +2,7 @@ package com.application.virgo.controller;
 
 import com.application.virgo.DTO.inputDTO.DomandaDTO;
 import com.application.virgo.DTO.inputDTO.ImmobileDTO;
+import com.application.virgo.DTO.outputDTO.DomandaImmobileDTO;
 import com.application.virgo.DTO.outputDTO.GetImmobileInfoDTO;
 import com.application.virgo.DTO.outputDTO.GetUtenteImmobiliDTO;
 import com.application.virgo.exception.ImmobileException;
@@ -69,19 +70,19 @@ public class ImmobileController {
                 // se l'utente è autenticato allora posso vedere i dati del singolo immobile
                 Optional<GetImmobileInfoDTO> storedImmobile = immobileService.getImmobileById(idImmobile);
                 if(storedImmobile.isPresent()){
-                    return new ResponseEntity<GetImmobileInfoDTO>(storedImmobile.get(), HttpStatus.OK);
+                    return new ResponseEntity<>(storedImmobile.get(), HttpStatus.OK);
                 }else{
-                    return new ResponseEntity<GetImmobileInfoDTO>((GetImmobileInfoDTO) null, HttpStatus.BAD_REQUEST);
+                    return new ResponseEntity<>((GetImmobileInfoDTO) null, HttpStatus.BAD_REQUEST);
                 }
             }else{
-                return new ResponseEntity<GetImmobileInfoDTO>((GetImmobileInfoDTO) null, HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>((GetImmobileInfoDTO) null, HttpStatus.UNAUTHORIZED);
             }
 
 
         }catch (ImmobileException error){
-            return new ResponseEntity<GetImmobileInfoDTO>((GetImmobileInfoDTO) null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>((GetImmobileInfoDTO) null, HttpStatus.BAD_REQUEST);
         }catch (Exception error){
-            return new ResponseEntity<GetImmobileInfoDTO>((GetImmobileInfoDTO) null, HttpStatus.METHOD_NOT_ALLOWED);
+            return new ResponseEntity<>((GetImmobileInfoDTO) null, HttpStatus.METHOD_NOT_ALLOWED);
         }
     }
 

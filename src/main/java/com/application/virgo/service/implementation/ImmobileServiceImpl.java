@@ -1,5 +1,6 @@
 package com.application.virgo.service.implementation;
 
+import com.application.virgo.DTO.Mapper.DomandaImmobileMapper;
 import com.application.virgo.DTO.Mapper.ImmobileInformationMapper;
 import com.application.virgo.DTO.Mapper.ImmobileMapper;
 import com.application.virgo.DTO.Mapper.ImmobiliDataUtente;
@@ -42,6 +43,7 @@ public class ImmobileServiceImpl implements ImmobileService {
     private final UtenteService utenteService;
     private final ImmobileInformationMapper mapperInformation;
     private final ImmobiliDataUtente mapperUtenteInformation;
+    private final DomandaImmobileMapper mapperDomande;
 
 
     @Override
@@ -86,8 +88,13 @@ public class ImmobileServiceImpl implements ImmobileService {
         Optional<Immobile> tempImmobile = immobileRepo.getImmobilesByIdImmobile(idImmobile);
         if(tempImmobile.isPresent()){
             Immobile requestedImmobile = tempImmobile.get();
-            return Optional.of(mapperInformation.apply(requestedImmobile));
+            GetImmobileInfoDTO immobileDTO = mapperInformation.apply(requestedImmobile);
 
+            immobileDTO.setListaDomandeImmobile(requestedImmobile.getDomandeImmobile()
+                                                                    .stream()
+                                                                    .map(mapperDomande)
+                                                                    .collect(Collectors.toList()));
+            return Optional.of(immobileDTO);
         }else{
             throw new ImmobileException("L'immobile cercato non esiste!");
         }

@@ -20,6 +20,9 @@ public class Domanda {
     private String contenuto;
     private LocalDate dataPubblicazione;
 
+    @Column(columnDefinition = "boolean default false")
+    private Boolean isEnabled;
+
     @ManyToOne
     @JoinColumn(name="idUtente")
     private Utente proprietarioCommento;

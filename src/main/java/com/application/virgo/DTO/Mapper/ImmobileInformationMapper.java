@@ -14,8 +14,9 @@ public class ImmobileInformationMapper implements Function<Immobile, GetImmobile
 
         GetImmobileInfoDTO immobileDto = new GetImmobileInfoDTO();
 
-        immobileDto.setNomeProprietario(immobile.getProprietario().getNome() != null ? immobile.getProprietario().getNome() : null);
-        immobileDto.setNomeProprietario(immobile.getProprietario().getCognome() != null ? immobile.getProprietario().getCognome() : null);
+        immobileDto.setNomeProprietario(immobile.getProprietario().getNome() != null ? immobile.getProprietario().getNome() : "");
+        immobileDto.setNomeProprietario(immobile.getProprietario().getCognome() != null ? immobile.getProprietario().getCognome() : "");
+        immobileDto.setEmail(immobile.getProprietario().getEmail() != null ? immobile.getProprietario().getEmail() : "");
 
         immobileDto.setDescrizione(immobile.getDescrizione() != null ? immobile.getDescrizione() : null);
         immobileDto.setDataUltimoRestauro(immobile.getDataUltimoRestauro() != null ? immobile.getDataUltimoRestauro() : null);
