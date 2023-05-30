@@ -2,6 +2,7 @@ package com.application.virgo.service.interfaces;
 
 import com.application.virgo.DTO.inputDTO.ImmobileDTO;
 import com.application.virgo.DTO.outputDTO.GetImmobileInfoDTO;
+import com.application.virgo.DTO.outputDTO.GetUtenteImmobiliDTO;
 import com.application.virgo.exception.ImmobileException;
 import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.Immobile;
@@ -35,9 +36,10 @@ public interface ImmobileService {
 
 // =====================================================================================================================
 
-// ======================================== HOME PAGE ==================================================================
+// =============================================== USE UTENTE ==========================================================
 
-//    public List<>
+    public List<GetUtenteImmobiliDTO> getUtenteListaImmobili(Long inidiceIniziale, Long pageSize, Utente proprietario)
+            throws ImmobileException, UtenteException;
 
 
 }

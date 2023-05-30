@@ -2,8 +2,10 @@ package com.application.virgo.service.implementation;
 
 import com.application.virgo.DTO.Mapper.ImmobileInformationMapper;
 import com.application.virgo.DTO.Mapper.ImmobileMapper;
+import com.application.virgo.DTO.Mapper.ImmobiliDataUtente;
 import com.application.virgo.DTO.inputDTO.ImmobileDTO;
 import com.application.virgo.DTO.outputDTO.GetImmobileInfoDTO;
+import com.application.virgo.DTO.outputDTO.GetUtenteImmobiliDTO;
 import com.application.virgo.exception.ImmobileException;
 import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.Immobile;
@@ -11,6 +13,7 @@ import com.application.virgo.model.Utente;
 import com.application.virgo.repositories.ImmobileJpaRepository;
 import com.application.virgo.service.interfaces.ImmobileService;
 import com.application.virgo.service.interfaces.UtenteService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,13 +21,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class ImmobileServiceImpl implements ImmobileService {
 
     //TODO -> Implementa pagination all'interno di get all immobili
@@ -34,15 +37,8 @@ public class ImmobileServiceImpl implements ImmobileService {
     private final ImmobileMapper mapperImmobile;
     private final UtenteService utenteService;
     private final ImmobileInformationMapper mapperInformation;
+    private final ImmobiliDataUtente mapperUtenteInformation;
 
-    @Autowired
-    public ImmobileServiceImpl(ImmobileJpaRepository immobileRepo, ImmobileMapper mapperImmobile,
-                               UtenteService utenteService, ImmobileInformationMapper mapperInformation){
-        this.immobileRepo = immobileRepo;
-        this.mapperImmobile = mapperImmobile;
-        this.utenteService = utenteService;
-        this.mapperInformation = mapperInformation;
-    }
 
     @Override
     public Optional<ImmobileDTO> createNewImmobile(ImmobileDTO tempNewImmobile, Utente utenteProprietario)
@@ -112,6 +108,10 @@ public class ImmobileServiceImpl implements ImmobileService {
         }
     }
 
+    // classe che permette l'attuazione delle modifiche dei dati di un singolo immobile dato:
+    //   -> DTO con i nuovi dati
+    //   -> proprietario dell'immobile
+    //   -> immobile da modificare
     @Override
     public Optional<Immobile> updateImmobileInformation(ImmobileDTO tempUpdatedImmobile, Utente authUser, Long idImmobileToUpdate)
             throws ImmobileException, UtenteException {
@@ -235,5 +235,28 @@ public class ImmobileServiceImpl implements ImmobileService {
     @Override
     public List<GetImmobileInfoDTO> getImmobiliByKeyword(String keyword) {
         return null;
+    }
+
+    @Override
+    public List<GetUtenteImmobiliDTO> getUtenteListaImmobili(Long inidiceIniziale, Long pageSize, Utente authUser)
+            throws ImmobileException, UtenteException {
+        if(authUser != null){
+            if(inidiceIniziale > immobileRepo.countByIdImmobile() - pageSize){
+                if(pageSize > 20){
+                    Page<Immobile> listImmobili = immobileRepo.getUtenteImmobiliList(authUser.getIdUtente(),
+                            PageRequest.of(inidiceIniziale.intValue(), pageSize.intValue()));
+                    // converte con la stream una page di immobili in una lista di getImmobileInfoDTO
+                    return listImmobili.stream().map(mapperUtenteInformation).collect(Collectors.toList());
+
+                }else {
+                    throw new ImmobileException("Attenzione il numero dell'elemento da cui partire è troppo alto");
+                }
+            }else{
+                throw new ImmobileException("Attenzione il numero dell'elemento da cui partire è troppo alto");
+            }
+        }else{
+            throw new UtenteException("Bisogna essere loggati per poter prendere le informazioni");
+        }
+
     }
 }
