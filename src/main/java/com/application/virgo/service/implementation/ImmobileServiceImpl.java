@@ -3,11 +3,13 @@ package com.application.virgo.service.implementation;
 import com.application.virgo.DTO.Mapper.ImmobileInformationMapper;
 import com.application.virgo.DTO.Mapper.ImmobileMapper;
 import com.application.virgo.DTO.Mapper.ImmobiliDataUtente;
+import com.application.virgo.DTO.inputDTO.DomandaDTO;
 import com.application.virgo.DTO.inputDTO.ImmobileDTO;
 import com.application.virgo.DTO.outputDTO.GetImmobileInfoDTO;
 import com.application.virgo.DTO.outputDTO.GetUtenteImmobiliDTO;
 import com.application.virgo.exception.ImmobileException;
 import com.application.virgo.exception.UtenteException;
+import com.application.virgo.model.Domanda;
 import com.application.virgo.model.Immobile;
 import com.application.virgo.model.Utente;
 import com.application.virgo.repositories.ImmobileJpaRepository;
@@ -15,6 +17,7 @@ import com.application.virgo.service.interfaces.ImmobileService;
 import com.application.virgo.service.interfaces.UtenteService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -57,6 +61,10 @@ public class ImmobileServiceImpl implements ImmobileService {
                     // Conversione da ImmobileDTO a Immobile
                     Immobile newImmobile = mapperImmobile.apply(tempNewImmobile);
                     newImmobile.setProprietario(utenteProprietario);
+                    // ====== SETTING LISTE
+                    newImmobile.setDomandeImmobile(Set.of());
+                    // ===================
+
                     // Salvataggio dell'immobile
                     immobileRepo.save(newImmobile);
                     return Optional.of(tempNewImmobile);
@@ -255,7 +263,36 @@ public class ImmobileServiceImpl implements ImmobileService {
                 throw new ImmobileException("Attenzione il numero dell'elemento da cui partire è troppo alto");
             }
         }else{
-            throw new UtenteException("Bisogna essere loggati per poter prendere le informazioni");
+            throw new UtenteException("Bisogna essere loggati per poter ottenere le informazioni");
+        }
+
+    }
+
+    @Override
+    public Optional<Immobile> addNewDomandaToImmobile(DomandaDTO tempDomanda, Utente authUser, Long idImmobileInteressato)
+            throws ImmobileException, UtenteException {
+
+        // controllo che ci sia effettivamente un utente loggato
+        if(authUser != null){
+            // prelevo l'immobile dal database
+            Optional<Immobile> tempImmobileInteressato = immobileRepo.getImmobilesByIdImmobile(idImmobileInteressato);
+
+            if(tempImmobileInteressato.isPresent()){
+                Immobile immobileInteressato = tempImmobileInteressato.get();
+
+                // creo la nuova domanda e l'aggiungo all'immobile
+                Domanda newDomanda = new Domanda(tempDomanda.getContenuto(), LocalDate.now());
+                immobileInteressato.getDomandeImmobile().add(newDomanda);
+
+                // aggiungo la domanda all'utente
+                utenteService.addDomandaToUtente(authUser, newDomanda);
+
+                return Optional.of(immobileRepo.save(immobileInteressato));
+            }else{
+                throw new ImmobileException("Attenzione l'immobile selezionato non esiste");
+            }
+        }else{
+            throw new UtenteException("Bisogna essere loggati per poter pubblicare una domanda");
         }
 
     }

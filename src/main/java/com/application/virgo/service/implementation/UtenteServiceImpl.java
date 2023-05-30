@@ -5,6 +5,7 @@ import com.application.virgo.DTO.inputDTO.LoginUtenteDTO;
 import com.application.virgo.DTO.Mapper.UtenteMapper;
 import com.application.virgo.DTO.inputDTO.UtenteDTO;
 import com.application.virgo.exception.UtenteException;
+import com.application.virgo.model.Domanda;
 import com.application.virgo.model.Ruolo;
 import com.application.virgo.model.Utente;
 import com.application.virgo.repositories.RuoloJpaRepository;
@@ -87,35 +88,11 @@ public class UtenteServiceImpl implements UtenteService {
         return Optional.empty();
     }
 
-    // permette di registrare un nuovo utente all'interno del database
-    @Override
-    public Optional<Utente> registrationHandler(Utente newUtente) throws UtenteException {
-        System.out.println("Dentro registration handler");
-        // Controllo che la data di nascita inserita correttamente
-        if(newUtente.getDataNascita().isBefore(LocalDate.now())){
-            // codifico la password tramtie l'encoder
-            newUtente.setPassword(passwordEncoder.encode(newUtente.getPassword()));
-            // seleziono il ruolo
-            Optional<Ruolo> tempRuolo = ruoloRepo.getRuoloByRuolo(USER_ROLE);
-            // controllo se il ruolo è presente
-            if(tempRuolo.isPresent()){
-                //  setto il ruolo dell'utente
-                newUtente.setUserRole(Set.of(tempRuolo.get()));
-                Utente savedUtente = utenteRepo.save(newUtente);
-                return Optional.of(savedUtente);
-            }else{
-                throw new UtenteException("Ruolo non trovato");
-            }
 
-        }else{
-            throw new UtenteException("La data di nascita deve essere minore di quella inserita!");
-        }
-
-    }
-
+    // Permette di registrare un nuovo utente
     public Optional<Utente> tryRegistrationHandler(UtenteDTO tempNewUtente) throws UtenteException {
         Utente newUtente = mapperUtente.apply(tempNewUtente);
-        System.out.println("Dentro registration handler");
+
         // Controllo che la data di nascita inserita correttamente
         if(newUtente.getDataNascita().isBefore(LocalDate.now())){
             // codifico la password tramtie l'encoder
@@ -126,8 +103,9 @@ public class UtenteServiceImpl implements UtenteService {
             if(tempRuolo.isPresent()){
                 //  setto il ruolo dell'utente
                 newUtente.setUserRole(Set.of(tempRuolo.get()));
-                Utente savedUtente = utenteRepo.save(newUtente);
-                return Optional.of(savedUtente);
+                newUtente.setDomandeUtente(Set.of());
+
+                return Optional.of(utenteRepo.save(newUtente));
             }else{
                 throw new UtenteException("Ruolo non trovato");
             }
@@ -138,14 +116,15 @@ public class UtenteServiceImpl implements UtenteService {
 
     }
 
-//    // permette ad un utente registrato di eseguire il login
-//    @Override
-//    public Optional<Utente> loginHandler(LoginUtenteDTO tempUtente) throws UtenteException{
-//        return utenteRepo.getUtenteByEmailAndPassword(tempUtente.getEmail(), tempUtente.getPassword());
-//    }
-//
-//    @Override
-//    public boolean login(String email, String password) throws UtenteException {
-//        return false;
-//    }
+    @Override
+    public void addDomandaToUtente(Utente authUser, Domanda domandaToAdd) throws UtenteException {
+        if(authUser != null){
+            // aggiungo la domanda all'utente
+            authUser.getDomandeUtente().add(domandaToAdd);
+            utenteRepo.save(authUser);
+        }else{
+            throw new UtenteException("Bisogna essere loggati per poter pubblicare una domanda");
+        }
+    }
+
 }

@@ -1,10 +1,12 @@
 package com.application.virgo.service.interfaces;
 
+import com.application.virgo.DTO.inputDTO.DomandaDTO;
 import com.application.virgo.DTO.inputDTO.ImmobileDTO;
 import com.application.virgo.DTO.outputDTO.GetImmobileInfoDTO;
 import com.application.virgo.DTO.outputDTO.GetUtenteImmobiliDTO;
 import com.application.virgo.exception.ImmobileException;
 import com.application.virgo.exception.UtenteException;
+import com.application.virgo.model.Domanda;
 import com.application.virgo.model.Immobile;
 import com.application.virgo.model.Utente;
 import org.springframework.data.domain.Page;
@@ -36,10 +38,12 @@ public interface ImmobileService {
 
 // =====================================================================================================================
 
-// =============================================== USE UTENTE ==========================================================
+// =============================================== FOR UTENTE ==========================================================
 
     public List<GetUtenteImmobiliDTO> getUtenteListaImmobili(Long inidiceIniziale, Long pageSize, Utente proprietario)
             throws ImmobileException, UtenteException;
 
+    public Optional<Immobile> addNewDomandaToImmobile(DomandaDTO tempDomanda, Utente authUser, Long idImmobileInteressato)
+            throws ImmobileException, UtenteException;
 
 }

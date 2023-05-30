@@ -1,5 +1,6 @@
 package com.application.virgo.controller;
 
+import com.application.virgo.DTO.inputDTO.DomandaDTO;
 import com.application.virgo.DTO.inputDTO.ImmobileDTO;
 import com.application.virgo.DTO.outputDTO.GetImmobileInfoDTO;
 import com.application.virgo.DTO.outputDTO.GetUtenteImmobiliDTO;
@@ -23,12 +24,12 @@ import java.util.Optional;
 import static com.application.virgo.utilities.Constants.CONTROLLER_OUTPUT;
 
 @Controller
-@RequestMapping(path="/site")
+@RequestMapping(path="/site/immobile")
 @Validated
 public class ImmobileController {
 
     private final ImmobileService immobileService;
-    private static final String URL_SUFFIX = "/immobile/";
+    //private static final String URL_SUFFIX = "/immobile/";
 
     public ImmobileController(ImmobileService immobileService) {
         this.immobileService = immobileService;
@@ -36,7 +37,7 @@ public class ImmobileController {
 
     // Mapper per la creazione di un nuovo immobile associato ad singolo utente proprietario
                 // /immobile/addnew
-    @PostMapping(URL_SUFFIX + "/addnew")
+    @PostMapping("/addnew")
     public ResponseEntity<String> createNewImmobile(@ModelAttribute ImmobileDTO tempNewImmobile,
                                                     @AuthenticationPrincipal SecuredUser authenticatedUser){
         try{
@@ -60,7 +61,7 @@ public class ImmobileController {
 
     // Mapper che permette di reperire i dati di un singolo immobile associato ad un utente tramite l'uso di GetImmobileInfoDTO
     // viene usato quando, dalla homepage, viene selezionato un immobile
-    @GetMapping(URL_SUFFIX+"/viewImmobile/{id_immobile}")
+    @GetMapping("/viewImmobile/{id_immobile}")
     public ResponseEntity<GetImmobileInfoDTO> getImmobileInformation(@PathVariable("id_immobile") Long idImmobile,
                                                                      @AuthenticationPrincipal SecuredUser authenticatedUser){
         try{
@@ -87,7 +88,7 @@ public class ImmobileController {
     // Permette di ottenere i dati da modificare dell'immobile, serve per creare la pagina di modifica dei dati
     // PER PEPPE, DEVI FARE MODO CHE QUANDO L'UTENE CERCHI LA PAGINA DI MODIFICA PRIMA FA QUESTA RICHIESTA, METTE NEI CAMPI I VALORI GIA'
     // PRESENTI NEL DB NELLA PAGINA HTML E POI PUO' MODIFICARLO. SE HAI DUBBI CHIEDI
-    @GetMapping(URL_SUFFIX+"/infoToModify/{id_immobile}")
+    @GetMapping("/infoToModify/{id_immobile}")
     public ResponseEntity<ImmobileDTO> getImmobileInformationForUpdate(@PathVariable("id_immobile") Long idImmobile,
                                                                      @AuthenticationPrincipal SecuredUser authenticatedUser){
         try{
@@ -112,9 +113,9 @@ public class ImmobileController {
     }
 
     // Permette di far visualizzare all'utente la lista di tutti gli immobili da lui caricati
-    @GetMapping(URL_SUFFIX + "/getImmobiliUtente/{offset}/{pageSize}")
-    public ResponseEntity<List<GetUtenteImmobiliDTO>> getListaImmobiliUtente(@PathVariable Long offset,
-                                                                             @PathVariable @Max(20) Long pageSize,
+    @GetMapping("/getImmobiliUtente/{offset}/{pageSize}")
+    public ResponseEntity<List<GetUtenteImmobiliDTO>> getListaImmobiliUtente(@PathVariable("offset") Long offset,
+                                                                             @PathVariable("pageSize") @Max(20) Long pageSize,
                                                                              @AuthenticationPrincipal SecuredUser authUser){
         try{
             if(authUser != null){
@@ -139,8 +140,8 @@ public class ImmobileController {
     // Offset -> indice da cui iniziare a prendere
     // PageSize -> quanti elementi prendere
     @GetMapping("/list/{offset}/{pageSize}")
-    public ResponseEntity<List<GetImmobileInfoDTO>> getListImmobili(@PathVariable Long offset,
-                                                                    @PathVariable @Max(20) Long pageSize,
+    public ResponseEntity<List<GetImmobileInfoDTO>> getListImmobili(@PathVariable("offset") Long offset,
+                                                                    @PathVariable("pageSize") @Max(20) Long pageSize,
                                                                     @AuthenticationPrincipal SecuredUser securedUser ){
         try{
             if(securedUser != null){
@@ -165,7 +166,7 @@ public class ImmobileController {
     // informazioni modificate di un immobile
     @PutMapping("/updateInfo/{id_immobile}")
     public ResponseEntity<String> modifyImmobileInfo(@ModelAttribute ImmobileDTO tempUpdatedimmobileDTO,
-                                                     @PathVariable Long idImmobile,
+                                                     @PathVariable("id_immobile") Long idImmobile,
                                                      @AuthenticationPrincipal SecuredUser authenticatedUser){
         try{
             if(authenticatedUser != null){
@@ -178,6 +179,34 @@ public class ImmobileController {
                 }
             }else{
                 return new ResponseEntity<String>("Effettuare il login per creare un nuovo immboile", HttpStatus.UNAUTHORIZED);
+            }
+
+        }catch (UtenteException error){
+            return new ResponseEntity<String>(error.getMessage(), HttpStatus.UNAUTHORIZED);
+        }        catch (ImmobileException error){
+            return new ResponseEntity<String>(error.getMessage(), HttpStatus.BAD_REQUEST);
+        }catch (Exception error){
+            return new ResponseEntity<String>(error.getMessage(), HttpStatus.METHOD_NOT_ALLOWED);
+        }
+
+    }
+
+    @PostMapping("/addQuestion/{id_immobile}")
+    public ResponseEntity<String> addDomandaToImmobile(@ModelAttribute DomandaDTO tempNewDomandaDTO,
+                                                        @PathVariable("id_immobile") Long idImmobile,
+                                                         @AuthenticationPrincipal SecuredUser authenticatedUser){
+
+        try{
+            if(authenticatedUser != null){
+                Optional<Immobile> newImmobile = immobileService.addNewDomandaToImmobile(tempNewDomandaDTO,
+                        authenticatedUser.getUtenteInformation(), idImmobile);
+                if(newImmobile.isPresent()){
+                    return new ResponseEntity<String>("Domanda pubblicata correttamente", HttpStatus.OK);
+                }else{
+                    return new ResponseEntity<String>("Errore nella pubblicazione di una nuova domanda", HttpStatus.BAD_REQUEST);
+                }
+            }else{
+                return new ResponseEntity<String>("Effettuare il login per creare inserire una domanda", HttpStatus.UNAUTHORIZED);
             }
 
         }catch (UtenteException error){

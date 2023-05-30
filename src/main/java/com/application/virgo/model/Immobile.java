@@ -171,4 +171,12 @@ public class Immobile {
     public void setProvincia(String provincia) {
         this.provincia = provincia;
     }
+
+    public Set<Domanda> getDomandeImmobile() {
+        return domandeImmobile;
+    }
+
+    public void setDomandeImmobile(Set<Domanda> domandeImmobile) {
+        this.domandeImmobile = domandeImmobile;
+    }
 }
