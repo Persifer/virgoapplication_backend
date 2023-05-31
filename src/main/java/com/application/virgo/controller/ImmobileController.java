@@ -188,34 +188,5 @@ public class ImmobileController {
 
     }
 
-    // metodo che permette di aggiungere una domanda relativa ad un immobile
-    @PostMapping("/addQuestion/{id_immobile}")
-    public ResponseEntity<String> addDomandaToImmobile(@ModelAttribute DomandaDTO tempNewDomandaDTO,
-                                                        @PathVariable("id_immobile") Long idImmobile,
-                                                         @AuthenticationPrincipal SecuredUser authenticatedUser){
-
-        try{
-            if(authenticatedUser != null){
-                Optional<Immobile> newImmobile = immobileService.addNewDomandaToImmobile(tempNewDomandaDTO,
-                        authenticatedUser.getUtenteInformation(), idImmobile);
-                if(newImmobile.isPresent()){
-                    return new ResponseEntity<>("Domanda pubblicata correttamente", HttpStatus.OK);
-                }else{
-                    return new ResponseEntity<>("Errore nella pubblicazione di una nuova domanda", HttpStatus.BAD_REQUEST);
-                }
-            }else{
-                return new ResponseEntity<>("Effettuare il login per creare inserire una domanda", HttpStatus.UNAUTHORIZED);
-            }
-
-        }catch (UtenteException error){
-            return new ResponseEntity<>(error.getMessage(), HttpStatus.UNAUTHORIZED);
-        }        catch (ImmobileException error){
-            return new ResponseEntity<>(error.getMessage(), HttpStatus.BAD_REQUEST);
-        }catch (Exception error){
-            return new ResponseEntity<>(error.getMessage(), HttpStatus.METHOD_NOT_ALLOWED);
-        }
-
-    }
-
 
 }

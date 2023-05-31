@@ -43,7 +43,7 @@ public interface ImmobileService {
     public List<GetUtenteImmobiliDTO> getUtenteListaImmobili(Long inidiceIniziale, Long pageSize, Utente proprietario)
             throws ImmobileException, UtenteException;
 
-    public Optional<Immobile> addNewDomandaToImmobile(DomandaDTO tempDomanda, Utente authUser, Long idImmobileInteressato)
+    public Optional<Immobile> addNewDomandaToImmobile(Domanda Domanda, Utente authUser, Long idImmobileInteressato)
             throws ImmobileException, UtenteException;
 
 }

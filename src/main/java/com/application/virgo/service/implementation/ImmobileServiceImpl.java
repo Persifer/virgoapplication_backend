@@ -40,7 +40,6 @@ public class ImmobileServiceImpl implements ImmobileService {
 
     private final ImmobileJpaRepository immobileRepo;
     private final ImmobileMapper mapperImmobile;
-    private final UtenteService utenteService;
     private final ImmobileInformationMapper mapperInformation;
     private final ImmobiliDataUtente mapperUtenteInformation;
     private final DomandaImmobileMapper mapperDomande;
@@ -304,7 +303,7 @@ public class ImmobileServiceImpl implements ImmobileService {
     }
 
     @Override
-    public Optional<Immobile> addNewDomandaToImmobile(DomandaDTO tempDomanda, Utente authUser, Long idImmobileInteressato)
+    public Optional<Immobile> addNewDomandaToImmobile(Domanda domanda, Utente authUser, Long idImmobileInteressato)
             throws ImmobileException, UtenteException {
 
         // controllo che ci sia effettivamente un utente loggato
@@ -314,13 +313,11 @@ public class ImmobileServiceImpl implements ImmobileService {
 
             if(tempImmobileInteressato.isPresent()){
                 Immobile immobileInteressato = tempImmobileInteressato.get();
-
-                // creo la nuova domanda e l'aggiungo all'immobile
-                Domanda newDomanda = new Domanda(tempDomanda.getContenuto(), LocalDate.now());
-                immobileInteressato.getDomandeImmobile().add(newDomanda);
+                // aggiungo la domanda all'immobile
+                immobileInteressato.getDomandeImmobile().add(domanda);
 
                 // aggiungo la domanda all'utente
-                utenteService.addDomandaToUtente(authUser, newDomanda);
+                //utenteService.addDomandaToUtente(authUser, newDomanda);
 
                 return Optional.of(immobileRepo.save(immobileInteressato));
             }else{

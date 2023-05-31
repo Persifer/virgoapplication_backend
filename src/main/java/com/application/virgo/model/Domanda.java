@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.time.LocalDate;
 
 @Entity
@@ -18,7 +19,7 @@ public class Domanda {
     private Long idDomanda;
 
     private String contenuto;
-    private LocalDate dataPubblicazione;
+    private Instant dataPubblicazione;
 
     @Column(columnDefinition = "boolean default false")
     private Boolean isEnabled;
@@ -34,7 +35,7 @@ public class Domanda {
     @OneToOne(mappedBy = "domandaDiRiferimento")
     private Risposta risposta;
 
-    public Domanda(String contenuto, LocalDate dataPubblicazione) {
+    public Domanda(String contenuto, Instant dataPubblicazione) {
         this.contenuto = contenuto;
         this.dataPubblicazione = dataPubblicazione;
     }
