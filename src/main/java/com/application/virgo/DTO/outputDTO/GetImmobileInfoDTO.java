@@ -25,6 +25,9 @@ public class GetImmobileInfoDTO {
     private String descrizione;
     private Float prezzo;
 
+    private String locali;
+    private String metriQuadri;
+
 // ======== RESIDENZA =========
     private String via;
     private String cap;

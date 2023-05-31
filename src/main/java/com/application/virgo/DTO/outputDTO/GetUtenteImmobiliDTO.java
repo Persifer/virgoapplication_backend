@@ -16,7 +16,11 @@ public class GetUtenteImmobiliDTO {
     private Long idImmobile;
     private LocalDate dataCreazioneImmobile;
 
+    private String descrizione;
     private Float prezzo;
+
+    private String locali;
+    private String metriQuadri;
 
     private Boolean isEnabled;
 

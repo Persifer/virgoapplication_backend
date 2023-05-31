@@ -58,18 +58,24 @@ public class ImmobileServiceImpl implements ImmobileService {
                 //Controllo che le data di ultimo restuaro sia minore di quella odierna, può capitare che un restauro sia ancora in corso
                 // ma meglio evitare
                 if(tempNewImmobile.getDataUltimoRestauro().isBefore(todayDate)){
-                    // Inserisco la data di inserimento
-                    tempNewImmobile.setDataCreazioneImmobile(todayDate);
-                    // Conversione da ImmobileDTO a Immobile
-                    Immobile newImmobile = mapperImmobile.apply(tempNewImmobile);
-                    newImmobile.setProprietario(utenteProprietario);
-                    // ====== SETTING LISTE
-                    newImmobile.setDomandeImmobile(Set.of());
-                    // ===================
+                    if(tempNewImmobile.getMetriQuadri().equalsIgnoreCase("0") ||
+                            tempNewImmobile.getMetriQuadri().isBlank() || tempNewImmobile.getMetriQuadri().isEmpty()){
+                        // Inserisco la data di inserimento
+                        tempNewImmobile.setDataCreazioneImmobile(todayDate);
+                        // Conversione da ImmobileDTO a Immobile
+                        Immobile newImmobile = mapperImmobile.apply(tempNewImmobile);
+                        newImmobile.setProprietario(utenteProprietario);
+                        // ====== SETTING LISTE
+                        newImmobile.setDomandeImmobile(Set.of());
+                        // ===================
 
-                    // Salvataggio dell'immobile
-                    immobileRepo.save(newImmobile);
-                    return Optional.of(tempNewImmobile);
+                        // Salvataggio dell'immobile
+                        immobileRepo.save(newImmobile);
+                        return Optional.of(tempNewImmobile);
+                    }else{
+                        throw new ImmobileException("Il numero di metri quadri non può essere vuoto o 0");
+                    }
+
                 }else{
                     throw new ImmobileException("La data di ultimo restauro immobile è superiore a quella odierna!");
                 }
@@ -154,6 +160,28 @@ public class ImmobileServiceImpl implements ImmobileService {
                 if(!toCheckImmobile.getDataUltimoRestauro().equals(tempUpdatedImmobile.getDataUltimoRestauro())){
                     // è possibile che l'ultimo restuaro sia programmato e non ancora avvenuto oppure non sia presente
                     toCheckImmobile.setDataUltimoRestauro(tempUpdatedImmobile.getDataUltimoRestauro());
+                }
+
+                if(!toCheckImmobile.getLocali().equals(tempUpdatedImmobile.getLocali())){
+                    // controllo sul numero dei locali
+                    if(tempUpdatedImmobile.getLocali() == null ||
+                            tempUpdatedImmobile.getLocali().isEmpty() || tempUpdatedImmobile.getLocali().isBlank()){
+                        error += "Il numero dei locali non può essere vuoto o 0\n";
+                    }else{
+                        toCheckImmobile.setLocali(tempUpdatedImmobile.getLocali());
+                    }
+
+                }
+
+                if(!toCheckImmobile.getMetriQuadri().equals(tempUpdatedImmobile.getMetriQuadri())){
+                    // controllo sul numero dei locali
+                    if(tempUpdatedImmobile.getMetriQuadri() == null ||
+                            tempUpdatedImmobile.getMetriQuadri().isEmpty() || tempUpdatedImmobile.getMetriQuadri().isBlank()){
+                        error += "Il numero di metri quadri non può essere vuoto o 0\n";
+                    }else{
+                        toCheckImmobile.setMetriQuadri(tempUpdatedImmobile.getMetriQuadri());
+                    }
+
                 }
 
                 if(!toCheckImmobile.getDescrizione().equals(tempUpdatedImmobile.getDescrizione())){

@@ -27,6 +27,12 @@ public class ImmobileDTO {
     private String descrizione;
     @NotNull
     private Float prezzo;
+    @Pattern(regexp = "[1-9]*")
+    @NotNull
+    private String locali;
+    @Pattern(regexp = "[0-9]*")
+    @NotNull
+    private String metriQuadri;
 
 // ======== RESIDENZA =========
     @NotNull

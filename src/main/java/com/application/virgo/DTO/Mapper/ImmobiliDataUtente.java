@@ -16,9 +16,14 @@ public class ImmobiliDataUtente implements Function<Immobile, GetUtenteImmobiliD
         GetUtenteImmobiliDTO immobileDto = new GetUtenteImmobiliDTO();
 
         immobileDto.setIdImmobile(immobile.getIdImmobile() != null ? immobile.getIdImmobile() : null);
-        immobileDto.setPrezzo(immobile.getPrezzo() != null ? immobile.getPrezzo() : null);
 
-        immobileDto.setIsEnabled(immobile.getEnabled() != null ? immobile.getEnabled() : true);
+        immobileDto.setDescrizione(immobile.getDescrizione() != null ? immobile.getDescrizione() : "");
+        immobileDto.setPrezzo(immobile.getPrezzo() != null ? immobile.getPrezzo() : 0.0f);
+
+        immobileDto.setLocali(immobile.getLocali() != null ? immobile.getLocali() : "");
+        immobileDto.setMetriQuadri(immobile.getMetriQuadri() != null ? immobile.getMetriQuadri() : "");
+
+        immobileDto.setIsEnabled(immobile.getIsEnabled() != null ? immobile.getIsEnabled() : true);
 
         immobileDto.setCap(immobile.getCap() != null ? immobile.getCap() : "");
         immobileDto.setVia(immobile.getVia() != null ? immobile.getVia() : "");

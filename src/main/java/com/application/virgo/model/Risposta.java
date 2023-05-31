@@ -8,7 +8,7 @@ import java.time.LocalDate;
 public class Risposta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idDomanda;
+    private Long idRisposta;
 
     private String contenuto;
     private LocalDate dataPubblicazione;
