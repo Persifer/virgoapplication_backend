@@ -16,6 +16,7 @@ public class GetImmobileInfoDTO {
     private String nomeProprietario;
     private String cognomeProprietario;
 
+    private Long idImmobile;
     private String email;
 
     private LocalDate dataUltimoRestauro;

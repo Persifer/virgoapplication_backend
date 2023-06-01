@@ -12,11 +12,21 @@ public class DomandaImmobileMapper implements Function<Domanda, DomandaImmobileD
     public DomandaImmobileDTO apply(Domanda domanda) {
         DomandaImmobileDTO domandaDTO = new DomandaImmobileDTO();
 
+        domandaDTO.setIdDomanda(domanda.getIdDomanda());
         domandaDTO.setNomeProprietario(domanda.getProprietarioDomanda().getNome());
         domandaDTO.setCognomeProprietario(domanda.getProprietarioDomanda().getCognome());
 
         domandaDTO.setContenuto(domanda.getContenuto());
         domandaDTO.setDataPubblicazione(domanda.getDataPubblicazione().toString());
+
+        if(domanda.getRisposta().getContenuto().isEmpty() || domanda.getRisposta().getContenuto().isBlank()
+            || domanda.getRisposta().getContenuto() == null){
+            domandaDTO.setRisposta("");
+        }else{
+            domandaDTO.setRisposta(domanda.getRisposta().getContenuto());
+        }
+
+        domandaDTO.setDataRisposta(domanda.getRisposta().getDataPubblicazione().toString());
 
         return domandaDTO;
     }

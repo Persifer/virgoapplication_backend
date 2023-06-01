@@ -3,15 +3,15 @@ package com.application.virgo.DTO.inputDTO;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
-public class DomandaDTO {
+public class RispostaDTO {
 
     @NotNull
     private String contenuto;
 
-    public DomandaDTO() {
+    public RispostaDTO() {
     }
 
-    public DomandaDTO(String contenuto) {
+    public RispostaDTO(String contenuto) {
         this.contenuto = contenuto;
     }
 

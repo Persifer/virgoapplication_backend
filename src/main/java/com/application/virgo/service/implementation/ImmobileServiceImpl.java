@@ -87,6 +87,19 @@ public class ImmobileServiceImpl implements ImmobileService {
 
     }
 
+    // Metodo che permette di ottenere le informazioni di un immobile dal database. È un metodo "interno" che non
+    // serve per esporre dati al front-end e quindi, l'unico controllo che fa, è per vedere se l'immobile esiste
+    @Override
+    public Optional<Immobile> getImmobileInternalInformationById(Long idImmobile) throws ImmobileException{
+        Optional<Immobile> requestImmobile = immobileRepo.getImmobilesByIdImmobile(idImmobile);
+
+        if(requestImmobile.isPresent()){
+            return requestImmobile;
+        }else{
+            throw new ImmobileException("L'immobile cercato non esiste, inserire un nuovo id");
+        }
+    }
+
     @Override
     public Optional<GetImmobileInfoDTO> getImmobileById(Long idImmobile) throws ImmobileException{
 

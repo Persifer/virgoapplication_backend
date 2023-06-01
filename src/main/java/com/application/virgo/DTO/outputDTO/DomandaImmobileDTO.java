@@ -12,6 +12,7 @@ public class DomandaImmobileDTO {
     private String nomeProprietario;
     private String cognomeProprietario;
 
+    private Long idDomanda;
     private String contenuto;
     private String dataPubblicazione;
 

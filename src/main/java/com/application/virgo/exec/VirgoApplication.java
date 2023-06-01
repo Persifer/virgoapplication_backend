@@ -24,10 +24,18 @@ public class VirgoApplication {
 
 	/*
 	* TODO
-	*  1. Implementa controller
-	*  2. Implementa service
-	*  3. Inserisci i commenti a supporto della relazione tra utente e ruolo
-	*
+	*  2. Implementazione "chat" per le offerte/contratti
+	*     2.1 Creazione entità messaggio che contiene: mittente, destinatario, offerta e immobile
+	* 	  2.2 Creazione sezione chat utente con la lista di tutte le offerte
+	*  4. Creazione zona utente in cui poter visionare tutti i contratti
+	*  5. Invio email per messaggi non letti
+	*  6. Inserisci i commenti a supporto della relazione tra utente e ruolo
+	*  7. Sorting dei risultati di immobile
+	*     7.1 parole chiave
+	* 	  7.2 parametri specifici di filtraggio
+	*  8. Caricamento delle immagini nella sezione creazione e nella sezione modifica
+	*  9. Visualizzazione delle immagini nella pagina di un immobile
+	*  10. Test
 	*
 	*
 	* */

@@ -17,6 +17,8 @@ public class Contratto {
 
     private Date dataStipulazione;
 
+    private Boolean isAcquirente;
+
     private Float prezzo;
 
     @OneToMany(mappedBy = "contrattoInteressato")

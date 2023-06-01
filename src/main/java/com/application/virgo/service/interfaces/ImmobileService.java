@@ -21,6 +21,8 @@ public interface ImmobileService {
     public Optional<ImmobileDTO> createNewImmobile(ImmobileDTO tempNewImmobile, Utente proprietario)
             throws ImmobileException, UtenteException;
 
+    public Optional<Immobile> getImmobileInternalInformationById(Long idImmobile) throws ImmobileException;
+
     public Optional<GetImmobileInfoDTO> getImmobileById(Long idImmobile) throws ImmobileException;
 
     public Optional<ImmobileDTO> getImmobileByIdToUpdate(Long idImmobile, Utente proprietario)

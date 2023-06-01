@@ -1,17 +1,23 @@
 package com.application.virgo.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.Instant;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class Risposta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idRisposta;
 
     private String contenuto;
-    private LocalDate dataPubblicazione;
+    private Instant dataPubblicazione;
 
     @Column(columnDefinition = "boolean default false")
     private Boolean isEnabled;
@@ -23,4 +29,9 @@ public class Risposta {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_domanda")
     private Domanda domandaDiRiferimento;
+
+    public Risposta(String contenuto, Instant dataPubblicazione) {
+        this.contenuto = contenuto;
+        this.dataPubblicazione = dataPubblicazione;
+    }
 }
