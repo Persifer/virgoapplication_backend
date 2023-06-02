@@ -34,7 +34,7 @@ public class Immobile {
     private String provincia;
 // ============================
 
-    @Column(columnDefinition = "boolean default false")
+    @Column(columnDefinition = "boolean default true")
     private Boolean isEnabled;
 
     @ManyToOne

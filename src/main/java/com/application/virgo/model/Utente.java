@@ -3,6 +3,7 @@ package com.application.virgo.model;
 import com.application.virgo.model.ComposedRelationship.ContrattoUtente;
 import com.application.virgo.model.ComposedRelationship.OfferteUtente;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@AllArgsConstructor
 @Data
 public class Utente {
     @Id
@@ -32,6 +34,16 @@ public class Utente {
 
     private LocalDate dataNascita;
 
+// ======== PARAMETER =========
+    @Column(columnDefinition = "boolean default true")
+    private Boolean isEnabled;
+    @Column(columnDefinition = "boolean default true")
+    private Boolean isAccountNonExpired;
+    @Column(columnDefinition = "boolean default true")
+    private Boolean isAccountNonLocked;
+    @Column(columnDefinition = "boolean default true")
+    private Boolean isCredentialsNonExpired;
+// ============================
 
 
 
@@ -56,8 +68,11 @@ public class Utente {
     @OneToMany(mappedBy = "utenteInteressato")
     private Set<ContrattoUtente> contrattiUtente;
 
-    @OneToMany(mappedBy = "utenteOfferta")
-    private Set<OfferteUtente> offerteUtente;
+    @OneToMany(mappedBy = "proprietario")
+    private Set<OfferteUtente> offerteRicevute;
+
+    @OneToMany(mappedBy = "offerente")
+    private Set<OfferteUtente> offerteProposte;
 
     @OneToMany(mappedBy = "idDomanda")
     private Set<Domanda> domandeUtente;
@@ -105,94 +120,6 @@ public class Utente {
         this.dataNascita = dataNascita;
     }
 
-
-    public Long getIdUtente() {
-        return idUtente;
-    }
-
-    public void setIdUtente(Long idUtente) {
-        this.idUtente = idUtente;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getCognome() {
-        return cognome;
-    }
-
-    public void setCognome(String cognome) {
-        this.cognome = cognome;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getVia() {
-        return via;
-    }
-
-    public void setVia(String via) {
-        this.via = via;
-    }
-
-    public String getCap() {
-        return cap;
-    }
-
-    public void setCap(String cap) {
-        this.cap = cap;
-    }
-
-    public String getCitta() {
-        return citta;
-    }
-
-    public void setCitta(String citta) {
-        this.citta = citta;
-    }
-
-    public String getProvincia() {
-        return provincia;
-    }
-
-    public void setProvincia(String provincia) {
-        this.provincia = provincia;
-    }
-
-    public LocalDate getDataNascita() {
-        return dataNascita;
-    }
-
-    public void setDataNascita(LocalDate dataNascita) {
-        this.dataNascita = dataNascita;
-    }
-
-    public List<Immobile> getImmobiliUtente() {
-        return immobiliUtente;
-    }
-
-    public void setImmobiliUtente(List<Immobile> immobiliUtente) {
-        this.immobiliUtente = immobiliUtente;
-    }
 
 
 }

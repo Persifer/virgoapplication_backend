@@ -44,21 +44,21 @@ public class SecuredUser implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return this.utenteInformation.getIsAccountNonExpired();
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return this.utenteInformation.getIsAccountNonLocked();
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return this.utenteInformation.getIsCredentialsNonExpired();
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return this.utenteInformation.getIsEnabled();
     }
 }

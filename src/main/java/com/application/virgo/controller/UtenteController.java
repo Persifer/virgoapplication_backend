@@ -26,10 +26,10 @@ public class UtenteController {
     @Autowired
     private UtenteService utenteService;
     @PutMapping("/updateData/{id_utente}")
-    public ResponseEntity<String> updateUtenteInformation(@PathVariable("id_utente") String idUtenteDaModificare,
+    public ResponseEntity<String> updateUtenteInformation(@PathVariable("id_utente") Long idUtenteDaModificare,
                                                           @ModelAttribute UtenteDTO updatedUtente, @AuthenticationPrincipal SecuredUser authenticatedUtente){
         try{
-            utenteService.updateUtenteInfoById(Long.parseLong(idUtenteDaModificare), updatedUtente);
+            utenteService.updateUtenteInfoById(idUtenteDaModificare, updatedUtente);
             return new ResponseEntity<String>("Utente aggiornato correttamente", HttpStatus.OK);
         }catch (UtenteException error){
             return new ResponseEntity<String>(error.getMessage(), HttpStatus.BAD_REQUEST);

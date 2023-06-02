@@ -62,7 +62,7 @@ public class UtenteServiceImpl implements UtenteService {
         if(tempUtente.isPresent()){
             return tempUtente;
         }else{
-            throw new UtenteException("Utente non trovato!");
+            throw new UtenteException("L'utente selezionato non esiste, se ne inserica un altro");
         }
 
     }
