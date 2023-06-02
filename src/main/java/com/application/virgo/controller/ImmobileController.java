@@ -7,13 +7,19 @@ import com.application.virgo.DTO.outputDTO.GetUtenteImmobiliDTO;
 import com.application.virgo.exception.ImmobileException;
 import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.Immobile;
+import com.application.virgo.model.Utente;
+import com.application.virgo.service.implementation.AuthServiceImpl;
 import com.application.virgo.wrapperclass.SecuredUser;
 import com.application.virgo.service.interfaces.ImmobileService;
 import jakarta.validation.constraints.Max;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,14 +29,13 @@ import java.util.Optional;
 @Controller
 @RequestMapping(path="/site/immobile")
 @Validated
+@AllArgsConstructor
 public class ImmobileController {
 
     private final ImmobileService immobileService;
+    private final AuthServiceImpl authService;
     //private static final String URL_SUFFIX = "/immobile/";
 
-    public ImmobileController(ImmobileService immobileService) {
-        this.immobileService = immobileService;
-    }
 
     // Mapper per la creazione di un nuovo immobile associato ad singolo utente proprietario
                 // /immobile/addnew
@@ -137,25 +142,31 @@ public class ImmobileController {
     // Offset -> indice da cui iniziare a prendere
     // PageSize -> quanti elementi prendere
     @GetMapping("/list/{offset}/{pageSize}")
-    public ResponseEntity<List<GetImmobileInfoDTO>> getListImmobili(@PathVariable("offset") Long offset,
-                                                                    @PathVariable("pageSize") @Max(20) Long pageSize,
-                                                                    @AuthenticationPrincipal SecuredUser securedUser ){
+    public String getListImmobili(@PathVariable("offset") Long offset,
+                                  @PathVariable("pageSize") Long pageSize,
+                                  ModelMap model){
         try{
-            if(securedUser != null){
+            Optional<Utente> securedUser = authService.getAuthUtente();
+            if(securedUser.isPresent()){
                 List<GetImmobileInfoDTO> foundedImmobili = immobileService.getAllImmobiliPaginated(offset, pageSize);
                 if(!foundedImmobili.isEmpty()){
-                    return new ResponseEntity<>(foundedImmobili, HttpStatus.BAD_REQUEST);
+                    model.addAttribute("listImmobili", foundedImmobili);
+                    return "Home";
                 }else{
-                    return new ResponseEntity<>(List.of(), HttpStatus.BAD_REQUEST);
+                    model.addAttribute("error", "Dentro else 2");
+                    return "Fail";
                 }
             }else{
-                return new ResponseEntity<>(List.of(), HttpStatus.UNAUTHORIZED);
+                model.addAttribute("error", "Dentro else 1");
+                return "Fail";
             }
 
         }catch (ImmobileException error){
-            return new ResponseEntity<>(List.of(), HttpStatus.BAD_REQUEST);
+            model.addAttribute("error", error.getMessage());
+            return "Fail";
         }catch (Exception error){
-            return new ResponseEntity<>(List.of(), HttpStatus.INTERNAL_SERVER_ERROR);
+            model.addAttribute("error", error.getMessage());
+            return "Fail";
         }
     }
 

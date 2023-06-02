@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Errore</title>
 </head>
 <body>
 Errore
+<p><span th:utext="${error}"      > </span></p>
+<div sec:autentication="utente.email"></div>
 </body>
 </html>

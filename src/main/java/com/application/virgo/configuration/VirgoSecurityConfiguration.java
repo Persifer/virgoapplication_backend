@@ -95,7 +95,7 @@ public class VirgoSecurityConfiguration{
                 .formLogin((form) -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/site/vai")
+                        .defaultSuccessUrl("/site/immobile/list/0/20")
                         .permitAll()
                 )
                 .logout(LogoutConfigurer::permitAll)

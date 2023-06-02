@@ -67,6 +67,16 @@ public class UtenteServiceImpl implements UtenteService {
 
     }
 
+    public Optional<Utente> getUtenteClassByEmail(String emailUtenteToFound) throws UtenteException{
+        Optional<Utente> tempUtente = utenteRepo.findByEmail(emailUtenteToFound);
+        if(tempUtente.isPresent()){
+            return tempUtente;
+        }else{
+            throw new UtenteException("L'utente selezionato non esiste, se ne inserica un altro");
+        }
+
+    }
+
     // fa l'update delle informazioni di un utente identificato tramite id
     @Override
     public Optional<Utente> updateUtenteInfoById(Long idUtente, UtenteDTO updatedUtenteDto) throws UtenteException{

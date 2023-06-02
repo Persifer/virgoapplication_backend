@@ -14,6 +14,8 @@ public interface UtenteService {
 
     Optional<UtenteDTO> getUtenteById(Long idUtenteToFound) throws UtenteException;
 
+    Optional<Utente> getUtenteClassByEmail(String idUtenteToFound) throws UtenteException;
+
     Optional<Utente> updateUtenteInfoById(Long idUtente, UtenteDTO newUtente) throws UtenteException;
 
     Optional<Utente> tryRegistrationHandler(UtenteDTO newUtente) throws UtenteException;

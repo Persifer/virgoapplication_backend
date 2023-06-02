@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pagina Utente</title>
+</head>
+<body>
+<h1>Dati Utente</h1>
+<form th:action="@{/site/utente/updateData/{id_utente}(id_utente=${userId})}" method="post">
+    <label>Nome:</label>
+    <input type="text" th:field="*{nome}" />
+
+    <label>Cognome:</label>
+    <input type="text" th:field="*{cognome}" />
+
+    <label>Email:</label>
+    <input type="email" th:field="*{email}" />
+
+    <label>Via:</label>
+    <input type="text" th:field="*{via}" />
+
+    <label>Cap:</label>
+    <input type="text" th:field="*{cap}" />
+
+    <label>Città:</label>
+    <input type="text" th:field="*{citta}" />
+
+    <label>Provincia:</label>
+    <input type="text" th:field="*{provincia}" />
+
+    <label>Data di Nascita:</label>
+    <input type="text" th:field="*{dataNascita}" />
+
+    <input type="submit" value="Aggiorna" />
+</form>
+
+<h1>Lista Immobili</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Indirizzo</th>
+        <th>Prezzo</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Loop attraverso gli immobili caricati -->
+    <tr th:each="immobile : ${immobili}">
+        <td th:text="${immobile.id}" />
+        <td th:text="${immobile.indirizzo}" />
+        <td th:text="${immobile.prezzo}" />
+    </tr>
+    </tbody>
+</table>
+
+<form th:action="@{/site/immobili/add}" method="post">
+    <input type="submit" value="Aggiungi Nuovo Immobile" />
+</form>
+
+<h1>Chat Aperte</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID Chat</th>
+        <th>Nome Utente</th>
+        <th>Oggetto</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Loop attraverso le chat aperte -->
+    <tr th:each="chat : ${chatAperte}">
+        <td th:text="${chat.id}" />
+        <td th:text="${chat.nomeUtente}" />
+        <td th:text="${chat.oggetto}" />
+    </tr>
+    </tbody>
+</table>
+
+<h1>Contratti</h1>
+<h2>Tutti i Contratti</h2>
+<table>
+    <thead>
+    <tr>
+        <th>ID Contratto</th>
+        <th>Nome Venditore</th>
+        <th>Nome Acquirente</th>
+        <th>Oggetto</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Loop attraverso tutti i contratti -->
+    <tr th:each="contratto : ${contratti}">
+        <td th:text="${contratto.id}" />
+        <td th:text="${contratto.nomeVenditore}" />
+        <td th:text="${contratto.nomeAcquirente}" />
+        <td th:text="${contratto.oggetto}" />
+    </tr>
+    </tbody>
+</table>
+
+<h2>Contratti da Venditore</h2>
+<table>
+    <thead>
+    <tr>
+        <th>ID Contratto</th>
+        <th>Nome Venditore</th>
+        <th>Oggetto</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Loop attraverso i contratti da venditore -->
+    <tr th:each="contratto : ${contrattiVenditore}">
+        <td th:text="${contratto.id}" />
+        <td th:text="${contratto.nomeVenditore}" />
+        <td th:text="${contratto.oggetto}" />
+    </tr>
+    </tbody>
+</table>
+
+<h2>Contratti da Acquirente</h2>
+<table>
+    <thead>
+    <tr>
+        <th>ID Contratto</th>
+        <th>Nome Acquirente</th>
+        <th>Oggetto</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Loop attraverso i contratti da acquirente -->
+    <tr th:each="contratto : ${contrattiAcquirente}">
+        <td th:text="${contratto.id}" />
+        <td th:text="${contratto.nomeAcquirente}" />
+        <td th:text="${contratto.oggetto}" />
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

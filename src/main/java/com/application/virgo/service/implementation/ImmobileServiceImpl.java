@@ -269,16 +269,16 @@ public class ImmobileServiceImpl implements ImmobileService {
     @Override
     public List<GetImmobileInfoDTO> getAllImmobiliPaginated(Long inidiceIniziale, Long pageSize) throws ImmobileException{
 
-        if(inidiceIniziale > immobileRepo.countByIdImmobile() - pageSize){
-            if(pageSize > 20){
+        if(inidiceIniziale < pageSize - immobileRepo.countByIdImmobile() ){
+            if(pageSize < 50){
                 Page<Immobile> listImmobili = immobileRepo.findAll(PageRequest.of(inidiceIniziale.intValue(), pageSize.intValue()));
                 // converte con la stream una page di immobili in una lista di getImmobileInfoDTO
                 return listImmobili.stream().map(mapperInformation).collect(Collectors.toList());
             }else {
-                throw new ImmobileException("Attenzione il numero dell'elemento da cui partire è troppo alto");
+                throw new ImmobileException("2 - Attenzione il numero dell'elemento da cui partire è troppo alto " + pageSize);
             }
         }else{
-            throw new ImmobileException("Attenzione il numero dell'elemento da cui partire è troppo alto");
+            throw new ImmobileException("1 -Attenzione il numero dell'elemento da cui partire è troppo alto " + (pageSize - immobileRepo.countByIdImmobile()));
         }
     }
 
