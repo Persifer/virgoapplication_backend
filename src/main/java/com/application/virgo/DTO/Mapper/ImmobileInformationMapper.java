@@ -15,12 +15,14 @@ public class ImmobileInformationMapper implements Function<Immobile, GetImmobile
         GetImmobileInfoDTO immobileDto = new GetImmobileInfoDTO();
 
         immobileDto.setNomeProprietario(immobile.getProprietario().getNome() != null ? immobile.getProprietario().getNome() : "");
-        immobileDto.setNomeProprietario(immobile.getProprietario().getCognome() != null ? immobile.getProprietario().getCognome() : "");
+        immobileDto.setCognomeProprietario(immobile.getProprietario().getCognome() != null ? immobile.getProprietario().getCognome() : "");
         immobileDto.setEmail(immobile.getProprietario().getEmail() != null ? immobile.getProprietario().getEmail() : "");
 
         immobileDto.setIdImmobile(immobile.getIdImmobile() != null ? immobile.getIdImmobile():-1);
 
-        immobileDto.setDescrizione(immobile.getDescrizione() != null ? immobile.getDescrizione() : null);
+        immobileDto.setDescrizione(immobile.getDescrizione() != null ? immobile.getDescrizione() : "");
+        immobileDto.setTitolo(immobile.getTitolo() != null ? immobile.getTitolo() : "");
+
         immobileDto.setDataUltimoRestauro(immobile.getDataUltimoRestauro() != null ? immobile.getDataUltimoRestauro() : null);
         immobileDto.setDataAcquisizione(immobile.getDataAcquisizione() != null ? immobile.getDataAcquisizione() : null);
         immobileDto.setPrezzo(immobile.getPrezzo() != null ? immobile.getPrezzo() : null);

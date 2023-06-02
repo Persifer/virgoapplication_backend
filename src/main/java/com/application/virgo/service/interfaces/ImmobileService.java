@@ -4,6 +4,7 @@ import com.application.virgo.DTO.inputDTO.DomandaDTO;
 import com.application.virgo.DTO.inputDTO.ImmobileDTO;
 import com.application.virgo.DTO.outputDTO.GetImmobileInfoDTO;
 import com.application.virgo.DTO.outputDTO.GetUtenteImmobiliDTO;
+import com.application.virgo.DTO.outputDTO.HomeImmobileDTO;
 import com.application.virgo.exception.ImmobileException;
 import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.Domanda;
@@ -31,7 +32,7 @@ public interface ImmobileService {
     public Optional<Immobile> updateImmobileInformation(ImmobileDTO tempUpdatedImmobile, Utente proprietario, Long idImmobileToUpdate)
             throws ImmobileException, UtenteException;
 
-    public List<GetImmobileInfoDTO> getAllImmobiliPaginated(Long inidiceIniziale, Long pageSize) throws ImmobileException;
+    public List<HomeImmobileDTO> getAllImmobiliPaginated(Long inidiceIniziale, Long pageSize) throws ImmobileException;
 
 
     public List<GetImmobileInfoDTO> getFilteredImmobiliPaginated(String filter);

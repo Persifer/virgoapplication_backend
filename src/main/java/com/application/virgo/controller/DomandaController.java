@@ -9,6 +9,8 @@ import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.Domanda;
 import com.application.virgo.model.Immobile;
 import com.application.virgo.model.Risposta;
+import com.application.virgo.model.Utente;
+import com.application.virgo.service.interfaces.AuthService;
 import com.application.virgo.service.interfaces.DomandaService;
 import com.application.virgo.service.interfaces.ImmobileService;
 import com.application.virgo.service.interfaces.RispostaService;
@@ -18,6 +20,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,74 +39,82 @@ public class DomandaController {
     private final DomandaService domandaService;
     private final ImmobileService immobileService;
     private final RispostaService rispostaService;
+    private final AuthService authService;
 
 
     // metodo che permette di aggiungere una domanda relativa ad un immobile
     @PostMapping("/addQuestion/{id_immobile}")
-    public ResponseEntity<String> addDomandaToImmobile(@ModelAttribute DomandaDTO tempNewDomandaDTO,
-                                                       @PathVariable("id_immobile") Long idImmobile,
-                                                       @AuthenticationPrincipal SecuredUser authenticatedUser){
+    public String addDomandaToImmobile(@ModelAttribute DomandaDTO tempNewDomandaDTO,
+                                                       @PathVariable("id_immobile") Long idImmobile, ModelMap model){
 
         try{
-            if(authenticatedUser != null){
-                Optional<Domanda> addedDomanda = domandaService.addNewDomanda(tempNewDomandaDTO, authenticatedUser.getUtenteInformation());
+            Optional<Utente> authenticatedUser = authService.getAuthUtente();
+            if(authenticatedUser.isPresent()){
+                Optional<Domanda> addedDomanda = domandaService.addNewDomanda(tempNewDomandaDTO, authenticatedUser.get());
                 if(addedDomanda.isPresent()){
                     Optional<Immobile> newImmobile = immobileService.addNewDomandaToImmobile(addedDomanda.get(),
-                            authenticatedUser.getUtenteInformation(), idImmobile);
+                            authenticatedUser.get(), idImmobile);
                     if(newImmobile.isPresent()){
-                        return new ResponseEntity<>("Domanda pubblicata correttamente", HttpStatus.OK);
+                        model.addAttribute("message", "Domanda inserita con successo");
+                        return "inserisci_pagina_html_peppe";
                     }else{
-                        return new ResponseEntity<>("Errore nella pubblicazione di una nuova domanda", HttpStatus.BAD_REQUEST);
+                        model.addAttribute("error", "L'immobile selezionato non esiste");
+                        return "inserisci_pagina_html_peppe";
                     }
                 }else{
-                    return new ResponseEntity<>("Impossibile creare la domanda", HttpStatus.BAD_REQUEST);
+                    model.addAttribute("error", "Problemi con la creazione della domanda");
+                    return "inserisci_pagina_html_peppe";
                 }
 
             }else{
-                return new ResponseEntity<>("Effettuare il login per creare inserire una domanda", HttpStatus.UNAUTHORIZED);
+                model.addAttribute("message", "Bisogna essere autenticati per inserire una domanda");
+                return "inserisci_pagina_html_peppe";
             }
 
-        }catch (UtenteException error){
-            return new ResponseEntity<>(error.getMessage(), HttpStatus.UNAUTHORIZED);
-        }        catch (ImmobileException error){
-            return new ResponseEntity<>(error.getMessage(), HttpStatus.BAD_REQUEST);
-        }catch (Exception error){
-            return new ResponseEntity<>(error.getMessage(), HttpStatus.METHOD_NOT_ALLOWED);
+        }catch ( Exception error){
+            model.addAttribute("error", error.getMessage());
+            return "inserisci_pagina_html_peppe";
         }
 
     }
 
     // metodo che permette di aggiungere una risposta ad una domanda
     @PostMapping("/reply/{id_domanda}/{id_immobile}")
-    public ResponseEntity<String> addRispostaToDomanda(@ModelAttribute RispostaDTO tempNewRispostaDTO,
+    public String addRispostaToDomanda(@ModelAttribute RispostaDTO tempNewRispostaDTO,
                                                        @PathVariable("id_domanda") Long idDomanda,
                                                        @PathVariable("id_immobile") Long idImmobile,
-                                                       @AuthenticationPrincipal SecuredUser authenticatedUser){
+                                                       ModelMap model){
 
         try{
-            if(authenticatedUser != null){
+            Optional<Utente> authenticatedUser = authService.getAuthUtente();
+            if(authenticatedUser.isPresent()){
                 Optional<Risposta> addedRisposta = rispostaService.addNewRisposta(tempNewRispostaDTO, idDomanda,
-                        authenticatedUser.getUtenteInformation(), idImmobile);
+                        authenticatedUser.get(), idImmobile);
                 if(addedRisposta.isPresent()){
 
                     Optional<Domanda> newDomandaConRisposta = domandaService.replyToDomanda(addedRisposta.get(),
                             idDomanda);
 
                     if(newDomandaConRisposta.isPresent()){
-                        return new ResponseEntity<>("Risposta pubblicata correttamente", HttpStatus.OK);
+                        model.addAttribute("message", "Risposta inserita con successo");
+                        return "inserisci_pagina_html_peppe";
                     }else{
-                        return new ResponseEntity<>("Errore nella pubblicazione della risposta", HttpStatus.BAD_REQUEST);
+                        model.addAttribute("error", " 2 - Errore nell'inserimento della risposta");
+                        return "inserisci_pagina_html_peppe";
                     }
                 }else{
-                    return new ResponseEntity<>("Errore nell'inserimento della risposta", HttpStatus.BAD_REQUEST);
+                    model.addAttribute("error", "1 - Errore inserimento della risposta");
+                    return "inserisci_pagina_html_peppe";
                 }
 
             }else{
-                return new ResponseEntity<>("Effettuare il login per rispondere alla domanda", HttpStatus.UNAUTHORIZED);
+                model.addAttribute("error", "Bisogna essere autorizzati per inserire una risposta");
+                return "inserisci_pagina_html_peppe";
             }
 
         }catch (Exception error){
-            return new ResponseEntity<>(error.getMessage(), HttpStatus.METHOD_NOT_ALLOWED);
+            model.addAttribute("error", error.getMessage());
+            return "inserisci_pagina_html_peppe";
         }
 
 

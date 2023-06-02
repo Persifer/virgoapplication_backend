@@ -4,6 +4,7 @@ import com.application.virgo.DTO.inputDTO.DomandaDTO;
 import com.application.virgo.DTO.inputDTO.ImmobileDTO;
 import com.application.virgo.DTO.outputDTO.GetImmobileInfoDTO;
 import com.application.virgo.DTO.outputDTO.GetUtenteImmobiliDTO;
+import com.application.virgo.DTO.outputDTO.HomeImmobileDTO;
 import com.application.virgo.exception.ImmobileException;
 import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.Immobile;
@@ -12,6 +13,7 @@ import com.application.virgo.service.implementation.AuthServiceImpl;
 import com.application.virgo.wrapperclass.SecuredUser;
 import com.application.virgo.service.interfaces.ImmobileService;
 import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,50 +42,57 @@ public class ImmobileController {
     // Mapper per la creazione di un nuovo immobile associato ad singolo utente proprietario
                 // /immobile/addnew
     @PostMapping("/addnew")
-    public ResponseEntity<String> createNewImmobile(@ModelAttribute ImmobileDTO tempNewImmobile,
-                                                    @AuthenticationPrincipal SecuredUser authenticatedUser){
+    public String createNewImmobile(@ModelAttribute ImmobileDTO tempNewImmobile, ModelMap model) {
+
         try{
-            if(authenticatedUser != null){
-                Optional<ImmobileDTO> newImmobile = immobileService.createNewImmobile(tempNewImmobile, authenticatedUser.getUtenteInformation());
-                if(newImmobile.isPresent()){
-                    return new ResponseEntity<>("Immobile registrato correttamente", HttpStatus.OK);
-                }else{
-                    return new ResponseEntity<>("Errore nella registrazione di un nuovo immobile", HttpStatus.BAD_REQUEST);
+            Optional<Utente> authenticatedUser = authService.getAuthUtente();
+            if(authenticatedUser.isPresent()) {
+                Optional<ImmobileDTO> newImmobile = immobileService.createNewImmobile(tempNewImmobile, authenticatedUser.get());
+                if (newImmobile.isPresent()) {
+                    model.addAttribute("message", "Immobile creato con successo");
+                    return "inserisci_pagina_html_peppe";
+                } else {
+                    model.addAttribute("error", "Errore nella creazione di un immobile, riprovare");
+                    return "inserisci_pagina_html_peppe";
                 }
             }else{
-                return new ResponseEntity<>("Effettuare il login per creare un nuovo immboile", HttpStatus.UNAUTHORIZED);
+                model.addAttribute("message", "Domanda inserita con successo");
+                return "inserisci_pagina_html_peppe";
             }
 
-        }catch (ImmobileException | UtenteException error){
-            return new ResponseEntity<>(error.getMessage(), HttpStatus.BAD_REQUEST);
         }catch (Exception error){
-            return new ResponseEntity<>(error.getMessage(), HttpStatus.METHOD_NOT_ALLOWED);
+                model.addAttribute("message", "Domanda inserita con successo");
+                return "inserisci_pagina_html_peppe";
         }
     }
+
 
     // Mapper che permette di reperire i dati di un singolo immobile associato ad un utente tramite l'uso di GetImmobileInfoDTO
     // viene usato quando, dalla homepage, viene selezionato un immobile
     @GetMapping("/viewImmobile/{id_immobile}")
-    public ResponseEntity<GetImmobileInfoDTO> getImmobileInformation(@PathVariable("id_immobile") Long idImmobile,
-                                                                     @AuthenticationPrincipal SecuredUser authenticatedUser){
+    public String getImmobileInformation(@PathVariable("id_immobile") Long idImmobile,
+                                                                     ModelMap model){
         try{
-            if(authenticatedUser != null){
+            Optional<Utente> authenticatedUser = authService.getAuthUtente();
+            if(authenticatedUser.isPresent()) {
                 // se l'utente è autenticato allora posso vedere i dati del singolo immobile
                 Optional<GetImmobileInfoDTO> storedImmobile = immobileService.getImmobileById(idImmobile);
                 if(storedImmobile.isPresent()){
-                    return new ResponseEntity<>(storedImmobile.get(), HttpStatus.OK);
+                    model.addAttribute("wantedImmobile", storedImmobile);
+                    return "inserisci_pagina_html_peppe";
                 }else{
-                    return new ResponseEntity<>((GetImmobileInfoDTO) null, HttpStatus.BAD_REQUEST);
+                    model.addAttribute("error", "L'immobile voluto non è presente");
+                    return "inserisci_pagina_html_peppe";
                 }
             }else{
-                return new ResponseEntity<>((GetImmobileInfoDTO) null, HttpStatus.UNAUTHORIZED);
+                model.addAttribute("error", "Bisogna essere autenticato per richiedere un immobile");
+                return "inserisci_pagina_html_peppe";
             }
 
 
-        }catch (ImmobileException error){
-            return new ResponseEntity<>((GetImmobileInfoDTO) null, HttpStatus.BAD_REQUEST);
-        }catch (Exception error){
-            return new ResponseEntity<>((GetImmobileInfoDTO) null, HttpStatus.METHOD_NOT_ALLOWED);
+        }catch (ImmobileException | UtenteException error){
+            model.addAttribute("error", error.getMessage());
+            return "inserisci_pagina_html_peppe";
         }
     }
 
@@ -91,50 +100,57 @@ public class ImmobileController {
     // PER PEPPE, DEVI FARE MODO CHE QUANDO L'UTENE CERCHI LA PAGINA DI MODIFICA PRIMA FA QUESTA RICHIESTA, METTE NEI CAMPI I VALORI GIA'
     // PRESENTI NEL DB NELLA PAGINA HTML E POI PUO' MODIFICARLO. SE HAI DUBBI CHIEDI
     @GetMapping("/infoToModify/{id_immobile}")
-    public ResponseEntity<ImmobileDTO> getImmobileInformationForUpdate(@PathVariable("id_immobile") Long idImmobile,
-                                                                     @AuthenticationPrincipal SecuredUser authenticatedUser){
+    public String getImmobileInformationForUpdate(@PathVariable("id_immobile") Long idImmobile, ModelMap model){
         try{
-            if(authenticatedUser != null){
+            Optional<Utente> authenticatedUser = authService.getAuthUtente();
+            if(authenticatedUser.isPresent()) {
                 // se l'utente è autenticato allora posso vedere i dati del singolo immobile
-                Optional<ImmobileDTO> storedImmobile = immobileService.getImmobileByIdToUpdate(idImmobile, authenticatedUser.getUtenteInformation());
+                Optional<ImmobileDTO> storedImmobile = immobileService.getImmobileByIdToUpdate(idImmobile, authenticatedUser.get());
                 if(storedImmobile.isPresent()){
-                    return new ResponseEntity<>(storedImmobile.get(), HttpStatus.OK);
+                    model.addAttribute("message", "Informazioni aggiornate con successo");
+                    return "inserisci_pagina_html_peppe";
                 }else{
-                    return new ResponseEntity<>((ImmobileDTO) null, HttpStatus.BAD_REQUEST);
+                    model.addAttribute("error", "Errore nell'aggiornamento delle informazioni dell'utente");
+                    return "inserisci_pagina_html_peppe";
                 }
             }else{
-                return new ResponseEntity<>((ImmobileDTO) null, HttpStatus.UNAUTHORIZED);
+                model.addAttribute("error", "Bisogna esssere autenticati per aggiornare le informazioni");
+                return "inserisci_pagina_html_peppe";
             }
 
 
-        }catch (ImmobileException error){
-            return new ResponseEntity<>((ImmobileDTO) null, HttpStatus.BAD_REQUEST);
-        }catch (Exception error){
-            return new ResponseEntity<>((ImmobileDTO) null, HttpStatus.METHOD_NOT_ALLOWED);
+        }catch (ImmobileException | UtenteException error){
+            model.addAttribute("error", error.getMessage());
+            return "inserisci_pagina_html_peppe";
         }
     }
 
     // Permette di far visualizzare all'utente la lista di tutti gli immobili da lui caricati
     @GetMapping("/getImmobiliUtente/{offset}/{pageSize}")
-    public ResponseEntity<List<GetUtenteImmobiliDTO>> getListaImmobiliUtente(@PathVariable("offset") Long offset,
-                                                                             @PathVariable("pageSize") @Max(20) Long pageSize,
-                                                                             @AuthenticationPrincipal SecuredUser authUser){
+    public String getListaImmobiliUtente(@PathVariable("offset") Long offset,
+                                         @PathVariable("pageSize") @Min(1) @Max(20) Long pageSize,
+                                         ModelMap model){
         try{
-            if(authUser != null){
-                List<GetUtenteImmobiliDTO> foundedImmobili = immobileService.getUtenteListaImmobili(offset, pageSize, authUser.getUtenteInformation());
+
+            Optional<Utente> authenticatedUser = authService.getAuthUtente();
+            if(authenticatedUser.isPresent()) {
+                List<GetUtenteImmobiliDTO> foundedImmobili = immobileService.getUtenteListaImmobili(offset, pageSize,
+                        authenticatedUser.get());
                 if(!foundedImmobili.isEmpty()){
-                    return new ResponseEntity<>(foundedImmobili, HttpStatus.BAD_REQUEST);
+                    model.addAttribute("listaImmobili", foundedImmobili);
+                    return "inserisci_pagina_html_peppe";
                 }else{
-                    return new ResponseEntity<>(List.of(), HttpStatus.BAD_REQUEST);
+                    model.addAttribute("listaImmobili", List.of());
+                    return "inserisci_pagina_html_peppe";
                 }
             }else{
-                return new ResponseEntity<>(List.of(), HttpStatus.UNAUTHORIZED);
+                model.addAttribute("listaImmobili", "Bisogna essere autenticati per prendere questa informazione");
+                return "inserisci_pagina_html_peppe";
             }
 
-        }catch (ImmobileException error){
-            return new ResponseEntity<>(List.of(), HttpStatus.BAD_REQUEST);
-        }catch (Exception error){
-            return new ResponseEntity<>(List.of(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }catch (ImmobileException | UtenteException error){
+            model.addAttribute("listaImmobili", error.getMessage());
+            return "inserisci_pagina_html_peppe";
         }
     }
 
@@ -148,7 +164,7 @@ public class ImmobileController {
         try{
             Optional<Utente> securedUser = authService.getAuthUtente();
             if(securedUser.isPresent()){
-                List<GetImmobileInfoDTO> foundedImmobili = immobileService.getAllImmobiliPaginated(offset, pageSize);
+                List<HomeImmobileDTO> foundedImmobili = immobileService.getAllImmobiliPaginated(offset, pageSize);
                 if(!foundedImmobili.isEmpty()){
                     model.addAttribute("listImmobili", foundedImmobili);
                     return "Home";
@@ -161,9 +177,6 @@ public class ImmobileController {
                 return "Fail";
             }
 
-        }catch (ImmobileException error){
-            model.addAttribute("error", error.getMessage());
-            return "Fail";
         }catch (Exception error){
             model.addAttribute("error", error.getMessage());
             return "Fail";
@@ -173,28 +186,29 @@ public class ImmobileController {
     // È l'url che permette di aggiornare le informazioni di un immobile, quando viene richiamato si inviamo tutte le
     // informazioni modificate di un immobile
     @PutMapping("/updateInfo/{id_immobile}")
-    public ResponseEntity<String> modifyImmobileInfo(@ModelAttribute ImmobileDTO tempUpdatedimmobileDTO,
-                                                     @PathVariable("id_immobile") Long idImmobile,
-                                                     @AuthenticationPrincipal SecuredUser authenticatedUser){
+    public String modifyImmobileInfo(@ModelAttribute ImmobileDTO tempUpdatedimmobileDTO,
+                                     @PathVariable("id_immobile") Long idImmobile,
+                                     ModelMap model){
         try{
-            if(authenticatedUser != null){
+            Optional<Utente> authenticatedUser = authService.getAuthUtente();
+            if(authenticatedUser.isPresent()) {
                 Optional<Immobile> newImmobile = immobileService.updateImmobileInformation(tempUpdatedimmobileDTO,
-                                                                        authenticatedUser.getUtenteInformation(), idImmobile);
+                                                                        authenticatedUser.get(), idImmobile);
                 if(newImmobile.isPresent()){
-                    return new ResponseEntity<>("Immobile registrato correttamente", HttpStatus.OK);
+                    model.addAttribute("message", "Domanda inserita con successo");
+                    return "inserisci_pagina_html_peppe";
                 }else{
-                    return new ResponseEntity<>("Errore nella registrazione di un nuovo immobile", HttpStatus.BAD_REQUEST);
+                    model.addAttribute("message", "Domanda inserita con successo");
+                    return "inserisci_pagina_html_peppe";
                 }
             }else{
-                return new ResponseEntity<>("Effettuare il login per creare un nuovo immboile", HttpStatus.UNAUTHORIZED);
+                model.addAttribute("message", "Domanda inserita con successo");
+                return "inserisci_pagina_html_peppe";
             }
 
-        }catch (UtenteException error){
-            return new ResponseEntity<>(error.getMessage(), HttpStatus.UNAUTHORIZED);
-        }        catch (ImmobileException error){
-            return new ResponseEntity<>(error.getMessage(), HttpStatus.BAD_REQUEST);
-        }catch (Exception error){
-            return new ResponseEntity<>(error.getMessage(), HttpStatus.METHOD_NOT_ALLOWED);
+        }catch (UtenteException | ImmobileException error){
+            model.addAttribute("error", error.getMessage());
+            return "Fail";
         }
 
     }

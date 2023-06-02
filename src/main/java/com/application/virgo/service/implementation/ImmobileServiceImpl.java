@@ -1,13 +1,11 @@
 package com.application.virgo.service.implementation;
 
-import com.application.virgo.DTO.Mapper.DomandaImmobileMapper;
-import com.application.virgo.DTO.Mapper.ImmobileInformationMapper;
-import com.application.virgo.DTO.Mapper.ImmobileMapper;
-import com.application.virgo.DTO.Mapper.ImmobiliDataUtente;
+import com.application.virgo.DTO.Mapper.*;
 import com.application.virgo.DTO.inputDTO.DomandaDTO;
 import com.application.virgo.DTO.inputDTO.ImmobileDTO;
 import com.application.virgo.DTO.outputDTO.GetImmobileInfoDTO;
 import com.application.virgo.DTO.outputDTO.GetUtenteImmobiliDTO;
+import com.application.virgo.DTO.outputDTO.HomeImmobileDTO;
 import com.application.virgo.exception.ImmobileException;
 import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.Domanda;
@@ -41,6 +39,7 @@ public class ImmobileServiceImpl implements ImmobileService {
     private final ImmobileJpaRepository immobileRepo;
     private final ImmobileMapper mapperImmobile;
     private final ImmobileInformationMapper mapperInformation;
+    private final HomeImmobileMapper mapperHomeInformation;
     private final ImmobiliDataUtente mapperUtenteInformation;
     private final DomandaImmobileMapper mapperDomande;
 
@@ -267,13 +266,13 @@ public class ImmobileServiceImpl implements ImmobileService {
     }
 
     @Override
-    public List<GetImmobileInfoDTO> getAllImmobiliPaginated(Long inidiceIniziale, Long pageSize) throws ImmobileException{
+    public List<HomeImmobileDTO> getAllImmobiliPaginated(Long inidiceIniziale, Long pageSize) throws ImmobileException{
 
         if(inidiceIniziale < pageSize - immobileRepo.countByIdImmobile() ){
             if(pageSize < 50){
                 Page<Immobile> listImmobili = immobileRepo.findAll(PageRequest.of(inidiceIniziale.intValue(), pageSize.intValue()));
                 // converte con la stream una page di immobili in una lista di getImmobileInfoDTO
-                return listImmobili.stream().map(mapperInformation).collect(Collectors.toList());
+                return listImmobili.stream().map(mapperHomeInformation).collect(Collectors.toList());
             }else {
                 throw new ImmobileException("2 - Attenzione il numero dell'elemento da cui partire è troppo alto " + pageSize);
             }
@@ -296,8 +295,8 @@ public class ImmobileServiceImpl implements ImmobileService {
     public List<GetUtenteImmobiliDTO> getUtenteListaImmobili(Long inidiceIniziale, Long pageSize, Utente authUser)
             throws ImmobileException, UtenteException {
         if(authUser != null){
-            if(inidiceIniziale > immobileRepo.countByIdImmobile() - pageSize){
-                if(pageSize > 20){
+            if(inidiceIniziale < pageSize -immobileRepo.countByIdImmobile() ){
+                if(pageSize < 50){
                     Page<Immobile> listImmobili = immobileRepo.getUtenteImmobiliList(authUser.getIdUtente(),
                             PageRequest.of(inidiceIniziale.intValue(), pageSize.intValue()));
                     // converte con la stream una page di immobili in una lista di getImmobileInfoDTO

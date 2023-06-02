@@ -1,20 +1,19 @@
 package com.application.virgo.DTO.outputDTO;
 
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import java.time.LocalDate;
+import java.util.List;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetUtenteImmobiliDTO {
+@Data
+public class HomeImmobileDTO {
 
     private Long idImmobile;
-    private LocalDate dataCreazioneImmobile;
 
     private String descrizione;
     private String titolo;
@@ -24,10 +23,5 @@ public class GetUtenteImmobiliDTO {
     private String locali;
     private String metriQuadri;
 
-    private Boolean isEnabled;
 
-    private String via;
-    private String cap;
-    private String citta;
-    private String provincia;
 }

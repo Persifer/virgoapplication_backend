@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,33 +27,35 @@ public class UtenteController {
     @Autowired
     private UtenteService utenteService;
     @PutMapping("/updateData/{id_utente}")
-    public ResponseEntity<String> updateUtenteInformation(@PathVariable("id_utente") Long idUtenteDaModificare,
-                                                          @ModelAttribute UtenteDTO updatedUtente, @AuthenticationPrincipal SecuredUser authenticatedUtente){
+    public String updateUtenteInformation(@PathVariable("id_utente") Long idUtenteDaModificare,
+                                          @ModelAttribute UtenteDTO updatedUtente,
+                                          ModelMap model){
         try{
             utenteService.updateUtenteInfoById(idUtenteDaModificare, updatedUtente);
-            return new ResponseEntity<String>("Utente aggiornato correttamente", HttpStatus.OK);
+            model.addAttribute("message", "Utente aggiornato correttamente");
+            return "inserisci_pagina_html_peppe";
         }catch (UtenteException error){
-            return new ResponseEntity<String>(error.getMessage(), HttpStatus.BAD_REQUEST);
-        }catch (Exception error){
-            return new ResponseEntity<String>(error.getMessage(), HttpStatus.METHOD_NOT_ALLOWED);
+            model.addAttribute("error", error.getMessage());
+            return "inserisci_pagina_html_peppe";
         }
 
     }
 
     @GetMapping("/getInfo/{id_utente}")
-    public ResponseEntity<UtenteDTO> getUsernameInformation(@PathVariable("id_utente") String idUtente){
+    public String getUsernameInformation(@PathVariable("id_utente")String idUtente, ModelMap model ){
         try{
             Optional<UtenteDTO> utenteInfo = utenteService.getUtenteById(Long.parseLong(idUtente));
             if(utenteInfo.isPresent()){
-                return new ResponseEntity<UtenteDTO>(utenteInfo.get(), HttpStatus.OK);
+                model.addAttribute("utente", utenteInfo.get());
+                return "inserisci_pagina_html_peppe";
             }else{
-                return new ResponseEntity<UtenteDTO>((UtenteDTO) null, HttpStatus.BAD_REQUEST);
+                model.addAttribute("error", "Utente non trovato");
+                return "inserisci_pagina_html_peppe";
             }
 
         }catch (UtenteException error){
-            return new ResponseEntity<UtenteDTO>((UtenteDTO) null, HttpStatus.BAD_REQUEST);
-        }catch (Exception error){
-            return new ResponseEntity<UtenteDTO>((UtenteDTO) null, HttpStatus.METHOD_NOT_ALLOWED);
+            model.addAttribute("error", "Utente non trovato");
+            return "inserisci_pagina_html_peppe";
         }
     }
 }

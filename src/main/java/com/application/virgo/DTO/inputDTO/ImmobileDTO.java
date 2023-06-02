@@ -25,6 +25,8 @@ public class ImmobileDTO {
     private LocalDate dataCreazioneImmobile;
 
     private String descrizione;
+    private String titolo;
+
     @NotNull
     private Float prezzo;
     @Pattern(regexp = "[1-9]*")

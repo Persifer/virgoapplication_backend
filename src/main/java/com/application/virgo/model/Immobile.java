@@ -21,7 +21,9 @@ public class Immobile {
     private LocalDate dataUltimoRestauro;
     private LocalDate dataAcquisizione;
     private LocalDate dataCreazioneImmobile;
+
     private String descrizione;
+    private String titolo;
 
     private String locali;
     private String metriQuadri;

@@ -22,6 +22,8 @@ public class ImmobileMapper implements Function<Immobile, ImmobileDTO> {
         ImmobileDTO immobileDto = new ImmobileDTO();
 
         immobileDto.setDescrizione(immobile.getDescrizione() != null ? immobile.getDescrizione() : "");
+        immobileDto.setTitolo(immobile.getTitolo() != null ? immobile.getTitolo() : "");
+
         immobileDto.setDataUltimoRestauro(immobile.getDataUltimoRestauro() != null ? immobile.getDataUltimoRestauro() : null);
         immobileDto.setDataAcquisizione(immobile.getDataAcquisizione() != null ? immobile.getDataAcquisizione() : null);
 

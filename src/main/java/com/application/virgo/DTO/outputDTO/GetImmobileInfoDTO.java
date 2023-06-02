@@ -24,6 +24,7 @@ public class GetImmobileInfoDTO {
     private LocalDate dataCreazioneImmobile;
 
     private String descrizione;
+    private String titolo;
     private Float prezzo;
 
     private String locali;

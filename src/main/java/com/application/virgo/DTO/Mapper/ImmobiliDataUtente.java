@@ -18,6 +18,8 @@ public class ImmobiliDataUtente implements Function<Immobile, GetUtenteImmobiliD
         immobileDto.setIdImmobile(immobile.getIdImmobile() != null ? immobile.getIdImmobile() : null);
 
         immobileDto.setDescrizione(immobile.getDescrizione() != null ? immobile.getDescrizione() : "");
+        immobileDto.setTitolo(immobile.getTitolo() != null ? immobile.getTitolo() : "");
+
         immobileDto.setPrezzo(immobile.getPrezzo() != null ? immobile.getPrezzo() : 0.0f);
 
         immobileDto.setLocali(immobile.getLocali() != null ? immobile.getLocali() : "");

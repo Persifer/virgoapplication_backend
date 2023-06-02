@@ -35,6 +35,7 @@ public class VirgoApplication {
 	*  7. Caricamento delle immagini nella sezione creazione e nella sezione modifica
 	*  8. Visualizzazione delle immagini nella pagina di un immobile
 	*  9. Test
+	*  12. Implementa modifica utente
 	*
 	*
 	* */

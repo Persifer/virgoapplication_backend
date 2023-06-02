@@ -2,6 +2,7 @@ package com.application.virgo.service.implementation;
 
 import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.Utente;
+import com.application.virgo.service.interfaces.AuthService;
 import com.application.virgo.service.interfaces.UtenteService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -14,7 +15,7 @@ import java.util.Optional;
 @Service
 @Transactional
 @AllArgsConstructor
-public class AuthServiceImpl {
+public class AuthServiceImpl implements AuthService {
 
     private final UtenteService utenteService;
 
