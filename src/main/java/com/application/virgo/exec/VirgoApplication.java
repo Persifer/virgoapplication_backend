@@ -36,6 +36,7 @@ public class VirgoApplication {
 	*  8. Visualizzazione delle immagini nella pagina di un immobile
 	*  9. Test
 	*  12. Implementa modifica utente
+	*  13. Metti un offset fisso e non dato dall'utente
 	*
 	*
 	* */

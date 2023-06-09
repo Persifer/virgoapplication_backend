@@ -2,10 +2,14 @@ package com.application.virgo.service.interfaces;
 
 import com.application.virgo.DTO.inputDTO.LoginUtenteDTO;
 import com.application.virgo.DTO.inputDTO.UtenteDTO;
+import com.application.virgo.DTO.outputDTO.ViewListaOfferte;
+import com.application.virgo.exception.OffertaUtenteException;
 import com.application.virgo.exception.UtenteException;
+import com.application.virgo.model.ComposedRelationship.OfferteUtente;
 import com.application.virgo.model.Domanda;
 import com.application.virgo.model.Utente;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UtenteService {
@@ -23,4 +27,6 @@ public interface UtenteService {
     void addDomandaToUtente(Utente authUser, Domanda domandaToAdd) throws UtenteException;
 
     Optional<Utente> getUtenteClassById(Long idProprietario) throws UtenteException;
+
+    List<ViewListaOfferte> getListaOfferte(Utente propietario,Long offset, Long pageSize) throws OffertaUtenteException, UtenteException;
 }

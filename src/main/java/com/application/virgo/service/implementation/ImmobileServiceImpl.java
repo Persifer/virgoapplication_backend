@@ -14,6 +14,7 @@ import com.application.virgo.model.Utente;
 import com.application.virgo.repositories.ImmobileJpaRepository;
 import com.application.virgo.service.interfaces.ImmobileService;
 import com.application.virgo.service.interfaces.UtenteService;
+import com.application.virgo.utilities.Constants;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.core.Local;
@@ -269,7 +270,7 @@ public class ImmobileServiceImpl implements ImmobileService {
     public List<HomeImmobileDTO> getAllImmobiliPaginated(Long inidiceIniziale, Long pageSize) throws ImmobileException{
 
         if(inidiceIniziale < pageSize - immobileRepo.countByIdImmobile() ){
-            if(pageSize < 50){
+            if(pageSize < Constants.PAGE_SIZE){
                 Page<Immobile> listImmobili = immobileRepo.findAll(PageRequest.of(inidiceIniziale.intValue(), pageSize.intValue()));
                 // converte con la stream una page di immobili in una lista di getImmobileInfoDTO
                 return listImmobili.stream().map(mapperHomeInformation).collect(Collectors.toList());
@@ -296,7 +297,7 @@ public class ImmobileServiceImpl implements ImmobileService {
             throws ImmobileException, UtenteException {
         if(authUser != null){
             if(inidiceIniziale < pageSize -immobileRepo.countByIdImmobile() ){
-                if(pageSize < 50){
+                if(pageSize < Constants.PAGE_SIZE){
                     Page<Immobile> listImmobili = immobileRepo.getUtenteImmobiliList(authUser.getIdUtente(),
                             PageRequest.of(inidiceIniziale.intValue(), pageSize.intValue()));
                     // converte con la stream una page di immobili in una lista di getImmobileInfoDTO

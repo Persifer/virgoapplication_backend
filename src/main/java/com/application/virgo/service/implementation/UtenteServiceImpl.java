@@ -1,25 +1,33 @@
 package com.application.virgo.service.implementation;
 
+import com.application.virgo.DTO.Mapper.ViewListaOfferteMapper;
 import com.application.virgo.DTO.inputDTO.LoginUtenteDTO;
 
 import com.application.virgo.DTO.Mapper.UtenteMapper;
 import com.application.virgo.DTO.inputDTO.UtenteDTO;
+import com.application.virgo.DTO.outputDTO.ViewListaOfferte;
+import com.application.virgo.exception.OffertaUtenteException;
 import com.application.virgo.exception.UtenteException;
+import com.application.virgo.model.ComposedRelationship.OfferteUtente;
 import com.application.virgo.model.Domanda;
 import com.application.virgo.model.Ruolo;
 import com.application.virgo.model.Utente;
 import com.application.virgo.repositories.RuoloJpaRepository;
 import com.application.virgo.repositories.UtenteJpaRepository;
+import com.application.virgo.service.interfaces.OffertaUtenteService;
 import com.application.virgo.service.interfaces.UtenteService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.application.virgo.utilities.Constants.*;
 
@@ -37,7 +45,11 @@ public class UtenteServiceImpl implements UtenteService {
 
     private UtenteJpaRepository utenteRepo;
     private PasswordEncoder passwordEncoder;
+
     private UtenteMapper mapperUtente;
+    private ViewListaOfferteMapper mapperOfferteUtente;
+
+    private OffertaUtenteService offerteUtenteService;
     private RuoloJpaRepository ruoloRepo;
 
     // metodo che restituisce un utente tramite l'email e la password
@@ -65,6 +77,26 @@ public class UtenteServiceImpl implements UtenteService {
             throw new UtenteException("L'utente selezionato non esiste, se ne inserica un altro");
         }
 
+    }
+
+    /**
+     *
+     * @param proprietario istanze della classe utente che rappresenta il proprietario
+     * @param offset indice di inizio della paginazione
+     * @param pageSize grandezza della pagina
+     * @return Ritorna la lista di offerte di un utente dove lui è il proprietario
+     * @throws OffertaUtenteException quando non trova una pagina
+     * @throws UtenteException quando l'utente non è autenticato
+     */
+    @Override
+    public List<ViewListaOfferte> getListaOfferte(Utente proprietario, Long offset,Long pageSize)
+            throws OffertaUtenteException, UtenteException {
+
+        Page<OfferteUtente> listOfferteUtente = offerteUtenteService.getOfferteForUtenteProprietario(proprietario, offset, pageSize);
+        if(!listOfferteUtente.isEmpty()){
+            return listOfferteUtente.stream().map(mapperOfferteUtente).collect(Collectors.toList())
+        }
+        return List.of();
     }
 
     public Optional<Utente> getUtenteClassByEmail(String emailUtenteToFound) throws UtenteException{

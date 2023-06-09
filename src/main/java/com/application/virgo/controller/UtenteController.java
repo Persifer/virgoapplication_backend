@@ -1,9 +1,14 @@
 package com.application.virgo.controller;
 
 import com.application.virgo.DTO.inputDTO.UtenteDTO;
+import com.application.virgo.DTO.outputDTO.ViewListaOfferte;
+import com.application.virgo.exception.OffertaUtenteException;
 import com.application.virgo.exception.UtenteException;
+import com.application.virgo.model.Utente;
+import com.application.virgo.service.interfaces.AuthService;
 import com.application.virgo.service.interfaces.UtenteService;
 import com.application.virgo.wrapperclass.SecuredUser;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +18,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 /*
@@ -21,19 +27,30 @@ import java.util.Optional;
 * */
 @Controller
 @RequestMapping("/site/utente")
+@AllArgsConstructor
 @Validated
 public class UtenteController {
 
-    @Autowired
+
     private UtenteService utenteService;
-    @PutMapping("/updateData/{id_utente}")
+    private AuthService authService;
+    @PutMapping("/updateData")
     public String updateUtenteInformation(@PathVariable("id_utente") Long idUtenteDaModificare,
                                           @ModelAttribute UtenteDTO updatedUtente,
                                           ModelMap model){
+
+
         try{
-            utenteService.updateUtenteInfoById(idUtenteDaModificare, updatedUtente);
-            model.addAttribute("message", "Utente aggiornato correttamente");
-            return "inserisci_pagina_html_peppe";
+            Optional<Utente> authUser = authService.getAuthUtente();
+            if(authUser.isPresent()){
+                utenteService.updateUtenteInfoById(idUtenteDaModificare, updatedUtente);
+                model.addAttribute("message", "Utente aggiornato correttamente");
+                return "inserisci_pagina_html_peppe";
+            }else{
+                model.addAttribute("error", "Bisogna essere autenticati per modificare i dati!");
+                return "inserisci_pagina_html_peppe";
+            }
+
         }catch (UtenteException error){
             model.addAttribute("error", error.getMessage());
             return "inserisci_pagina_html_peppe";
@@ -42,9 +59,9 @@ public class UtenteController {
     }
 
     @GetMapping("/getInfo/{id_utente}")
-    public String getUsernameInformation(@PathVariable("id_utente")String idUtente, ModelMap model ){
+    public String getUsernameInformation(@PathVariable("id_utente")Long idUtente, ModelMap model ){
         try{
-            Optional<UtenteDTO> utenteInfo = utenteService.getUtenteById(Long.parseLong(idUtente));
+            Optional<UtenteDTO> utenteInfo = utenteService.getUtenteById(idUtente);
             if(utenteInfo.isPresent()){
                 model.addAttribute("utente", utenteInfo.get());
                 return "inserisci_pagina_html_peppe";
@@ -54,6 +71,24 @@ public class UtenteController {
             }
 
         }catch (UtenteException error){
+            model.addAttribute("error", "Utente non trovato");
+            return "inserisci_pagina_html_peppe";
+        }
+    }
+
+    @GetMapping("/getListOfferte/{offset}/{pageSize}/")
+    public String getOfferteRicevute(ModelMap model, @PathVariable("offset") Long offset, @PathVariable("pageSize") Long pageSize){
+        try{
+            Optional<Utente> authUser = authService.getAuthUtente();
+            if(authUser.isPresent()){
+                List<ViewListaOfferte> listaOfferte = utenteService.getListaOfferte(authUser.get(), offset, pageSize);
+                model.addAttribute("listaOfferte", listaOfferte);
+                return "Ciao";
+            }else{
+                model.addAttribute("error", "Utente non autenticato");
+                return "inserisci_pagina_html_peppe";
+            }
+        }catch (UtenteException | OffertaUtenteException error){
             model.addAttribute("error", "Utente non trovato");
             return "inserisci_pagina_html_peppe";
         }
