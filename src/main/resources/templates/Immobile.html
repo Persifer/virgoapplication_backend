@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dettagli immobile</title>
+</head>
+<body>
+<h1>Dettagli immobile selezionato</h1>
+<table>
+    <tr>
+        <th>Titolo</th>
+        <td th:text="${immobile.titolo}"></td>
+    </tr>
+    <tr>
+        <th>Descrizione</th>
+        <td th:text="${immobile.descrizione}"></td>
+    </tr>
+    <tr>
+        <th>Data ultimo restauro</th>
+        <td th:text="${immobile.dataUltimoRestauro}"></td>
+    </tr>
+    <tr>
+        <th>Data acquisizione</th>
+        <td th:text="${immobile.dataAcquisizione}"></td>
+    </tr>
+    <tr>
+        <th>Data creazione immobile</th>
+        <td th:text="${immobile.dataCreazioneImmobile}"></td>
+    </tr>
+    <tr>
+        <th>Prezzo</th>
+        <td th:text="${immobile.prezzo}"></td>
+    </tr>
+    <tr>
+        <th>Locali</th>
+        <td th:text="${immobile.locali}"></td>
+    </tr>
+    <tr>
+        <th>Metri quadrati</th>
+        <td th:text="${immobile.metriQuadri}"></td>
+    </tr>
+    <tr>
+        <th>Via</th>
+        <td th:text="${immobile.via}"></td>
+    </tr>
+    <tr>
+        <th>CAP</th>
+        <td th:text="${immobile.cap}"></td>
+    </tr>
+    <tr>
+        <th>Città</th>
+        <td th:text="${immobile.citta}"></td>
+    </tr>
+    <tr>
+        <th>Provincia</th>
+        <td th:text="${immobile.provincia}"></td>
+    </tr>
+</table>
+<h2>Commenta immobile</h2>
+<form action="#" th:action="@{/immobile/comment}" method="post">
+    <textarea name="commento" rows="4" cols="50" required></textarea><br>
+    <button type="submit">Invia commento</button>
+</form>
+</body>
+</html>

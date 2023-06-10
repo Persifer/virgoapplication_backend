@@ -79,20 +79,20 @@ public class ImmobileController {
                 Optional<GetImmobileInfoDTO> storedImmobile = immobileService.getImmobileById(idImmobile);
                 if(storedImmobile.isPresent()){
                     model.addAttribute("wantedImmobile", storedImmobile);
-                    return "inserisci_pagina_html_peppe";
+                    return "Immobile";
                 }else{
                     model.addAttribute("error", "L'immobile voluto non è presente");
-                    return "inserisci_pagina_html_peppe";
+                    return "Fail";
                 }
             }else{
                 model.addAttribute("error", "Bisogna essere autenticato per richiedere un immobile");
-                return "inserisci_pagina_html_peppe";
+                return "Login";
             }
 
 
         }catch (ImmobileException | UtenteException error){
             model.addAttribute("error", error.getMessage());
-            return "inserisci_pagina_html_peppe";
+            return "Fail";
         }
     }
 
@@ -108,20 +108,20 @@ public class ImmobileController {
                 Optional<ImmobileDTO> storedImmobile = immobileService.getImmobileByIdToUpdate(idImmobile, authenticatedUser.get());
                 if(storedImmobile.isPresent()){
                     model.addAttribute("message", "Informazioni aggiornate con successo");
-                    return "inserisci_pagina_html_peppe";
+                    return "Immobile";
                 }else{
                     model.addAttribute("error", "Errore nell'aggiornamento delle informazioni dell'utente");
-                    return "inserisci_pagina_html_peppe";
+                    return "Fail";
                 }
             }else{
                 model.addAttribute("error", "Bisogna esssere autenticati per aggiornare le informazioni");
-                return "inserisci_pagina_html_peppe";
+                return "Login";
             }
 
 
         }catch (ImmobileException | UtenteException error){
             model.addAttribute("error", error.getMessage());
-            return "inserisci_pagina_html_peppe";
+            return "Fail";
         }
     }
 
@@ -138,19 +138,19 @@ public class ImmobileController {
                         authenticatedUser.get());
                 if(!foundedImmobili.isEmpty()){
                     model.addAttribute("listaImmobili", foundedImmobili);
-                    return "inserisci_pagina_html_peppe";
+                    return "Utente";
                 }else{
                     model.addAttribute("listaImmobili", List.of());
-                    return "inserisci_pagina_html_peppe";
+                    return "Utente";
                 }
             }else{
                 model.addAttribute("listaImmobili", "Bisogna essere autenticati per prendere questa informazione");
-                return "inserisci_pagina_html_peppe";
+                return "Login";
             }
 
         }catch (ImmobileException | UtenteException error){
             model.addAttribute("listaImmobili", error.getMessage());
-            return "inserisci_pagina_html_peppe";
+            return "Fail";
         }
     }
 
@@ -196,14 +196,14 @@ public class ImmobileController {
                                                                         authenticatedUser.get(), idImmobile);
                 if(newImmobile.isPresent()){
                     model.addAttribute("message", "Domanda inserita con successo");
-                    return "inserisci_pagina_html_peppe";
+                    return "Immobile";
                 }else{
                     model.addAttribute("message", "Domanda inserita con successo");
-                    return "inserisci_pagina_html_peppe";
+                    return "Immobile";
                 }
             }else{
                 model.addAttribute("message", "Domanda inserita con successo");
-                return "inserisci_pagina_html_peppe";
+                return "Immobile";
             }
 
         }catch (UtenteException | ImmobileException error){
