@@ -1,25 +1,23 @@
 package com.application.virgo.DTO.Mapper;
 
-import com.application.virgo.DTO.inputDTO.UtenteDTO;
-import com.application.virgo.DTO.outputDTO.ViewListaOfferte;
+import com.application.virgo.DTO.outputDTO.ViewListaOfferteDTO;
 import com.application.virgo.model.ComposedRelationship.OfferteUtente;
-import com.application.virgo.model.Utente;
 import org.springframework.stereotype.Component;
 
 import java.util.function.Function;
 
 @Component
-public class ViewListaOfferteMapper implements Function<OfferteUtente, ViewListaOfferte> {
+public class ViewListaOfferteMapper implements Function<OfferteUtente, ViewListaOfferteDTO> {
     @Override
-    public ViewListaOfferte apply(OfferteUtente offerteUtente) {
-        ViewListaOfferte viewListaOfferte = new ViewListaOfferte();
+    public ViewListaOfferteDTO apply(OfferteUtente offerteUtente) {
+        ViewListaOfferteDTO viewListaOfferteDTO = new ViewListaOfferteDTO();
 
-        viewListaOfferte.setNomeOfferente(offerteUtente.getOfferente().getNome());
-        viewListaOfferte.setCognomeOfferente(offerteUtente.getOfferente().getCognome());
+        viewListaOfferteDTO.setNomeOfferente(offerteUtente.getOfferente().getNome());
+        viewListaOfferteDTO.setCognomeOfferente(offerteUtente.getOfferente().getCognome());
 
-        viewListaOfferte.setIdOfferente(offerteUtente.getOfferente().getIdUtente());
-        viewListaOfferte.setIdImmobile(offerteUtente.getOffertaInteressata().getIdImmobileInteressato().getIdImmobile());
+        viewListaOfferteDTO.setIdOfferente(offerteUtente.getOfferente().getIdUtente());
+        viewListaOfferteDTO.setIdImmobile(offerteUtente.getOffertaInteressata().getIdImmobileInteressato().getIdImmobile());
 
-        return viewListaOfferte;
+        return viewListaOfferteDTO;
     }
 }

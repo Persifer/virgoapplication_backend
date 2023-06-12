@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface OffertaUtenteJpaRepository extends JpaRepository<OfferteUtente, Long> {
 
@@ -27,6 +29,15 @@ public interface OffertaUtenteJpaRepository extends JpaRepository<OfferteUtente,
     public Page<OfferteUtente> getSpecificOffertaUtenteAsProprietario(Pageable pagable,
                                                                       @Param("idRequestedUtente") Long idProprietario,
                                                                       @Param("idRequestedOfferta") Long idOfferta );
+
+    @Query("SELECT offerta " +
+            "FROM OfferteUtente offerta " +
+            "JOIN Utente utente ON (offerta.proprietario.idUtente = utente.idUtente)" +
+            "WHERE utente.idUtente = :idRequestedUtente AND offerta.offertaInteressata.idOfferta = :idRequestedOfferta " +
+            "AND offerta.offerente.idUtente = :idOfferente")
+    public List<OfferteUtente> getAllOfferteBetweenUtenti(
+                                                          @Param("idRequestedUtente") Long idProprietario,
+                                                          @Param("idOfferente") Long idOfferente);
 
     // Permette di selezionare tutte le offerte proposte di un determinato utente
     @Query("SELECT offerta " +

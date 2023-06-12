@@ -37,6 +37,7 @@ public class VirgoApplication {
 	*  9. Test
 	*  12. Implementa modifica utente
 	*  13. Metti un offset fisso e non dato dall'utente
+	*  14. Creazione metodi per rifiuto e accettazione offerta
 	*
 	*
 	* */

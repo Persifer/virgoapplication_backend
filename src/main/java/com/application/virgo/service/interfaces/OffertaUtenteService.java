@@ -7,6 +7,7 @@ import com.application.virgo.model.Offerta;
 import com.application.virgo.model.Utente;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface OffertaUtenteService {
@@ -16,4 +17,6 @@ public interface OffertaUtenteService {
 
     public Page<OfferteUtente> getOfferteForUtenteProprietario(Utente offerente, Long offset, Long pageSize)
             throws OffertaUtenteException, UtenteException;
+
+    public List<OfferteUtente> allOfferteBetweenUtenti(Utente proprietario, Utente offerente) throws UtenteException;
 }

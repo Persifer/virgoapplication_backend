@@ -1,18 +1,14 @@
 package com.application.virgo.controller;
 
 import com.application.virgo.DTO.inputDTO.UtenteDTO;
-import com.application.virgo.DTO.outputDTO.ViewListaOfferte;
+import com.application.virgo.DTO.outputDTO.ViewListaOfferteDTO;
+import com.application.virgo.DTO.outputDTO.ViewOfferteBetweenUtentiDTO;
 import com.application.virgo.exception.OffertaUtenteException;
 import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.Utente;
 import com.application.virgo.service.interfaces.AuthService;
 import com.application.virgo.service.interfaces.UtenteService;
-import com.application.virgo.wrapperclass.SecuredUser;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
@@ -81,7 +77,7 @@ public class UtenteController {
         try{
             Optional<Utente> authUser = authService.getAuthUtente();
             if(authUser.isPresent()){
-                List<ViewListaOfferte> listaOfferte = utenteService.getListaOfferte(authUser.get(), offset, pageSize);
+                List<ViewListaOfferteDTO> listaOfferte = utenteService.getListaOfferte(authUser.get(), offset, pageSize);
                 model.addAttribute("listaOfferte", listaOfferte);
                 return "Ciao";
             }else{
@@ -89,6 +85,24 @@ public class UtenteController {
                 return "inserisci_pagina_html_peppe";
             }
         }catch (UtenteException | OffertaUtenteException error){
+            model.addAttribute("error", "Utente non trovato");
+            return "inserisci_pagina_html_peppe";
+        }
+    }
+
+    @GetMapping("/getListOfferte/storico/{idUtente}")
+    public String getOfferteBetweenUtenti(ModelMap model, @PathVariable("idUtente") Long idOfferente){
+        try{
+            Optional<Utente> authUser = authService.getAuthUtente();
+            if(authUser.isPresent()){
+                List<ViewOfferteBetweenUtentiDTO> listaOfferte = utenteService.getAllOfferteBetweenUtenti(authUser.get(), idOfferente);
+                model.addAttribute("listaOfferte", listaOfferte);
+                return "Ciao";
+            }else{
+                model.addAttribute("error", "Utente non autenticato");
+                return "inserisci_pagina_html_peppe";
+            }
+        }catch (UtenteException error){
             model.addAttribute("error", "Utente non trovato");
             return "inserisci_pagina_html_peppe";
         }

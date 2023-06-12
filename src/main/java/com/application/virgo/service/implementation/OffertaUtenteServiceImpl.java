@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -74,5 +75,18 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
             throw new UtenteException("L'utente deve essere autenticato");
         }
 
+    }
+
+    @Override
+    public List<OfferteUtente> allOfferteBetweenUtenti(Utente authUser, Utente offerente) throws UtenteException {
+        if (authUser != null){
+            if(offerente != null){
+                return offertaUtenteRepository.getAllOfferteBetweenUtenti(authUser.getIdUtente(), offerente.getIdUtente());
+            }else{
+                throw new UtenteException("Impossibile reperire l'utente che ha proposto le offerte");
+            }
+        }else{
+            throw new UtenteException("Impossibile reperire l'utente autenticato");
+        }
     }
 }

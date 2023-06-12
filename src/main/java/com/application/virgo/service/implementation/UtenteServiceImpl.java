@@ -1,11 +1,12 @@
 package com.application.virgo.service.implementation;
 
 import com.application.virgo.DTO.Mapper.ViewListaOfferteMapper;
-import com.application.virgo.DTO.inputDTO.LoginUtenteDTO;
+import com.application.virgo.DTO.Mapper.ViewOfferteBtwnUtentiMapper;
 
 import com.application.virgo.DTO.Mapper.UtenteMapper;
 import com.application.virgo.DTO.inputDTO.UtenteDTO;
-import com.application.virgo.DTO.outputDTO.ViewListaOfferte;
+import com.application.virgo.DTO.outputDTO.ViewListaOfferteDTO;
+import com.application.virgo.DTO.outputDTO.ViewOfferteBetweenUtentiDTO;
 import com.application.virgo.exception.OffertaUtenteException;
 import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.ComposedRelationship.OfferteUtente;
@@ -17,7 +18,6 @@ import com.application.virgo.repositories.UtenteJpaRepository;
 import com.application.virgo.service.interfaces.OffertaUtenteService;
 import com.application.virgo.service.interfaces.UtenteService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -48,6 +48,7 @@ public class UtenteServiceImpl implements UtenteService {
 
     private UtenteMapper mapperUtente;
     private ViewListaOfferteMapper mapperOfferteUtente;
+    private ViewOfferteBtwnUtentiMapper mapperOfferteBtwnUtenti;
 
     private OffertaUtenteService offerteUtenteService;
     private RuoloJpaRepository ruoloRepo;
@@ -80,7 +81,7 @@ public class UtenteServiceImpl implements UtenteService {
     }
 
     /**
-     *
+     * Permette di avere la lista delle offerte ricevute da un determinato utente
      * @param proprietario istanze della classe utente che rappresenta il proprietario
      * @param offset indice di inizio della paginazione
      * @param pageSize grandezza della pagina
@@ -89,14 +90,34 @@ public class UtenteServiceImpl implements UtenteService {
      * @throws UtenteException quando l'utente non è autenticato
      */
     @Override
-    public List<ViewListaOfferte> getListaOfferte(Utente proprietario, Long offset,Long pageSize)
+    public List<ViewListaOfferteDTO> getListaOfferte(Utente proprietario, Long offset, Long pageSize)
             throws OffertaUtenteException, UtenteException {
 
         Page<OfferteUtente> listOfferteUtente = offerteUtenteService.getOfferteForUtenteProprietario(proprietario, offset, pageSize);
         if(!listOfferteUtente.isEmpty()){
-            return listOfferteUtente.stream().map(mapperOfferteUtente).collect(Collectors.toList())
+            return listOfferteUtente.stream().map(mapperOfferteUtente).collect(Collectors.toList());
         }
         return List.of();
+    }
+
+    @Override
+    public List<ViewOfferteBetweenUtentiDTO> getAllOfferteBetweenUtenti(Utente proprietario, Long idOfferente) throws UtenteException {
+        //Prelevo dal database le informazioni di un utente
+        Optional<Utente> offerente = getUtenteClassById(idOfferente);
+        if(offerente.isPresent()){
+            //Prelevo la lista delle offerte tra due utenti
+            List<OfferteUtente> listaOfferteTraUtenti = offerteUtenteService.allOfferteBetweenUtenti(proprietario, offerente.get());
+            //se non vuota
+            if(!listaOfferteTraUtenti.isEmpty()){
+                //ritorno la lista di elementi
+                return listaOfferteTraUtenti.stream().map(mapperOfferteBtwnUtenti).collect(Collectors.toList());
+            }else{
+                //altrimenti ritorno una lista vuota
+                return List.of();
+            }
+        }else{
+            throw new UtenteException("L'utente che ha proposto le offerte non è stato trovato");
+        }
     }
 
     public Optional<Utente> getUtenteClassByEmail(String emailUtenteToFound) throws UtenteException{
@@ -110,6 +131,14 @@ public class UtenteServiceImpl implements UtenteService {
     }
 
     // fa l'update delle informazioni di un utente identificato tramite id
+
+    /**
+     * Permette di aggiornare le informazioni di un utente
+     * @param idUtente prende l'id dell'utente di cui si vogliono aggiornare le informazioni
+     * @param updatedUtenteDto Prende le informazioni aggiornate
+     * @return L'utente aggiornato
+     * @throws UtenteException se l'utente non è autenticato
+     */
     @Override
     public Optional<Utente> updateUtenteInfoById(Long idUtente, UtenteDTO updatedUtenteDto) throws UtenteException{
         /*Optional<Utente> tempUtente = utenteRepo.findById(idUtente);
