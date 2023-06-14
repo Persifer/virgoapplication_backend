@@ -4,8 +4,8 @@ spring:
     url: jdbc:mysql://aws.connect.psdb.cloud/virgoapplication
    # username: 53cu7vy3p0yjcrt4nmiu virgouser
     #password: pscale_pw_kuuNJmodYMIhlOSpZsR4esgwnWXAmGUhH2vRGHS4lxh
-    username: ftiqqidi7uzbjlhax28d #virgoadmin
-    password: pscale_pw_v9Wi2e56U3fsJruODNHHD88GvqaQ9oP6tumWREK9Ur2
+    username: nqc2oax7yfdfx5suyt7t #virgoadmin
+    password: pscale_pw_lK36DSX7yMDxJIm6FkjeJaTRE93IYZixsfU04FixpmH
   jpa:
     hibernate.ddl-auto: update
     show-sql: false

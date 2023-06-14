@@ -9,6 +9,7 @@ import java.util.function.Function;
 
 @Component
 public class ViewOfferteBtwnUtentiMapper implements Function<OfferteUtente, ViewOfferteBetweenUtentiDTO> {
+
     @Override
     public ViewOfferteBetweenUtentiDTO apply(OfferteUtente offerteUtente) {
 

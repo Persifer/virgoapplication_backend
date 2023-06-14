@@ -1,5 +1,6 @@
 package com.application.virgo.service.implementation;
 
+import com.application.virgo.DTO.inputDTO.UtenteDTO;
 import com.application.virgo.exception.OffertaUtenteException;
 import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.ComposedRelationship.CompoundKey.OffertaUtenteCompoundKey;
@@ -8,6 +9,7 @@ import com.application.virgo.model.Immobile;
 import com.application.virgo.model.Offerta;
 import com.application.virgo.model.Utente;
 import com.application.virgo.repositories.OffertaUtenteJpaRepository;
+import com.application.virgo.repositories.UtenteJpaRepository;
 import com.application.virgo.service.interfaces.OffertaUtenteService;
 import com.application.virgo.service.interfaces.UtenteService;
 import com.application.virgo.utilities.Constants;
@@ -26,8 +28,19 @@ import java.util.Optional;
 @AllArgsConstructor
 public class OffertaUtenteServiceImpl implements OffertaUtenteService{
 
-    private final UtenteService utenteService;
+
+    private final UtenteJpaRepository utenteRepo;
     private final OffertaUtenteJpaRepository offertaUtenteRepository;
+
+    private Optional<Utente> getInformationUtente(Long idUtenteToFound) throws UtenteException{
+        Optional<Utente> tempUtente = utenteRepo.getUtenteByIdUtente(idUtenteToFound);
+        if(tempUtente.isPresent()){
+            return tempUtente;
+        }else{
+            throw new UtenteException("L'utente selezionato non esiste, se ne inserica un altro");
+        }
+
+    }
 
     /**
      *
@@ -41,7 +54,7 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
     public Optional<OfferteUtente> saveOffertaToUtente(Utente offerente, Offerta offertaProposta, Long idVenditore)
         throws UtenteException {
 
-        Optional<Utente> utenteProprietario = utenteService.getUtenteClassById(idVenditore);
+        Optional<Utente> utenteProprietario = getInformationUtente(idVenditore);
         if(utenteProprietario.isPresent()){
 
             OffertaUtenteCompoundKey compoundKeyProprietario = new OffertaUtenteCompoundKey(utenteProprietario.get().getIdUtente(),
