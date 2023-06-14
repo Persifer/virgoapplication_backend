@@ -51,4 +51,15 @@ public class OffertaServiceImpl implements OffertaService {
            throw new ImmobileException("Impossibile utilizzare l'immobile selezionato");
         }
     }
+
+    @Override
+    public Optional<Offerta> getOffertaDetails(Long idOfferta) throws OffertaException {
+        Optional<Offerta> requestedOfferta = offertaRepository.getOffertaByIdOfferta(idOfferta);
+
+        if (requestedOfferta.isPresent()){
+            return requestedOfferta;
+        }else{
+            throw new OffertaException("L'offerta selezionata non esiste");
+        }
+    }
 }

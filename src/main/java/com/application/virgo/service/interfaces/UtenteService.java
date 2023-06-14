@@ -3,6 +3,7 @@ package com.application.virgo.service.interfaces;
 import com.application.virgo.DTO.inputDTO.UtenteDTO;
 import com.application.virgo.DTO.outputDTO.ViewListaOfferteDTO;
 import com.application.virgo.DTO.outputDTO.ViewOfferteBetweenUtentiDTO;
+import com.application.virgo.exception.ImmobileException;
 import com.application.virgo.exception.OffertaUtenteException;
 import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.Domanda;
@@ -29,5 +30,5 @@ public interface UtenteService {
 
     List<ViewListaOfferteDTO> getListaOfferte(Utente propietario, Long offset, Long pageSize) throws OffertaUtenteException, UtenteException;
 
-    List<ViewOfferteBetweenUtentiDTO> getAllOfferteBetweenUtenti(Utente proprietario, Long idOfferente) throws UtenteException;
+    List<ViewOfferteBetweenUtentiDTO> getAllOfferteBetweenUtenti(Utente proprietario, Long idOfferente, Long idImmobile) throws UtenteException, ImmobileException;
 }

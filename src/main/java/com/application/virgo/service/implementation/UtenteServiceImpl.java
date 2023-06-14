@@ -7,6 +7,7 @@ import com.application.virgo.DTO.Mapper.UtenteMapper;
 import com.application.virgo.DTO.inputDTO.UtenteDTO;
 import com.application.virgo.DTO.outputDTO.ViewListaOfferteDTO;
 import com.application.virgo.DTO.outputDTO.ViewOfferteBetweenUtentiDTO;
+import com.application.virgo.exception.ImmobileException;
 import com.application.virgo.exception.OffertaUtenteException;
 import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.ComposedRelationship.OfferteUtente;
@@ -101,12 +102,13 @@ public class UtenteServiceImpl implements UtenteService {
     }
 
     @Override
-    public List<ViewOfferteBetweenUtentiDTO> getAllOfferteBetweenUtenti(Utente proprietario, Long idOfferente) throws UtenteException {
+    public List<ViewOfferteBetweenUtentiDTO> getAllOfferteBetweenUtenti(Utente proprietario, Long idOfferente, Long idImmobile)
+            throws UtenteException, ImmobileException {
         //Prelevo dal database le informazioni di un utente
         Optional<Utente> offerente = getUtenteClassById(idOfferente);
         if(offerente.isPresent()){
             //Prelevo la lista delle offerte tra due utenti
-            List<OfferteUtente> listaOfferteTraUtenti = offerteUtenteService.allOfferteBetweenUtenti(proprietario, offerente.get());
+            List<OfferteUtente> listaOfferteTraUtenti = offerteUtenteService.allOfferteBetweenUtenti(proprietario, offerente.get(), idImmobile);
             //se non vuota
             if(!listaOfferteTraUtenti.isEmpty()){
                 //ritorno la lista di elementi

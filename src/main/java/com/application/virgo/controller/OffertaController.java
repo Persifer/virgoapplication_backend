@@ -1,6 +1,9 @@
 package com.application.virgo.controller;
 
 import com.application.virgo.DTO.inputDTO.InsertOffertaDTO;
+import com.application.virgo.exception.OffertaException;
+import com.application.virgo.exception.OffertaUtenteException;
+import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.ComposedRelationship.OfferteUtente;
 import com.application.virgo.model.Offerta;
 import com.application.virgo.model.Utente;
@@ -77,6 +80,68 @@ public class OffertaController {
             model.addAttribute("error", error.getMessage());
             return "inserisci_pagina_html_peppe";
         }
+    }
+
+    @PutMapping("/accept/{id_proposta}")
+    public String acceptOfferta(@PathVariable("id_proposta") Long idOfferta,
+                                ModelMap model){
+
+        try{
+            Optional<Utente> authenticatedUser = authService.getAuthUtente();
+            if(authenticatedUser.isPresent()) {
+                Optional<OfferteUtente> acceptedOfferta = offertaUtenteService.acceptOfferta(idOfferta, authenticatedUser.get());
+
+                if(acceptedOfferta.isPresent()){
+                    model.addAttribute("error", "Congratulazioni, hai accettato l'offerta");
+                    return "inserisci_pagina_html_peppe";
+                }else{
+                    model.addAttribute("error", "Errore nell'accettazione dell'offerta");
+                    return "inserisci_pagina_html_peppe";
+                }
+
+            }else{
+
+                model.addAttribute("error", "Bisogna essere loggati per quest'azione");
+                return "inserisci_pagina_html_peppe";
+            }
+
+        }catch (UtenteException | OffertaException | OffertaUtenteException error){
+            model.addAttribute("error", error.getMessage());
+            return "inserisci_pagina_html_peppe";
+        }
+
+
+    }
+
+    @PutMapping("/decline/{id_proposta}")
+    public String declineOfferta(@PathVariable("id_proposta") Long idOfferta,
+                                ModelMap model){
+
+        try{
+            Optional<Utente> authenticatedUser = authService.getAuthUtente();
+            if(authenticatedUser.isPresent()) {
+                Optional<OfferteUtente> acceptedOfferta = offertaUtenteService.declineOfferta(idOfferta, authenticatedUser.get());
+
+                if(acceptedOfferta.isPresent()){
+                    model.addAttribute("error", "Peccato, hai rifiutato l'offerta");
+                    return "inserisci_pagina_html_peppe";
+                }else{
+                    model.addAttribute("error", "Errore nel rifiuto dell'offerta");
+                    return "inserisci_pagina_html_peppe";
+                }
+
+            }else{
+
+                model.addAttribute("error", "Bisogna essere loggati per quest'azione");
+                return "inserisci_pagina_html_peppe";
+            }
+
+        }catch (UtenteException | OffertaException | OffertaUtenteException error){
+            model.addAttribute("error", error.getMessage());
+            return "inserisci_pagina_html_peppe";
+        }
+
+
     }
 
 

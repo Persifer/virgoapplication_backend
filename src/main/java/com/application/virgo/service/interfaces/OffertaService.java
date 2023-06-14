@@ -12,4 +12,6 @@ public interface OffertaService {
 
     public Optional<Offerta> createNewOfferta(InsertOffertaDTO datiOfferta)
             throws OffertaException, ImmobileException;
+
+    public Optional<Offerta> getOffertaDetails(Long idOfferta) throws OffertaException;
 }

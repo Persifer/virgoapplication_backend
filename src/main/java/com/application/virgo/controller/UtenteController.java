@@ -3,6 +3,7 @@ package com.application.virgo.controller;
 import com.application.virgo.DTO.inputDTO.UtenteDTO;
 import com.application.virgo.DTO.outputDTO.ViewListaOfferteDTO;
 import com.application.virgo.DTO.outputDTO.ViewOfferteBetweenUtentiDTO;
+import com.application.virgo.exception.ImmobileException;
 import com.application.virgo.exception.OffertaUtenteException;
 import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.Utente;
@@ -90,19 +91,19 @@ public class UtenteController {
         }
     }
 
-    @GetMapping("/getListOfferte/storico/{idUtente}")
-    public String getOfferteBetweenUtenti(ModelMap model, @PathVariable("idUtente") Long idOfferente){
+    @GetMapping("/getListOfferte/storico/{idUtente}/{idImmobile}")
+    public String getOfferteBetweenUtenti(ModelMap model, @PathVariable("idUtente") Long idOfferente, @PathVariable("idImmobile") Long idImmobile){
         try{
             Optional<Utente> authUser = authService.getAuthUtente();
             if(authUser.isPresent()){
-                List<ViewOfferteBetweenUtentiDTO> listaOfferte = utenteService.getAllOfferteBetweenUtenti(authUser.get(), idOfferente);
+                List<ViewOfferteBetweenUtentiDTO> listaOfferte = utenteService.getAllOfferteBetweenUtenti(authUser.get(), idOfferente, idImmobile);
                 model.addAttribute("listaOfferte", listaOfferte);
                 return "Ciao";
             }else{
                 model.addAttribute("error", "Utente non autenticato");
                 return "inserisci_pagina_html_peppe";
             }
-        }catch (UtenteException error){
+        }catch (UtenteException | ImmobileException error){
             model.addAttribute("error", "Utente non trovato");
             return "inserisci_pagina_html_peppe";
         }
