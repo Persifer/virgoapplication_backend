@@ -20,9 +20,15 @@ public interface OffertaUtenteService {
     public Page<OfferteUtente> getOfferteForUtenteProprietario(Utente offerente, Long offset, Long pageSize)
             throws OffertaUtenteException, UtenteException;
 
-    public List<OfferteUtente> allOfferteBetweenUtenti(Utente proprietario, Utente offerente, Long idImmobile) throws UtenteException, ImmobileException;
+    public List<OfferteUtente> allOfferteBetweenUtenti(Utente proprietario, Utente offerente, Long idImmobile)
+            throws UtenteException, ImmobileException;
 
-    public Optional<OfferteUtente> acceptOfferta(Long idOfferta, Utente authUser) throws OffertaException, OffertaUtenteException, UtenteException;
+    public Optional<OfferteUtente> acceptOfferta(Long idOfferta, Utente authUser)
+            throws OffertaException, OffertaUtenteException, UtenteException;
 
-    public Optional<OfferteUtente> declineOfferta(Long idOfferta, Utente authUser) throws OffertaException, OffertaUtenteException, UtenteException;
+    public Optional<OfferteUtente> declineOfferta(Long idOfferta, Utente authUser)
+            throws OffertaException, OffertaUtenteException, UtenteException;
+
+    public Page<OfferteUtente> getOfferteProposte(Utente offerente, Long offset, Long pageSize)
+            throws OffertaUtenteException, UtenteException;
 }

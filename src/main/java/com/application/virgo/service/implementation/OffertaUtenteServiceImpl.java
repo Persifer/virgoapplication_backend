@@ -85,7 +85,8 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
         if(authUser != null){
             if(pageSize < Constants.PAGE_SIZE){
                 return offertaUtenteRepository.getAllOfferteUtenteAsProprietario(
-                        PageRequest.of(offset.intValue(), pageSize.intValue()), authUser.getIdUtente()
+                        PageRequest.of(offset.intValue(), pageSize.intValue()),
+                        authUser.getIdUtente()
                 );
             }else{
                 throw new OffertaUtenteException("La grandezza della pagina supera i " + Constants.PAGE_SIZE + " elementi");
@@ -104,7 +105,8 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
             if(offerente != null){
                 Optional<Immobile> immobile = immobileService.getImmobileInternalInformationById(idImmobile);
                 if(immobile.isPresent()){
-                    return offertaUtenteRepository.getAllOfferteBetweenUtenti(authUser.getIdUtente(), offerente.getIdUtente(), immobile.get().getIdImmobile());
+                    return offertaUtenteRepository.getAllOfferteBetweenUtenti(authUser.getIdUtente(),
+                            offerente.getIdUtente(), immobile.get().getIdImmobile());
 
                 }else{
                     throw new ImmobileException("Immobile insesistente");
@@ -162,5 +164,21 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
     public Optional<OfferteUtente> declineOfferta(Long idOfferta, Utente authUser)
             throws OffertaException, OffertaUtenteException, UtenteException {
         return methodForAcceptAndDenyOfferta(idOfferta, authUser, false);
+    }
+
+    @Override
+    public Page<OfferteUtente> getOfferteProposte(Utente authUser, Long offset, Long pageSize) throws OffertaUtenteException, UtenteException {
+        if (authUser != null) {
+            if (pageSize < Constants.PAGE_SIZE) {
+                return offertaUtenteRepository.getAllOfferteUtenteAsOfferente(
+                        PageRequest.of(offset.intValue(), pageSize.intValue()),
+                        authUser.getIdUtente()
+                );
+            } else {
+                throw new OffertaUtenteException("La grandezza della pagina supera i " + Constants.PAGE_SIZE + " elementi");
+            }
+        } else {
+            throw new UtenteException("L'utente deve essere autenticato");
+        }
     }
 }

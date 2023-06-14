@@ -73,12 +73,12 @@ public class UtenteController {
         }
     }
 
-    @GetMapping("/getListOfferte/{offset}/{pageSize}/")
+    @GetMapping("/getListProposte/{offset}/{pageSize}/")
     public String getOfferteRicevute(ModelMap model, @PathVariable("offset") Long offset, @PathVariable("pageSize") Long pageSize){
         try{
             Optional<Utente> authUser = authService.getAuthUtente();
             if(authUser.isPresent()){
-                List<ViewListaOfferteDTO> listaOfferte = utenteService.getListaOfferte(authUser.get(), offset, pageSize);
+                List<ViewListaOfferteDTO> listaOfferte = utenteService.getListaProposte(authUser.get(), offset, pageSize);
                 model.addAttribute("listaOfferte", listaOfferte);
                 return "Ciao";
             }else{
@@ -91,7 +91,7 @@ public class UtenteController {
         }
     }
 
-    @GetMapping("/getListOfferte/storico/{idUtente}/{idImmobile}")
+    @GetMapping("/getListProposte/storico/{idUtente}/{idImmobile}")
     public String getOfferteBetweenUtenti(ModelMap model, @PathVariable("idUtente") Long idOfferente, @PathVariable("idImmobile") Long idImmobile){
         try{
             Optional<Utente> authUser = authService.getAuthUtente();
@@ -108,4 +108,23 @@ public class UtenteController {
             return "inserisci_pagina_html_peppe";
         }
     }
+
+    @GetMapping("/getListaOfferte/{offset}/{pageSize}/")
+    public String getOfferte(ModelMap model, @PathVariable("offset") Long offset, @PathVariable("pageSize") Long pageSize){
+        try{
+            Optional<Utente> authUser = authService.getAuthUtente();
+            if(authUser.isPresent()){
+                List<ViewListaOfferteDTO> listaOfferte = utenteService.getListaOfferte(authUser.get(), offset, pageSize);
+                model.addAttribute("listaOfferte", listaOfferte);
+                return "Ciao";
+            }else{
+                model.addAttribute("error", "Utente non autenticato");
+                return "inserisci_pagina_html_peppe";
+            }
+        }catch (UtenteException | OffertaUtenteException error){
+            model.addAttribute("error", "Utente non trovato");
+            return "inserisci_pagina_html_peppe";
+        }
+    }
+
 }

@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 public class ViewListaOfferteDTO {
 
-    private String nomeOfferente;
-    private String cognomeOfferente;
+    private String nomeUtente;
+    private String cognomeUtente;
 
     //private String dataUltimoUpdate;
 

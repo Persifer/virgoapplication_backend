@@ -48,7 +48,7 @@ public interface OffertaUtenteJpaRepository extends JpaRepository<OfferteUtente,
     @Query("SELECT offerta " +
             "FROM OfferteUtente offerta " +
             "JOIN Utente utente ON (offerta.offerente.idUtente = utente.idUtente)" +
-            "WHERE utente.idUtente = :idRequestedUtente")
+            "WHERE utente.idUtente = :idRequestedUtente GROUP BY offerta.proprietario.idUtente")
     public Page<OfferteUtente> getAllOfferteUtenteAsOfferente(Pageable pagable, @Param("idRequestedUtente") Long idProprietario );
 
     // Permette di selezionare una specifica offerta proposta ad un utente

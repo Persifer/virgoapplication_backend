@@ -91,10 +91,21 @@ public class UtenteServiceImpl implements UtenteService {
      * @throws UtenteException quando l'utente non è autenticato
      */
     @Override
-    public List<ViewListaOfferteDTO> getListaOfferte(Utente proprietario, Long offset, Long pageSize)
+    public List<ViewListaOfferteDTO> getListaProposte(Utente proprietario, Long offset, Long pageSize)
             throws OffertaUtenteException, UtenteException {
 
         Page<OfferteUtente> listOfferteUtente = offerteUtenteService.getOfferteForUtenteProprietario(proprietario, offset, pageSize);
+        if(!listOfferteUtente.isEmpty()){
+            return listOfferteUtente.stream().map(mapperOfferteUtente).collect(Collectors.toList());
+        }
+        return List.of();
+    }
+
+    @Override
+    public List<ViewListaOfferteDTO> getListaOfferte(Utente offerente, Long offset, Long pageSize)
+            throws OffertaUtenteException, UtenteException {
+
+        Page<OfferteUtente> listOfferteUtente = offerteUtenteService.getOfferteProposte(offerente, offset, pageSize);
         if(!listOfferteUtente.isEmpty()){
             return listOfferteUtente.stream().map(mapperOfferteUtente).collect(Collectors.toList());
         }
