@@ -34,6 +34,9 @@ public interface UtenteService {
     List<ViewListaOfferteDTO> getListaOfferte(Utente propietario, Long offset, Long pageSize)
             throws OffertaUtenteException, UtenteException;
 
+    List<ViewOfferteBetweenUtentiDTO> getAllProposteBetweenUtenti(Utente proprietario, Long idOfferente, Long idImmobile)
+            throws UtenteException, ImmobileException;
+
     List<ViewOfferteBetweenUtentiDTO> getAllOfferteBetweenUtenti(Utente proprietario, Long idOfferente, Long idImmobile)
             throws UtenteException, ImmobileException;
 }

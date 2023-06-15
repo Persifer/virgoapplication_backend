@@ -113,6 +113,27 @@ public class UtenteServiceImpl implements UtenteService {
     }
 
     @Override
+    public List<ViewOfferteBetweenUtentiDTO> getAllProposteBetweenUtenti(Utente proprietario, Long idOfferente, Long idImmobile)
+            throws UtenteException, ImmobileException {
+        //Prelevo dal database le informazioni di un utente
+        Optional<Utente> offerente = getUtenteClassById(idOfferente);
+        if(offerente.isPresent()){
+            //Prelevo la lista delle offerte tra due utenti
+            List<OfferteUtente> listaOfferteTraUtenti = offerteUtenteService.allProposteBetweenUtenti(proprietario, offerente.get(), idImmobile);
+            //se non vuota
+            if(!listaOfferteTraUtenti.isEmpty()){
+                //ritorno la lista di elementi
+                return listaOfferteTraUtenti.stream().map(mapperOfferteBtwnUtenti).collect(Collectors.toList());
+            }else{
+                //altrimenti ritorno una lista vuota
+                return List.of();
+            }
+        }else{
+            throw new UtenteException("L'utente che ha proposto le offerte non è stato trovato");
+        }
+    }
+
+    @Override
     public List<ViewOfferteBetweenUtentiDTO> getAllOfferteBetweenUtenti(Utente proprietario, Long idOfferente, Long idImmobile)
             throws UtenteException, ImmobileException {
         //Prelevo dal database le informazioni di un utente

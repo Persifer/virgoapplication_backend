@@ -97,16 +97,19 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
 
     }
 
-
-    @Override
-    public List<OfferteUtente> allOfferteBetweenUtenti(Utente authUser, Utente offerente, Long idImmobile)
+    private List<OfferteUtente> logicProposteBetweenUtenti(Utente authUser, Utente offerente, Long idImmobile, Boolean isProprietario)
             throws UtenteException, ImmobileException {
         if (authUser != null){
             if(offerente != null){
                 Optional<Immobile> immobile = immobileService.getImmobileInternalInformationById(idImmobile);
                 if(immobile.isPresent()){
-                    return offertaUtenteRepository.getAllOfferteBetweenUtenti(authUser.getIdUtente(),
-                            offerente.getIdUtente(), immobile.get().getIdImmobile());
+                    if(isProprietario){
+                        return offertaUtenteRepository.getAllOfferteBetweenUtenti(authUser.getIdUtente(),
+                                offerente.getIdUtente(), immobile.get().getIdImmobile());
+                    }else{
+                        return offertaUtenteRepository.getAllOfferteBetweenUtenti(offerente.getIdUtente(),
+                                authUser.getIdUtente(), immobile.get().getIdImmobile());
+                    }
 
                 }else{
                     throw new ImmobileException("Immobile insesistente");
@@ -117,6 +120,17 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
         }else{
             throw new UtenteException("Impossibile reperire l'utente autenticato");
         }
+    }
+
+    @Override
+    public List<OfferteUtente> allProposteBetweenUtenti(Utente authUser, Utente offerente, Long idImmobile)
+            throws UtenteException, ImmobileException {
+        return logicProposteBetweenUtenti(authUser, offerente, idImmobile, true);
+    }
+
+    @Override
+    public List<OfferteUtente> allOfferteBetweenUtenti(Utente authUser, Utente offerente, Long idImmobile) throws UtenteException, ImmobileException {
+        return logicProposteBetweenUtenti(authUser, offerente, idImmobile, true);
     }
 
     private Optional<OfferteUtente> methodForAcceptAndDenyOfferta(Long idOfferta, Utente authUser, Boolean isAccettata)

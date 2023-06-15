@@ -96,7 +96,7 @@ public class UtenteController {
         try{
             Optional<Utente> authUser = authService.getAuthUtente();
             if(authUser.isPresent()){
-                List<ViewOfferteBetweenUtentiDTO> listaOfferte = utenteService.getAllOfferteBetweenUtenti(authUser.get(), idOfferente, idImmobile);
+                List<ViewOfferteBetweenUtentiDTO> listaOfferte = utenteService.getAllProposteBetweenUtenti(authUser.get(), idOfferente, idImmobile);
                 model.addAttribute("listaOfferte", listaOfferte);
                 return "Ciao";
             }else{
@@ -109,12 +109,32 @@ public class UtenteController {
         }
     }
 
-    @GetMapping("/getListaOfferte/{offset}/{pageSize}/")
+    @GetMapping("/getListaOfferte/{offset}/{pageSize}")
     public String getOfferte(ModelMap model, @PathVariable("offset") Long offset, @PathVariable("pageSize") Long pageSize){
         try{
             Optional<Utente> authUser = authService.getAuthUtente();
             if(authUser.isPresent()){
                 List<ViewListaOfferteDTO> listaOfferte = utenteService.getListaOfferte(authUser.get(), offset, pageSize);
+                model.addAttribute("listaOfferte", listaOfferte);
+                return "Ciao";
+            }else{
+                model.addAttribute("error", "Utente non autenticato");
+                return "inserisci_pagina_html_peppe";
+            }
+        }catch (UtenteException | OffertaUtenteException error){
+            model.addAttribute("error", "Utente non trovato");
+            return "inserisci_pagina_html_peppe";
+        }
+    }
+
+    @GetMapping("/getListaOfferte/storico/{id_utente}/{id_immobile}")
+    public String getStoricoOfferte(ModelMap model,
+                                    @PathVariable("id_utente") Long idUtente,
+                                    @PathVariable("id_immobile") Long idImmobile){
+        try{
+            Optional<Utente> authUser = authService.getAuthUtente();
+            if(authUser.isPresent()){
+                List<ViewListaOfferteDTO> listaOfferte = utenteService.getListaOfferte(authUser.get(), idUtente, idImmobile);
                 model.addAttribute("listaOfferte", listaOfferte);
                 return "Ciao";
             }else{

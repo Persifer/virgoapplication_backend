@@ -20,7 +20,8 @@ public interface OffertaUtenteJpaRepository extends JpaRepository<OfferteUtente,
     @Query("SELECT offerta " +
             "FROM OfferteUtente offerta " +
                 "JOIN Utente utente ON (offerta.proprietario.idUtente = utente.idUtente)" +
-            "WHERE utente.idUtente = :idRequestedUtente GROUP BY offerta.offerente.idUtente")
+            "WHERE utente.idUtente = :idRequestedUtente " +
+                "GROUP BY offerta.offerente.idUtente, offerta.offertaInteressata.idImmobileInteressato")
     public Page<OfferteUtente> getAllOfferteUtenteAsProprietario(Pageable pagable, @Param("idRequestedUtente") Long idProprietario );
 
     // Permette di selezionare tutte le offerte inviate e ricevute tra il proprietario dell'immobile ed un possibile acquirente
@@ -48,17 +49,19 @@ public interface OffertaUtenteJpaRepository extends JpaRepository<OfferteUtente,
     @Query("SELECT offerta " +
             "FROM OfferteUtente offerta " +
             "JOIN Utente utente ON (offerta.offerente.idUtente = utente.idUtente)" +
-            "WHERE utente.idUtente = :idRequestedUtente GROUP BY offerta.proprietario.idUtente")
+            "WHERE utente.idUtente = :idRequestedUtente " +
+                "GROUP BY offerta.proprietario.idUtente, offerta.offertaInteressata.idImmobileInteressato")
     public Page<OfferteUtente> getAllOfferteUtenteAsOfferente(Pageable pagable, @Param("idRequestedUtente") Long idProprietario );
 
     // Permette di selezionare una specifica offerta proposta ad un utente
-    @Query("SELECT offerta " +
+    /*@Query("SELECT offerta " +
             "FROM OfferteUtente offerta " +
             "JOIN Utente utente ON (offerta.offerente.idUtente = utente.idUtente)" +
             "WHERE utente.idUtente = :idRequestedUtente AND offerta.offertaInteressata.idOfferta = :idRequestedOfferta")
     public Page<OfferteUtente> getSpecificOffertaUtenteAsOfferente(Pageable pagable,
                                                                       @Param("idRequestedUtente") Long idProprietario,
-                                                                      @Param("idRequestedOfferta") Long idOfferta );
+                                                                      @Param("idRequestedOfferta") Long idOfferta ); */
+
 
     public Optional<OfferteUtente> getOfferteUtenteByProprietarioAndOffertaInteressata(Utente utente, Offerta offerta);
 

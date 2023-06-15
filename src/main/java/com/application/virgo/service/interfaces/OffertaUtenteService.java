@@ -20,6 +20,9 @@ public interface OffertaUtenteService {
     public Page<OfferteUtente> getOfferteForUtenteProprietario(Utente offerente, Long offset, Long pageSize)
             throws OffertaUtenteException, UtenteException;
 
+    public List<OfferteUtente> allProposteBetweenUtenti(Utente proprietario, Utente offerente, Long idImmobile)
+            throws UtenteException, ImmobileException;
+
     public List<OfferteUtente> allOfferteBetweenUtenti(Utente proprietario, Utente offerente, Long idImmobile)
             throws UtenteException, ImmobileException;
 
