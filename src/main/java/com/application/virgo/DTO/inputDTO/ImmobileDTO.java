@@ -3,6 +3,7 @@ package com.application.virgo.DTO.inputDTO;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -49,5 +50,5 @@ public class ImmobileDTO {
     private String provincia;
 // ============================
 
-
+    private Boolean isEnabled;
 }

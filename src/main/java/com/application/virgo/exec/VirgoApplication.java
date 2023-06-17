@@ -36,6 +36,7 @@ public class VirgoApplication {
 	*  9. Test
 	*  12. Implementa modifica utente
 	*  15. Implementa la creazione di un contratto quando viene accettato un'offerta
+	*  16. Creazione metodo eliminazione immobile
 	*
 	*
 	* */

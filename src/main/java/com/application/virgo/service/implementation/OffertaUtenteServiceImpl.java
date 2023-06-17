@@ -178,6 +178,10 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
             //Prelevo la classe OffertaUtente che rappresenta l'offerta tra due utenti
             OfferteUtente acceptedOfferta = tempAcceptedOfferta.get();
 
+            acceptedOfferta.getOffertaInteressata().getIdImmobileInteressato().setIsEnabled(Boolean.FALSE);
+            immobileService.internalImmobileUpdate(acceptedOfferta.getOffertaInteressata().getIdImmobileInteressato());
+
+
             //Dalla classe OffertaUtente prelevo i dati per la creazione del contratto
             Optional<Contratto> tempNewContratto = contrattoService.createNewContratto(
                     acceptedOfferta.getOffertaInteressata().getIdImmobileInteressato(),

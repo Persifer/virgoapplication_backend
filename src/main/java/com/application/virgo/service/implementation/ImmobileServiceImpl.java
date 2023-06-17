@@ -23,6 +23,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -249,6 +250,8 @@ public class ImmobileServiceImpl implements ImmobileService {
 
 // =====================================================================================================================
 
+                toCheckImmobile.setIsEnabled(tempUpdatedImmobile.getIsEnabled());
+
                 if(error.isBlank() || error.isEmpty()){
 
                     immobileRepo.save(toCheckImmobile);
@@ -263,6 +266,12 @@ public class ImmobileServiceImpl implements ImmobileService {
         }else{
             throw new ImmobileException("L'immobile selezionato non esiste");
         }
+
+    }
+
+    public Boolean internalImmobileUpdate(Immobile immobileToUpdate){
+        immobileRepo.save(immobileToUpdate);
+        return Boolean.TRUE;
 
     }
 
