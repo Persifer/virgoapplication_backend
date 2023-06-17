@@ -8,7 +8,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface FileStorageService {
-    public void init();
 
     public String save(MultipartFile file, String idUtente, String nomeFile);
 

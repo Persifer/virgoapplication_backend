@@ -21,24 +21,12 @@ import java.util.stream.Stream;
 @Service
 @Transactional
 @AllArgsConstructor
-@NoArgsConstructor
 public class FileStorageServiceImpl implements FileStorageService {
 
     private final Path root = Paths.get("C:\\progetto_ing_sw\\files\\images");
 
     private Path setPathUtente(String idUtente){
         return Path.of(root+"\\"+idUtente);
-    }
-
-    @Override
-    public void init() {
-        try {
-            if(!Files.isDirectory(root)){
-                Files.createDirectory(root);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("Could not initialize folder for upload!");
-        }
     }
 
     @Override

@@ -17,7 +17,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 })
 @EnableJpaRepositories(basePackages = "com.application.virgo.repositories")
 @EntityScan(basePackages = "com.application.virgo.model")
-public class VirgoApplication implements CommandLineRunner {
+public class VirgoApplication {
 
 	@Resource
 	FileStorageService storageService;
@@ -26,10 +26,6 @@ public class VirgoApplication implements CommandLineRunner {
 		SpringApplication.run(VirgoApplication.class, args);
 	}
 
-	@Override
-	public void run(String... arg) throws Exception {
-		storageService.init();
-	}
 
 }
 
