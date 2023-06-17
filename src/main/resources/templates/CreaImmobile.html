@@ -5,59 +5,59 @@
 </head>
 <body>
 <h1>Compila il form</h1>
-<form th:action="@{/site/immobile/addnew}" th:object="${immobile}" method="post">
+<form th:action="@{/site/immobile/addnew}"  method="post">
     <div>
         <label for="titolo">Titolo</label>
-        <input type="text" id="titolo" th:field="*{titolo}"/>
+        <input type="text" id="titolo" />
     </div>
     <div>
         <label for="dataUltimoRestauro">Data Ultimo Restauro</label>
-        <input type="datetime-local" id="dataUltimoRestauro" th:field="*{dataUltimoRestauro}"/>
+        <input type="datetime-local" id="dataUltimoRestauro"/>
     </div>
     <div>
         <label for="dataAcquisizione">Data Acquisizione</label>
-        <input type="datetime-local" id="dataAcquisizione" th:field="*{dataAcquisizione}"/>
+        <input type="datetime-local" id="dataAcquisizione" />
     </div>
     <div>
         <label for="dataCreazioneImmobile">Data Creazione Immobile</label>
-        <input type="datetime-local" id="dataCreazioneImmobile" th:field="*{dataCreazioneImmobile}"/>
+        <input type="datetime-local" id="dataCreazioneImmobile" />
     </div>
     <div>
         <label for="descrizione">Descrizione</label>
-        <input type="text" id="descrizione" th:field="*{descrizione}"/>
+        <input type="text" id="descrizione" />
     </div>
 
     <div>
         <label for="prezzo">Prezzo</label>
-        <input type="number" id="prezzo" th:field="*{prezzo}"/>
+        <input type="number" id="prezzo" />
     </div>
     <div>
         <label for="locali">Locali</label>
-        <input type="number" id="locali" th:field="*{locali}"/>
+        <input type="number" id="locali" />
     </div>
     <div>
         <label for="metriQuadri">Metri Quadri</label>
-        <input type="number" id="metriQuadri" th:field="*{metriQuadri}"/>
+        <input type="number" id="metriQuadri" />
     </div>
     <div>
         <label for="via">Via</label>
-        <input type="text" id="via" th:field="*{via}"/>
+        <input type="text" id="via"/>
     </div>
     <div>
         <label for="cap">CAP</label>
-        <input type="number" id="cap" th:field="*{cap}"/>
+        <input type="number" id="cap" />
     </div>
     <div>
         <label for="citta">Citta</label>
-        <input type="text" id="citta" th:field="*{citta}"/>
+        <input type="text" id="citta" />
     </div>
     <div>
         <label for="provincia">Provincia</label>
-        <input type="text" id="provincia" th:field="*{provincia}"/>
+        <input type="text" id="provincia"/>
     </div>
     <div>
     <label for="images">Immagini dell'immobili che vuoi caricare</label>
-    <input type="file" id="images" th:file="*{images}"/>
+    <input type="file" id="images"/>
 </div>
     <input type="submit">Aggiungi immobile</input>
 </form>

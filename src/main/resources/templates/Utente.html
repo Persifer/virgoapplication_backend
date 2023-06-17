@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>Dati Utente</h1>
-<form th:action="@{/site/utente/updateData/{id_utente}(id_utente=${userId})}" method="post">
+<!--<form th:action="@{/site/utente/updateData/{id_utente}(id_utente=${userId})}" method="post">
     <label>Nome:</label>
     <input type="text" th:field="*{nome}" />
 
@@ -32,7 +32,7 @@
     <input type="text" th:field="*{dataNascita}" />
 
     <input type="submit" value="Aggiorna" />
-</form>
+</form> -->
 
 <h1>Lista Immobili</h1>
 <table>
@@ -53,7 +53,7 @@
     </tbody>
 </table>
 
-<a href="/creaImmobile">Crea Immobile un altro immobile</a>
+<a href="/site/immobile">Crea Immobile un altro immobile</a>
 
 <h1>Chat Aperte</h1>
 <table>

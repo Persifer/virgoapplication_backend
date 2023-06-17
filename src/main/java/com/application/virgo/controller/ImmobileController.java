@@ -41,6 +41,11 @@ public class ImmobileController {
     private final AuthServiceImpl authService;
     //private static final String URL_SUFFIX = "/immobile/";
 
+    @GetMapping
+    public String returnCreaImmobilePage(){
+        return "CreaImmobile";
+    }
+
 
     // Mapper per la creazione di un nuovo immobile associato ad singolo utente proprietario
                 // /immobile/addnew
@@ -55,19 +60,19 @@ public class ImmobileController {
                 Optional<ImmobileDTO> newImmobile = immobileService.createNewImmobile(tempNewImmobile, authenticatedUser.get(), uploadedFile);
                 if (newImmobile.isPresent()) {
                     model.addAttribute("message", "Immobile creato con successo");
-                    return "inserisci_pagina_html_peppe";
+                    return "Home";
                 } else {
                     model.addAttribute("error", "Errore nella creazione di un immobile, riprovare");
-                    return "inserisci_pagina_html_peppe";
+                    return "Fail";
                 }
             }else{
-                model.addAttribute("message", "Domanda inserita con successo");
-                return "inserisci_pagina_html_peppe";
+                model.addAttribute("error", "Errore");
+                return "Fail";
             }
 
         }catch (Exception error){
-                model.addAttribute("message", "Domanda inserita con successo");
-                return "inserisci_pagina_html_peppe";
+            model.addAttribute("error", error.getMessage());
+            return "inserisci_pagina_html_peppe";
         }
     }
 

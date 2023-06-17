@@ -34,6 +34,8 @@ public class UtenteController {
     private UtenteService utenteService;
     private AuthService authService;
     private ContrattoUtenteService contrattoUtenteService;
+
+
     @PutMapping("/updateData")
     public String updateUtenteInformation(@PathVariable("id_utente") Long idUtenteDaModificare,
                                           @ModelAttribute UtenteDTO updatedUtente,
@@ -58,21 +60,21 @@ public class UtenteController {
 
     }
 
-    @GetMapping("/getInfo/{id_utente}")
-    public String getUsernameInformation(@PathVariable("id_utente")Long idUtente, ModelMap model ){
+    @GetMapping("/getInfo")
+    public String getUsernameInformation(ModelMap model ){
         try{
-            Optional<UtenteDTO> utenteInfo = utenteService.getUtenteById(idUtente);
+            Optional<Utente> utenteInfo = authService.getAuthUtente();
             if(utenteInfo.isPresent()){
                 model.addAttribute("utente", utenteInfo.get());
-                return "inserisci_pagina_html_peppe";
+                return "Utente";
             }else{
                 model.addAttribute("error", "Utente non trovato");
-                return "inserisci_pagina_html_peppe";
+                return "Fail";
             }
 
         }catch (UtenteException error){
             model.addAttribute("error", "Utente non trovato");
-            return "inserisci_pagina_html_peppe";
+            return "Fail";
         }
     }
 
