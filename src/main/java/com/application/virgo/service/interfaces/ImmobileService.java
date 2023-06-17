@@ -11,6 +11,7 @@ import com.application.virgo.model.Domanda;
 import com.application.virgo.model.Immobile;
 import com.application.virgo.model.Utente;
 import org.springframework.data.domain.Page;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +20,7 @@ public interface ImmobileService {
 
 // =========================================== HOME PAGE ===============================================================
 
-    public Optional<ImmobileDTO> createNewImmobile(ImmobileDTO tempNewImmobile, Utente proprietario)
+    public Optional<ImmobileDTO> createNewImmobile(ImmobileDTO tempNewImmobile, Utente proprietario, MultipartFile[] uploadedFile)
             throws ImmobileException, UtenteException;
 
     public Optional<Immobile> getImmobileInternalInformationById(Long idImmobile) throws ImmobileException;

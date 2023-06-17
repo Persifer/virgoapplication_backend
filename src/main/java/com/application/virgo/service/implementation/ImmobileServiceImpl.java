@@ -12,6 +12,7 @@ import com.application.virgo.model.Domanda;
 import com.application.virgo.model.Immobile;
 import com.application.virgo.model.Utente;
 import com.application.virgo.repositories.ImmobileJpaRepository;
+import com.application.virgo.service.interfaces.FileStorageService;
 import com.application.virgo.service.interfaces.ImmobileService;
 import com.application.virgo.service.interfaces.UtenteService;
 import com.application.virgo.utilities.Constants;
@@ -22,9 +23,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.swing.text.html.Option;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -39,6 +42,9 @@ public class ImmobileServiceImpl implements ImmobileService {
 
 
     private final ImmobileJpaRepository immobileRepo;
+
+    private FileStorageService fileStorageService;
+
     private final ImmobileMapper mapperImmobile;
     private final ImmobileInformationMapper mapperInformation;
     private final HomeImmobileMapper mapperHomeInformation;
@@ -47,10 +53,8 @@ public class ImmobileServiceImpl implements ImmobileService {
 
 
     @Override
-    public Optional<ImmobileDTO> createNewImmobile(ImmobileDTO tempNewImmobile, Utente utenteProprietario)
+    public Optional<ImmobileDTO> createNewImmobile(ImmobileDTO tempNewImmobile, Utente utenteProprietario, MultipartFile[] uploadedFile)
         throws ImmobileException, UtenteException {
-        // Prelevo l'utente dal db
-        // TODO: Cambia prendendo i dati dell'utente dalla sessione di spring, COSI NON HA SENSO
         LocalDate todayDate = LocalDate.now();
         if(utenteProprietario != null){
             //Controllo che le data di acquisizione sia minore di quella odierna
@@ -60,6 +64,11 @@ public class ImmobileServiceImpl implements ImmobileService {
                 if(tempNewImmobile.getDataUltimoRestauro().isBefore(todayDate)){
                     if(tempNewImmobile.getMetriQuadri().equalsIgnoreCase("0") ||
                             tempNewImmobile.getMetriQuadri().isBlank() || tempNewImmobile.getMetriQuadri().isEmpty()){
+// ============================================== SALVATAGGIO IMMOBILE =================================================
+                        StringBuilder uploadedImages = new StringBuilder();
+                        int iterator = 1;
+                        String fileName = "";
+
                         // Inserisco la data di inserimento
                         tempNewImmobile.setDataCreazioneImmobile(todayDate);
                         // Conversione da ImmobileDTO a Immobile
@@ -70,7 +79,23 @@ public class ImmobileServiceImpl implements ImmobileService {
                         // ===================
 
                         // Salvataggio dell'immobile
-                        immobileRepo.save(newImmobile);
+                        Immobile savedImmobile = immobileRepo.save(newImmobile);
+
+                        //Salvataggio delle immagini
+                        for(MultipartFile file : uploadedFile){
+                            fileName = iterator+"_"+savedImmobile.getIdImmobile().toString()+"_"+file.getName();
+
+                            uploadedImages
+                                    .append(fileStorageService.save(file, utenteProprietario.getIdUtente().toString(), fileName))
+                                    .append(fileName)
+                                    .append("|");
+                            iterator++;
+                        }
+
+                        savedImmobile.setListaImmagini(uploadedFile.toString());
+
+                        immobileRepo.save(savedImmobile);
+
                         return Optional.of(tempNewImmobile);
                     }else{
                         throw new ImmobileException("Il numero di metri quadri non può essere vuoto o 0");

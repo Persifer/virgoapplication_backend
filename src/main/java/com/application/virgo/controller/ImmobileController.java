@@ -24,7 +24,10 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,12 +45,14 @@ public class ImmobileController {
     // Mapper per la creazione di un nuovo immobile associato ad singolo utente proprietario
                 // /immobile/addnew
     @PostMapping("/addnew")
-    public String createNewImmobile(@ModelAttribute ImmobileDTO tempNewImmobile, ModelMap model) {
+    public String createNewImmobile(@ModelAttribute ImmobileDTO tempNewImmobile, ModelMap model,
+                                    @RequestParam("image") MultipartFile[] uploadedFile) {
 
         try{
             Optional<Utente> authenticatedUser = authService.getAuthUtente();
             if(authenticatedUser.isPresent()) {
-                Optional<ImmobileDTO> newImmobile = immobileService.createNewImmobile(tempNewImmobile, authenticatedUser.get());
+
+                Optional<ImmobileDTO> newImmobile = immobileService.createNewImmobile(tempNewImmobile, authenticatedUser.get(), uploadedFile);
                 if (newImmobile.isPresent()) {
                     model.addAttribute("message", "Immobile creato con successo");
                     return "inserisci_pagina_html_peppe";

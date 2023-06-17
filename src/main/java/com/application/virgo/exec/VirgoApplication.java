@@ -1,6 +1,9 @@
 package com.application.virgo.exec;
 
 
+import com.application.virgo.service.interfaces.FileStorageService;
+import jakarta.annotation.Resource;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -14,18 +17,24 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 })
 @EnableJpaRepositories(basePackages = "com.application.virgo.repositories")
 @EntityScan(basePackages = "com.application.virgo.model")
-public class VirgoApplication {
+public class VirgoApplication implements CommandLineRunner {
+
+	@Resource
+	FileStorageService storageService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(VirgoApplication.class, args);
+	}
+
+	@Override
+	public void run(String... arg) throws Exception {
+		storageService.init();
 	}
 
 }
 
 	/*
 	* TODO
-	*  2. Implementazione "chat" per le offerte/contratti
-	*  	  2.3. Creazione zona utente in cui poter visionare tutti i contratti
 	*  4. Invio email per messaggi non letti
 	*  5. Inserisci i commenti a supporto della relazione tra utente e ruolo
 	*  6. Sorting dei risultati di immobile
@@ -37,6 +46,7 @@ public class VirgoApplication {
 	*  12. Implementa modifica utente
 	*  15. Implementa la creazione di un contratto quando viene accettato un'offerta
 	*  16. Creazione metodo eliminazione immobile
+	*  17. Disabilita tutte le offerte legate a quell'immobile nel momento in cui una viene accettata
 	*
 	*
 	* */

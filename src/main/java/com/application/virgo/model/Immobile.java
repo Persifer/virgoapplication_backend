@@ -28,6 +28,7 @@ public class Immobile {
     private String locali;
     private String metriQuadri;
     private Float prezzo;
+    private String listaImmagini;
 
 // ======== RESIDENZA =========
     private String via;
@@ -52,7 +53,6 @@ public class Immobile {
 
     @OneToMany(mappedBy = "idDomanda")
     private Set<Domanda> domandeImmobile;
-
 
 
 }
