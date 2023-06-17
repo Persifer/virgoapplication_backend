@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Aggiungi immobile</title>
+</head>
+<body>
+<h1>Compila il form</h1>
+<form th:action="@{/site/immobile/addnew}" th:object="${immobile}" method="post">
+    <div>
+        <label for="titolo">Titolo</label>
+        <input type="text" id="titolo" th:field="*{titolo}"/>
+    </div>
+    <div>
+        <label for="dataUltimoRestauro">Data Ultimo Restauro</label>
+        <input type="datetime-local" id="dataUltimoRestauro" th:field="*{dataUltimoRestauro}"/>
+    </div>
+    <div>
+        <label for="dataAcquisizione">Data Acquisizione</label>
+        <input type="datetime-local" id="dataAcquisizione" th:field="*{dataAcquisizione}"/>
+    </div>
+    <div>
+        <label for="dataCreazioneImmobile">Data Creazione Immobile</label>
+        <input type="datetime-local" id="dataCreazioneImmobile" th:field="*{dataCreazioneImmobile}"/>
+    </div>
+    <div>
+        <label for="descrizione">Descrizione</label>
+        <input type="text" id="descrizione" th:field="*{descrizione}"/>
+    </div>
+
+    <div>
+        <label for="prezzo">Prezzo</label>
+        <input type="number" id="prezzo" th:field="*{prezzo}"/>
+    </div>
+    <div>
+        <label for="locali">Locali</label>
+        <input type="number" id="locali" th:field="*{locali}"/>
+    </div>
+    <div>
+        <label for="metriQuadri">Metri Quadri</label>
+        <input type="number" id="metriQuadri" th:field="*{metriQuadri}"/>
+    </div>
+    <div>
+        <label for="via">Via</label>
+        <input type="text" id="via" th:field="*{via}"/>
+    </div>
+    <div>
+        <label for="cap">CAP</label>
+        <input type="number" id="cap" th:field="*{cap}"/>
+    </div>
+    <div>
+        <label for="citta">Citta</label>
+        <input type="text" id="citta" th:field="*{citta}"/>
+    </div>
+    <div>
+        <label for="provincia">Provincia</label>
+        <input type="text" id="provincia" th:field="*{provincia}"/>
+    </div>
+    <div>
+    <label for="images">Immagini dell'immobili che vuoi caricare</label>
+    <input type="file" id="images" th:file="*{images}"/>
+</div>
+    <input type="submit">Aggiungi immobile</input>
+</form>
+</body>
+</html>

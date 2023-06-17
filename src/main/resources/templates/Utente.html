@@ -38,7 +38,7 @@
 <table>
     <thead>
     <tr>
-        <th>ID</th>
+        <th>Titolo</th>
         <th>Indirizzo</th>
         <th>Prezzo</th>
     </tr>
@@ -46,16 +46,14 @@
     <tbody>
     <!-- Loop attraverso gli immobili caricati -->
     <tr th:each="immobile : ${immobili}">
-        <td th:text="${immobile.id}" />
-        <td th:text="${immobile.indirizzo}" />
-        <td th:text="${immobile.prezzo}" />
+        <th>Titolo<td><a th:href="@{/immobile/{id}(id=${immobile.idImmobile})}" th:text="${immobile.titolo}"></a></td></th>
+        <th>Indirizzo<td th:text="${immobile.indirizzo}" /></th>
+        <th>Prezzo<td th:text="${immobile.prezzo}" /></th>
     </tr>
     </tbody>
 </table>
 
-<form th:action="@{/site/immobili/add}" method="post">
-    <input type="submit" value="Aggiungi Nuovo Immobile" />
-</form>
+<a href="/creaImmobile">Crea Immobile un altro immobile</a>
 
 <h1>Chat Aperte</h1>
 <table>
@@ -135,5 +133,7 @@
     </tr>
     </tbody>
 </table>
+
+
 </body>
 </html>
