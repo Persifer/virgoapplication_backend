@@ -1,6 +1,7 @@
 package com.application.virgo.controller;
 
 import com.application.virgo.DTO.inputDTO.UtenteDTO;
+import com.application.virgo.DTO.outputDTO.ContrattiUtenteDTO;
 import com.application.virgo.DTO.outputDTO.ViewListaOfferteDTO;
 import com.application.virgo.DTO.outputDTO.ViewOfferteBetweenUtentiDTO;
 import com.application.virgo.exception.ImmobileException;
@@ -8,6 +9,7 @@ import com.application.virgo.exception.OffertaUtenteException;
 import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.Utente;
 import com.application.virgo.service.interfaces.AuthService;
+import com.application.virgo.service.interfaces.ContrattoUtenteService;
 import com.application.virgo.service.interfaces.UtenteService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -31,6 +33,7 @@ public class UtenteController {
 
     private UtenteService utenteService;
     private AuthService authService;
+    private ContrattoUtenteService contrattoUtenteService;
     @PutMapping("/updateData")
     public String updateUtenteInformation(@PathVariable("id_utente") Long idUtenteDaModificare,
                                           @ModelAttribute UtenteDTO updatedUtente,
@@ -142,9 +145,28 @@ public class UtenteController {
                 return "inserisci_pagina_html_peppe";
             }
         }catch (UtenteException | OffertaUtenteException error){
-            model.addAttribute("error", "Utente non trovato");
+            model.addAttribute("error", error.getMessage());
             return "inserisci_pagina_html_peppe";
         }
     }
 
+
+    @GetMapping("/getListaContratti/{offset}/{pageSize}")
+    public String getListaContratti(ModelMap model, @PathVariable("offset") Long offset, @PathVariable("pageSize") Long pageSize){
+        try{
+            Optional<Utente> authUser = authService.getAuthUtente();
+            if(authUser.isPresent()){
+                List<ContrattiUtenteDTO> listContrattiUtente = contrattoUtenteService.getListaContrattiForUtente(authUser.get(),
+                        offset, pageSize);
+
+                return "Ciao";
+            }else{
+                model.addAttribute("error", "Utente non trovato");
+                return "inserisci_pagina_html_peppe";
+            }
+        }catch (Exception error){
+            model.addAttribute("error", error.getMessage());
+            return "inserisci_pagina_html_peppe";
+        }
+    }
 }

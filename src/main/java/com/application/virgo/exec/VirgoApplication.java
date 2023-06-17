@@ -25,7 +25,6 @@ public class VirgoApplication {
 	/*
 	* TODO
 	*  2. Implementazione "chat" per le offerte/contratti
-	* 	  2.2 Creazione sezione chat utente con la lista di tutte le offerte
 	*  	  2.3. Creazione zona utente in cui poter visionare tutti i contratti
 	*  4. Invio email per messaggi non letti
 	*  5. Inserisci i commenti a supporto della relazione tra utente e ruolo
@@ -36,8 +35,8 @@ public class VirgoApplication {
 	*  8. Visualizzazione delle immagini nella pagina di un immobile
 	*  9. Test
 	*  12. Implementa modifica utente
-	*  13. Metti un offset fisso e non dato dall'utente
 	*  15. Implementa la creazione di un contratto quando viene accettato un'offerta
+	*  16. Creazione metodo eliminazione immobile
 	*
 	*
 	* */

@@ -39,6 +39,8 @@ public interface ImmobileService {
 
     public List<GetImmobileInfoDTO> getImmobiliByKeyword(String keyword);
 
+    public Boolean internalImmobileUpdate(Immobile immobileToUpdate);
+
 // =====================================================================================================================
 
 // =============================================== FOR UTENTE ==========================================================

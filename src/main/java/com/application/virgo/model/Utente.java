@@ -65,8 +65,18 @@ public class Utente {
     )
     private Set<Ruolo> userRole;
 
-    @OneToMany(mappedBy = "utenteInteressato")
-    private Set<ContrattoUtente> contrattiUtente;
+// ====================== CONTRATTO ===========================
+
+    @OneToMany(mappedBy = "venditore")
+    private Set<ContrattoUtente> contrattiUtenteAsVenditore;
+
+    @OneToMany(mappedBy = "acquirente")
+    private Set<ContrattoUtente> contrattiUtenteAsAcquirente;
+
+// ============================================================
+
+
+// ======================== OFFERTE ===========================
 
     @OneToMany(mappedBy = "proprietario")
     private Set<OfferteUtente> offerteRicevute;
@@ -74,12 +84,18 @@ public class Utente {
     @OneToMany(mappedBy = "offerente")
     private Set<OfferteUtente> offerteProposte;
 
+// ============================================================
+
+
+// ========================== Q&A =============================
+
     @OneToMany(mappedBy = "idDomanda")
     private Set<Domanda> domandeUtente;
 
     @OneToMany(mappedBy = "idRisposta")
     private Set<Risposta> risposteUtente;
 
+// ============================================================
     public Utente() {}
     public Utente(Long idUtente, String nome, String cognome, String email, String password,
                   String via, String cap, String citta, String provincia, LocalDate dataNascita, List<Immobile> immobiliUtente) {

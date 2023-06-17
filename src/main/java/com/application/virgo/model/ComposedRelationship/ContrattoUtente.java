@@ -5,54 +5,33 @@ import jakarta.persistence.*;
 
 import com.application.virgo.model. Utente;
 import com.application.virgo.model. Contratto;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class ContrattoUtente {
 
     @EmbeddedId
     private ContrattoUtenteCompoundKey idContrattoUtente;
 
     @ManyToOne
-    @MapsId("idUtente") // serve a mappare la colonna id_utente con la colonna idUtente dell'embeddedId
-    @JoinColumn(name="id_utente")
-    private Utente utenteInteressato;
+    @MapsId("idVenditore") // serve a mappare la colonna id_utente con la colonna idUtente dell'embeddedId
+    @JoinColumn(name="id_venditore")
+    private Utente venditore;
+
+    @ManyToOne
+    @MapsId("idAcquirente") // serve a mappare la colonna id_utente con la colonna idUtente dell'embeddedId
+    @JoinColumn(name="id_acquirente")
+    private Utente acquirente;
 
     @ManyToOne
     @MapsId("idContratto") // serve a mappare la colonna id_utente con la colonna idUtente dell'embeddedId
     @JoinColumn(name="id_contratto")
     private Contratto contrattoInteressato;
 
-    public ContrattoUtente() {
-    }
 
-    public ContrattoUtente(ContrattoUtenteCompoundKey idContrattoUtente, Utente utenteContratto, Contratto contrattoUtente) {
-        this.idContrattoUtente = idContrattoUtente;
-        this.utenteInteressato = utenteContratto;
-        this.contrattoInteressato = contrattoUtente;
-    }
-
-
-    public ContrattoUtenteCompoundKey getIdContrattoUtente() {
-        return idContrattoUtente;
-    }
-
-    public void setIdContrattoUtente(ContrattoUtenteCompoundKey idContrattoUtente) {
-        this.idContrattoUtente = idContrattoUtente;
-    }
-
-    public Utente getUtenteInteressato() {
-        return utenteInteressato;
-    }
-
-    public void setUtenteInteressato(Utente utenteContratto) {
-        this.utenteInteressato = utenteContratto;
-    }
-
-    public Contratto getContrattoInteressato() {
-        return contrattoInteressato;
-    }
-
-    public void setContrattoInteressato(Contratto contrattoUtente) {
-        this.contrattoInteressato = contrattoUtente;
-    }
 }
