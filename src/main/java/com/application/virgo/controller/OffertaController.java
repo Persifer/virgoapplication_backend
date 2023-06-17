@@ -1,9 +1,8 @@
 package com.application.virgo.controller;
 
 import com.application.virgo.DTO.inputDTO.InsertOffertaDTO;
-import com.application.virgo.exception.OffertaException;
-import com.application.virgo.exception.OffertaUtenteException;
-import com.application.virgo.exception.UtenteException;
+import com.application.virgo.exception.*;
+import com.application.virgo.model.ComposedRelationship.ContrattoUtente;
 import com.application.virgo.model.ComposedRelationship.OfferteUtente;
 import com.application.virgo.model.Offerta;
 import com.application.virgo.model.Utente;
@@ -84,12 +83,12 @@ public class OffertaController {
 
     @PutMapping("/accept/{id_proposta}")
     public String acceptOfferta(@PathVariable("id_proposta") Long idOfferta,
-                                ModelMap model){
+                                ModelMap model) throws ContrattoException, OffertaException, OffertaUtenteException, ContrattoUtenteException, ImmobileException, UtenteException {
 
         try{
             Optional<Utente> authenticatedUser = authService.getAuthUtente();
             if(authenticatedUser.isPresent()) {
-                Optional<OfferteUtente> acceptedOfferta = offertaUtenteService.acceptOfferta(idOfferta, authenticatedUser.get());
+                Optional<ContrattoUtente> acceptedOfferta = offertaUtenteService.acceptOfferta(idOfferta, authenticatedUser.get());
 
                 if(acceptedOfferta.isPresent()){
                     model.addAttribute("error", "Congratulazioni, hai accettato l'offerta");
@@ -105,7 +104,7 @@ public class OffertaController {
                 return "inserisci_pagina_html_peppe";
             }
 
-        }catch (UtenteException | OffertaException | OffertaUtenteException error){
+        }catch ( Exception error){
             model.addAttribute("error", error.getMessage());
             return "inserisci_pagina_html_peppe";
         }

@@ -1,9 +1,7 @@
 package com.application.virgo.service.interfaces;
 
-import com.application.virgo.exception.ImmobileException;
-import com.application.virgo.exception.OffertaException;
-import com.application.virgo.exception.OffertaUtenteException;
-import com.application.virgo.exception.UtenteException;
+import com.application.virgo.exception.*;
+import com.application.virgo.model.ComposedRelationship.ContrattoUtente;
 import com.application.virgo.model.ComposedRelationship.OfferteUtente;
 import com.application.virgo.model.Offerta;
 import com.application.virgo.model.Utente;
@@ -26,8 +24,8 @@ public interface OffertaUtenteService {
     public List<OfferteUtente> allOfferteBetweenUtenti(Utente proprietario, Utente offerente, Long idImmobile)
             throws UtenteException, ImmobileException;
 
-    public Optional<OfferteUtente> acceptOfferta(Long idOfferta, Utente authUser)
-            throws OffertaException, OffertaUtenteException, UtenteException;
+    public Optional<ContrattoUtente> acceptOfferta(Long idOfferta, Utente authUser)
+            throws OffertaException, OffertaUtenteException, UtenteException, ImmobileException, ContrattoException, ContrattoUtenteException;
 
     public Optional<OfferteUtente> declineOfferta(Long idOfferta, Utente authUser)
             throws OffertaException, OffertaUtenteException, UtenteException;

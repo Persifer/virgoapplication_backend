@@ -2,53 +2,29 @@ package com.application.virgo.model.ComposedRelationship.CompoundKey;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
+@Data
 public class ContrattoUtenteCompoundKey implements Serializable {
 
-    @Column(name = "id_utente")
-    private Integer idUtente;
+    @Column(name = "id_venditore")
+    private Long idVenditore;
+
+    @Column(name = "id_acquirente")
+    private Long idAcquirente;
 
     @Column(name = "id_contratto")
-    private Integer idContratto;
+    private Long idContratto;
 
-    public ContrattoUtenteCompoundKey() {
-    }
 
-    public ContrattoUtenteCompoundKey(Integer idUtente, Integer idContratto) {
-        this.idUtente = idUtente;
-        this.idContratto = idContratto;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ContrattoUtenteCompoundKey that = (ContrattoUtenteCompoundKey) o;
-        return idUtente.equals(that.idUtente) && idContratto.equals(that.idContratto);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(idUtente, idContratto);
-    }
-
-    public Integer getIdUtente() {
-        return idUtente;
-    }
-
-    public void setIdUtente(Integer idUtente) {
-        this.idUtente = idUtente;
-    }
-
-    public Integer getIdContratto() {
-        return idContratto;
-    }
-
-    public void setIdContratto(Integer idContratto) {
-        this.idContratto = idContratto;
-    }
 }

@@ -1,5 +1,6 @@
 package com.application.virgo.repositories;
 
+import com.application.virgo.model.ComposedRelationship.CompoundKey.OffertaUtenteCompoundKey;
 import com.application.virgo.model.ComposedRelationship.OfferteUtente;
 import com.application.virgo.model.Offerta;
 import com.application.virgo.model.Utente;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface OffertaUtenteJpaRepository extends JpaRepository<OfferteUtente, Long> {
+public interface OffertaUtenteJpaRepository extends JpaRepository<OfferteUtente, OffertaUtenteCompoundKey> {
 
     // Permette di selezionare tutte le offerte ricevute da altri utenti
     @Query("SELECT offerta " +
