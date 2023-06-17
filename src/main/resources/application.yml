@@ -18,6 +18,7 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
         #storage_engine: innodb
 
+
 #spring:
 #  thymeleaf:
 #    enabled: true

@@ -62,8 +62,7 @@ public class ImmobileServiceImpl implements ImmobileService {
                 //Controllo che le data di ultimo restuaro sia minore di quella odierna, può capitare che un restauro sia ancora in corso
                 // ma meglio evitare
                 if(tempNewImmobile.getDataUltimoRestauro().isBefore(todayDate)){
-                    if(tempNewImmobile.getMetriQuadri().equalsIgnoreCase("0") ||
-                            tempNewImmobile.getMetriQuadri().isBlank() || tempNewImmobile.getMetriQuadri().isEmpty()){
+
 // ============================================== SALVATAGGIO IMMOBILE =================================================
                         StringBuilder uploadedImages = new StringBuilder();
                         int iterator = 1;
@@ -83,7 +82,7 @@ public class ImmobileServiceImpl implements ImmobileService {
 
                         //Salvataggio delle immagini
                         for(MultipartFile file : uploadedFile){
-                            fileName = iterator+"_"+savedImmobile.getIdImmobile().toString()+"_"+file.getName();
+                            fileName = iterator+"_"+savedImmobile.getIdImmobile().toString()+"_"+file.getOriginalFilename();
 
                             uploadedImages
                                     .append(fileStorageService.save(file, utenteProprietario.getIdUtente().toString(), fileName))
@@ -97,9 +96,6 @@ public class ImmobileServiceImpl implements ImmobileService {
                         immobileRepo.save(savedImmobile);
 
                         return Optional.of(tempNewImmobile);
-                    }else{
-                        throw new ImmobileException("Il numero di metri quadri non può essere vuoto o 0");
-                    }
 
                 }else{
                     throw new ImmobileException("La data di ultimo restauro immobile è superiore a quella odierna!");

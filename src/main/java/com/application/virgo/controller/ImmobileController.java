@@ -12,10 +12,12 @@ import com.application.virgo.model.Utente;
 import com.application.virgo.service.implementation.AuthServiceImpl;
 import com.application.virgo.wrapperclass.SecuredUser;
 import com.application.virgo.service.interfaces.ImmobileService;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,22 +44,25 @@ public class ImmobileController {
     //private static final String URL_SUFFIX = "/immobile/";
 
     @GetMapping
-    public String returnCreaImmobilePage(){
+    public String returnCreaImmobilePage(Model model){
+        model.addAttribute("immobileDTO", new ImmobileDTO());
         return "CreaImmobile";
     }
 
 
     // Mapper per la creazione di un nuovo immobile associato ad singolo utente proprietario
                 // /immobile/addnew
-    @PostMapping("/addnew")
-    public String createNewImmobile(@ModelAttribute ImmobileDTO tempNewImmobile, ModelMap model,
-                                    @RequestParam("image") MultipartFile[] uploadedFile) {
+    @PostMapping(value = "/addnew", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    public String createNewImmobile(@ModelAttribute ImmobileDTO tempNewImmobile, ModelMap model
+                                    /*@RequestPart("images") MultipartFile[] uploadedFile */) {
 
         try{
             Optional<Utente> authenticatedUser = authService.getAuthUtente();
             if(authenticatedUser.isPresent()) {
 
-                Optional<ImmobileDTO> newImmobile = immobileService.createNewImmobile(tempNewImmobile, authenticatedUser.get(), uploadedFile);
+                Optional<ImmobileDTO> newImmobile = immobileService.createNewImmobile(tempNewImmobile,
+                        authenticatedUser.get(),
+                        tempNewImmobile.getUploadedFile());
                 if (newImmobile.isPresent()) {
                     model.addAttribute("message", "Immobile creato con successo");
                     return "Home";
@@ -72,7 +77,7 @@ public class ImmobileController {
 
         }catch (Exception error){
             model.addAttribute("error", error.getMessage());
-            return "inserisci_pagina_html_peppe";
+            return "Fail";
         }
     }
 

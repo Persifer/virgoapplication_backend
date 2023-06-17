@@ -23,6 +23,11 @@ public class RedirectController {
     public String post() {
         return "Fail";
     }
+    @GetMapping("/error")
+    public String errore() {
+        return "Fail";
+    }
+
 
     @PostMapping("/fail")
     public String get3() {
