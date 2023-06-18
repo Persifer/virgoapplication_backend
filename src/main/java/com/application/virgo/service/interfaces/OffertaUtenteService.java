@@ -1,5 +1,6 @@
 package com.application.virgo.service.interfaces;
 
+import com.application.virgo.DTO.outputDTO.ListUnviewMessageDTO;
 import com.application.virgo.exception.*;
 import com.application.virgo.model.ComposedRelationship.ContrattoUtente;
 import com.application.virgo.model.ComposedRelationship.OfferteUtente;
@@ -103,4 +104,11 @@ public interface OffertaUtenteService {
      */
     public Page<OfferteUtente> getOfferteProposte(Utente offerente, Long offset, Long pageSize)
             throws OffertaUtenteException, UtenteException;
+
+
+    /**
+     * Restituisce una coppia mail-valore per sapere, per ogni mail, quanti sono i messaggi da visualizzare
+     * @return Lista delle mail con il numero di messaggi da visualizzare
+     */
+    public List<ListUnviewMessageDTO> getListUnviewedMessaged();
 }

@@ -1,6 +1,7 @@
 package com.application.virgo.service.implementation;
 
 import com.application.virgo.DTO.inputDTO.UtenteDTO;
+import com.application.virgo.DTO.outputDTO.ListUnviewMessageDTO;
 import com.application.virgo.exception.*;
 import com.application.virgo.model.ComposedRelationship.CompoundKey.OffertaUtenteCompoundKey;
 import com.application.virgo.model.ComposedRelationship.ContrattoUtente;
@@ -67,8 +68,6 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
 
         return Optional.of(offertaUtenteRepository.save(offertaToProprietario));
     }
-
-
     @Override
     public Optional<OfferteUtente> saveOffertaToUtente(Utente offerente, Offerta offertaProposta, Long idVenditore)
             throws UtenteException, OffertaUtenteException {
@@ -292,5 +291,10 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
         } else {
             throw new UtenteException("L'utente deve essere autenticato");
         }
+    }
+
+    @Override
+    public List<ListUnviewMessageDTO> getListUnviewedMessaged() {
+        return offertaUtenteRepository.getListUtenteWithUnreadMessages();
     }
 }
