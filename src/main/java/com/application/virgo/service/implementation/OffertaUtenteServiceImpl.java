@@ -105,15 +105,16 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
     }
 
     @Override
-    public Page<OfferteUtente> getOfferteForUtenteProprietario(Utente authUser, Long offset, Long pageSize)
+    public List<OfferteUtente> getOfferteForUtenteProprietario(Utente authUser, Long offset, Long pageSize)
             throws OffertaUtenteException, UtenteException {
 
         if(authUser != null){
             if(pageSize < Constants.PAGE_SIZE){
-                return offertaUtenteRepository.getAllOfferteUtenteAsProprietario(
-                        PageRequest.of(offset.intValue(), pageSize.intValue()),
+                List<Integer> integ =  offertaUtenteRepository.getAllOfferteUtenteAsProprietario(
                         authUser.getIdUtente()
                 );
+
+                return List.of();
             }else{
                 throw new OffertaUtenteException("La grandezza della pagina supera i " + Constants.PAGE_SIZE + " elementi");
             }

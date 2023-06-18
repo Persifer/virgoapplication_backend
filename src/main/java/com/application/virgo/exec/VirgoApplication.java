@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-
+@EnableScheduling
 @SpringBootApplication(scanBasePackages = {"com.application.virgo.controller",
 										   "com.application.virgo.service",
 		"com.application.virgo.repositories","com.application.virgo.DTO.Mapper",
@@ -18,7 +18,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 })
 @EnableJpaRepositories(basePackages = "com.application.virgo.repositories")
 @EntityScan(basePackages = "com.application.virgo.model")
-@EnableScheduling
+
 public class VirgoApplication {
 
 	@Resource

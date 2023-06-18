@@ -43,7 +43,7 @@ public interface OffertaUtenteService {
      * @throws UtenteException nel caso in cui l'utente autenticato non sia stato passato correttamente
      * @throws OffertaUtenteException nel caso in cui la grandezza della pagina superi quella impostata dal server
      */
-    public Page<OfferteUtente> getOfferteForUtenteProprietario(Utente offerente, Long offset, Long pageSize)
+    public List<OfferteUtente> getOfferteForUtenteProprietario(Utente offerente, Long offset, Long pageSize)
             throws OffertaUtenteException, UtenteException;
 
     /**

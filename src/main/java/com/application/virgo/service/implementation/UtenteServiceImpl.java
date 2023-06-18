@@ -97,7 +97,7 @@ public class UtenteServiceImpl implements UtenteService {
     public List<ViewListaOfferteDTO> getListaProposte(Utente proprietario, Long offset, Long pageSize)
             throws OffertaUtenteException, UtenteException {
 
-        Page<OfferteUtente> listOfferteUtente = offerteUtenteService.getOfferteForUtenteProprietario(proprietario, offset, pageSize);
+        List<OfferteUtente> listOfferteUtente = offerteUtenteService.getOfferteForUtenteProprietario(proprietario, offset, pageSize);
         if(!listOfferteUtente.isEmpty()){
             return listOfferteUtente.stream().map(mapperOfferteUtente).collect(Collectors.toList());
         }

@@ -1,9 +1,5 @@
 package com.application.virgo.service.interfaces;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.AddressException;
-
-
 public interface EmailSenderService {
 
     /**
@@ -11,9 +7,8 @@ public interface EmailSenderService {
      * @param destinatario email del destinatario
      * @param nome nome del destinatario
      * @param cognome cognome del destinatatario
-     * @throws MessagingException se non riesce ad inviare la mail
      */
-    public void sendWelcomeMail(String destinatario, String nome, String cognome) throws MessagingException;
+    public void sendWelcomeMail(String destinatario, String nome, String cognome);
 
     public void sendReminderToView();
 }

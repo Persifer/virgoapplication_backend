@@ -3,7 +3,6 @@ package com.application.virgo.service.implementation;
 import com.application.virgo.DTO.outputDTO.ListUnviewMessageDTO;
 import com.application.virgo.service.interfaces.EmailSenderService;
 import com.application.virgo.service.interfaces.OffertaUtenteService;
-import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -25,7 +24,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
 
     @Override
     @Async
-    public void sendWelcomeMail(String destinatario, String nome, String cognome) throws MessagingException {
+    public void sendWelcomeMail(String destinatario, String nome, String cognome) {
 
 
         SimpleMailMessage emailHandler = new SimpleMailMessage();
