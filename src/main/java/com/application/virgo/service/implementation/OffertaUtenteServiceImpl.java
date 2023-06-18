@@ -47,6 +47,27 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
 
     }
 
+    private Optional<OfferteUtente> saveOffertaCommonMethod(Utente offerente, Offerta offertaProposta,
+                                                            Utente utenteProprietario, Boolean madeByProprietario){
+
+        // Creiamo prima la chiave primaria della relazione
+        OffertaUtenteCompoundKey compoundKeyProprietario = new OffertaUtenteCompoundKey(utenteProprietario.getIdUtente(),
+                offerente.getIdUtente(),
+                offertaProposta.getIdOfferta());
+        // Creiamo l'associazione tra l'offerente, il ricevente e l'offerta
+        OfferteUtente offertaToProprietario = new OfferteUtente(compoundKeyProprietario,
+                utenteProprietario, offerente,offertaProposta);
+
+        if(madeByProprietario){
+            offertaToProprietario.setVisionataDaPropietario(Boolean.TRUE);
+        }else{
+            offertaToProprietario.setVisionataDaPropietario(Boolean.FALSE);
+        }
+
+
+        return Optional.of(offertaUtenteRepository.save(offertaToProprietario));
+    }
+
 
     @Override
     public Optional<OfferteUtente> saveOffertaToUtente(Utente offerente, Offerta offertaProposta, Long idVenditore)
@@ -58,23 +79,29 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
             // se l'utente selezionato è il proprietario dell'immobile a cui stiamo facendo l'offerta...
             if(utenteProprietario.get().getIdUtente().equals(offertaProposta.getIdImmobileInteressato().getProprietario().getIdUtente())){
                 // allora creiamo l'offerta
-                // Creiamo prima la chiave primaria della relazione
-                OffertaUtenteCompoundKey compoundKeyProprietario = new OffertaUtenteCompoundKey(utenteProprietario.get().getIdUtente(),
-                        offerente.getIdUtente(),
-                        offertaProposta.getIdOfferta());
-                // Creiamo l'associazione tra l'offerente, il ricevente e l'offerta
-                OfferteUtente offertaToProprietario = new OfferteUtente(compoundKeyProprietario,
-                        utenteProprietario.get(), offerente,offertaProposta);
-
-                offertaToProprietario.setVisionataDaPropietario(Boolean.FALSE);
-
-                return Optional.of(offertaUtenteRepository.save(offertaToProprietario));
+                saveOffertaCommonMethod(offerente, offertaProposta, utenteProprietario.get(), Boolean.TRUE);
             }else{
                 throw new OffertaUtenteException("Non si può effetturare un'offerta su un immobile con proprietario diverso da quello indicato!");
             }
 
 
         }
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<OfferteUtente> rilanciaOffertaToUtente(Utente venditore, Offerta offertaProposta, Long idOfferente)
+            throws UtenteException, OffertaUtenteException{
+
+        Optional<Utente> utenteVenditore = getInformationUtente(idOfferente);
+
+        if(utenteVenditore.isPresent()){
+            // allora creiamo l'offerta
+            saveOffertaCommonMethod(utenteVenditore.get(), offertaProposta, venditore, Boolean.FALSE);
+        }else{
+            throw new OffertaUtenteException("Non si può effetturare un'offerta su un immobile con proprietario diverso da quello indicato!");
+        }
+
         return Optional.empty();
     }
 

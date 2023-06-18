@@ -81,10 +81,13 @@ public class OffertaController {
         }
     }
 
+    @PutMapping("/rilancia/{id_proposta}")
+    public String rilanciaOfferta(@PathVariable("id_proposta") Long idOfferta, ModelMap model){
+        return "";
+    }
     @PutMapping("/accept/{id_proposta}")
     public String acceptOfferta(@PathVariable("id_proposta") Long idOfferta,
-                                ModelMap model) throws ContrattoException, OffertaException, OffertaUtenteException, ContrattoUtenteException, ImmobileException, UtenteException {
-
+                                ModelMap model) {
         try{
             Optional<Utente> authenticatedUser = authService.getAuthUtente();
             if(authenticatedUser.isPresent()) {

@@ -19,7 +19,19 @@ public interface OffertaUtenteService {
      * @param idVenditore id dell'utente che ha messo in vendita l'immobile
      * @return Un optional contenente l'offerta creata da un utente
      * @throws UtenteException nel caso in cui non trova l'utente proprietario
-     */public Optional<OfferteUtente> saveOffertaToUtente(Utente offerente, Offerta offertaProposta, Long idVenditore)
+     */
+    public Optional<OfferteUtente> saveOffertaToUtente(Utente offerente, Offerta offertaProposta, Long idVenditore)
+            throws UtenteException, OffertaUtenteException;
+
+    /**
+     *  Metodo per salvare rilanciare un'offerta fatta da un altro utente
+     * @param offerente dettagli dell'utente che ha proposto l'offerta
+     * @param offertaProposta dettagli dell'offerta proposta da un utente
+     * @param idVenditore id dell'utente che ha messo in vendita l'immobile
+     * @return Un optional contenente l'offerta creata da un utente
+     * @throws UtenteException nel caso in cui non trova l'utente proprietario
+     */
+    public Optional<OfferteUtente> rilanciaOffertaToUtente(Utente offerente, Offerta offertaProposta, Long idVenditore)
             throws UtenteException, OffertaUtenteException;
     /**
      * Permette di prelevare tutte le offerte ricevute dall'utente proprietario di un immobile
