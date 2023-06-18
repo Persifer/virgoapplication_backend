@@ -51,6 +51,40 @@ public class ImmobileServiceImpl implements ImmobileService {
     private final ImmobiliDataUtente mapperUtenteInformation;
     private final DomandaImmobileMapper mapperDomande;
 
+    private void uploadPhotosToImmobile(MultipartFile[] uploadedFile, String imageList,
+                                        Immobile savedImmobile, Long idProprietario){
+
+        StringBuilder uploadedImages;
+        Integer iterator;
+        String fileName = "";
+
+        if(imageList.isBlank() || imageList.isEmpty()){
+            uploadedImages = new StringBuilder();
+            iterator = 1;
+        }else{
+            uploadedImages = new StringBuilder(imageList);
+            iterator = Integer.parseInt(
+                    uploadedImages.substring(uploadedImages.lastIndexOf("\\")+1, uploadedImages.length())
+                                  .substring(0,1)
+            );
+        }
+
+        for(MultipartFile file : uploadedFile){
+            fileName = iterator+"_"+savedImmobile.getIdImmobile().toString()+"_"+file.getOriginalFilename();
+
+            uploadedImages
+                    .append(fileStorageService.save(file, idProprietario.toString(), fileName))
+                    .append("\\")
+                    .append(fileName)
+                    .append("|");
+            iterator++;
+        }
+
+        savedImmobile.setListaImmagini(uploadedImages.toString());
+
+        immobileRepo.save(savedImmobile);
+    }
+
 
     @Override
     public Optional<ImmobileDTO> createNewImmobile(ImmobileDTO tempNewImmobile, Utente utenteProprietario, MultipartFile[] uploadedFile)
@@ -64,9 +98,7 @@ public class ImmobileServiceImpl implements ImmobileService {
                 if(tempNewImmobile.getDataUltimoRestauro().isBefore(todayDate)){
 
 // ============================================== SALVATAGGIO IMMOBILE =================================================
-                        StringBuilder uploadedImages = new StringBuilder();
-                        int iterator = 1;
-                        String fileName = "";
+
 
                         // Inserisco la data di inserimento
                         tempNewImmobile.setDataCreazioneImmobile(todayDate);
@@ -77,23 +109,13 @@ public class ImmobileServiceImpl implements ImmobileService {
                         newImmobile.setDomandeImmobile(Set.of());
                         // ===================
 
+                        newImmobile.setListaImmagini("");
                         // Salvataggio dell'immobile
                         Immobile savedImmobile = immobileRepo.save(newImmobile);
 
                         //Salvataggio delle immagini
-                        for(MultipartFile file : uploadedFile){
-                            fileName = iterator+"_"+savedImmobile.getIdImmobile().toString()+"_"+file.getOriginalFilename();
-
-                            uploadedImages
-                                    .append(fileStorageService.save(file, utenteProprietario.getIdUtente().toString(), fileName))
-                                    .append(fileName)
-                                    .append("|");
-                            iterator++;
-                        }
-
-                        savedImmobile.setListaImmagini(uploadedFile.toString());
-
-                        immobileRepo.save(savedImmobile);
+                        uploadPhotosToImmobile(uploadedFile, savedImmobile.getListaImmagini(),
+                                savedImmobile,utenteProprietario.getIdUtente());
 
                         return Optional.of(tempNewImmobile);
 
@@ -272,6 +294,9 @@ public class ImmobileServiceImpl implements ImmobileService {
 // =====================================================================================================================
 
                 toCheckImmobile.setIsEnabled(tempUpdatedImmobile.getIsEnabled());
+
+                uploadPhotosToImmobile(tempUpdatedImmobile.getUploadedFile(), tempToCheckImmobile.get().getListaImmagini(),
+                        tempToCheckImmobile.get(),authUser.getIdUtente());
 
                 if(error.isBlank() || error.isEmpty()){
 

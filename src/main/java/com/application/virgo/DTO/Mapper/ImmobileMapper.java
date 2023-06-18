@@ -27,6 +27,7 @@ public class ImmobileMapper implements Function<Immobile, ImmobileDTO> {
         immobileDto.setDataUltimoRestauro(immobile.getDataUltimoRestauro() != null ? immobile.getDataUltimoRestauro() : null);
         immobileDto.setDataAcquisizione(immobile.getDataAcquisizione() != null ? immobile.getDataAcquisizione() : null);
 
+
         immobileDto.setPrezzo(immobile.getPrezzo() != null ? immobile.getPrezzo() : 0.0f);
         immobileDto.setLocali(immobile.getLocali() != null ? immobile.getLocali() : "");
         immobileDto.setMetriQuadri(immobile.getMetriQuadri() != null ? immobile.getMetriQuadri() : "");
@@ -44,8 +45,11 @@ public class ImmobileMapper implements Function<Immobile, ImmobileDTO> {
         Immobile newImmobile = new Immobile();
 
         newImmobile.setDescrizione(immobile.getDescrizione() != null ? immobile.getDescrizione() : "");
+        newImmobile.setTitolo(immobile.getTitolo() != null ? immobile.getTitolo() : "");
+
         newImmobile.setDataUltimoRestauro(immobile.getDataUltimoRestauro() != null ? immobile.getDataUltimoRestauro() : null);
         newImmobile.setDataAcquisizione(immobile.getDataAcquisizione() != null ? immobile.getDataAcquisizione() : null);
+        newImmobile.setDataCreazioneImmobile(immobile.getDataCreazioneImmobile() != null ? immobile.getDataCreazioneImmobile() : null);
 
         newImmobile.setPrezzo(immobile.getPrezzo() != null ? immobile.getPrezzo() : 0.0f);
 
@@ -57,6 +61,7 @@ public class ImmobileMapper implements Function<Immobile, ImmobileDTO> {
         newImmobile.setProvincia(immobile.getProvincia() != null ? immobile.getProvincia() : "");
         newImmobile.setCitta(immobile.getCitta() != null ? immobile.getCitta() : "");
 
+        newImmobile.setIsEnabled(Boolean.TRUE);
         return newImmobile;
     }
 
