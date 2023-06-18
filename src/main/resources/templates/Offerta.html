@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <nav role="navigation" aria-label="Navigation">
+        <a href="/site/immobile/list/0/20">Home</a>
+        <a href="/site/utente">Utente</a>
+        <a href="/site/offerta">Offerte</a>
+        <a href="/login">Login</a>
+    </nav>
+    <title>Le tue offerte</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: green;
+            border-radius: 5px;
+        }
+        a {
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<h1>Le mie offerte</h1>
+<ul>
+    <li th:each="offer : ${offerta}">
+        <a th:href="@{/Offerta(id=${offerta.id})}" th:text="${offerta.name}"></a>
+        <button type="button" th:onclick="acceptOffer('${offerta.id}')">Accetta offerta</button>
+        <button type="button" th:onclick="declineOffer('${offerta.id}')">Rifiuta offerta</button>
+    </li>
+</ul>
+</body>
+</html>

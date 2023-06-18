@@ -41,6 +41,7 @@ public class RegistrationController {
         try {
             System.out.print("Prima del service");
             Optional<Utente> registeredUtente = utenteService.tryRegistrationHandler(newUtente);
+            emailService.sendWelcomeMail(registeredUtente.get().getEmail(),registeredUtente.get().getNome(),registeredUtente.get().getCognome());
 
             return "redirect:/login";
         } catch (Exception e) {

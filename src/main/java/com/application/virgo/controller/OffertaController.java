@@ -30,7 +30,10 @@ public class OffertaController {
     private final OffertaService offertaService;
     private final OffertaUtenteService offertaUtenteService;
     private final AuthService authService;
-
+    @GetMapping
+    public String get() {
+        return "Offerta";
+    }
     @PostMapping("/propose/{id_proprietario}/{id_immobile}")
     public String createProposta(@PathVariable("id_proprietario") Long idProprietario,
                                                   @PathVariable("id_immobile") Long idImmobile,
@@ -51,33 +54,33 @@ public class OffertaController {
 
                             if(newOffertaToUtente.isPresent()){
                                 model.addAttribute("message", "offerta creata correttamente");
-                                return "inserisci_pagina_html_peppe";
+                                return "Offerta";
                             }else{
                                 model.addAttribute("error", "2 - Errore nella creazione di un offerta");
-                                return "inserisci_pagina_html_peppe";
+                                return "Fail";
                             }
 
                         }else {
                             model.addAttribute("error", "1 - Errore nella creazione di un offerta");
-                            return "inserisci_pagina_html_peppe";
+                            return "Fail";
                         }
 
                     } else {
                         model.addAttribute("error", "Immobile non trovato");
-                        return "inserisci_pagina_html_peppe";
+                        return "Fail";
                     }
                 } else {
                     model.addAttribute("error", "Proprietario non trovato");
-                    return "inserisci_pagina_html_peppe";
+                    return "Fail";
                 }
 
             } else {
                 model.addAttribute("error", "Bisogna essere loggati per quest'azione");
-                return "inserisci_pagina_html_peppe";
+                return "Login";
             }
         } catch (Exception error) {
             model.addAttribute("error", error.getMessage());
-            return "inserisci_pagina_html_peppe";
+            return "Fail";
         }
     }
 
@@ -95,21 +98,21 @@ public class OffertaController {
 
                 if(acceptedOfferta.isPresent()){
                     model.addAttribute("error", "Congratulazioni, hai accettato l'offerta");
-                    return "inserisci_pagina_html_peppe";
+                    return "Offerta";
                 }else{
                     model.addAttribute("error", "Errore nell'accettazione dell'offerta");
-                    return "inserisci_pagina_html_peppe";
+                    return "Fail";
                 }
 
             }else{
 
                 model.addAttribute("error", "Bisogna essere loggati per quest'azione");
-                return "inserisci_pagina_html_peppe";
+                return "Login";
             }
 
         }catch ( Exception error){
             model.addAttribute("error", error.getMessage());
-            return "inserisci_pagina_html_peppe";
+            return "Fail";
         }
 
 
@@ -126,21 +129,21 @@ public class OffertaController {
 
                 if(acceptedOfferta.isPresent()){
                     model.addAttribute("error", "Peccato, hai rifiutato l'offerta");
-                    return "inserisci_pagina_html_peppe";
+                    return "offerta";
                 }else{
                     model.addAttribute("error", "Errore nel rifiuto dell'offerta");
-                    return "inserisci_pagina_html_peppe";
+                    return "fail";
                 }
 
             }else{
 
                 model.addAttribute("error", "Bisogna essere loggati per quest'azione");
-                return "inserisci_pagina_html_peppe";
+                return "login";
             }
 
         }catch (UtenteException | OffertaException | OffertaUtenteException error){
             model.addAttribute("error", error.getMessage());
-            return "inserisci_pagina_html_peppe";
+            return "fail";
         }
 
 

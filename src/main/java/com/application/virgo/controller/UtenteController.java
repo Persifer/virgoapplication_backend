@@ -35,6 +35,10 @@ public class UtenteController {
     private AuthService authService;
     private ContrattoUtenteService contrattoUtenteService;
 
+    @GetMapping
+    public String get() {
+        return "Utente";
+    }
 
     @PutMapping("/updateData")
     public String updateUtenteInformation(@PathVariable("id_utente") Long idUtenteDaModificare,
@@ -47,15 +51,15 @@ public class UtenteController {
             if(authUser.isPresent()){
                 utenteService.updateUtenteInfoById(idUtenteDaModificare, updatedUtente);
                 model.addAttribute("message", "Utente aggiornato correttamente");
-                return "inserisci_pagina_html_peppe";
+                return "Utente";
             }else{
                 model.addAttribute("error", "Bisogna essere autenticati per modificare i dati!");
-                return "inserisci_pagina_html_peppe";
+                return "Login";
             }
 
         }catch (UtenteException error){
             model.addAttribute("error", error.getMessage());
-            return "inserisci_pagina_html_peppe";
+            return "Fail";
         }
 
     }
@@ -88,11 +92,11 @@ public class UtenteController {
                 return "Ciao";
             }else{
                 model.addAttribute("error", "Utente non autenticato");
-                return "inserisci_pagina_html_peppe";
+                return "Login";
             }
         }catch (UtenteException | OffertaUtenteException error){
             model.addAttribute("error", "Utente non trovato");
-            return "inserisci_pagina_html_peppe";
+            return "Utente";
         }
     }
 
@@ -103,14 +107,14 @@ public class UtenteController {
             if(authUser.isPresent()){
                 List<ViewOfferteBetweenUtentiDTO> listaOfferte = utenteService.getAllProposteBetweenUtenti(authUser.get(), idOfferente, idImmobile);
                 model.addAttribute("listaOfferte", listaOfferte);
-                return "Ciao";
+                return "Offerte";
             }else{
                 model.addAttribute("error", "Utente non autenticato");
-                return "inserisci_pagina_html_peppe";
+                return "Login";
             }
         }catch (UtenteException | ImmobileException error){
             model.addAttribute("error", "Utente non trovato");
-            return "inserisci_pagina_html_peppe";
+            return "Login";
         }
     }
 
@@ -124,11 +128,11 @@ public class UtenteController {
                 return "Ciao";
             }else{
                 model.addAttribute("error", "Utente non autenticato");
-                return "inserisci_pagina_html_peppe";
+                return "Login";
             }
         }catch (UtenteException | OffertaUtenteException error){
             model.addAttribute("error", "Utente non trovato");
-            return "inserisci_pagina_html_peppe";
+            return "Utente";
         }
     }
 
