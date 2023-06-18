@@ -1,4 +1,14 @@
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: virgoplatform.info@gmail.com
+    password: olutrfhlftwstmge
+    properties:
+      smtp:
+        auth: true
+        starttls:
+          enable: true
   servlet:
     multipart:
       max-file-size: 5MB

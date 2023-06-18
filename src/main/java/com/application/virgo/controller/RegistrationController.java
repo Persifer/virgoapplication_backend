@@ -35,12 +35,12 @@ public class RegistrationController {
 
     @PostMapping()
     public String postActionRegister(@ModelAttribute UtenteDTO newUtente) {
-        System.out.print("Dentro l'handler \n\t=> "+ newUtente.toString());
+
         try {
             System.out.print("Prima del service");
             utenteService.tryRegistrationHandler(newUtente);
             return "redirect:/login";
-        } catch (UtenteException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return "redirect:/registration";
         }

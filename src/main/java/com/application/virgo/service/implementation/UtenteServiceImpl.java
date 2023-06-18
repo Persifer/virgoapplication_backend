@@ -16,8 +16,10 @@ import com.application.virgo.model.Ruolo;
 import com.application.virgo.model.Utente;
 import com.application.virgo.repositories.RuoloJpaRepository;
 import com.application.virgo.repositories.UtenteJpaRepository;
+import com.application.virgo.service.interfaces.EmailSenderService;
 import com.application.virgo.service.interfaces.OffertaUtenteService;
 import com.application.virgo.service.interfaces.UtenteService;
+import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -44,15 +46,16 @@ public class UtenteServiceImpl implements UtenteService {
     // Preleva in modo automatico l'istanza della classe UtenteJpaRepository per gestire la comunicazione
     // tra database e classe java
 
-    private UtenteJpaRepository utenteRepo;
-    private PasswordEncoder passwordEncoder;
+    private final UtenteJpaRepository utenteRepo;
+    private final PasswordEncoder passwordEncoder;
 
-    private UtenteMapper mapperUtente;
-    private ViewListaOfferteMapper mapperOfferteUtente;
-    private ViewOfferteBtwnUtentiMapper mapperOfferteBtwnUtenti;
+    private final UtenteMapper mapperUtente;
+    private final ViewListaOfferteMapper mapperOfferteUtente;
+    private final  ViewOfferteBtwnUtentiMapper mapperOfferteBtwnUtenti;
 
-    private OffertaUtenteService offerteUtenteService;
-    private RuoloJpaRepository ruoloRepo;
+    private final OffertaUtenteService offerteUtenteService;
+    private final RuoloJpaRepository ruoloRepo;
+    private final EmailSenderService emailService;
 
     // metodo che restituisce un utente tramite l'email e la password
     @Override
@@ -195,7 +198,7 @@ public class UtenteServiceImpl implements UtenteService {
 
 
     // Permette di registrare un nuovo utente
-    public Optional<Utente> tryRegistrationHandler(UtenteDTO tempNewUtente) throws UtenteException {
+    public Optional<Utente> tryRegistrationHandler(UtenteDTO tempNewUtente) throws UtenteException, MessagingException {
         Utente newUtente = mapperUtente.apply(tempNewUtente);
 
         // Controllo che la data di nascita inserita correttamente
@@ -210,7 +213,14 @@ public class UtenteServiceImpl implements UtenteService {
                 newUtente.setUserRole(Set.of(tempRuolo.get()));
                 newUtente.setDomandeUtente(Set.of());
 
-                return Optional.of(utenteRepo.save(newUtente));
+                Optional<Utente> registeredUtente = Optional.of(utenteRepo.save(newUtente));
+
+                emailService.sendWelcomeMail(
+                        registeredUtente.get().getEmail(),
+                        registeredUtente.get().getNome(),
+                        registeredUtente.get().getCognome());
+
+                return registeredUtente;
             }else{
                 throw new UtenteException("Ruolo non trovato");
             }
