@@ -15,10 +15,6 @@ public class UtenteMapper implements Function<Utente, UtenteDTO> {
                 utente.getNome(),
                 utente.getCognome(),
                 utente.getEmail(),
-                utente.getVia(),
-                utente.getCap(),
-                utente.getCitta(),
-                utente.getProvincia(),
                 utente.getDataNascita()
                 );
     }
@@ -29,10 +25,6 @@ public class UtenteMapper implements Function<Utente, UtenteDTO> {
                 utente.getCognome(),
                 utente.getEmail(),
                 utente.getPassword(),
-                utente.getVia(),
-                utente.getCap(),
-                utente.getCitta(),
-                utente.getProvincia(),
                 utente.getDataNascita()
         );
     }

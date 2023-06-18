@@ -25,12 +25,6 @@ public class Utente {
     private String email;
     private String password;
 
-// ======== RESIDENZA =========
-    private String via;
-    private String cap;
-    private String citta;
-    private String provincia;
-// ============================
 
     private LocalDate dataNascita;
 
@@ -98,41 +92,27 @@ public class Utente {
 // ============================================================
     public Utente() {}
     public Utente(Long idUtente, String nome, String cognome, String email, String password,
-                  String via, String cap, String citta, String provincia, LocalDate dataNascita, List<Immobile> immobiliUtente) {
+                  LocalDate dataNascita, List<Immobile> immobiliUtente) {
         this.idUtente = idUtente;
         this.nome = nome;
         this.cognome = cognome;
         this.email = email;
         this.password = password;
-        this.via = via;
-        this.cap = cap;
-        this.citta = citta;
-        this.provincia = provincia;
         this.dataNascita = dataNascita;
         this.immobiliUtente = immobiliUtente;
     }
-    public Utente(String nome, String cognome, String email, String via,
-                     String cap, String citta, String provincia, LocalDate dataNascita) {
+    public Utente(String nome, String cognome, String email, LocalDate dataNascita) {
         this.nome = nome;
         this.cognome = cognome;
         this.email = email;
-        this.via = via;
-        this.cap = cap;
-        this.citta = citta;
-        this.provincia = provincia;
         this.dataNascita = dataNascita;
     }
 
-    public Utente(String nome, String cognome, String email, String password,
-                  String via, String cap, String citta, String provincia, LocalDate dataNascita) {
+    public Utente(String nome, String cognome, String email, String password, LocalDate dataNascita) {
         this.nome = nome;
         this.cognome = cognome;
         this.email = email;
         this.password = password;
-        this.via = via;
-        this.cap = cap;
-        this.citta = citta;
-        this.provincia = provincia;
         this.dataNascita = dataNascita;
     }
 
