@@ -47,31 +47,32 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
 
     }
 
-    /**
-     *
-     * @param offerente dettagli dell'utente che ha proposto l'offerta
-     * @param offertaProposta dettagli dell'offerta proposta da un utente
-     * @param idVenditore id dell'utente che ha messo in vendita l'immobile
-     * @return Un optional contenente l'offerta creata da un utente
-     * @throws UtenteException nel caso in cui non trova l'utente proprietario
-     */
+
     @Override
     public Optional<OfferteUtente> saveOffertaToUtente(Utente offerente, Offerta offertaProposta, Long idVenditore)
-        throws UtenteException {
+            throws UtenteException, OffertaUtenteException {
 
+        // Prelevo le informazioni dell'utente proprietario dell'immobile
         Optional<Utente> utenteProprietario = getInformationUtente(idVenditore);
         if(utenteProprietario.isPresent()){
+            // se l'utente selezionato è il proprietario dell'immobile a cui stiamo facendo l'offerta...
+            if(utenteProprietario.get().getIdUtente().equals(offertaProposta.getIdImmobileInteressato().getProprietario().getIdUtente())){
+                // allora creiamo l'offerta
+                // Creiamo prima la chiave primaria della relazione
+                OffertaUtenteCompoundKey compoundKeyProprietario = new OffertaUtenteCompoundKey(utenteProprietario.get().getIdUtente(),
+                        offerente.getIdUtente(),
+                        offertaProposta.getIdOfferta());
+                // Creiamo l'associazione tra l'offerente, il ricevente e l'offerta
+                OfferteUtente offertaToProprietario = new OfferteUtente(compoundKeyProprietario,
+                        utenteProprietario.get(), offerente,offertaProposta);
 
-            OffertaUtenteCompoundKey compoundKeyProprietario = new OffertaUtenteCompoundKey(utenteProprietario.get().getIdUtente(),
-                    offerente.getIdUtente(),
-                    offertaProposta.getIdOfferta());
+                offertaToProprietario.setVisionataDaPropietario(Boolean.FALSE);
 
+                return Optional.of(offertaUtenteRepository.save(offertaToProprietario));
+            }else{
+                throw new OffertaUtenteException("Non si può effetturare un'offerta su un immobile con proprietario diverso da quello indicato!");
+            }
 
-            OfferteUtente offertaToProprietario = new OfferteUtente(compoundKeyProprietario,
-                    utenteProprietario.get(), offerente,offertaProposta);
-
-
-            return Optional.of(offertaUtenteRepository.save(offertaToProprietario));
 
         }
         return Optional.empty();
@@ -96,6 +97,17 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
 
     }
 
+    /**
+     * Metodo comune per prelevare tutte le offerte scambiate tra due utenti
+     * @param authUser utente autenticato che sta accettando o rifiutando
+     * @param offerente colui che ha proposto l'offerta
+     * @param idImmobile immobile interessato nella contrattazione
+     * @param isProprietario permette di decidere se l'utente che sta facendo la richiesta, richiede tutte le offerte ricevute su immobili
+     *                       di sua proprietà oppure vuole avere tutte le offerte proposte ad altri utenti
+     * @return La lista delle offerte ricevute/inviate da un utente
+     * @throws UtenteException Se l'utente non è autenticato
+     * @throws ImmobileException se l'immobile non esiste
+     */
     private List<OfferteUtente> logicProposteBetweenUtenti(Utente authUser, Utente offerente, Long idImmobile, Boolean isProprietario)
             throws UtenteException, ImmobileException {
         if (authUser != null){
@@ -129,19 +141,35 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
 
     @Override
     public List<OfferteUtente> allOfferteBetweenUtenti(Utente authUser, Utente offerente, Long idImmobile) throws UtenteException, ImmobileException {
-        return logicProposteBetweenUtenti(authUser, offerente, idImmobile, true);
+        return logicProposteBetweenUtenti(authUser, offerente, idImmobile, false);
     }
 
+    /**
+     * Metodo comune che permette di accettare o declinare un'offerta
+     * @param idOfferta offerta interessata
+     * @param authUser utente autenticato
+     * @param isAccettata se l'offerta è stata accettata o declinata
+     * @return L'entità OffertaUtente aggiornata
+     * @throws OffertaException Se non è stato possibile trovare l'offerta
+     * @throws OffertaUtenteException se ci sono stati problemi con l'aggiornamento
+     * @throws UtenteException se l'utente non è autenticato
+     */
     private Optional<OfferteUtente> methodForAcceptAndDenyOfferta(Long idOfferta, Utente authUser, Boolean isAccettata)
             throws OffertaException, OffertaUtenteException, UtenteException{
+        // controllo che l'utente è autenticato
         if(authUser != null){
+            // prelevo l'offerta interessata
             Optional<Offerta> offertaSelezionata = offertaService.getOffertaDetails(idOfferta);
+            // se presente
             if(offertaSelezionata.isPresent()){
+                //Prelevo l'offerta in base al proprietario e al'id dell'offerta
                 Optional<OfferteUtente> tempOffertaToAccept =
                         offertaUtenteRepository.getOfferteUtenteByProprietarioAndOffertaInteressata(authUser,offertaSelezionata.get());
+                // se l'offerta voluta esiste
                 if(tempOffertaToAccept.isPresent()){
-
+                    // prelevo l'offerta interessata dall'optional
                     OfferteUtente offertaToAccept = tempOffertaToAccept.get();
+                    //comunico se è stata accettata oppure no
                     offertaToAccept.setIsAccettato(isAccettata);
                     offertaToAccept.setIsDeclinato(!isAccettata);
 

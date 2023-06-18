@@ -17,23 +17,19 @@ import java.util.Optional;
 @Repository
 public interface OffertaUtenteJpaRepository extends JpaRepository<OfferteUtente, OffertaUtenteCompoundKey> {
 
-    // Permette di selezionare tutte le offerte ricevute da altri utenti
-    @Query("SELECT offerta " +
-            "FROM OfferteUtente offerta " +
-                "JOIN Utente utente ON (offerta.proprietario.idUtente = utente.idUtente)" +
-            "WHERE utente.idUtente = :idRequestedUtente " +
-                "GROUP BY offerta.offerente.idUtente, offerta.offertaInteressata.idImmobileInteressato")
+    // Permette di selezionare tutte le offerte ricevute raggrupate per utente che ha inviato l'offerta
+    @Query("SELECT offertaUtente " +
+            "FROM OfferteUtente offertaUtente" +
+            "    JOIN Offerta ON (offertaUtente.offertaInteressata.idOfferta = Offerta.idOfferta)" +
+            "WHERE Offerta.idOfferta IN (" +
+                "    SELECT Immobile.idImmobile" +
+                "    FROM Immobile " +
+                "        JOIN Utente ON (Immobile.proprietario.idUtente = Utente.idUtente)" +
+                "    WHERE Utente.idUtente = :idRequestedUtente" +
+                ") GROUP BY OfferteUtente.offerente.idUtente"
+            )
     public Page<OfferteUtente> getAllOfferteUtenteAsProprietario(Pageable pagable, @Param("idRequestedUtente") Long idProprietario );
 
-    // Permette di selezionare tutte le offerte inviate e ricevute tra il proprietario dell'immobile ed un possibile acquirente
-    //
-    /* @Query("SELECT offerta " +
-            "FROM OfferteUtente offerta " +
-                "JOIN Utente utente ON (offerta.proprietario.idUtente = utente.idUtente)" +
-            "WHERE utente.idUtente = :idRequestedUtente AND offerta.offertaInteressata.idOfferta = :idRequestedOfferta")
-    public Page<OfferteUtente> getSpecificOffertaUtenteAsProprietario(Pageable pagable,
-                                                                      @Param("idRequestedUtente") Long idProprietario,
-                                                                      @Param("idRequestedOfferta") Long idOfferta ); */
 
     // Permette di selezionare tutte le offerte inviate e ricevute tra il proprietario dell'immobile ed un possibile acquirente
     @Query("SELECT offerta " +
@@ -62,6 +58,13 @@ public interface OffertaUtenteJpaRepository extends JpaRepository<OfferteUtente,
     public Page<OfferteUtente> getSpecificOffertaUtenteAsOfferente(Pageable pagable,
                                                                       @Param("idRequestedUtente") Long idProprietario,
                                                                       @Param("idRequestedOfferta") Long idOfferta ); */
+
+    @Query("SELECT utente.email, COUNT(offerta.visionataDaPropietario) " +
+            "FROM OfferteUtente offerta " +
+            "JOIN Utente utente ON (offerta.proprietario.idUtente = utente.idUtente)" +
+            "WHERE offerta.visionataDaPropietario = false " +
+            "GROUP BY utente.email")
+    public Optional<OfferteUtente> getListUtenteWithUnreadMessages();
 
 
     public Optional<OfferteUtente> getOfferteUtenteByProprietarioAndOffertaInteressata(Utente utente, Offerta offerta);

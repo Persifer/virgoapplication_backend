@@ -34,10 +34,11 @@ public class OfferteUtente {
     @ManyToOne
     @MapsId("idOfferta") // serve a mappare la colonna id_utente con la colonna idUtente dell'embeddedId
     @JoinColumn(name="id_offerta")
-
     private Offerta offertaInteressata;
 
     private Instant data_proposta;
+
+    private Boolean madeByProprietario;
 
     private Instant data_accettazione;
     private Instant data_declino;

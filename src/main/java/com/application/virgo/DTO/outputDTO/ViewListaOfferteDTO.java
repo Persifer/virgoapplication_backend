@@ -15,6 +15,7 @@ public class ViewListaOfferteDTO {
     //private String dataUltimoUpdate;
 
     private Long idOfferente;
+    private Long idOfferta;
     private Long idImmobile;
 
 }
