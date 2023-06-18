@@ -42,51 +42,6 @@ public class VirgoSecurityConfiguration{
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-       /* http.authorizeHttpRequests()
-                .requestMatchers(HttpMethod.GET, "/registration").permitAll()
-                .requestMatchers(HttpMethod.POST, "/registration").permitAll()
-                .requestMatchers("/site/**").hasRole(Constants.USER_ROLE);
-                //.anyRequest().authenticated();
-        http
-            .authorizeHttpRequests((authorize) -> authorize
-                            .requestMatchers( "/registration").permitAll()
-                            .requestMatchers( "/registration").permitAll()
-                    //.anyRequest().authenticated())
-            ).securityContext((securityContext) -> securityContext
-                    .requireExplicitSave(false));
-
-        // Enable login
-        /*http.formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/login/success", true)
-                //.failureForwardUrl("/fail")
-                .permitAll();
-
-        // Enable logout
-        http.logout()
-                .deleteCookies("JSESSIONID")
-                .logoutSuccessUrl("/login")
-                .permitAll();
-        http.rememberMe()
-                .key("session")
-                .userDetailsService(userDetailsService); */
-
-//        http
-//                .csrf().disable()
-//                .authorizeHttpRequests((requests) -> requests
-//                        .requestMatchers(HttpMethod.GET, "/registration").permitAll()
-//                        .requestMatchers(HttpMethod.POST, "/registration").permitAll()
-//                        .anyRequest().authenticated()
-//                )
-//                .formLogin(
-//                        form -> form
-//                                .loginPage("/login")
-//                                .loginProcessingUrl("/login")
-//                                .defaultSuccessUrl("/users")
-//                                .permitAll()
-//                )
-//                .headers(header -> header.frameOptions().sameOrigin())
-//                .logout((logout) -> logout.permitAll());
         http
                 .csrf().disable()
                 .authorizeHttpRequests().requestMatchers("/site/**").hasRole("USER")

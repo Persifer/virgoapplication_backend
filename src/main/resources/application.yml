@@ -1,25 +1,27 @@
 spring:
+  config:
+    import: optional:file:.env[.properties]
   mail:
     host: smtp.gmail.com
     port: 587
     username: virgoplatform.info@gmail.com
-    password: olutrfhlftwstmge
+    password: ${MAIL_PSWD}
     properties:
       smtp:
+        timeout: 3000
         auth: true
         starttls:
           enable: true
+          required: true
   servlet:
     multipart:
       max-file-size: 5MB
       max-request-size: 5MB
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://aws.connect.psdb.cloud/virgoapplication
-   # username: 53cu7vy3p0yjcrt4nmiu virgouser
-    #password: pscale_pw_kuuNJmodYMIhlOSpZsR4esgwnWXAmGUhH2vRGHS4lxh
-    username: g6f04hpeqamkcqcxrc81 #virgoadmin
-    password: pscale_pw_ywmhNA9zK4peCcEz5DToVKIN4Iy63Ots0bhLqHApLSo
+    url: ${DB_HOST}
+    username:  ${DB_USER}
+    password:  ${DB_PSWD}
   jpa:
     hibernate.ddl-auto: update
     show-sql: false

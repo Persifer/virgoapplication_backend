@@ -34,3 +34,4 @@ build/
 
 ### MAIN ###
 ./files/*
+./.env

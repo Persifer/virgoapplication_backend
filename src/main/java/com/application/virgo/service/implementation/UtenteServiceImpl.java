@@ -215,10 +215,7 @@ public class UtenteServiceImpl implements UtenteService {
 
                 Optional<Utente> registeredUtente = Optional.of(utenteRepo.save(newUtente));
 
-                emailService.sendWelcomeMail(
-                        registeredUtente.get().getEmail(),
-                        registeredUtente.get().getNome(),
-                        registeredUtente.get().getCognome());
+
 
                 return registeredUtente;
             }else{
