@@ -1,6 +1,5 @@
 package com.application.virgo.service.implementation;
 
-import com.application.virgo.DTO.inputDTO.UtenteDTO;
 import com.application.virgo.DTO.outputDTO.ListUnviewMessageDTO;
 import com.application.virgo.exception.*;
 import com.application.virgo.model.ComposedRelationship.CompoundKey.OffertaUtenteCompoundKey;
@@ -253,6 +252,21 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
                             proprietarioImmobile, tempAcquirente.get(), tempNewContratto.get()
                     );
 
+                    // Disabilito tutte le contrattazioni relative allo stesso immobile che non sono fatte con quell'utente
+                    // Prelevo quindi tutte le offerte che non sono fatte tra il proprietario e l'offerente dell'offerta accettata
+                    List<OfferteUtente> listOfferte = offertaUtenteRepository.getListOfferteRelatedToImmobile(
+                            acceptedOfferta.getOffertaInteressata().getIdImmobileInteressato().getIdImmobile(),
+                            acceptedOfferta.getOfferente().getIdUtente());
+
+                    //Setto tutte le offerte a disabilitato e salvo
+                    for(OfferteUtente offerta : listOfferte){
+                        Optional<OfferteUtente> tempOfferta = Optional.of(offertaUtenteRepository.save(offerta));
+                        //Controllo il corretto salvataggio dell'offerta
+                        if(tempOfferta.isEmpty()){
+                            throw new OffertaUtenteException("Impossibile aggiornare l'offerta "+ offerta.getIdOffertaUtente().toString());
+                        }
+                    }
+
                     //Se la creazione dell'associazione è avvenuta correttamente
                     if(tempContrattoUtente.isPresent()){
                         //Ritorno il contratto creato correttamente
@@ -297,4 +311,5 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
     public List<ListUnviewMessageDTO> getListUnviewedMessaged() {
         return offertaUtenteRepository.getListUtenteWithUnreadMessages();
     }
+
 }

@@ -33,20 +33,12 @@ public class VirgoApplication {
 
 	/*
 	* TODO
-	*  4. Invio email per messaggi non letti
-	*  5. Inserisci i commenti a supporto della relazione tra utente e ruolo
 	*  6. Sorting dei risultati di immobile
 	*     7.1 parole chiave
 	* 	  7.2 parametri specifici di filtraggio
-	*  7. Caricamento delle immagini nella sezione creazione e nella sezione modifica
-	*  8. Visualizzazione delle immagini nella pagina di un immobile
 	*  9. Test
 	*  12. Implementa modifica utente
-	*  15. Implementa la creazione di un contratto quando viene accettato un'offerta
-	*  16. Creazione metodo eliminazione immobile
-	*  17. Disabilita tutte le offerte legate a quell'immobile nel momento in cui una viene accettata
-	*
-	*
+	*  16. Creazione metodo eliminazione immobile --> si può fare front-end spedendo i dati con isEnabled a false
 	* */
 
 
