@@ -29,7 +29,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
 
         SimpleMailMessage emailHandler = new SimpleMailMessage();
 
-        emailHandler.setFrom("virgoplatform.info@gmail.com");
+        emailHandler.setFrom(destinatario);
 
         emailHandler.setTo("giorgino.antonio32@gmail.com");
         emailHandler.setSubject("Virgo Platform - Welcome mail");
