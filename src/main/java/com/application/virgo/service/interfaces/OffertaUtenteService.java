@@ -39,11 +39,11 @@ public interface OffertaUtenteService {
      * @param offerente l'utente autenticato che è proprietario dell'immobile
      * @param offset indice iniziale per la paginazione
      * @param pageSize dimensione della pagina
-     * @return Una Page<> contenente la lista delle offerte che l'utente ha ricevuto
+     * @return La lista di tutti gli id degli utenti con cui l'utente ha una contrattazione aperta su un suo immobile
      * @throws UtenteException nel caso in cui l'utente autenticato non sia stato passato correttamente
      * @throws OffertaUtenteException nel caso in cui la grandezza della pagina superi quella impostata dal server
      */
-    public List<OfferteUtente> getOfferteForUtenteProprietario(Utente offerente, Long offset, Long pageSize)
+    public List<Long> getOfferteForUtenteProprietario(Utente offerente, Long offset, Long pageSize)
             throws OffertaUtenteException, UtenteException;
 
     /**

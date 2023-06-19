@@ -1,6 +1,7 @@
 package com.application.virgo.service.interfaces;
 
 import com.application.virgo.DTO.inputDTO.UtenteDTO;
+import com.application.virgo.DTO.outputDTO.ListUtentiForProposteDTO;
 import com.application.virgo.DTO.outputDTO.ViewListaOfferteDTO;
 import com.application.virgo.DTO.outputDTO.ViewOfferteBetweenUtentiDTO;
 import com.application.virgo.exception.ImmobileException;
@@ -23,13 +24,13 @@ public interface UtenteService {
 
     Optional<Utente> updateUtenteInfoById(Long idUtente, UtenteDTO newUtente) throws UtenteException;
 
-    Optional<Utente> tryRegistrationHandler(UtenteDTO newUtente) throws UtenteException, MessagingException;
+    Optional<Utente> tryRegistrationHandler(UtenteDTO newUtente) throws UtenteException;
 
     void addDomandaToUtente(Utente authUser, Domanda domandaToAdd) throws UtenteException;
 
     Optional<Utente> getUtenteClassById(Long idProprietario) throws UtenteException;
 
-    List<ViewListaOfferteDTO> getListaProposte(Utente propietario, Long offset, Long pageSize)
+    List<ListUtentiForProposteDTO> getListaProposte(Utente propietario, Long offset, Long pageSize)
             throws OffertaUtenteException, UtenteException;
 
     List<ViewListaOfferteDTO> getListaOfferte(Utente propietario, Long offset, Long pageSize)

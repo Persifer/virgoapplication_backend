@@ -2,8 +2,10 @@ package com.application.virgo.DTO.inputDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class InsertOffertaDTO {
 

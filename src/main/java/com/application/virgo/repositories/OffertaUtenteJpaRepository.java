@@ -28,7 +28,7 @@ public interface OffertaUtenteJpaRepository extends JpaRepository<OfferteUtente,
             "        JOIN utente ON (immobile.id_utente = utente.id_utente)" +
             "    WHERE utente.id_utente = :idRequestedUtente)" +
             "GROUP BY offerte_utente.id_offerente;", nativeQuery = true)
-    public List<Integer> getAllOfferteUtenteAsProprietario(@Param("idRequestedUtente") Long idProprietario );
+    public List<Long> getAllOfferteUtenteAsProprietario(@Param("idRequestedUtente") Long idProprietario );
 
 
     // Permette di selezionare tutte le offerte inviate e ricevute tra il proprietario dell'immobile ed un possibile acquirente

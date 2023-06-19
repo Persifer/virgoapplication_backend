@@ -39,7 +39,7 @@ public class RegistrationController {
     public String postActionRegister(@ModelAttribute UtenteDTO newUtente) {
 
         try {
-            System.out.print("Prima del service");
+
             Optional<Utente> registeredUtente = utenteService.tryRegistrationHandler(newUtente);
             emailService.sendWelcomeMail(registeredUtente.get().getEmail(),registeredUtente.get().getNome(),registeredUtente.get().getCognome());
 
@@ -50,20 +50,5 @@ public class RegistrationController {
         }
     }
 
-
-    /*@PostMapping
-    public ResponseEntity<String> registration(@RequestBody Utente newUtente){
-        System.out.print("Dentro Registration controller");
-        try{
-            utenteService.registrationHandler(newUtente);
-            return new ResponseEntity<>("[*] Utente registrato correttamente [*] ", HttpStatus.OK);
-        }catch (UtenteException error){
-
-            return new ResponseEntity<>(error.getMessage(), HttpStatus.BAD_REQUEST);
-        }catch (Exception error){
-
-            return new ResponseEntity<>(error.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }*/
 
 }

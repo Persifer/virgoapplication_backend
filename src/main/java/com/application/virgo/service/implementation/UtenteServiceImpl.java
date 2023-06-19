@@ -1,10 +1,12 @@
 package com.application.virgo.service.implementation;
 
+import com.application.virgo.DTO.Mapper.ListUtentiForProposteMapper;
 import com.application.virgo.DTO.Mapper.ViewListaOfferteMapper;
 import com.application.virgo.DTO.Mapper.ViewOfferteBtwnUtentiMapper;
 
 import com.application.virgo.DTO.Mapper.UtenteMapper;
 import com.application.virgo.DTO.inputDTO.UtenteDTO;
+import com.application.virgo.DTO.outputDTO.ListUtentiForProposteDTO;
 import com.application.virgo.DTO.outputDTO.ViewListaOfferteDTO;
 import com.application.virgo.DTO.outputDTO.ViewOfferteBetweenUtentiDTO;
 import com.application.virgo.exception.ImmobileException;
@@ -51,6 +53,7 @@ public class UtenteServiceImpl implements UtenteService {
 
     private final UtenteMapper mapperUtente;
     private final ViewListaOfferteMapper mapperOfferteUtente;
+    private final ListUtentiForProposteMapper listUtentiForProposteMapper;
     private final  ViewOfferteBtwnUtentiMapper mapperOfferteBtwnUtenti;
 
     private final OffertaUtenteService offerteUtenteService;
@@ -94,12 +97,24 @@ public class UtenteServiceImpl implements UtenteService {
      * @throws UtenteException quando l'utente non è autenticato
      */
     @Override
-    public List<ViewListaOfferteDTO> getListaProposte(Utente proprietario, Long offset, Long pageSize)
+    public List<ListUtentiForProposteDTO> getListaProposte(Utente proprietario, Long offset, Long pageSize)
             throws OffertaUtenteException, UtenteException {
 
-        List<OfferteUtente> listOfferteUtente = offerteUtenteService.getOfferteForUtenteProprietario(proprietario, offset, pageSize);
+        List<Long> listOfferteUtente = offerteUtenteService.getOfferteForUtenteProprietario(proprietario, offset, pageSize);
+
         if(!listOfferteUtente.isEmpty()){
-            return listOfferteUtente.stream().map(mapperOfferteUtente).collect(Collectors.toList());
+            // Converto la lista di id utenti in una lista di utenti effettiva
+            List<Utente> listUtenti = listOfferteUtente.stream()
+                    .map(elem -> {
+                        try {
+                            return getUtenteClassById(elem).get();
+                        } catch (UtenteException e) {
+                            throw new RuntimeException(e.getMessage());
+                        }
+                    })
+                    .collect(Collectors.toList());
+            //Utilizzo la lista di utenti per passare i dati al front-end
+            return listUtenti.stream().map(listUtentiForProposteMapper).collect(Collectors.toList());
         }
         return List.of();
     }
@@ -198,7 +213,7 @@ public class UtenteServiceImpl implements UtenteService {
 
 
     // Permette di registrare un nuovo utente
-    public Optional<Utente> tryRegistrationHandler(UtenteDTO tempNewUtente) throws UtenteException, MessagingException {
+    public Optional<Utente> tryRegistrationHandler(UtenteDTO tempNewUtente) throws UtenteException {
         Utente newUtente = mapperUtente.apply(tempNewUtente);
 
         // Controllo che la data di nascita inserita correttamente
@@ -214,8 +229,6 @@ public class UtenteServiceImpl implements UtenteService {
                 newUtente.setDomandeUtente(Set.of());
 
                 Optional<Utente> registeredUtente = Optional.of(utenteRepo.save(newUtente));
-
-
 
                 return registeredUtente;
             }else{

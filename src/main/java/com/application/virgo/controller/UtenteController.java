@@ -2,6 +2,7 @@ package com.application.virgo.controller;
 
 import com.application.virgo.DTO.inputDTO.UtenteDTO;
 import com.application.virgo.DTO.outputDTO.ContrattiUtenteDTO;
+import com.application.virgo.DTO.outputDTO.ListUtentiForProposteDTO;
 import com.application.virgo.DTO.outputDTO.ViewListaOfferteDTO;
 import com.application.virgo.DTO.outputDTO.ViewOfferteBetweenUtentiDTO;
 import com.application.virgo.exception.ImmobileException;
@@ -87,7 +88,7 @@ public class UtenteController {
         try{
             Optional<Utente> authUser = authService.getAuthUtente();
             if(authUser.isPresent()){
-                List<ViewListaOfferteDTO> listaOfferte = utenteService.getListaProposte(authUser.get(), offset, pageSize);
+                List<ListUtentiForProposteDTO> listaOfferte = utenteService.getListaProposte(authUser.get(), offset, pageSize);
                 model.addAttribute("listaOfferte", listaOfferte);
                 return "Ciao";
             }else{
