@@ -15,5 +15,8 @@ public interface EmailSenderService {
      */
     public void sendWelcomeMail(String destinatario, String nome, String cognome) throws MessagingException;
 
+    /**
+     * Permette di inviare una mail che ricorda quanti messaggi deve visualizzare un utente
+     */
     public void sendReminderToView();
 }

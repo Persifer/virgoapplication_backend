@@ -12,8 +12,24 @@ import java.util.Optional;
 
 public interface DomandaService {
 
+    /**
+     * Permette di pubblicare una domanda sotto un immobile
+     * @param tempDomandaDTO dati relativi alla domanda
+     * @param authUser utente autenticato
+     * @return La domanda pubblicata
+     * @throws UtenteException se l'utente autenticato non esiste
+     */
     public Optional<Domanda> addNewDomanda(DomandaDTO tempDomandaDTO, Utente authUser)
             throws UtenteException;
 
+    /**
+     * Permette di rispondere ad una domanda da parte del proprietario
+     * @param risposta rispsota da associare ad una domanda
+     * @param idDomanda id domanda selezionata
+     * @return la domanda a cui abbiamo aggiunto al risposta
+     * @throws DomandaException se non è possibile reperire la domanda
+     * @throws UtenteException se non è possibile reperire l'utente autenticato
+     * @throws RispostaException se non è possibile reperire la risposta da pubblicare
+     */
     public Optional<Domanda> replyToDomanda(Risposta risposta, Long idDomanda) throws DomandaException, UtenteException, RispostaException;
 }

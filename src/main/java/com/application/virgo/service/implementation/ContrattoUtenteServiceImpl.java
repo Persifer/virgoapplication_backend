@@ -57,9 +57,7 @@ public class ContrattoUtenteServiceImpl implements ContrattoUtenteService {
     }
 
     @Override
-    /**
-     * Metodo che serve per la memorizzazione di un nuovo contratto tra due utenti
-     */
+
     public Optional<ContrattoUtente> saveContrattoBetweenUtenti(Utente venditore, Utente acquirente, Contratto contrattoInteressato)
             throws ContrattoUtenteException, ContrattoException {
         if(venditore != null){
