@@ -15,5 +15,7 @@ public class ContrattiUtenteDTO {
     private String dataStipulazione;
     private String idImmobile;
 
+    private Long idContratto;
+
 
 }

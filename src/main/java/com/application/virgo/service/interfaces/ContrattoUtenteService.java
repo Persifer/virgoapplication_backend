@@ -1,6 +1,7 @@
 package com.application.virgo.service.interfaces;
 
 import com.application.virgo.DTO.outputDTO.ContrattiUtenteDTO;
+import com.application.virgo.DTO.outputDTO.DettagliContrattoDTO;
 import com.application.virgo.exception.ContrattoException;
 import com.application.virgo.exception.ContrattoUtenteException;
 import com.application.virgo.exception.ImmobileException;
@@ -40,4 +41,14 @@ public interface ContrattoUtenteService {
      */
     public Optional<ContrattoUtente> saveContrattoBetweenUtenti(Utente venditore, Utente acquirente, Contratto contrattoInteressato)
             throws ContrattoUtenteException, ContrattoException;
+
+    /**
+     * Permette di prelevare le informazioni di un contratto dato l'id del contratto interessato
+     * @param authUSer Utente autenticato
+     * @param idContratto id contratto interessato
+     * @return DTO contente le informazioni utili al front-end
+     * @throws UtenteException se l'utente non è autenticato
+     * @throws ContrattoUtenteException se il contratto non esiste
+     */
+    public Optional<DettagliContrattoDTO> getDettagliContratto(Utente authUSer, Long idContratto) throws UtenteException, ContrattoUtenteException;
 }

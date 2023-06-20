@@ -1,10 +1,8 @@
 package com.application.virgo.controller;
 
 import com.application.virgo.DTO.inputDTO.UtenteDTO;
-import com.application.virgo.DTO.outputDTO.ContrattiUtenteDTO;
-import com.application.virgo.DTO.outputDTO.ListUtentiForProposteDTO;
-import com.application.virgo.DTO.outputDTO.ViewListaOfferteDTO;
-import com.application.virgo.DTO.outputDTO.ViewOfferteBetweenUtentiDTO;
+import com.application.virgo.DTO.outputDTO.*;
+import com.application.virgo.exception.ContrattoUtenteException;
 import com.application.virgo.exception.ImmobileException;
 import com.application.virgo.exception.OffertaUtenteException;
 import com.application.virgo.exception.UtenteException;
@@ -131,8 +129,11 @@ public class UtenteController {
                 model.addAttribute("error", "Utente non autenticato");
                 return "Login";
             }
-        }catch (UtenteException | OffertaUtenteException error){
-            model.addAttribute("error", "Utente non trovato");
+        }catch (UtenteException error){
+            model.addAttribute("error", error.getMessage());
+            return "Login";
+        }catch (OffertaUtenteException error){
+            model.addAttribute("error", error.getMessage());
             return "Utente";
         }
     }
@@ -144,16 +145,20 @@ public class UtenteController {
         try{
             Optional<Utente> authUser = authService.getAuthUtente();
             if(authUser.isPresent()){
-                List<ViewListaOfferteDTO> listaOfferte = utenteService.getListaOfferte(authUser.get(), idUtente, idImmobile);
+                List<ViewOfferteBetweenUtentiDTO> listaOfferte =
+                        utenteService.getAllOfferteBetweenUtenti(authUser.get(), idUtente, idImmobile);
                 model.addAttribute("listaOfferte", listaOfferte);
                 return "Ciao";
             }else{
                 model.addAttribute("error", "Utente non autenticato");
                 return "inserisci_pagina_html_peppe";
             }
-        }catch (UtenteException | OffertaUtenteException error){
+        }catch (UtenteException error){
             model.addAttribute("error", error.getMessage());
-            return "inserisci_pagina_html_peppe";
+            return "Login";
+        }catch (ImmobileException error){
+            model.addAttribute("error", error.getMessage());
+            return "Utente";
         }
     }
 
@@ -165,15 +170,40 @@ public class UtenteController {
             if(authUser.isPresent()){
                 List<ContrattiUtenteDTO> listContrattiUtente = contrattoUtenteService.getListaContrattiForUtente(authUser.get(),
                         offset, pageSize);
-
+                model.addAttribute("listaContratti", listContrattiUtente);
                 return "Ciao";
             }else{
                 model.addAttribute("error", "Utente non trovato");
                 return "inserisci_pagina_html_peppe";
             }
-        }catch (Exception error){
+        }catch (UtenteException error){
             model.addAttribute("error", error.getMessage());
-            return "inserisci_pagina_html_peppe";
+            return "Login";
+        }catch (ContrattoUtenteException error){
+            model.addAttribute("error", error.getMessage());
+            return "Utente";
+        }
+    }
+
+    @GetMapping("/getListaContratti/contratto/{id_contratto}")
+    public String getListaContratti(ModelMap model, @PathVariable("id_contratto") Long idContratto){
+        try{
+            Optional<Utente> authUser = authService.getAuthUtente();
+            if(authUser.isPresent()){
+                Optional<DettagliContrattoDTO> listContrattiUtente = contrattoUtenteService.getDettagliContratto(authUser.get(),
+                        idContratto);
+                model.addAttribute("listaContratti", listContrattiUtente);
+                return "Ciao";
+            }else{
+                model.addAttribute("error", "Utente non trovato");
+                return "inserisci_pagina_html_peppe";
+            }
+        }catch (UtenteException error){
+            model.addAttribute("error", error.getMessage());
+            return "Login";
+        }catch (ContrattoUtenteException error){
+            model.addAttribute("error", error.getMessage());
+            return "Utente";
         }
     }
 }

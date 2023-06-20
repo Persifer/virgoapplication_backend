@@ -4,6 +4,7 @@ import com.application.virgo.model.ComposedRelationship.ContrattoUtente;
 import com.application.virgo.model.ComposedRelationship.OfferteUtente;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 
@@ -14,6 +15,7 @@ import java.util.Set;
 @Entity
 @AllArgsConstructor
 @Data
+@Builder
 public class Utente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

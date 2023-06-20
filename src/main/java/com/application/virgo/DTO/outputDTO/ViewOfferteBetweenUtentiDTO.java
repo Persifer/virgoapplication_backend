@@ -26,5 +26,7 @@ public class ViewOfferteBetweenUtentiDTO {
     private Long idPropietario;
     private Long idOfferente;
 
+    private Boolean inviatoDaProprietario;
+
 
 }

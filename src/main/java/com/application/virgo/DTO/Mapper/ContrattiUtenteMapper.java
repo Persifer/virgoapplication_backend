@@ -18,6 +18,7 @@ public class ContrattiUtenteMapper implements Function<ContrattoUtente, Contratt
         contrattiUtenteDTO.setDataStipulazione(contrattoUtente.getContrattoInteressato().getDataStipulazione().toString());
         contrattiUtenteDTO.setIdImmobile(contrattoUtente.getContrattoInteressato().getImmobileInteressato().getIdImmobile().toString());
 
+        contrattiUtenteDTO.setIdContratto(contrattoUtente.getIdContrattoUtente().getIdContratto());
 
         return contrattiUtenteDTO;
     }

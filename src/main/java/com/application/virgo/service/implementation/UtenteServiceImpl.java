@@ -119,6 +119,15 @@ public class UtenteServiceImpl implements UtenteService {
         return List.of();
     }
 
+    /**
+     * Permette di avere la lista di tutte le offerte fatte dal proprietario dell'account
+     * @param offerente colui che ha fatto le offerte
+     * @param offset inidice iniziale per la paginazione
+     * @param pageSize grandezza della pagina
+     * @return Lista delle offerte prese dal database
+     * @throws OffertaUtenteException se non trova le offerte
+     * @throws UtenteException se l'utente non è autenticato
+     */
     @Override
     public List<ViewListaOfferteDTO> getListaOfferte(Utente offerente, Long offset, Long pageSize)
             throws OffertaUtenteException, UtenteException {
@@ -214,32 +223,38 @@ public class UtenteServiceImpl implements UtenteService {
 
     // Permette di registrare un nuovo utente
     public Optional<Utente> tryRegistrationHandler(UtenteDTO tempNewUtente) throws UtenteException {
-        Utente newUtente = mapperUtente.apply(tempNewUtente);
 
-        // Controllo che la data di nascita inserita correttamente
-        if(newUtente.getDataNascita().isBefore(LocalDate.now())){
-            // codifico la password tramtie l'encoder
-            newUtente.setPassword(passwordEncoder.encode(newUtente.getPassword()));
-            // seleziono il ruolo
-            Optional<Ruolo> tempRuolo = ruoloRepo.getRuoloByRuolo(USER_ROLE);
-            // controllo se il ruolo è presente
-            if(tempRuolo.isPresent()){
-                //  setto il ruolo dell'utente
-                newUtente.setUserRole(Set.of(tempRuolo.get()));
-                newUtente.setDomandeUtente(Set.of());
 
-                Optional<Utente> registeredUtente = Optional.of(utenteRepo.save(newUtente));
+        if(utenteRepo.getUtenteByEmail(tempNewUtente.getEmail()).isPresent()){
+            Utente newUtente = mapperUtente.apply(tempNewUtente);
 
-                return registeredUtente;
+            // Controllo che la data di nascita inserita correttamente
+            if(newUtente.getDataNascita().isBefore(LocalDate.now())){
+                // codifico la password tramtie l'encoder
+                newUtente.setPassword(passwordEncoder.encode(newUtente.getPassword()));
+                // seleziono il ruolo
+                Optional<Ruolo> tempRuolo = ruoloRepo.getRuoloByRuolo(USER_ROLE);
+                // controllo se il ruolo è presente
+                if(tempRuolo.isPresent()){
+                    //  setto il ruolo dell'utente
+                    newUtente.setUserRole(Set.of(tempRuolo.get()));
+                    newUtente.setDomandeUtente(Set.of());
+
+                    return Optional.of(utenteRepo.save(newUtente));
+                }else{
+                    throw new UtenteException("Ruolo non trovato");
+                }
+
             }else{
-                throw new UtenteException("Ruolo non trovato");
+                throw new UtenteException("La data di nascita deve essere minore di quella inserita!");
             }
-
         }else{
-            throw new UtenteException("La data di nascita deve essere minore di quella inserita!");
+            throw new UtenteException("L'utente già esiste all'interno del database");
         }
 
+
     }
+
 
     @Override
     public void addDomandaToUtente(Utente authUser, Domanda domandaToAdd) throws UtenteException {
