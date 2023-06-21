@@ -90,6 +90,7 @@ public class UtenteServiceImpl implements UtenteService {
 
     private List<ListUtentiForProposteDTO> createListaUtentiForProposte(List<Long> listOfferteUtente) throws UtenteException {
         List<ListUtentiForProposteDTO> listUtenti = new ArrayList<>();
+        listUtenti.add(new ListUtentiForProposteDTO(1l, "Mariolone", "test"));
         for(Long idUtente : listOfferteUtente){
             Optional<Utente> tempUtente = getUtenteClassById(idUtente);
             tempUtente.ifPresent(utente -> listUtenti.add(listUtentiForProposteMapper.apply(utente)));
