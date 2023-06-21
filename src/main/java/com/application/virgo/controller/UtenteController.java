@@ -36,6 +36,8 @@ public class UtenteController {
 
     @GetMapping
     public String get() {
+        // lista di immobili
+        //
         return "Utente";
     }
 
@@ -81,14 +83,14 @@ public class UtenteController {
         }
     }
 
-    @GetMapping("/getListProposte/{offset}/{pageSize}/")
+    @GetMapping("/getListProposte/{offset}/{pageSize}")
     public String getOfferteRicevute(ModelMap model, @PathVariable("offset") Long offset, @PathVariable("pageSize") Long pageSize){
         try{
             Optional<Utente> authUser = authService.getAuthUtente();
             if(authUser.isPresent()){
                 List<ListUtentiForProposteDTO> listaOfferte = utenteService.getListaProposte(authUser.get(), offset, pageSize);
                 model.addAttribute("listaOfferte", listaOfferte);
-                return "Ciao";
+                return "Utente";
             }else{
                 model.addAttribute("error", "Utente non autenticato");
                 return "Login";
@@ -161,7 +163,6 @@ public class UtenteController {
             return "Utente";
         }
     }
-
 
     @GetMapping("/getListaContratti/{offset}/{pageSize}")
     public String getListaContratti(ModelMap model, @PathVariable("offset") Long offset, @PathVariable("pageSize") Long pageSize){

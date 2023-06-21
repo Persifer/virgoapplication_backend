@@ -19,10 +19,10 @@ import java.util.Optional;
 public interface OffertaUtenteJpaRepository extends JpaRepository<OfferteUtente, OffertaUtenteCompoundKey> {
 
     // Permette di selezionare tutte le offerte ricevute raggrupate per utente che ha inviato l'offerta
-    @Query(value = "SELECT offerte_utente.id_offerente, offerte_utente.id_offerta, offerte_utente.id_proprietario AS id_ricevente" +
-            "FROM offerte_utente" +
-            "    JOIN offerta ON (offerte_utente.id_offerta = offerta.id_offerta)" +
-            "WHERE offerta.id_immobile IN (" +
+    @Query(value = "SELECT offerte_utente.id_offerente" +
+            " FROM offerte_utente" +
+            " JOIN offerta ON (offerte_utente.id_offerta = offerta.id_offerta)" +
+            " WHERE offerta.id_immobile IN (" +
             "    SELECT immobile.id_immobile" +
             "    FROM immobile" +
             "        JOIN utente ON (immobile.id_utente = utente.id_utente)" +
