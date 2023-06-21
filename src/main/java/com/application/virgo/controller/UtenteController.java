@@ -186,7 +186,7 @@ public class UtenteController {
     }
 
     @GetMapping("/getListaContratti/contratto/{id_contratto}")
-    public String getListaContratti(ModelMap model, @PathVariable("id_contratto") Long idContratto){
+    public String getSingleContratto(ModelMap model, @PathVariable("id_contratto") Long idContratto){
         try{
             Optional<Utente> authUser = authService.getAuthUtente();
             if(authUser.isPresent()){
