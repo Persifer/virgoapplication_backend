@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -87,6 +88,16 @@ public class UtenteServiceImpl implements UtenteService {
 
     }
 
+    private List<ListUtentiForProposteDTO> createListaUtentiForProposte(List<Long> listOfferteUtente) throws UtenteException {
+        List<ListUtentiForProposteDTO> listUtenti = new ArrayList<>();
+        for(Long idUtente : listOfferteUtente){
+            Optional<Utente> tempUtente = getUtenteClassById(idUtente);
+            tempUtente.ifPresent(utente -> listUtenti.add(listUtentiForProposteMapper.apply(utente)));
+        }
+
+        return listUtenti;
+    }
+
     /**
      * Permette di avere la lista delle offerte ricevute da un determinato utente
      * @param proprietario istanze della classe utente che rappresenta il proprietario
@@ -103,21 +114,12 @@ public class UtenteServiceImpl implements UtenteService {
         List<Long> listOfferteUtente = offerteUtenteService.getOfferteForUtenteProprietario(proprietario, offset, pageSize);
 
         if(!listOfferteUtente.isEmpty()){
-            // Converto la lista di id utenti in una lista di utenti effettiva
-            List<Utente> listUtenti = listOfferteUtente.stream()
-                    .map(elem -> {
-                        try {
-                            return getUtenteClassById(elem).get();
-                        } catch (UtenteException e) {
-                            throw new RuntimeException(e.getMessage());
-                        }
-                    })
-                    .collect(Collectors.toList());
-            //Utilizzo la lista di utenti per passare i dati al front-end
-            return listUtenti.stream().map(listUtentiForProposteMapper).collect(Collectors.toList());
+            return createListaUtentiForProposte(listOfferteUtente);
         }
         return List.of();
     }
+
+
 
     /**
      * Permette di avere la lista di tutte le offerte fatte dal proprietario dell'account

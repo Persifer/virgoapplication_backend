@@ -88,8 +88,8 @@ public class UtenteController {
         try{
             Optional<Utente> authUser = authService.getAuthUtente();
             if(authUser.isPresent()){
-                List<ListUtentiForProposteDTO> listaOfferte = utenteService.getListaProposte(authUser.get(), offset, pageSize);
-                model.addAttribute("listaOfferte", listaOfferte);
+                List<ListUtentiForProposteDTO> listaProposte = utenteService.getListaProposte(authUser.get(), offset, pageSize);
+                model.addAttribute("listaProposte", listaProposte);
                 return "Utente";
             }else{
                 model.addAttribute("error", "Utente non autenticato");
