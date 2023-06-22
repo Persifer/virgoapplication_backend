@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -53,7 +54,7 @@ public class Immobile {
     @OneToOne(mappedBy = "immobileInteressato")
     private Contratto contratto;
 
-    @OneToMany(mappedBy = "idDomanda")
+    @OneToMany(mappedBy = "idDomanda", fetch = FetchType.LAZY)
     private Set<Domanda> domandeImmobile;
 
 

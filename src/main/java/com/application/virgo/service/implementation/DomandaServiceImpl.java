@@ -41,9 +41,9 @@ public class DomandaServiceImpl implements DomandaService {
                 newDomanda.setImmobileInteressato(immobileInteressato.get());
                 // creo la nuova domanda
                 return Optional.of(domandaRepository.save(newDomanda));
+            }else{
+                throw new ImmobileException("Nessun immobile");
             }
-
-            return Optional.empty();
         }else{
             throw new UtenteException("Bisogna essere loggati per poter pubblicare una domanda");
         }
