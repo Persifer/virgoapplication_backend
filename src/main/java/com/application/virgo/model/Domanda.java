@@ -34,7 +34,7 @@ public class Domanda {
     @JoinColumn(name="idImmobile")
     private Immobile immobileInteressato;
 
-    @OneToOne(mappedBy = "domandaDiRiferimento")
+    @OneToOne(mappedBy = "domandaDiRiferimento", fetch = FetchType.EAGER)
     private Risposta risposta;
 
     public Domanda(String contenuto, Instant dataPubblicazione) {
