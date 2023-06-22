@@ -24,7 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -81,7 +80,7 @@ public class ImmobileServiceImpl implements ImmobileService {
 
 
     @Override
-    public Optional<ImmobileDTO> createNewImmobile(ImmobileDTO tempNewImmobile, Utente utenteProprietario, MultipartFile[] uploadedFile)
+    public Optional<ImmobileDTO> createNewImmobile(ImmobileDTO tempNewImmobile, Utente utenteProprietario)
         throws ImmobileException, UtenteException {
         LocalDate todayDate = LocalDate.now();
         if(utenteProprietario != null){
@@ -108,7 +107,7 @@ public class ImmobileServiceImpl implements ImmobileService {
                         Immobile savedImmobile = immobileRepo.save(newImmobile);
 
                         //Salvataggio delle immagini
-                        uploadPhotosToImmobile(uploadedFile, savedImmobile.getListaImmagini(),
+                        uploadPhotosToImmobile(tempNewImmobile.getUploadedFile(), savedImmobile.getListaImmagini(),
                                 savedImmobile,utenteProprietario.getIdUtente());
 
                         return Optional.of(tempNewImmobile);
