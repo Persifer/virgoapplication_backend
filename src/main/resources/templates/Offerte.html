@@ -4,10 +4,10 @@
     <nav role="navigation" aria-label="Navigation">
         <a href="/site/immobile/list/0/20">Home</a>
         <a href="/site/utente">Utente</a>
-        <a href="/site/offerta">Offerte</a>
+        <a href="/site/offerte">Offerte</a>
         <a href="/login">Login</a>
     </nav>
-    <title>Le tue proposte</title>
+    <title>Le tue Offerte</title>
     <style>
         table {
             width: 100%;
@@ -44,11 +44,11 @@
     </tr>
     </thead>
     <tbody>
-    <!-- Utilizza Thymeleaf per iterare sulla listaProposte -->
-    <tr th:each="proposta : ${listaProposte}">
-        <td th:text="${proposta.id}"></td>
-        <td th:text="${proposta.nomeUtente}"></td>
-        <td th:text="${proposta.titoloProposta}"></td>
+
+    <tr th:each="offerta : ${listaOfferte}">
+        <td th:text="${offerta.id}"></td>
+        <td th:text="${offerta.nomeUtente}"></td>
+        <a href="/site/utente/getListProposte/storico/{idUtente}/{idImmobile}">Visualizza le tue offerta  <td th:text="${proposta.titoloProposta}"></td></a>
     </tr>
     </tbody>
 </table>

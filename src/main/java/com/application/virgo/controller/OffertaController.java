@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/site/offerta")
+@RequestMapping("/site/offerte")
 @Validated
 @AllArgsConstructor
 public class OffertaController {
@@ -32,7 +32,7 @@ public class OffertaController {
     private final AuthService authService;
     @GetMapping
     public String get() {
-        return "Offerta";
+        return "Offerte";
     }
     @PostMapping("/propose/{id_proprietario}/{id_immobile}")
     public String createProposta(@PathVariable("id_proprietario") Long idProprietario,
@@ -54,7 +54,7 @@ public class OffertaController {
 
                             if(newOffertaToUtente.isPresent()){
                                 model.addAttribute("message", "offerta creata correttamente");
-                                return "Offerta";
+                                return "Offerte";
                             }else{
                                 model.addAttribute("error", "2 - Errore nella creazione di un offerta");
                                 return "Fail";
@@ -98,7 +98,7 @@ public class OffertaController {
 
                 if(acceptedOfferta.isPresent()){
                     model.addAttribute("error", "Congratulazioni, hai accettato l'offerta");
-                    return "Offerta";
+                    return "Offerte";
                 }else{
                     model.addAttribute("error", "Errore nell'accettazione dell'offerta");
                     return "Fail";
@@ -129,7 +129,7 @@ public class OffertaController {
 
                 if(acceptedOfferta.isPresent()){
                     model.addAttribute("error", "Peccato, hai rifiutato l'offerta");
-                    return "offerta";
+                    return "Offerte";
                 }else{
                     model.addAttribute("error", "Errore nel rifiuto dell'offerta");
                     return "fail";

@@ -83,14 +83,14 @@ public class UtenteController {
         }
     }
 
-    @GetMapping("/getListProposte/{offset}/{pageSize}")
-    public String getOfferteRicevute(ModelMap model, @PathVariable("offset") Long offset, @PathVariable("pageSize") Long pageSize){
+    @GetMapping("/getListProposte")
+    public String getOfferteRicevute(ModelMap model){
         try{
             Optional<Utente> authUser = authService.getAuthUtente();
             if(authUser.isPresent()){
                 List<ViewListaOfferteDTO> listaProposte = utenteService.getListaProposte(authUser.get());
                 model.addAttribute("listaProposte", listaProposte);
-                return "Offerta";
+                return "Proposte";
             }else{
                 model.addAttribute("error", "Utente non autenticato");
                 return "Login";
@@ -101,14 +101,15 @@ public class UtenteController {
         }
     }
 
-    @GetMapping("/getListProposte/storico/{idUtente}/{idImmobile}")
-    public String getOfferteBetweenUtenti(ModelMap model, @PathVariable("idUtente") Long idOfferente, @PathVariable("idImmobile") Long idImmobile){
+    @GetMapping("/getListProposte/storico/{idOfferente}/{idImmobile}")
+    public String getOfferteBetweenUtenti(ModelMap model, @PathVariable("idOfferente") Long idOfferente, @PathVariable("idImmobile") Long idImmobile){
         try{
             Optional<Utente> authUser = authService.getAuthUtente();
             if(authUser.isPresent()){
-                List<ViewOfferteBetweenUtentiDTO> listaOfferte = utenteService.getAllProposteBetweenUtenti(authUser.get(), idOfferente, idImmobile);
+                List<ViewOfferteBetweenUtentiDTO> listaOfferte =
+                        utenteService.getAllProposteBetweenUtenti(authUser.get(), idOfferente, idImmobile);
                 model.addAttribute("listaOfferte", listaOfferte);
-                return "Offerte";
+                return "SingolaProposta";
             }else{
                 model.addAttribute("error", "Utente non autenticato");
                 return "Login";
@@ -119,8 +120,8 @@ public class UtenteController {
         }
     }
 
-    @GetMapping("/getListaOfferte/{offset}/{pageSize}")
-    public String getOfferte(ModelMap model, @PathVariable("offset") Long offset, @PathVariable("pageSize") Long pageSize){
+    @GetMapping("/getListaOfferte")
+    public String getOfferte(ModelMap model){
         try{
             Optional<Utente> authUser = authService.getAuthUtente();
             if(authUser.isPresent()){
@@ -172,7 +173,7 @@ public class UtenteController {
                 List<ContrattiUtenteDTO> listContrattiUtente = contrattoUtenteService.getListaContrattiForUtente(authUser.get(),
                         offset, pageSize);
                 model.addAttribute("listaContratti", listContrattiUtente);
-                return "Ciao";
+                return "Offerte";
             }else{
                 model.addAttribute("error", "Utente non trovato");
                 return "inserisci_pagina_html_peppe";
@@ -194,10 +195,10 @@ public class UtenteController {
                 Optional<DettagliContrattoDTO> listContrattiUtente = contrattoUtenteService.getDettagliContratto(authUser.get(),
                         idContratto);
                 model.addAttribute("listaContratti", listContrattiUtente);
-                return "Ciao";
+                return "SingolaProposta";
             }else{
                 model.addAttribute("error", "Utente non trovato");
-                return "inserisci_pagina_html_peppe";
+                return "Login";
             }
         }catch (UtenteException error){
             model.addAttribute("error", error.getMessage());

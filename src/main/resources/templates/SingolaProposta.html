@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Proposta Seleziona</title>
+</head>
+<body>
+<h1>Accetta Offerta</h1>
+
+
+
+<form th:action="@{/accept/{id_proposta}(id_proposta=${idOfferta})}" method="put">
+    <input type="submit" value="Accetta Offerta">
+</form>
+</body>
+</html>
