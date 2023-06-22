@@ -218,17 +218,17 @@ public class ImmobileController {
                     model.addAttribute("message", "Domanda inserita con successo");
                     return "Immobile";
                 }else{
-                    model.addAttribute("message", "Domanda inserita con successo");
-                    return "Immobile";
+                    model.addAttribute("error", "Impossibile trovare l'immobile");
+                    return "Fail1";
                 }
             }else{
-                model.addAttribute("message", "Domanda inserita con successo");
-                return "Immobile";
+                model.addAttribute("error", "Bisogna essere autenticati per prendere questa informazione");
+                return "Fail2";
             }
 
         }catch (UtenteException | ImmobileException error){
             model.addAttribute("error", error.getMessage());
-            return "Fail";
+            return "Fail3";
         }
 
     }

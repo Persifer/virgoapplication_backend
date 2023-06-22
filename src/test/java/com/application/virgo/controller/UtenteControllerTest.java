@@ -9,6 +9,7 @@ import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.Utente;
 import com.application.virgo.service.interfaces.AuthService;
 import com.application.virgo.service.interfaces.ContrattoUtenteService;
+import com.application.virgo.service.interfaces.ImmobileService;
 import com.application.virgo.service.interfaces.UtenteService;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +21,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.ui.ModelMap;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,6 +31,9 @@ class UtenteControllerTest {
 
     @Mock
     private UtenteService utenteService;
+
+    @Mock
+    private ImmobileService immobileService;
 
     @Mock
     private AuthService authService;
@@ -45,7 +50,7 @@ class UtenteControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        utenteController = new UtenteController(utenteService, authService, contrattoUtenteService);
+        utenteController = new UtenteController(utenteService, immobileService, authService, contrattoUtenteService);
         model = new ModelMap();
 
         authUser = Optional.of(
@@ -59,9 +64,43 @@ class UtenteControllerTest {
     }
 
     @Test
-    void get_returnsUtenteView() {
-        String viewName = utenteController.get();
+    void get_returnsUtenteView() throws UtenteException, ImmobileException {
+
+        when(authService.getAuthUtente()).thenReturn(authUser);
+        when(immobileService.getUtenteListaImmobili(0L,20L,authUser.get()))
+                .thenReturn(Instancio.ofList(GetUtenteImmobiliDTO.class).size(10).create());
+
+        String viewName = utenteController.get(model,0L,20L);
+
         assertEquals("Utente", viewName);
+        assertTrue(model.containsAttribute("listaImmobiliUtente"));
+    }
+
+    @Test
+    void get_returnsEmptyList() throws UtenteException, ImmobileException {
+
+        when(authService.getAuthUtente()).thenReturn(authUser);
+        when(immobileService.getUtenteListaImmobili(0L,20L,authUser.get()))
+                .thenReturn(List.of());
+
+        String viewName = utenteController.get(model,0L,20L);
+
+        assertEquals("Utente", viewName);
+        assertTrue(model.containsAttribute("listaImmobiliUtente"));
+        assertEquals(List.of(), model.getAttribute("listaImmobiliUtente"));
+    }
+
+    @Test
+    void get_returnsError() throws UtenteException, ImmobileException {
+
+        when(authService.getAuthUtente()).thenReturn(authUser);
+        when(immobileService.getUtenteListaImmobili(0L,20L,authUser.get()))
+                .thenThrow(ImmobileException.class);
+
+        String viewName = utenteController.get(model,0L,20L);
+
+        assertEquals("Utente", viewName);
+        assertTrue(model.containsAttribute("error"));
     }
 
    /* @Test

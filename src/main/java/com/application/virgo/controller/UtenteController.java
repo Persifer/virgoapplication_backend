@@ -9,6 +9,7 @@ import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.Utente;
 import com.application.virgo.service.interfaces.AuthService;
 import com.application.virgo.service.interfaces.ContrattoUtenteService;
+import com.application.virgo.service.interfaces.ImmobileService;
 import com.application.virgo.service.interfaces.UtenteService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -31,14 +32,38 @@ public class UtenteController {
 
 
     private UtenteService utenteService;
+    private ImmobileService immobileService;
     private AuthService authService;
     private ContrattoUtenteService contrattoUtenteService;
 
-    @GetMapping
-    public String get() {
-        // lista di immobili
-        //
-        return "Utente";
+    @GetMapping("/{offset}/{pageSize}")
+    public String get(ModelMap model,@PathVariable("offset") Long offset,
+                      @PathVariable("pageSize") Long pageSize) {
+        try{
+            Optional<Utente> authUser = authService.getAuthUtente();
+            if(authUser.isPresent()){
+                List<GetUtenteImmobiliDTO> listImmobili = immobileService.getUtenteListaImmobili(offset, pageSize, authUser.get());
+                if(!listImmobili.isEmpty()){
+                    model.addAttribute("listaImmobiliUtente", listImmobili);
+                    return "Utente";
+                }else{
+                    model.addAttribute("listaImmobiliUtente", List.of());
+                    return "Utente";
+                }
+
+            }else{
+                model.addAttribute("message", "Bisogna essere autenticati per poter aggiornare l'utente");
+                return "Login";
+            }
+
+        }catch (UtenteException error){
+            model.addAttribute("error", error.getMessage());
+            return "Login";
+        }catch (ImmobileException error){
+            model.addAttribute("error", error.getMessage());
+            return "Utente";
+        }
+
     }
 
     @PutMapping("/updateData")
