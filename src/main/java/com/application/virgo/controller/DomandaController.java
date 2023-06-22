@@ -98,26 +98,38 @@ public class DomandaController {
                             idDomanda);
 
                     if(newDomandaConRisposta.isPresent()){
+                        Optional<GetImmobileInfoDTO> newImmobile = immobileService.getImmobileById(idImmobile);
                         model.addAttribute("message", "Risposta inserita con successo");
-                        return "inserisci_pagina_html_peppe";
+                        model.addAttribute("wantedImmobile", newImmobile.get());
+                        return "riuscito";
                     }else{
                         model.addAttribute("error", " 2 - Errore nell'inserimento della risposta");
-                        return "inserisci_pagina_html_peppe";
+                        return "errore1";
                     }
                 }else{
                     model.addAttribute("error", "1 - Errore inserimento della risposta");
-                    return "inserisci_pagina_html_peppe";
+                    return "errore2";
                 }
 
             }else{
                 model.addAttribute("error", "Bisogna essere autorizzati per inserire una risposta");
-                return "inserisci_pagina_html_peppe";
+                return "errore3";
             }
 
-        }catch (Exception error){
+        }catch (UtenteException error){
             model.addAttribute("error", error.getMessage());
-            return "inserisci_pagina_html_peppe";
+            return "errore4";
+        }catch (ImmobileException error){
+            model.addAttribute("error", error.getMessage());
+            return "errore5";
+        }catch (RispostaException error){
+            model.addAttribute("error", error.getMessage());
+            return "errore6";
+        }catch (DomandaException error){
+            model.addAttribute("error", error.getMessage());
+            return "errore7";
         }
+
 
 
     }
