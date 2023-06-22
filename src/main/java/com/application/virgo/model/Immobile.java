@@ -53,7 +53,7 @@ public class Immobile {
     @OneToOne(mappedBy = "immobileInteressato")
     private Contratto contratto;
 
-    @OneToMany(mappedBy = "idDomanda", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "idDomanda", fetch = FetchType.EAGER)
     private List<Domanda> domandeImmobile;
 
 
