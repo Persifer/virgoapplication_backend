@@ -62,9 +62,12 @@
     </tr>
 </table>
 <h2>Commenta immobile</h2>
-<form action="#" th:action="@{site/immobile/addQuestion/{id_immobile}}" method="post">
+<form  action="#" th:action="@{'/site/immobile/addQuestion/' + ${wantedImmobile.idImmobile}}" method="post">
     <textarea name="commento" rows="4" cols="50" required></textarea><br>
     <button type="submit">Invia commento</button>
 </form>
+
+<p th:text="${message}"></p>
 </body>
 </html>
+
