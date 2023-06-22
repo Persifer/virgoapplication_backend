@@ -55,27 +55,29 @@ public class DomandaController {
                 if(addedDomanda.isPresent()){
                     Optional<GetImmobileInfoDTO> newImmobile = immobileService.addNewDomandaToImmobile(addedDomanda.get(),
                             authenticatedUser.get(), idImmobile);
+
                     if(newImmobile.isPresent()){
                         model.addAttribute("message", "Domanda inserita con successo");
                         model.addAttribute("wantedImmobile", newImmobile.get());
-                        return "Immobile";
+                        model.addAttribute("tempNewDomandaDTO", new DomandaDTO());
+                        return "riuscito";
                     }else{
                         model.addAttribute("error", "L'immobile selezionato non esiste");
-                        return "Fail";
+                        return "errore1";
                     }
                 }else{
                     model.addAttribute("error", "Problemi con la creazione della domanda");
-                    return "Fail";
+                    return "errore2";
                 }
 
             }else{
-                model.addAttribute("message", "Bisogna essere autenticati per inserire una domanda");
-                return "Fail";
+                model.addAttribute("error", "Bisogna essere autenticati per inserire una domanda");
+                return "errore3";
             }
 
         }catch ( Exception error){
             model.addAttribute("error", error.getMessage());
-            return "Fail";
+            return "errore4";
         }
 
     }

@@ -29,7 +29,7 @@ public class DomandaServiceImpl implements DomandaService {
             // creo la nuova domanda
             Domanda newDomanda = new Domanda(tempDomandaDTO.getContenuto(), Instant.now());
             newDomanda.setProprietarioDomanda(authUser);
-
+            newDomanda.setIsEnabled(Boolean.TRUE);
             // creo la nuova domanda
             return Optional.of(domandaRepository.save(newDomanda));
         }else{
