@@ -28,8 +28,9 @@ public interface ImmobileService {
      * @throws ImmobileException se non è possibile creare l'immobile
      * @throws UtenteException   se non esiste l'utente autenticato
      */
-    public Optional<ImmobileDTO> createNewImmobile(ImmobileDTO tempNewImmobile, Utente proprietario, MultipartFile[] uploadedFile)
+    public Optional<ImmobileDTO> createNewImmobile(ImmobileDTO tempNewImmobile, Utente proprietario)
             throws ImmobileException, UtenteException;
+
 
     /**
      * Ottiene le informazioni di un immobile dato l'id, è un metodo che viene usato "internamente" cioè da altri metodi

@@ -63,8 +63,7 @@ public class ImmobileController {
             if(authenticatedUser.isPresent()) {
 
                 Optional<ImmobileDTO> newImmobile = immobileService.createNewImmobile(tempNewImmobile,
-                        authenticatedUser.get(),
-                        tempNewImmobile.getUploadedFile());
+                        authenticatedUser.get());
                 if (newImmobile.isPresent()) {
                     model.addAttribute("message", "Immobile creato con successo");
                     return "Home";

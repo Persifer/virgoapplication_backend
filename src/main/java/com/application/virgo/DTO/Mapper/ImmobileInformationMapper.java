@@ -51,8 +51,7 @@ public class ImmobileInformationMapper implements Function<Immobile, GetImmobile
             immobileDto.setListaImmagini(List.of());
         }else{
             immobileDto.setListaImmagini(
-                    Stream.of(immobile.getListaImmagini().split("/|"))
-                            .collect(Collectors.toList())
+                    List.of(immobile.getListaImmagini().split("\\|"))
             );
         }
 
