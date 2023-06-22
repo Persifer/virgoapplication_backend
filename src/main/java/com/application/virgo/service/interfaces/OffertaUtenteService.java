@@ -1,12 +1,12 @@
 package com.application.virgo.service.interfaces;
 
 import com.application.virgo.DTO.outputDTO.ListUnviewMessageDTO;
+import com.application.virgo.DTO.outputDTO.ViewListaOfferteDTO;
 import com.application.virgo.exception.*;
 import com.application.virgo.model.ComposedRelationship.ContrattoUtente;
 import com.application.virgo.model.ComposedRelationship.OfferteUtente;
 import com.application.virgo.model.Offerta;
 import com.application.virgo.model.Utente;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,14 +36,15 @@ public interface OffertaUtenteService {
             throws UtenteException, OffertaUtenteException;
     /**
      * Permette di prelevare tutte le offerte ricevute dall'utente proprietario di un immobile
+     *
      * @param offerente l'utente autenticato che è proprietario dell'immobile
-     * @param offset indice iniziale per la paginazione
-     * @param pageSize dimensione della pagina
+     * @param offset    indice iniziale per la paginazione
+     * @param pageSize  dimensione della pagina
      * @return La lista di tutti gli id degli utenti con cui l'utente ha una contrattazione aperta su un suo immobile
-     * @throws UtenteException nel caso in cui l'utente autenticato non sia stato passato correttamente
+     * @throws UtenteException        nel caso in cui l'utente autenticato non sia stato passato correttamente
      * @throws OffertaUtenteException nel caso in cui la grandezza della pagina superi quella impostata dal server
      */
-    public List<Long> getOfferteForUtenteProprietario(Utente offerente, Long offset, Long pageSize)
+    public List<ViewListaOfferteDTO> getOfferteForUtenteProprietario(Utente offerente)
             throws OffertaUtenteException, UtenteException;
 
     /**
@@ -95,14 +96,15 @@ public interface OffertaUtenteService {
 
     /**
      * Permette di prelevare tutte le offerte inviate dall'utente autenticato ad altri utenti
+     *
      * @param offerente l'utente autenticato che è proprietario dell'immobile
-     * @param offset indice iniziale per la paginazione
-     * @param pageSize dimensione della pagina
+     * @param offset    indice iniziale per la paginazione
+     * @param pageSize  dimensione della pagina
      * @return Una Page<> contenente la lista delle offerte che l'utente ha inviato
-     * @throws UtenteException nel caso in cui l'utente autenticato non sia stato passato correttamente
+     * @throws UtenteException        nel caso in cui l'utente autenticato non sia stato passato correttamente
      * @throws OffertaUtenteException nel caso in cui la grandezza della pagina superi quella impostata dal server
      */
-    public Page<OfferteUtente> getOfferteProposte(Utente offerente, Long offset, Long pageSize)
+    public List<ViewListaOfferteDTO> getOfferteProposte(Utente offerente)
             throws OffertaUtenteException, UtenteException;
 
 

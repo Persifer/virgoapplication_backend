@@ -21,9 +21,7 @@ import com.application.virgo.repositories.UtenteJpaRepository;
 import com.application.virgo.service.interfaces.EmailSenderService;
 import com.application.virgo.service.interfaces.OffertaUtenteService;
 import com.application.virgo.service.interfaces.UtenteService;
-import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -101,21 +99,21 @@ public class UtenteServiceImpl implements UtenteService {
 
     /**
      * Permette di avere la lista delle offerte ricevute da un determinato utente
+     *
      * @param proprietario istanze della classe utente che rappresenta il proprietario
-     * @param offset indice di inizio della paginazione
-     * @param pageSize grandezza della pagina
      * @return Ritorna la lista di offerte di un utente dove lui è il proprietario
      * @throws OffertaUtenteException quando non trova una pagina
-     * @throws UtenteException quando l'utente non è autenticato
+     * @throws UtenteException        quando l'utente non è autenticato
      */
     @Override
-    public List<ListUtentiForProposteDTO> getListaProposte(Utente proprietario, Long offset, Long pageSize)
+    public List<ViewListaOfferteDTO> getListaProposte(Utente proprietario)
             throws OffertaUtenteException, UtenteException {
 
-        List<Long> listOfferteUtente = offerteUtenteService.getOfferteForUtenteProprietario(proprietario, offset, pageSize);
+        List<ViewListaOfferteDTO> listOfferteUtente =
+                offerteUtenteService.getOfferteForUtenteProprietario(proprietario);
 
         if(!listOfferteUtente.isEmpty()){
-            return createListaUtentiForProposte(listOfferteUtente);
+            return listOfferteUtente;
         }
         return List.of();
     }
@@ -125,19 +123,18 @@ public class UtenteServiceImpl implements UtenteService {
     /**
      * Permette di avere la lista di tutte le offerte fatte dal proprietario dell'account
      * @param offerente colui che ha fatto le offerte
-     * @param offset inidice iniziale per la paginazione
-     * @param pageSize grandezza della pagina
+
      * @return Lista delle offerte prese dal database
      * @throws OffertaUtenteException se non trova le offerte
      * @throws UtenteException se l'utente non è autenticato
      */
     @Override
-    public List<ViewListaOfferteDTO> getListaOfferte(Utente offerente, Long offset, Long pageSize)
+    public List<ViewListaOfferteDTO> getListaOfferte(Utente offerente)
             throws OffertaUtenteException, UtenteException {
 
-        Page<OfferteUtente> listOfferteUtente = offerteUtenteService.getOfferteProposte(offerente, offset, pageSize);
+        List<ViewListaOfferteDTO> listOfferteUtente = offerteUtenteService.getOfferteProposte(offerente);
         if(!listOfferteUtente.isEmpty()){
-            return listOfferteUtente.stream().map(mapperOfferteUtente).collect(Collectors.toList());
+            return listOfferteUtente;
         }
         return List.of();
     }

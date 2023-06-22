@@ -12,11 +12,10 @@ public class ViewListaOfferteMapper implements Function<OfferteUtente, ViewLista
     public ViewListaOfferteDTO apply(OfferteUtente offerteUtente) {
         ViewListaOfferteDTO viewListaOfferteDTO = new ViewListaOfferteDTO();
 
-        viewListaOfferteDTO.setNomeUtente(offerteUtente.getOfferente().getNome());
-        viewListaOfferteDTO.setCognomeUtente(offerteUtente.getOfferente().getCognome());
+        viewListaOfferteDTO.setNomeControparte(offerteUtente.getOfferente().getNome());
+        viewListaOfferteDTO.setCognomeControparte(offerteUtente.getOfferente().getCognome());
 
-        viewListaOfferteDTO.setIdOfferente(offerteUtente.getOfferente().getIdUtente());
-        viewListaOfferteDTO.setIdOfferta(offerteUtente.getOffertaInteressata().getIdOfferta());
+        viewListaOfferteDTO.setIdControparte(offerteUtente.getOfferente().getIdUtente());
         viewListaOfferteDTO.setIdImmobile(offerteUtente.getOffertaInteressata().getIdImmobileInteressato().getIdImmobile());
 
         return viewListaOfferteDTO;

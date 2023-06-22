@@ -88,7 +88,7 @@ public class UtenteController {
         try{
             Optional<Utente> authUser = authService.getAuthUtente();
             if(authUser.isPresent()){
-                List<ListUtentiForProposteDTO> listaProposte = utenteService.getListaProposte(authUser.get(), offset, pageSize);
+                List<ViewListaOfferteDTO> listaProposte = utenteService.getListaProposte(authUser.get());
                 model.addAttribute("listaProposte", listaProposte);
                 return "Offerta";
             }else{
@@ -124,7 +124,7 @@ public class UtenteController {
         try{
             Optional<Utente> authUser = authService.getAuthUtente();
             if(authUser.isPresent()){
-                List<ViewListaOfferteDTO> listaOfferte = utenteService.getListaOfferte(authUser.get(), offset, pageSize);
+                List<ViewListaOfferteDTO> listaOfferte = utenteService.getListaOfferte(authUser.get());
                 model.addAttribute("listaOfferte", listaOfferte);
                 return "Offerte";
             }else{

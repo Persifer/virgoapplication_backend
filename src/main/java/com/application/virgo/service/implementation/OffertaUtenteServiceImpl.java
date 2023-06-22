@@ -1,6 +1,7 @@
 package com.application.virgo.service.implementation;
 
 import com.application.virgo.DTO.outputDTO.ListUnviewMessageDTO;
+import com.application.virgo.DTO.outputDTO.ViewListaOfferteDTO;
 import com.application.virgo.exception.*;
 import com.application.virgo.model.ComposedRelationship.CompoundKey.OffertaUtenteCompoundKey;
 import com.application.virgo.model.ComposedRelationship.ContrattoUtente;
@@ -12,14 +13,12 @@ import com.application.virgo.model.Utente;
 import com.application.virgo.repositories.OffertaUtenteJpaRepository;
 import com.application.virgo.repositories.UtenteJpaRepository;
 import com.application.virgo.service.interfaces.*;
-import com.application.virgo.utilities.Constants;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -103,24 +102,6 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
         return Optional.empty();
     }
 
-    @Override
-    public List<Long> getOfferteForUtenteProprietario(Utente authUser, Long offset, Long pageSize)
-            throws OffertaUtenteException, UtenteException {
-
-        if(authUser != null){
-            if(pageSize < Constants.PAGE_SIZE){
-                return  offertaUtenteRepository.getAllOfferteUtenteAsProprietario(
-                        authUser.getIdUtente()
-                );
-
-            }else{
-                throw new OffertaUtenteException("La grandezza della pagina supera i " + Constants.PAGE_SIZE + " elementi");
-            }
-        }else{
-            throw new UtenteException("L'utente deve essere autenticato");
-        }
-
-    }
 
     /**
      * Metodo comune per prelevare tutte le offerte scambiate tra due utenti
@@ -291,20 +272,88 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
         return methodForAcceptAndDenyOfferta(idOfferta, authUser, false);
     }
 
+
+    /**
+     * Permette di ottenere la lista con gli utenti con cui è aperta una contrattazione sugli immobili posseduti
+     * @param authUser l'utente autenticato che è proprietario dell'immobile
+     * @param offset    indice iniziale per la paginazione
+     * @param pageSize  dimensione della pagina
+     * @return
+     * @throws UtenteException
+     */
     @Override
-    public Page<OfferteUtente> getOfferteProposte(Utente authUser, Long offset, Long pageSize) throws OffertaUtenteException, UtenteException {
-        if (authUser != null) {
-            if (pageSize < Constants.PAGE_SIZE) {
-                return offertaUtenteRepository.getAllOfferteUtenteAsOfferente(
-                        PageRequest.of(offset.intValue(), pageSize.intValue()),
-                        authUser.getIdUtente()
-                );
-            } else {
-                throw new OffertaUtenteException("La grandezza della pagina supera i " + Constants.PAGE_SIZE + " elementi");
+    public List<ViewListaOfferteDTO> getOfferteForUtenteProprietario(Utente authUser)
+            throws UtenteException {
+
+        List<Long> listIdOfferenti =  offertaUtenteRepository.getAllOfferteUtenteAsProprietario(
+                authUser.getIdUtente());
+
+        List<Long> listImmobili;
+        List<ViewListaOfferteDTO> resultList = new ArrayList<>();
+
+        for(Long idOfferente : listIdOfferenti){
+            listImmobili = offertaUtenteRepository.getImmobiliInteressati(idOfferente, authUser.getIdUtente());
+            for(Long idImmobile : listImmobili){
+                Optional<Utente> utenteProp = getInformationUtente(idOfferente);
+                if(utenteProp.isPresent()){
+                    resultList.add(
+                            new ViewListaOfferteDTO(utenteProp.get().getNome(),
+                                    utenteProp.get().getCognome(),
+                                    utenteProp.get().getIdUtente(),
+                                    idImmobile)
+                    );
+                }else{
+                    throw new UtenteException("Impossibile trovare l'utente proprietario");
+                }
+
             }
-        } else {
-            throw new UtenteException("L'utente deve essere autenticato");
         }
+
+
+        return resultList;
+
+    }
+
+    /**
+     * Permette id prelevare tutte le offerte ricevute dall'utente
+     *
+     * @param authUser l'utente autenticato che è proprietario dell'immobile
+     * @param offset   indice iniziale per la paginazione
+     * @param pageSize dimensione della pagina
+     * @return
+     * @throws OffertaUtenteException
+     * @throws UtenteException
+     */
+    @Override
+    public List<ViewListaOfferteDTO> getOfferteProposte(Utente authUser)
+            throws UtenteException {
+
+        List<Long> listIdProprietari =  offertaUtenteRepository.getAllOfferteUtenteAsOfferente(
+                authUser.getIdUtente());
+
+        List<Long> listImmobili;
+        List<ViewListaOfferteDTO> resultList = new ArrayList<>();
+
+        for(Long idProprietario : listIdProprietari){
+            listImmobili = offertaUtenteRepository.getImmobiliInteressati(authUser.getIdUtente(), idProprietario);
+            for(Long idImmobile : listImmobili){
+                Optional<Utente> utenteProp = getInformationUtente(idProprietario);
+                if(utenteProp.isPresent()){
+                    resultList.add(
+                            new ViewListaOfferteDTO(utenteProp.get().getNome(),
+                                    utenteProp.get().getCognome(),
+                                    utenteProp.get().getIdUtente(),
+                                    idImmobile)
+                    );
+                }else{
+                    throw new UtenteException("Impossibile trovare l'utente proprietario");
+                }
+
+            }
+        }
+
+
+        return resultList;
     }
 
     @Override

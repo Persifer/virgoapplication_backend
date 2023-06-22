@@ -9,13 +9,12 @@ import lombok.NoArgsConstructor;
 @Data
 public class ViewListaOfferteDTO {
 
-    private String nomeUtente;
-    private String cognomeUtente;
+    private String nomeControparte;
+    private String cognomeControparte;
 
     //private String dataUltimoUpdate;
 
-    private Long idOfferente;
-    private Long idOfferta;
+    private Long idControparte;
     private Long idImmobile;
 
 }

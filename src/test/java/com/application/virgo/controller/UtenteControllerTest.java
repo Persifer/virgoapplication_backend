@@ -137,8 +137,8 @@ class UtenteControllerTest {
         Long pageSize = 10L;
 
         when(authService.getAuthUtente()).thenReturn(authUser);
-        when(utenteService.getListaProposte(authUser.get(), offset, pageSize))
-                .thenReturn(Instancio.ofList(ListUtentiForProposteDTO.class).size(10).create());
+        when(utenteService.getListaProposte(authUser.get()))
+                .thenReturn(Instancio.ofList(ViewListaOfferteDTO.class).size(10).create());
 
         String viewName = utenteController.getOfferteRicevute(model, offset, pageSize);
 
@@ -168,7 +168,7 @@ class UtenteControllerTest {
 
         when(authService.getAuthUtente()).thenReturn(authUser);
 
-        when(utenteService.getListaProposte(authUser.get(), offset, pageSize)).thenThrow(
+        when(utenteService.getListaProposte(authUser.get())).thenThrow(
                 new OffertaUtenteException("Impossibile reperire l'offerta"));
 
         String viewName = utenteController.getOfferteRicevute(model, offset, pageSize);
@@ -230,7 +230,7 @@ class UtenteControllerTest {
         Long pageSize = 10L;
 
         when(authService.getAuthUtente()).thenReturn(authUser);
-        when(utenteService.getListaOfferte(Mockito.any(Utente.class), Mockito.any(Long.class), Mockito.any(Long.class)))
+        when(utenteService.getListaOfferte(Mockito.any(Utente.class)))
                 .thenReturn(Instancio.ofList(ViewListaOfferteDTO.class).size(10).create());
 
         String viewName = utenteController.getOfferte(model, offset, pageSize);
@@ -267,7 +267,7 @@ class UtenteControllerTest {
     void getOfferte_unautenticated_inService_redirectErroneousToLogin() throws UtenteException, OffertaUtenteException {
 
         when(authService.getAuthUtente()).thenThrow(UtenteException.class);
-        when(utenteService.getListaOfferte(Mockito.any(Utente.class), Mockito.any(Long.class), Mockito.any(Long.class)))
+        when(utenteService.getListaOfferte(Mockito.any(Utente.class)))
                 .thenThrow(UtenteException.class);
 
         String viewName = utenteController.getOfferteBetweenUtenti(model,0L, 20L);
