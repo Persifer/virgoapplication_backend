@@ -1,6 +1,5 @@
 package com.application.virgo.service.interfaces;
 
-import com.application.virgo.DTO.inputDTO.DomandaDTO;
 import com.application.virgo.DTO.inputDTO.ImmobileDTO;
 import com.application.virgo.DTO.outputDTO.GetImmobileInfoDTO;
 import com.application.virgo.DTO.outputDTO.GetUtenteImmobiliDTO;
@@ -10,7 +9,6 @@ import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.Domanda;
 import com.application.virgo.model.Immobile;
 import com.application.virgo.model.Utente;
-import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -133,14 +131,14 @@ public interface ImmobileService {
     /**
      * Permette di aggiungere una domanda ad un immobile
      *
-     * @param Domanda domanda da aggiungere all'immobile
-     * @param authUser utente autenticato che aggiunge la domanda
+     * @param Domanda               domanda da aggiungere all'immobile
+     * @param authUser              utente autenticato che aggiunge la domanda
      * @param idImmobileInteressato id immobile a cui aggiungere la domanda
      * @return L'immobile con la domanda aggiunta
      * @throws ImmobileException se l'immobile non è stato trovato
-     * @throws UtenteException se l'utente autenticato non esiste
+     * @throws UtenteException   se l'utente autenticato non esiste
      */
-    public Optional<Immobile> addNewDomandaToImmobile(Domanda Domanda, Utente authUser, Long idImmobileInteressato)
+    public Optional<GetImmobileInfoDTO> addNewDomandaToImmobile(Domanda Domanda, Utente authUser, Long idImmobileInteressato)
             throws ImmobileException, UtenteException;
 
 }

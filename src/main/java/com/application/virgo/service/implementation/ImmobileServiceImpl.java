@@ -1,7 +1,6 @@
 package com.application.virgo.service.implementation;
 
 import com.application.virgo.DTO.Mapper.*;
-import com.application.virgo.DTO.inputDTO.DomandaDTO;
 import com.application.virgo.DTO.inputDTO.ImmobileDTO;
 import com.application.virgo.DTO.outputDTO.GetImmobileInfoDTO;
 import com.application.virgo.DTO.outputDTO.GetUtenteImmobiliDTO;
@@ -14,20 +13,15 @@ import com.application.virgo.model.Utente;
 import com.application.virgo.repositories.ImmobileJpaRepository;
 import com.application.virgo.service.interfaces.FileStorageService;
 import com.application.virgo.service.interfaces.ImmobileService;
-import com.application.virgo.service.interfaces.UtenteService;
 import com.application.virgo.utilities.Constants;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.swing.text.html.Option;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -371,7 +365,7 @@ public class ImmobileServiceImpl implements ImmobileService {
     }
 
     @Override
-    public Optional<Immobile> addNewDomandaToImmobile(Domanda domanda, Utente authUser, Long idImmobileInteressato)
+    public Optional<GetImmobileInfoDTO> addNewDomandaToImmobile(Domanda domanda, Utente authUser, Long idImmobileInteressato)
             throws ImmobileException, UtenteException {
 
         // controllo che ci sia effettivamente un utente loggato
@@ -384,10 +378,10 @@ public class ImmobileServiceImpl implements ImmobileService {
                 // aggiungo la domanda all'immobile
                 immobileInteressato.getDomandeImmobile().add(domanda);
 
-                // aggiungo la domanda all'utente
-                //utenteService.addDomandaToUtente(authUser, newDomanda);
+                // aggiungo la domanda all'utente e restistuisco il mapper contenente le informazioni del dto
+                // in modo tale che si possa aggiornare la pagina dell'immobile
+                return Optional.of(mapperInformation.apply(immobileRepo.save(immobileInteressato)));
 
-                return Optional.of(immobileRepo.save(immobileInteressato));
             }else{
                 throw new ImmobileException("Attenzione l'immobile selezionato non esiste");
             }
@@ -395,5 +389,6 @@ public class ImmobileServiceImpl implements ImmobileService {
             throw new UtenteException("Bisogna essere loggati per poter pubblicare una domanda");
         }
 
+        return null;
     }
 }

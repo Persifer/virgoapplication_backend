@@ -2,6 +2,7 @@ package com.application.virgo.controller;
 
 import com.application.virgo.DTO.inputDTO.DomandaDTO;
 import com.application.virgo.DTO.inputDTO.RispostaDTO;
+import com.application.virgo.DTO.outputDTO.GetImmobileInfoDTO;
 import com.application.virgo.exception.DomandaException;
 import com.application.virgo.exception.ImmobileException;
 import com.application.virgo.exception.RispostaException;
@@ -52,29 +53,30 @@ public class DomandaController {
             if(authenticatedUser.isPresent()){
                 Optional<Domanda> addedDomanda = domandaService.addNewDomanda(tempNewDomandaDTO, authenticatedUser.get());
                 if(addedDomanda.isPresent()){
-                    Optional<Immobile> newImmobile = immobileService.addNewDomandaToImmobile(addedDomanda.get(),
+                    Optional<GetImmobileInfoDTO> newImmobile = immobileService.addNewDomandaToImmobile(addedDomanda.get(),
                             authenticatedUser.get(), idImmobile);
-                    System.out.print(newImmobile.toString());
+
                     if(newImmobile.isPresent()){
                         model.addAttribute("message", "Domanda inserita con successo");
+                        model.addAttribute("wantedImmobile", newImmobile.get());
                         return "riuscito";
                     }else{
                         model.addAttribute("error", "L'immobile selezionato non esiste");
-                        return "errore";
+                        return "errore1";
                     }
                 }else{
                     model.addAttribute("error", "Problemi con la creazione della domanda");
-                    return "errore";
+                    return "errore2";
                 }
 
             }else{
-                model.addAttribute("message", "Bisogna essere autenticati per inserire una domanda");
-                return "errore";
+                model.addAttribute("error", "Bisogna essere autenticati per inserire una domanda");
+                return "errore3";
             }
 
         }catch ( Exception error){
             model.addAttribute("error", error.getMessage());
-            return "errore";
+            return "errore4";
         }
 
     }
