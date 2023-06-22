@@ -2,13 +2,16 @@ package com.application.virgo.service.implementation;
 
 import com.application.virgo.DTO.inputDTO.DomandaDTO;
 import com.application.virgo.exception.DomandaException;
+import com.application.virgo.exception.ImmobileException;
 import com.application.virgo.exception.RispostaException;
 import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.Domanda;
+import com.application.virgo.model.Immobile;
 import com.application.virgo.model.Risposta;
 import com.application.virgo.model.Utente;
 import com.application.virgo.repositories.DomandaJpaRepository;
 import com.application.virgo.service.interfaces.DomandaService;
+import com.application.virgo.service.interfaces.ImmobileService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,16 +25,25 @@ import java.util.Optional;
 public class DomandaServiceImpl implements DomandaService {
 
     private final DomandaJpaRepository domandaRepository;
+    private final ImmobileService immobileService;
     @Override
-    public Optional<Domanda> addNewDomanda(DomandaDTO tempDomandaDTO, Utente authUser)
-            throws UtenteException {
+    public Optional<Domanda> addNewDomanda(DomandaDTO tempDomandaDTO, Utente authUser, Long idImmobile)
+            throws UtenteException, ImmobileException {
         if(authUser != null){
             // creo la nuova domanda
             Domanda newDomanda = new Domanda(tempDomandaDTO.getContenuto(), Instant.now());
+
             newDomanda.setProprietarioDomanda(authUser);
             newDomanda.setIsEnabled(Boolean.TRUE);
-            // creo la nuova domanda
-            return Optional.of(domandaRepository.save(newDomanda));
+
+            Optional<Immobile> immobileInteressato = immobileService.getImmobileInternalInformationById(idImmobile);
+            if(immobileInteressato.isPresent()){
+                newDomanda.setImmobileInteressato(immobileInteressato.get());
+                // creo la nuova domanda
+                return Optional.of(domandaRepository.save(newDomanda));
+            }
+
+            return Optional.empty();
         }else{
             throw new UtenteException("Bisogna essere loggati per poter pubblicare una domanda");
         }
