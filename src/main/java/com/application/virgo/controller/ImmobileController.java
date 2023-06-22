@@ -44,7 +44,7 @@ public class ImmobileController {
     //private static final String URL_SUFFIX = "/immobile/";
 
     @GetMapping
-    public String returnCreaImmobilePage(Model model){
+    public String returnCreaImmobilePage(ModelMap model){
         model.addAttribute("immobileDTO", new ImmobileDTO());
         return "CreaImmobile";
     }
