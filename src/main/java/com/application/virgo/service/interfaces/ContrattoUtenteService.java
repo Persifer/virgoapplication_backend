@@ -1,6 +1,7 @@
 package com.application.virgo.service.interfaces;
 
 import com.application.virgo.DTO.outputDTO.ContrattiUtenteDTO;
+//import com.application.virgo.DTO.outputDTO.DettagliContrattoDTO;
 import com.application.virgo.DTO.outputDTO.DettagliContrattoDTO;
 import com.application.virgo.exception.ContrattoException;
 import com.application.virgo.exception.ContrattoUtenteException;

@@ -46,7 +46,7 @@ public interface OffertaUtenteJpaRepository extends JpaRepository<OfferteUtente,
                                                           @Param("idImmobile") Long idImmobile);
 
     // Permette di selezionare tutte le offerte proposte di un determinato utente
-    @Query("SELECT offerta " +
+    @Query("SELECT offerta.proprietario.idUtente " +
             "FROM OfferteUtente offerta " +
             "JOIN Utente utente ON (offerta.offerente.idUtente = utente.idUtente)" +
             "WHERE utente.idUtente = :idRequestedUtente " +

@@ -50,6 +50,7 @@ public class ImmobileController {
     }
 
 
+
     // Mapper per la creazione di un nuovo immobile associato ad singolo utente proprietario
                 // /immobile/addnew
     @PostMapping(value = "/addnew", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
@@ -87,13 +88,17 @@ public class ImmobileController {
     @GetMapping("/viewImmobile/{id_immobile}")
     public String getImmobileInformation(@PathVariable("id_immobile") Long idImmobile,
                                                                      ModelMap model){
+
         try{
             Optional<Utente> authenticatedUser = authService.getAuthUtente();
+            System.out.println(idImmobile+"ocicicicicicgtggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg");
             if(authenticatedUser.isPresent()) {
                 // se l'utente è autenticato allora posso vedere i dati del singolo immobile
                 Optional<GetImmobileInfoDTO> storedImmobile = immobileService.getImmobileById(idImmobile);
+
                 if(storedImmobile.isPresent()){
                     model.addAttribute("wantedImmobile", storedImmobile);
+
                     return "Immobile";
                 }else{
                     model.addAttribute("error", "L'immobile voluto non è presente");
@@ -107,6 +112,7 @@ public class ImmobileController {
 
         }catch (ImmobileException | UtenteException error){
             model.addAttribute("error", error.getMessage());
+            System.out.println("oci");
             return "Fail";
         }
     }

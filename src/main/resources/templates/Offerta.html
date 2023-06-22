@@ -7,7 +7,7 @@
         <a href="/site/offerta">Offerte</a>
         <a href="/login">Login</a>
     </nav>
-    <title>Le tue offerte</title>
+    <title>Le tue proposte</title>
     <style>
         table {
             width: 100%;
@@ -29,19 +29,28 @@
             border-radius: 5px;
         }
         a {
-            color: white;
+
             text-decoration: none;
         }
     </style>
 </head>
 <body>
-<h1>Le mie offerte</h1>
-<ul>
-    <li th:each="offer : ${offerta}">
-        <a th:href="@{/Offerta(id=${offerta.id})}" th:text="${offerta.name}"></a>
-        <button type="button" th:onclick="acceptOffer('${offerta.id}')">Accetta offerta</button>
-        <button type="button" th:onclick="declineOffer('${offerta.id}')">Rifiuta offerta</button>
-    </li>
-</ul>
+<table>
+    <thead>
+    <tr>
+        <th>Proposta ID</th>
+        <th>Nome Utente</th>
+        <th>Titolo Proposta</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Utilizza Thymeleaf per iterare sulla listaProposte -->
+    <tr th:each="proposta : ${listaProposte}">
+        <td th:text="${proposta.id}"></td>
+        <td th:text="${proposta.nomeUtente}"></td>
+        <td th:text="${proposta.titoloProposta}"></td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>

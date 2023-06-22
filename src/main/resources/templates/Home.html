@@ -14,7 +14,6 @@
             border-bottom: 1px solid #ddd;
         }
         th {
-            background-color: #f2f2f2;
         }
         nav {
             display: flex;
@@ -22,10 +21,6 @@
             align-items: center;
             background-color: green;
             border-radius: 5px;
-        }
-        a {
-            color: white;
-            text-decoration: none;
         }
     </style>
 
@@ -45,7 +40,7 @@
     </thead>
     <tbody>
     <tr th:each="immobile:${listImmobili}">
-      <th>Titolo<td><a th:href="@{/immobile/{id}(id=${immobile.idImmobile})}" th:text="${immobile.titolo}"></a></td></th>
+      <th>Titolo<td><a th:href="@{/site/immobile/viewImmobile/{id}(id=${immobile.idImmobile})}" th:text="${immobile.titolo}"></a></td></th>
         <th>Descrizione <td><span th:text="${immobile.descrizione}"></td></th>
         <th>prezzo di partenza  <td><span th:text="${immobile.prezzo}"></td></th>
         <th>locali  <td><span th:text="${immobile.locali}"></td></th>
@@ -53,7 +48,7 @@
     </tr>
     </tbody>
 </table>
-<a href="/site/utente/getInfo">Crea Immobile un altro immobile</a>
+<a href="/site/utente/getInfo">Crea un altro immobile</a>
 
 </body>
 </html>

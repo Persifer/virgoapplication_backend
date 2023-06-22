@@ -30,7 +30,6 @@
             border-radius: 5px;
         }
         a {
-            color: white;
             text-decoration: none;
         }
     </style>
@@ -84,7 +83,7 @@
     </tbody>
 </table>
 
-<a href="/site/immobile">Crea Immobile un altro immobile</a>
+<a href="/site/immobile">Crea un altro immobile</a>
 
 <h1>Chat Aperte</h1>
 <table>
@@ -101,6 +100,8 @@
         <td th:text="${chat.id}" />
         <td th:text="${chat.nomeUtente}" />
         <td th:text="${chat.oggetto}" />
+
+
     </tr>
     </tbody>
 </table>
@@ -164,7 +165,8 @@
     </tr>
     </tbody>
 </table>
-
-
+<a href="/site/utente/getListProposte/0/20">Visualizza le tue Proposte</a>
+<a href="/site/utente/getListaOfferte/0/20">Visualizza le tue offerte</a>
 </body>
 </html>
+

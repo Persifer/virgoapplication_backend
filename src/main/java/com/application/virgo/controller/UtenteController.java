@@ -90,7 +90,7 @@ public class UtenteController {
             if(authUser.isPresent()){
                 List<ListUtentiForProposteDTO> listaProposte = utenteService.getListaProposte(authUser.get(), offset, pageSize);
                 model.addAttribute("listaProposte", listaProposte);
-                return "Utente";
+                return "Offerta";
             }else{
                 model.addAttribute("error", "Utente non autenticato");
                 return "Login";
@@ -126,7 +126,7 @@ public class UtenteController {
             if(authUser.isPresent()){
                 List<ViewListaOfferteDTO> listaOfferte = utenteService.getListaOfferte(authUser.get(), offset, pageSize);
                 model.addAttribute("listaOfferte", listaOfferte);
-                return "Ciao";
+                return "Offerte";
             }else{
                 model.addAttribute("error", "Utente non autenticato");
                 return "Login";

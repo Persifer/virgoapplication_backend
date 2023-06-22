@@ -15,8 +15,8 @@ public class ListUtentiForProposteMapper implements Function<Utente, ListUtentiF
 
         newListUtenteDTO.setIdOfferente(utente.getIdUtente());
 
-        newListUtenteDTO.setNomeutente(utente.getNome());
-        newListUtenteDTO.setCognomeutente(utente.getCognome());
+        //newListUtenteDTO.setNomeutente(utente.getNome());
+        //newListUtenteDTO.setCognomeutente(utente.getCognome());
 
         return newListUtenteDTO;
     }

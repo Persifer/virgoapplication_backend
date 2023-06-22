@@ -387,8 +387,8 @@ class UtenteControllerTest {
             throws UtenteException, ContrattoUtenteException {
 
         when(authService.getAuthUtente()).thenReturn(authUser);
-        when(contrattoUtenteService.getDettagliContratto(authUser.get(), 1L))
-                .thenReturn(Optional.of(new DettagliContrattoDTO()));
+        /*when(contrattoUtenteService.getDettagliContratto(authUser.get(), 1L))
+                .thenReturn(Optional.of(new DettagliContrattoDTO()));*/
 
         String viewName = utenteController.getSingleContratto(model, 1L);
 
