@@ -91,14 +91,12 @@ public class ImmobileController {
 
         try{
             Optional<Utente> authenticatedUser = authService.getAuthUtente();
-            System.out.println(idImmobile+"ocicicicicicgtggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg");
             if(authenticatedUser.isPresent()) {
                 // se l'utente è autenticato allora posso vedere i dati del singolo immobile
                 Optional<GetImmobileInfoDTO> storedImmobile = immobileService.getImmobileById(idImmobile);
 
                 if(storedImmobile.isPresent()){
-                    model.addAttribute("wantedImmobile", storedImmobile);
-
+                    model.addAttribute("wantedImmobile", storedImmobile.get());
                     return "Immobile";
                 }else{
                     model.addAttribute("error", "L'immobile voluto non è presente");

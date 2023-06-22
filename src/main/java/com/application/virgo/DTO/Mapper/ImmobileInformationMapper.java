@@ -35,7 +35,8 @@ public class ImmobileInformationMapper implements Function<Immobile, GetImmobile
         immobileDto.setProvincia(immobile.getProvincia() != null ? immobile.getProvincia() : "");
         immobileDto.setCitta(immobile.getCitta() != null ? immobile.getCitta() : "");
 
-        if(immobile.getListaImmagini().isEmpty() || immobile.getListaImmagini().isBlank()){
+        if(immobile.getListaImmagini()== null ||
+                immobile.getListaImmagini().isEmpty() || immobile.getListaImmagini().isBlank()){
             immobileDto.setListaImmagini(List.of());
         }else{
             immobileDto.setListaImmagini(

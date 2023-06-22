@@ -38,17 +38,17 @@
 <table>
     <thead>
     <tr>
-        <th>Proposta ID</th>
-        <th>Nome Utente</th>
-        <th>Titolo Proposta</th>
+        <th>nome Controparte</th>
+        <th>cognome Controparte</th>
+        <th>Chat</th>
     </tr>
     </thead>
     <tbody>
 
     <tr th:each="offerta : ${listaOfferte}">
-        <td th:text="${offerta.id}"></td>
-        <td th:text="${offerta.nomeUtente}"></td>
-        <a href="/site/utente/getListProposte/storico/{idUtente}/{idImmobile}">Visualizza le tue offerta  <td th:text="${proposta.titoloProposta}"></td></a>
+        <td th:text="${offerta.nomeControparte}"></td>
+        <td th:text="${offerta.cognomeControparte}"></td>
+        <td><a th:href="@{'/site/utente/getListaOfferte/storico/' + ${offerta.idControparte} + '/' + ${offerta.idImmobile}}">Apri chat</a></td>
     </tr>
     </tbody>
 </table>

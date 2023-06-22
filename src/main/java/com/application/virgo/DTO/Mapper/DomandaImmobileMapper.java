@@ -19,14 +19,16 @@ public class DomandaImmobileMapper implements Function<Domanda, DomandaImmobileD
         domandaDTO.setContenuto(domanda.getContenuto());
         domandaDTO.setDataPubblicazione(domanda.getDataPubblicazione().toString());
 
-        if(domanda.getRisposta().getContenuto().isEmpty() || domanda.getRisposta().getContenuto().isBlank()
-            || domanda.getRisposta().getContenuto() == null){
+        if(domanda.getRisposta() == null || domanda.getRisposta().getContenuto().isEmpty()
+                || domanda.getRisposta().getContenuto().isBlank()){
             domandaDTO.setRisposta("");
+            domandaDTO.setDataPubblicazione("");
         }else{
             domandaDTO.setRisposta(domanda.getRisposta().getContenuto());
+            domandaDTO.setDataRisposta(domanda.getRisposta().getDataPubblicazione().toString());
         }
 
-        domandaDTO.setDataRisposta(domanda.getRisposta().getDataPubblicazione().toString());
+
 
         return domandaDTO;
     }

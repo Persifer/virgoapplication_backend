@@ -151,10 +151,10 @@ public class UtenteController {
                 List<ViewOfferteBetweenUtentiDTO> listaOfferte =
                         utenteService.getAllOfferteBetweenUtenti(authUser.get(), idUtente, idImmobile);
                 model.addAttribute("listaOfferte", listaOfferte);
-                return "Ciao";
+                return "SingolaOfferta";
             }else{
                 model.addAttribute("error", "Utente non autenticato");
-                return "inserisci_pagina_html_peppe";
+                return "Login";
             }
         }catch (UtenteException error){
             model.addAttribute("error", error.getMessage());
@@ -176,7 +176,7 @@ public class UtenteController {
                 return "Offerte";
             }else{
                 model.addAttribute("error", "Utente non trovato");
-                return "inserisci_pagina_html_peppe";
+                return "Login";
             }
         }catch (UtenteException error){
             model.addAttribute("error", error.getMessage());
