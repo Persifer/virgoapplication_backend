@@ -130,8 +130,8 @@ public class ImmobileServiceImpl implements ImmobileService {
     @Override
     public Optional<Immobile> getImmobileInternalInformationById(Long idImmobile) throws ImmobileException{
         Optional<Immobile> requestImmobile = immobileRepo.getImmobilesByIdImmobile(idImmobile);
-
         if(requestImmobile.isPresent()){
+            requestImmobile.get().setDomandeImmobile(immobileRepo.domandeImmobile(requestImmobile.get().getIdImmobile()));
             return requestImmobile;
         }else{
             throw new ImmobileException("L'immobile cercato non esiste, inserire un nuovo id");
@@ -368,7 +368,7 @@ public class ImmobileServiceImpl implements ImmobileService {
         // controllo che ci sia effettivamente un utente loggato
         if(authUser != null){
             // prelevo l'immobile dal database
-            Optional<Immobile> tempImmobileInteressato = immobileRepo.getImmobilesByIdImmobile(idImmobileInteressato);
+            Optional<Immobile> tempImmobileInteressato = getImmobileInternalInformationById(idImmobileInteressato);
 
             if(tempImmobileInteressato.isPresent()){
                 Immobile immobileInteressato = tempImmobileInteressato.get();
