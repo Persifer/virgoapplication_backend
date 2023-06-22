@@ -1,4 +1,4 @@
-package com.application.virgo.exec;
+package com.application.virgo;
 
 
 import com.application.virgo.service.interfaces.FileStorageService;

@@ -123,7 +123,6 @@ public class UtenteServiceImpl implements UtenteService {
     /**
      * Permette di avere la lista di tutte le offerte fatte dal proprietario dell'account
      * @param offerente colui che ha fatto le offerte
-
      * @return Lista delle offerte prese dal database
      * @throws OffertaUtenteException se non trova le offerte
      * @throws UtenteException se l'utente non è autenticato

@@ -54,26 +54,27 @@ public class DomandaController {
                 if(addedDomanda.isPresent()){
                     Optional<Immobile> newImmobile = immobileService.addNewDomandaToImmobile(addedDomanda.get(),
                             authenticatedUser.get(), idImmobile);
+                    System.out.print(newImmobile.toString());
                     if(newImmobile.isPresent()){
                         model.addAttribute("message", "Domanda inserita con successo");
-                        return "inserisci_pagina_html_peppe";
+                        return "riuscito";
                     }else{
                         model.addAttribute("error", "L'immobile selezionato non esiste");
-                        return "inserisci_pagina_html_peppe";
+                        return "errore";
                     }
                 }else{
                     model.addAttribute("error", "Problemi con la creazione della domanda");
-                    return "inserisci_pagina_html_peppe";
+                    return "errore";
                 }
 
             }else{
                 model.addAttribute("message", "Bisogna essere autenticati per inserire una domanda");
-                return "inserisci_pagina_html_peppe";
+                return "errore";
             }
 
         }catch ( Exception error){
             model.addAttribute("error", error.getMessage());
-            return "inserisci_pagina_html_peppe";
+            return "errore";
         }
 
     }

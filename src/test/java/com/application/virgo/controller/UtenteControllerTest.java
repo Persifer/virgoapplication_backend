@@ -132,9 +132,6 @@ class UtenteControllerTest {
 
     @Test
     void getOfferteRicevute_authenticatedUser_redirectSuccessfulToPage() throws OffertaUtenteException, UtenteException {
-        ModelMap model = new ModelMap();
-        Long offset = 0L;
-        Long pageSize = 10L;
 
         when(authService.getAuthUtente()).thenReturn(authUser);
         when(utenteService.getListaProposte(authUser.get()))
@@ -142,8 +139,8 @@ class UtenteControllerTest {
 
         String viewName = utenteController.getOfferteRicevute(model);
 
-        assertEquals("Ciao", viewName);
-        assertTrue(model.containsAttribute("listaOfferte"));
+        assertEquals("Proposte", viewName);
+        assertTrue(model.containsAttribute("listaProposte"));
     }
 
     @Test
@@ -235,7 +232,7 @@ class UtenteControllerTest {
 
         String viewName = utenteController.getOfferte(model);
 
-        assertEquals("Ciao", viewName);
+        assertEquals("Offerte", viewName);
         assertNotEquals(Collections.emptyList(), model.getAttribute("listaOfferte"));
 
     }
