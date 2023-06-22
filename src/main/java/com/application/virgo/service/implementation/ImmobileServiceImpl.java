@@ -376,7 +376,9 @@ public class ImmobileServiceImpl implements ImmobileService {
             if(tempImmobileInteressato.isPresent()){
                 Immobile immobileInteressato = tempImmobileInteressato.get();
                 // aggiungo la domanda all'immobile
-                immobileInteressato.getDomandeImmobile().add(domanda);
+                Set<Domanda> domandeImmobile = immobileInteressato.getDomandeImmobile();
+                domandeImmobile.add(domanda);
+                immobileInteressato.setDomandeImmobile(domandeImmobile);
 
                 // aggiungo la domanda all'utente e restistuisco il mapper contenente le informazioni del dto
                 // in modo tale che si possa aggiornare la pagina dell'immobile
