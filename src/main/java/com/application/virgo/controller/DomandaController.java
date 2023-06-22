@@ -59,6 +59,7 @@ public class DomandaController {
                     if(newImmobile.isPresent()){
                         model.addAttribute("message", "Domanda inserita con successo");
                         model.addAttribute("wantedImmobile", newImmobile.get());
+                        model.addAttribute("tempNewDomandaDTO", new DomandaDTO());
                         return "riuscito";
                     }else{
                         model.addAttribute("error", "L'immobile selezionato non esiste");

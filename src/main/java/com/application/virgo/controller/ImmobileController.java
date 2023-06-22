@@ -96,8 +96,8 @@ public class ImmobileController {
                 Optional<GetImmobileInfoDTO> storedImmobile = immobileService.getImmobileById(idImmobile);
 
                 if(storedImmobile.isPresent()){
-                    model.addAttribute("wantedImmobile", storedImmobile);
-
+                    model.addAttribute("wantedImmobile", storedImmobile.get());
+                    model.addAttribute("tempNewDomandaDTO", new DomandaDTO());
                     return "Immobile";
                 }else{
                     model.addAttribute("error", "L'immobile voluto non è presente");

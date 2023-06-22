@@ -23,7 +23,7 @@ public class Domanda {
     private String contenuto;
     private Instant dataPubblicazione;
 
-    @Column(columnDefinition = "boolean default false")
+    @Column(columnDefinition = "boolean default true")
     private Boolean isEnabled;
 
     @ManyToOne
