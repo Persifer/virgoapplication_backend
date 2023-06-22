@@ -75,7 +75,7 @@ public class DomandaControllerTest {
 
         when(authService.getAuthUtente()).thenReturn(authUser);
 
-        when(domandaService.addNewDomanda(domandaDTO, authUser.get()))
+        when(domandaService.addNewDomanda(domandaDTO, authUser.get(),1L))
                 .thenReturn(domanda);
 
         when(immobileService.addNewDomandaToImmobile(newDomanda, authUser.get(), 1L))
@@ -98,7 +98,7 @@ public class DomandaControllerTest {
 
         when(authService.getAuthUtente()).thenThrow(UtenteException.class);
 
-        when(domandaService.addNewDomanda(domandaDTO, authUser.get()))
+        when(domandaService.addNewDomanda(domandaDTO, authUser.get(),1L))
                 .thenThrow(UtenteException.class);
 
         when(immobileService.addNewDomandaToImmobile(newDomanda, authUser.get(), 1L))
@@ -121,7 +121,7 @@ public class DomandaControllerTest {
 
         when(authService.getAuthUtente()).thenReturn(authUser);
 
-        when(domandaService.addNewDomanda(domandaDTO, authUser.get()))
+        when(domandaService.addNewDomanda(domandaDTO, authUser.get(),1L))
                 .thenReturn(Optional.empty());
 
         when(immobileService.addNewDomandaToImmobile(newDomanda, authUser.get(), 1L))
