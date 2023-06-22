@@ -1,10 +1,13 @@
 package com.application.virgo.DTO.Mapper;
 
+import com.application.virgo.DTO.outputDTO.DomandaImmobileDTO;
 import com.application.virgo.DTO.outputDTO.GetImmobileInfoDTO;
+import com.application.virgo.model.Domanda;
 import com.application.virgo.model.Immobile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -53,11 +56,15 @@ public class ImmobileInformationMapper implements Function<Immobile, GetImmobile
             );
         }
 
-        immobileDto.setListaDomandeImmobile(immobile.getDomandeImmobile()
-                .stream()
-                .map(mapperDomande)
-                .collect(Collectors.toList()));
+        List<DomandaImmobileDTO> domandeImmobile = new ArrayList<>();
 
+        for(Domanda domanda : immobile.getDomandeImmobile()){
+            System.out.println("\n\t" + domanda.getIdDomanda() + " ->" + domanda.getContenuto());
+            domandeImmobile.add(mapperDomande.apply(domanda));
+        }
+
+
+        immobileDto.setListaDomandeImmobile(domandeImmobile);
         return immobileDto;
     }
 
