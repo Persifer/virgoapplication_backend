@@ -389,6 +389,6 @@ public class ImmobileServiceImpl implements ImmobileService {
             throw new UtenteException("Bisogna essere loggati per poter pubblicare una domanda");
         }
 
-        return null;
+
     }
 }
