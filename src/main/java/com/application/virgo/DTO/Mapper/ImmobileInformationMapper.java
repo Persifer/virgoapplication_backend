@@ -2,6 +2,7 @@ package com.application.virgo.DTO.Mapper;
 
 import com.application.virgo.DTO.outputDTO.GetImmobileInfoDTO;
 import com.application.virgo.model.Immobile;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -11,6 +12,13 @@ import java.util.stream.Stream;
 
 @Component
 public class ImmobileInformationMapper implements Function<Immobile, GetImmobileInfoDTO> {
+
+    @Autowired
+    private final DomandaImmobileMapper mapperDomande;
+
+    public ImmobileInformationMapper(DomandaImmobileMapper domandaImmobileMapper) {
+        this.mapperDomande = domandaImmobileMapper;
+    }
 
     @Override
     public GetImmobileInfoDTO apply(Immobile immobile) {
@@ -44,6 +52,11 @@ public class ImmobileInformationMapper implements Function<Immobile, GetImmobile
                             .collect(Collectors.toList())
             );
         }
+
+        immobileDto.setListaDomandeImmobile(immobile.getDomandeImmobile()
+                .stream()
+                .map(mapperDomande)
+                .collect(Collectors.toList()));
 
         return immobileDto;
     }

@@ -146,10 +146,7 @@ public class ImmobileServiceImpl implements ImmobileService {
             Immobile requestedImmobile = tempImmobile.get();
             GetImmobileInfoDTO immobileDTO = mapperInformation.apply(requestedImmobile);
 
-            immobileDTO.setListaDomandeImmobile(requestedImmobile.getDomandeImmobile()
-                                                                    .stream()
-                                                                    .map(mapperDomande)
-                                                                    .collect(Collectors.toList()));
+
             return Optional.of(immobileDTO);
         }else{
             throw new ImmobileException("L'immobile cercato non esiste!");
@@ -376,10 +373,13 @@ public class ImmobileServiceImpl implements ImmobileService {
             if(tempImmobileInteressato.isPresent()){
                 Immobile immobileInteressato = tempImmobileInteressato.get();
                 // aggiungo la domanda all'immobile
-                immobileInteressato.getDomandeImmobile().add(domanda);
+                Set<Domanda> domandeImmobile = immobileInteressato.getDomandeImmobile();
+                domandeImmobile.add(domanda);
+                immobileInteressato.setDomandeImmobile(domandeImmobile);
 
                 // aggiungo la domanda all'utente e restistuisco il mapper contenente le informazioni del dto
                 // in modo tale che si possa aggiornare la pagina dell'immobile
+
                 return Optional.of(mapperInformation.apply(immobileRepo.save(immobileInteressato)));
 
             }else{
