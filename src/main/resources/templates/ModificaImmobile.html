@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Modifica Immobili</title>
+</head>
+<body>
+<h2>Modifica Immobili</h2>
+
+<form action="#" th:action="@{'/site/immobile/infoToModify/' + ${immobile.idImmobile}}" th:object="${immobile}" method="post">
+    <!-- Campi per le informazioni dell'immobile -->
+    <label for="titolo">Titolo:</label>
+    <input type="text" id="titolo" th:field="*{titolo}" th:value="${titolo}" required><br>
+
+    <label for="descrizione">Descrizione:</label>
+    <textarea id="descrizione" th:field="*{descrizione}" th:value="${descrizione}" rows="4" cols="50"></textarea><br>
+
+    <label for="prezzo">Prezzo:</label>
+    <input type="number" id="prezzo" th:field="*{prezzo}" th:value="${prezzo}" required><br>
+
+    <!-- Campi per i dettagli dell'immobile -->
+    <label for="locali">Locali:</label>
+    <input type="text" id="locali" th:field="*{locali}" th:value="${locali}" pattern="[1-9]*" required><br>
+
+    <label for="metriQuadri">Metri Quadrati:</label>
+    <input type="text" id="metriQuadri" th:field="*{metriQuadri}" th:value="${metriQuadri}" pattern="[0-9]*" required><br>
+
+    <!-- Campi per l'indirizzo di residenza -->
+    <label for="via">Via:</label>
+    <input type="text" id="via" th:field="*{via}" th:value="${via}" required><br>
+
+    <label for="cap">CAP:</label>
+    <input type="text" id="cap" th:field="*{cap}" th:value="${cap}" pattern="[0-9]{6}" required><br>
+
+    <label for="citta">Città:</label>
+    <input type="text" id="citta" th:field="*{citta}" th:value="${citta}" required><br>
+
+    <label for="provincia">Provincia:</label>
+    <input type="text" id="provincia" th:field="*{provincia}" th:value="${provincia}" pattern="[A-Z]{2}" required><br>
+    <div>
+        <input type="hidden" th:field="*{uploadedFile}" />
+        <label for="uploadedFile">Immagini dell'immobili che vuoi caricare</label>
+        <input type="file" id="uploadedFile" multiple="multiple" name="uploadedFile"/>
+    </div>
+    <button type="submit">Salva modifiche</button>
+</form>
+
+
+</body>
+</html>

@@ -75,11 +75,14 @@
     </thead>
     <tbody>
     <!-- Loop attraverso gli immobili caricati -->
-    <tr th:each="immobile : ${immobili}">
+    <tr th:each="immobile : ${listaImmobili}">
         <th>Titolo<td><a th:href="@{/immobile/{id}(id=${immobile.idImmobile})}" th:text="${immobile.titolo}"></a></td></th>
         <th>Indirizzo<td th:text="${immobile.indirizzo}" /></th>
         <th>Prezzo<td th:text="${immobile.prezzo}" /></th>
-        <th>modifica immobile</th>
+        <th><a th:href="@{'/site/immobile/infoToModify/' + ${immobile.idImmobile}}" th:object="${immobile.idimmobile}"}/></th>
+
+
+       <th> </a>modifica immobile</th>
     </tr>
     </tbody>
 </table>

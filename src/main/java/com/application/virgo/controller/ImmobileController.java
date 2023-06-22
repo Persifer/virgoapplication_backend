@@ -129,7 +129,7 @@ public class ImmobileController {
                 Optional<ImmobileDTO> storedImmobile = immobileService.getImmobileByIdToUpdate(idImmobile, authenticatedUser.get());
                 if(storedImmobile.isPresent()){
                     model.addAttribute("message", "Informazioni aggiornate con successo");
-                    return "Immobile";
+                    return "ModificaImmobile";
                 }else{
                     model.addAttribute("error", "Errore nell'aggiornamento delle informazioni dell'utente");
                     return "Fail";
