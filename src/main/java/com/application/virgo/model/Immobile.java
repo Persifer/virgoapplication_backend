@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.Fetch;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -53,7 +54,7 @@ public class Immobile {
     private Contratto contratto;
 
     @OneToMany(mappedBy = "idDomanda", fetch = FetchType.LAZY)
-    private Set<Domanda> domandeImmobile;
+    private List<Domanda> domandeImmobile;
 
 
 }

@@ -100,7 +100,7 @@ public class ImmobileServiceImpl implements ImmobileService {
                         Immobile newImmobile = mapperImmobile.apply(tempNewImmobile);
                         newImmobile.setProprietario(utenteProprietario);
                         // ====== SETTING LISTE
-                        newImmobile.setDomandeImmobile(Set.of());
+                        newImmobile.setDomandeImmobile(List.of());
                         // ===================
 
                         newImmobile.setListaImmagini("");
@@ -144,8 +144,8 @@ public class ImmobileServiceImpl implements ImmobileService {
         Optional<Immobile> tempImmobile = immobileRepo.getImmobilesByIdImmobile(idImmobile);
         if(tempImmobile.isPresent()){
             Immobile requestedImmobile = tempImmobile.get();
+            requestedImmobile.setDomandeImmobile(immobileRepo.domandeImmobile(requestedImmobile.getIdImmobile()));
             GetImmobileInfoDTO immobileDTO = mapperInformation.apply(requestedImmobile);
-
 
             return Optional.of(immobileDTO);
         }else{
@@ -373,7 +373,7 @@ public class ImmobileServiceImpl implements ImmobileService {
             if(tempImmobileInteressato.isPresent()){
                 Immobile immobileInteressato = tempImmobileInteressato.get();
                 // aggiungo la domanda all'immobile
-                Set<Domanda> domandeImmobile = immobileInteressato.getDomandeImmobile();
+                List<Domanda> domandeImmobile = immobileInteressato.getDomandeImmobile();
                 domandeImmobile.add(domanda);
                 immobileInteressato.setDomandeImmobile(domandeImmobile);
 
