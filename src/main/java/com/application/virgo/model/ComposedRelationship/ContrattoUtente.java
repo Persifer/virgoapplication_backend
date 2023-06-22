@@ -5,14 +5,13 @@ import jakarta.persistence.*;
 
 import com.application.virgo.model. Utente;
 import com.application.virgo.model. Contratto;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 public class ContrattoUtente {
 
     @EmbeddedId

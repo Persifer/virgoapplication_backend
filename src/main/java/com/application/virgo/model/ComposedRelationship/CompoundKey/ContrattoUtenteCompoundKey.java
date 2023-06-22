@@ -2,10 +2,7 @@ package com.application.virgo.model.ComposedRelationship.CompoundKey;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -14,7 +11,8 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-@Data
+@Getter
+@Setter
 public class ContrattoUtenteCompoundKey implements Serializable {
 
     @Column(name = "id_venditore")

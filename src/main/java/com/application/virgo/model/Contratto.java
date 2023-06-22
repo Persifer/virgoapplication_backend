@@ -2,10 +2,7 @@ package com.application.virgo.model;
 
 import com.application.virgo.model.ComposedRelationship.ContrattoUtente;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.Instant;
 import java.util.Set;
@@ -13,7 +10,8 @@ import java.util.Set;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Builder
 public class Contratto {
 

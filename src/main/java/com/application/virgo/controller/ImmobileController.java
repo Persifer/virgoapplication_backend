@@ -10,6 +10,7 @@ import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.Immobile;
 import com.application.virgo.model.Utente;
 import com.application.virgo.service.implementation.AuthServiceImpl;
+import com.application.virgo.service.interfaces.AuthService;
 import com.application.virgo.wrapperclass.SecuredUser;
 import com.application.virgo.service.interfaces.ImmobileService;
 import jakarta.validation.Valid;
@@ -40,7 +41,7 @@ import java.util.Optional;
 public class ImmobileController {
 
     private final ImmobileService immobileService;
-    private final AuthServiceImpl authService;
+    private final AuthService authService;
     //private static final String URL_SUFFIX = "/immobile/";
 
     @GetMapping
@@ -69,16 +70,16 @@ public class ImmobileController {
                     return "Home";
                 } else {
                     model.addAttribute("error", "Errore nella creazione di un immobile, riprovare");
-                    return "Fail";
+                    return "Fail1";
                 }
             }else{
                 model.addAttribute("error", "Errore");
-                return "Fail";
+                return "Fail2";
             }
 
         }catch (Exception error){
             model.addAttribute("error", error.getMessage());
-            return "Fail";
+            return "Fail3";
         }
     }
 
