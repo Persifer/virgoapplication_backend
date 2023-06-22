@@ -140,7 +140,7 @@ class UtenteControllerTest {
         when(utenteService.getListaProposte(authUser.get()))
                 .thenReturn(Instancio.ofList(ViewListaOfferteDTO.class).size(10).create());
 
-        String viewName = utenteController.getOfferteRicevute(model, offset, pageSize);
+        String viewName = utenteController.getOfferteRicevute(model);
 
         assertEquals("Ciao", viewName);
         assertTrue(model.containsAttribute("listaOfferte"));
@@ -154,7 +154,7 @@ class UtenteControllerTest {
         Optional<Utente> authUser = Optional.empty();
         when(authService.getAuthUtente()).thenReturn(authUser);
 
-        String viewName = utenteController.getOfferteRicevute(model, offset, pageSize);
+        String viewName = utenteController.getOfferteRicevute(model);
 
         assertEquals("Login", viewName);
         assertTrue(model.containsAttribute("error"));
@@ -171,7 +171,7 @@ class UtenteControllerTest {
         when(utenteService.getListaProposte(authUser.get())).thenThrow(
                 new OffertaUtenteException("Impossibile reperire l'offerta"));
 
-        String viewName = utenteController.getOfferteRicevute(model, offset, pageSize);
+        String viewName = utenteController.getOfferteRicevute(model);
 
         assertEquals("Utente", viewName);
         assertTrue(model.containsAttribute("error"));
@@ -233,7 +233,7 @@ class UtenteControllerTest {
         when(utenteService.getListaOfferte(Mockito.any(Utente.class)))
                 .thenReturn(Instancio.ofList(ViewListaOfferteDTO.class).size(10).create());
 
-        String viewName = utenteController.getOfferte(model, offset, pageSize);
+        String viewName = utenteController.getOfferte(model);
 
         assertEquals("Ciao", viewName);
         assertNotEquals(Collections.emptyList(), model.getAttribute("listaOfferte"));
@@ -251,7 +251,7 @@ class UtenteControllerTest {
 
         when(authService.getAuthUtente()).thenThrow(UtenteException.class);
 
-        String viewName = utenteController.getOfferte(model, offset, pageSize);
+        String viewName = utenteController.getOfferte(model);
 
         assertEquals("Login", viewName);
         assertTrue(model.containsAttribute("error"));
