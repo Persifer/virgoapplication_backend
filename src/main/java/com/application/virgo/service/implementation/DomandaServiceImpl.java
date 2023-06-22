@@ -34,7 +34,7 @@ public class DomandaServiceImpl implements DomandaService {
             Domanda newDomanda = new Domanda(tempDomandaDTO.getContenuto(), Instant.now());
 
             newDomanda.setProprietarioDomanda(authUser);
-            newDomanda.setIsEnabled(Boolean.TRUE);
+
 
             Optional<Immobile> immobileInteressato = immobileService.getImmobileInternalInformationById(idImmobile);
             if(immobileInteressato.isPresent()){
