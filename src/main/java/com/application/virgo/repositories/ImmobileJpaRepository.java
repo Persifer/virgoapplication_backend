@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface ImmobileJpaRepository extends JpaRepository<Immobile, Long> {
 
-    @Query("SELECT immobile FROM Immobile immobile WHERE immobile.idImmobile = :requestId AND immobile.isEnabled = true")
+    @Query("SELECT immobile FROM Immobile immobile JOIN Domanda ON (immobile.idImmobile = Domanda.idDomanda) WHERE immobile.idImmobile = :requestId AND immobile.isEnabled = true")
     public Optional<Immobile> getImmobilesByIdImmobile(@Param("requestId") Long idImmobile);
 
     @Query("SELECT immobile FROM Immobile immobile " +
