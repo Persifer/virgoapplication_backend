@@ -31,7 +31,7 @@ public class OffertaController {
     private final OffertaUtenteService offertaUtenteService;
     private final AuthService authService;
     @GetMapping
-    public String get() {
+    public String get(ModelMap model) {
         return "Offerte";
     }
     @PostMapping("/propose/{id_proprietario}/{id_immobile}")

@@ -55,7 +55,7 @@ class OffertaControllerTest {
 
     @Test
     void get_returnsOffertaView() {
-        String viewName = offertaController.get();
+        String viewName = offertaController.get(model);
         assertEquals("Offerta", viewName);
     }
 

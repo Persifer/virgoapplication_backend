@@ -2,6 +2,7 @@ package com.application.virgo.controller;
 
 import com.application.virgo.DTO.inputDTO.DomandaDTO;
 import com.application.virgo.DTO.inputDTO.ImmobileDTO;
+import com.application.virgo.DTO.inputDTO.InsertOffertaDTO;
 import com.application.virgo.DTO.outputDTO.GetImmobileInfoDTO;
 import com.application.virgo.DTO.outputDTO.GetUtenteImmobiliDTO;
 import com.application.virgo.DTO.outputDTO.HomeImmobileDTO;
@@ -98,6 +99,8 @@ public class ImmobileController {
                 if(storedImmobile.isPresent()){
                     model.addAttribute("wantedImmobile", storedImmobile.get());
                     model.addAttribute("tempNewDomandaDTO", new DomandaDTO());
+                    model.addAttribute("tempOffertaDTO", new InsertOffertaDTO());
+
                     return "Immobile";
                 }else{
                     model.addAttribute("error", "L'immobile voluto non è presente");

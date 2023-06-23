@@ -60,7 +60,6 @@ public class ImmobileInformationMapper implements Function<Immobile, GetImmobile
         List<DomandaImmobileDTO> domandeImmobile = new ArrayList<>();
 
         for(Domanda domanda : immobile.getDomandeImmobile()){
-            System.out.println("\n\t" + domanda.getIdDomanda() + " ->" + domanda.getContenuto());
             domandeImmobile.add(mapperDomande.apply(domanda));
         }
 
