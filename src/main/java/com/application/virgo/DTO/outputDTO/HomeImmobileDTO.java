@@ -21,5 +21,7 @@ public class HomeImmobileDTO {
     private String locali;
     private String metriQuadri;
 
+    private String immagineImmobile;
+
 
 }

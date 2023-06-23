@@ -15,13 +15,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import static com.application.virgo.utilities.Constants.CONTROLLER_OUTPUT;
 
 @Controller
-@RequestMapping(path = "/login")
+@RequestMapping
 @Validated
 public class LoginController {
 
 
     @GetMapping
     public String get() {
+        return "Login";
+    }
+
+    @GetMapping("/login")
+    public String getLogin() {
         return "Login";
     }
 

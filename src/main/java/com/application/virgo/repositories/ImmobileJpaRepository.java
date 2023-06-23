@@ -21,7 +21,7 @@ public interface ImmobileJpaRepository extends JpaRepository<Immobile, Long> {
 
     @Query("SELECT immobile FROM Immobile immobile " +
             "JOIN Utente utente ON (utente.idUtente = immobile.proprietario.idUtente)" +
-            "WHERE utente.idUtente = :idUtente")
+            "WHERE utente.idUtente = :idUtente AND immobile.isEnabled = true")
     public Page<Immobile> getUtenteImmobiliList(@Param("idUtente") Long idUtente, Pageable pageable);
 
     @Query("SELECT domanda FROM Domanda domanda" +

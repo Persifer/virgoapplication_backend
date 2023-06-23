@@ -50,7 +50,7 @@ public class ImmobileInformationMapper implements Function<Immobile, GetImmobile
 
         if(immobile.getListaImmagini()== null ||
                 immobile.getListaImmagini().isEmpty() || immobile.getListaImmagini().isBlank()){
-            immobileDto.setListaImmagini(List.of());
+            immobileDto.setListaImmagini(List.of("C:\\progetto_ing_sw\\files\\no_image.jpg"));
         }else{
             immobileDto.setListaImmagini(
                     List.of(immobile.getListaImmagini().split("\\|"))
