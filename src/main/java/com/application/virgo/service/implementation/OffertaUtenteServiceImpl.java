@@ -76,7 +76,7 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
             // se l'utente selezionato è il proprietario dell'immobile a cui stiamo facendo l'offerta...
             if(utenteProprietario.get().getIdUtente().equals(offertaProposta.getIdImmobileInteressato().getProprietario().getIdUtente())){
                 // allora creiamo l'offerta
-                saveOffertaCommonMethod(offerente, offertaProposta, utenteProprietario.get(), Boolean.TRUE);
+                return saveOffertaCommonMethod(offerente, offertaProposta, utenteProprietario.get(), Boolean.FALSE);
             }else{
                 throw new OffertaUtenteException("Non si può effetturare un'offerta su un immobile con proprietario diverso da quello indicato!");
             }
@@ -94,12 +94,11 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
 
         if(utenteVenditore.isPresent()){
             // allora creiamo l'offerta
-            saveOffertaCommonMethod(utenteVenditore.get(), offertaProposta, venditore, Boolean.FALSE);
+            return saveOffertaCommonMethod(utenteVenditore.get(), offertaProposta, venditore, Boolean.TRUE);
         }else{
             throw new OffertaUtenteException("Non si può effetturare un'offerta su un immobile con proprietario diverso da quello indicato!");
         }
 
-        return Optional.empty();
     }
 
 
@@ -276,8 +275,6 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
     /**
      * Permette di ottenere la lista con gli utenti con cui è aperta una contrattazione sugli immobili posseduti
      * @param authUser l'utente autenticato che è proprietario dell'immobile
-     * @param offset    indice iniziale per la paginazione
-     * @param pageSize  dimensione della pagina
      * @return
      * @throws UtenteException
      */
@@ -318,8 +315,6 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
      * Permette id prelevare tutte le offerte ricevute dall'utente
      *
      * @param authUser l'utente autenticato che è proprietario dell'immobile
-     * @param offset   indice iniziale per la paginazione
-     * @param pageSize dimensione della pagina
      * @return
      * @throws OffertaUtenteException
      * @throws UtenteException

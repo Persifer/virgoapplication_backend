@@ -54,7 +54,7 @@ public class OffertaController {
                             if(newOffertaToUtente.isPresent()){
                                 model.addAttribute("message", "offerta creata correttamente");
                                 model.addAttribute("newOffertaToUtente", newOffertaToUtente.get());
-                                return "SingolaOfferte";
+                                return "SingolaOfferta";
                             }else{
                                 model.addAttribute("error", "2 - Errore nella creazione di un offerta");
                                 return "Fail";
