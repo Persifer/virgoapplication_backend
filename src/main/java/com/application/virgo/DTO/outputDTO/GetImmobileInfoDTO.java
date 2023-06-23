@@ -38,5 +38,6 @@ public class GetImmobileInfoDTO {
 
     private List<DomandaImmobileDTO> listaDomandeImmobile;
     private List<String> listaImmagini;
+    private Long idProprietario;
 
 }

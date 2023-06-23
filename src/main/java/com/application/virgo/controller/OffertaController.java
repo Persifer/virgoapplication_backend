@@ -51,10 +51,10 @@ public class OffertaController {
                             Optional<OfferteUtente> newOffertaToUtente =
                                     offertaUtenteService.saveOffertaToUtente(authenticatedUser.get(),
                                     newOfferta.get(), idProprietario);
-
                             if(newOffertaToUtente.isPresent()){
                                 model.addAttribute("message", "offerta creata correttamente");
-                                return "Offerte";
+                                model.addAttribute("newOffertaToUtente", newOffertaToUtente.get());
+                                return "SingolaOfferte";
                             }else{
                                 model.addAttribute("error", "2 - Errore nella creazione di un offerta");
                                 return "Fail";

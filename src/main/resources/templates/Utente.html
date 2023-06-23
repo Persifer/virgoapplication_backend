@@ -3,7 +3,7 @@
 <head>
     <nav role="navigation" aria-label="Navigation">
         <a href="/site/immobile/list/0/20">Home</a>
-        <a href="/site/utente">Utente</a>
+        <a href="/site/utente/0/20">Utente</a>
         <a href="/site/offerte">Offerte</a>
         <a href="/login">Login</a>
     </nav>
@@ -75,14 +75,14 @@
     </thead>
     <tbody>
     <!-- Loop attraverso gli immobili caricati -->
-    <tr th:each="immobile : ${listaImmobili}">
-        <th>Titolo<td><a th:href="@{/immobile/{id}(id=${immobile.idImmobile})}" th:text="${immobile.titolo}"></a></td></th>
-        <th>Indirizzo<td th:text="${immobile.indirizzo}" /></th>
+    <tr th:each="immobile : ${listaImmobiliUtente}">
+        <th>Titolo<td><a th:href="@{/site/immobile/viewImmobile/{id}(id=${immobile.idImmobile})}" th:text="${immobile.titolo}"></a></td></th>
+        <th>Indirizzo<td th:text="${immobile.via}" /></th>
         <th>Prezzo<td th:text="${immobile.prezzo}" /></th>
-        <th><a th:href="@{'/site/immobile/infoToModify/' + ${immobile.idImmobile}}" th:object="${immobile.idimmobile}"}/></th>
+        <th><a th:href="@{/site/immobile/infoToModify/{id} (id=${storedImmobile.idImmobile})}" th:text="${storedImmobile.titolo}"}/>
 
 
-       <th> </a>modifica immobile</th>
+            modifica immobile</th>
     </tr>
     </tbody>
 </table>

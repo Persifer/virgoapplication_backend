@@ -3,7 +3,7 @@
 <head>
     <nav role="navigation" aria-label="Navigation">
         <a href="/site/immobile/list/0/20">Home</a>
-        <a href="/site/utente">Utente</a>
+        <a href="/site/utente/0/20">Utente</a>
         <a href="/site/offerte">Offerte</a>
         <a href="/login">Login</a>
     </nav>
@@ -61,6 +61,22 @@
         <td th:text="${wantedImmobile.provincia}"></td>
     </tr>
 </table>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Crea Proposta</title>
+</head>
+<body>
+<h3>Crea Proposta</h3>
+<form action="#" th:action="@{'/site/offerte/propose/'+ ${wantedImmobile.idProprietario}+ '/'+ ${wantedImmobile.idImmobile}}"  method="post">
+    <input type="text" name="tempOffertaDTO.proposta" placeholder="Inserisci la proposta" required><br>
+    <input type="text" name="tempOffertaDTO.altreInformazioni" placeholder="Inserisci altre informazioni"><br>
+    <input type="submit" value="Invia">
+</form>
+</body>
+</html>
+
 <h2>Commenta immobile</h2>
 <form  action="#" th:action="@{'/site/immobile/addQuestion/' + ${wantedImmobile.idImmobile}}" th:object="${tempNewDomandaDTO}" method="post">
     <textarea name="commento" th:field="*{contenuto}" rows="4" cols="50" required></textarea><br>
