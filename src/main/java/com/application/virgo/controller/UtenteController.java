@@ -90,6 +90,11 @@ public class UtenteController {
 
     }
 
+    /**
+     * Pagine che serve per reperire le informazioni di un utente per l'aggiornamento
+     * @param model serve per passare i dati al front-end
+     * @return le informazioni di un utente
+     */
     @GetMapping("/getInfo")
     public String getUsernameInformation(ModelMap model ){
         try{

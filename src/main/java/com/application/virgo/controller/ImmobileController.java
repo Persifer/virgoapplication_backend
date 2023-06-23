@@ -53,8 +53,9 @@ public class ImmobileController {
 
 
 
-    // Mapper per la creazione di un nuovo immobile associato ad singolo utente proprietario
-                // /immobile/addnew
+    /** Mapper per la creazione di un nuovo immobile associato ad singolo utente proprietario
+     * /immobile/addnew
+     **/
     @PostMapping(value = "/addnew", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public String createNewImmobile(@ModelAttribute ImmobileDTO tempNewImmobile, ModelMap model
                                     /*@RequestPart("images") MultipartFile[] uploadedFile */) {
@@ -84,8 +85,13 @@ public class ImmobileController {
     }
 
 
-    // Mapper che permette di reperire i dati di un singolo immobile associato ad un utente tramite l'uso di GetImmobileInfoDTO
-    // viene usato quando, dalla homepage, viene selezionato un immobile
+    /**
+     * Mapper che permette di reperire i dati di un singolo immobile associato ad un utente tramite l'uso di GetImmobileInfoDTO
+     * viene usato quando, dalla homepage, viene selezionato un immobile
+     * @param idImmobile id dell'immobile da selezionare
+     * @param model classe per il passaggio dei dati al front-end
+     * @return
+     */
     @GetMapping("/viewImmobile/{id_immobile}")
     public String getImmobileInformation(@PathVariable("id_immobile") Long idImmobile,
                                                                      ModelMap model){
@@ -130,6 +136,7 @@ public class ImmobileController {
                 // se l'utente è autenticato allora posso vedere i dati del singolo immobile
                 Optional<ImmobileDTO> storedImmobile = immobileService.getImmobileByIdToUpdate(idImmobile, authenticatedUser.get());
                 if(storedImmobile.isPresent()){
+                    model.addAttribute("immobileToModify", storedImmobile.get());
                     model.addAttribute("message", "Informazioni aggiornate con successo");
                     return "ModificaImmobile";
                 }else{
