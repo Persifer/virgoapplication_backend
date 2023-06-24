@@ -79,7 +79,10 @@ public interface OffertaUtenteJpaRepository extends JpaRepository<OfferteUtente,
     public List<ListUnviewMessageDTO> getListUtenteWithUnreadMessages();
 
 
-    public Optional<OfferteUtente> getOfferteUtenteByProprietarioAndOffertaInteressata(Utente utente, Offerta offerta);
+    @Query("SELECT offertaUtente FROM OfferteUtente offertaUtente " +
+            "WHERE offertaUtente.offerente.idUtente = :idUtente AND offertaUtente.offertaInteressata.idOfferta = :idOfferta")
+    public Optional<OfferteUtente> getOfferteUtenteByProprietarioAndOffertaInteressata(@Param("idUtente") Long idUtente,
+                                                                                       @Param("idOfferta") Long idOfferta);
 
     @Query(
             "SELECT offerta " +

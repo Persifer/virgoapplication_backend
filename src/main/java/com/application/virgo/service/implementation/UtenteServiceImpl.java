@@ -131,11 +131,7 @@ public class UtenteServiceImpl implements UtenteService {
     public List<ViewListaOfferteDTO> getListaOfferte(Utente offerente)
             throws OffertaUtenteException, UtenteException, ImmobileException {
 
-        List<ViewListaOfferteDTO> listOfferteUtente = offerteUtenteService.getOfferteProposte(offerente);
-        if(!listOfferteUtente.isEmpty()){
-            return listOfferteUtente;
-        }
-        return List.of();
+        return offerteUtenteService.getOfferteProposte(offerente);
     }
 
     @Override

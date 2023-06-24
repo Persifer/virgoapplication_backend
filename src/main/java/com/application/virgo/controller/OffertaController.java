@@ -157,7 +157,7 @@ public class OffertaController {
 
                     if(isAcquirente==1){ // /getListaOfferte/storico/{id_utente}/{id_immobile}
                         return "redirect:/site/utente/getListaOfferte/storico/"
-                                +acceptedOfferta.get().getVenditore().getIdUtente()+"/"
+                                +acceptedOfferta.get().getAcquirente().getIdUtente()+"/"
                                 +acceptedOfferta.get().getContrattoInteressato().getImmobileInteressato().getIdImmobile();
                     }else{
                         ///getListProposte/storico/{idOfferente}/{idImmobile}

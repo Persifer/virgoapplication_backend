@@ -180,7 +180,8 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
             if(offertaSelezionata.isPresent()){
                 //Prelevo l'offerta in base al proprietario e al'id dell'offerta
                 Optional<OfferteUtente> tempOffertaToAccept =
-                        offertaUtenteRepository.getOfferteUtenteByProprietarioAndOffertaInteressata(authUser,offertaSelezionata.get());
+                        offertaUtenteRepository.getOfferteUtenteByProprietarioAndOffertaInteressata(
+                                authUser.getIdUtente(),offertaSelezionata.get().getIdOfferta());
                 // se l'offerta voluta esiste
                 if(tempOffertaToAccept.isPresent()){
                     // prelevo l'offerta interessata dall'optional
