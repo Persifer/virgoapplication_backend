@@ -154,6 +154,10 @@ public class ImmobileServiceImpl implements ImmobileService {
 
     }
 
+    public Optional<Immobile> immobileToDisable(Long idImmobile){
+        return immobileRepo.disableImmobile(idImmobile);
+    }
+
     //Restituisce i dati da modificare di un singolo immobile
     @Override
     public Optional<GetUtenteImmobiliDTO> getImmobileByIdToUpdate(Long idImmobile, Utente authUser)

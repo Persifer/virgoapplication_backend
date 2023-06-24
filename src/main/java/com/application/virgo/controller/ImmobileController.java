@@ -155,6 +155,32 @@ public class ImmobileController {
         }
     }
 
+    @PostMapping("/disable/{id_immobile}")
+    public String getImmobileToDisable(@PathVariable("id_immobile") Long idImmobile, ModelMap model){
+        try{
+            Optional<Utente> authenticatedUser = authService.getAuthUtente();
+            if(authenticatedUser.isPresent()) {
+                // se l'utente è autenticato allora posso vedere i dati del singolo immobile
+                Optional<Immobile> storedImmobile = immobileService.immobileToDisable(idImmobile);
+                if(storedImmobile.isPresent()){
+                    model.addAttribute("message", "Informazioni aggiornate con successo");
+                    return "redirect:/site/utente/getInfo";
+                }else{
+                    model.addAttribute("error", "Errore nell'aggiornamento delle informazioni dell'utente");
+                    return "Fail";
+                }
+            }else{
+                model.addAttribute("error", "Bisogna esssere autenticati per aggiornare le informazioni");
+                return "Login";
+            }
+
+
+        }catch (UtenteException error){
+            model.addAttribute("error", error.getMessage());
+            return "Fail";
+        }
+    }
+
     // Permette di far visualizzare all'utente la lista di tutti gli immobili da lui caricati
     @GetMapping("/getImmobiliUtente/{offset}/{pageSize}")
     public String getListaImmobiliUtente(@PathVariable("offset") Long offset,
