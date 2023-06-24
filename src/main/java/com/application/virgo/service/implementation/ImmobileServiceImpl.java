@@ -318,11 +318,12 @@ public class ImmobileServiceImpl implements ImmobileService {
     }
 
     @Override
-    public List<HomeImmobileDTO> getAllImmobiliPaginated(Long inidiceIniziale, Long pageSize) throws ImmobileException{
+    public List<HomeImmobileDTO> getAllImmobiliPaginated(Long idUtente, Long inidiceIniziale, Long pageSize) throws ImmobileException{
 
         if(inidiceIniziale < pageSize - immobileRepo.countByIdImmobile() ){
             if(pageSize < Constants.PAGE_SIZE){
-                Page<Immobile> listImmobili = immobileRepo.findAllByIsEnabledTrue(PageRequest.of(inidiceIniziale.intValue(), pageSize.intValue()));
+                Page<Immobile> listImmobili =
+                        immobileRepo.findAllByIsEnabledTrue(PageRequest.of(inidiceIniziale.intValue(), pageSize.intValue()), idUtente);
                 // converte con la stream una page di immobili in una lista di getImmobileInfoDTO
                 return listImmobili.stream().map(mapperHomeInformation).collect(Collectors.toList());
             }else {

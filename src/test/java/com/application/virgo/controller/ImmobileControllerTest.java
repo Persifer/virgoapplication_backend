@@ -219,7 +219,7 @@ class ImmobileControllerTest {
         List<HomeImmobileDTO> foundedImmobili = List.of(new HomeImmobileDTO());
 
         when(authService.getAuthUtente()).thenReturn(authUser);
-        when(immobileService.getAllImmobiliPaginated(0L, 20L)).thenReturn(foundedImmobili);
+        when(immobileService.getAllImmobiliPaginated(1L, 0L,20L)).thenReturn(foundedImmobili);
 
         // Execute
         String viewName = immobileController.getListImmobili(0L, 20L, model);

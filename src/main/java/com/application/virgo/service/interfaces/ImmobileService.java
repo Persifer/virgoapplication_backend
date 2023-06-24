@@ -84,7 +84,7 @@ public interface ImmobileService {
      * @return Una lista di HomeImmobileDTO per la visualizzazione nella home page
      * @throws ImmobileException se si verifica un'eccezione relativa all'immobile
      */
-    public List<HomeImmobileDTO> getAllImmobiliPaginated(Long indiceIniziale, Long pageSize) throws ImmobileException;
+    public List<HomeImmobileDTO> getAllImmobiliPaginated(Long idUtente, Long indiceIniziale, Long pageSize) throws ImmobileException;
 
     /**
      * Ottiene una lista di immobili filtrati in base ad un filtro specifiato dall'utente

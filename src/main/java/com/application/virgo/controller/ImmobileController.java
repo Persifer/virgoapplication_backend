@@ -195,7 +195,8 @@ public class ImmobileController {
         try{
             Optional<Utente> securedUser = authService.getAuthUtente();
             if(securedUser.isPresent()){
-                List<HomeImmobileDTO> foundedImmobili = immobileService.getAllImmobiliPaginated(offset, pageSize);
+                List<HomeImmobileDTO> foundedImmobili =
+                        immobileService.getAllImmobiliPaginated(securedUser.get().getIdUtente(),offset, pageSize);
                 if(!foundedImmobili.isEmpty()){
                     model.addAttribute("listImmobili", foundedImmobili);
                     return "Home";
