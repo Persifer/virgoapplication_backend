@@ -13,6 +13,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.application.virgo.utilities.Util.getListaImamginiFromString;
+
 @Component
 public class ImmobileInformationMapper implements Function<Immobile, GetImmobileInfoDTO> {
 
@@ -39,6 +41,7 @@ public class ImmobileInformationMapper implements Function<Immobile, GetImmobile
 
         immobileDto.setDataUltimoRestauro(immobile.getDataUltimoRestauro() != null ? immobile.getDataUltimoRestauro() : null);
         immobileDto.setDataAcquisizione(immobile.getDataAcquisizione() != null ? immobile.getDataAcquisizione() : null);
+        immobileDto.setDataCreazioneImmobile(immobile.getDataCreazioneImmobile() != null ? immobile.getDataCreazioneImmobile() : null);
         immobileDto.setPrezzo(immobile.getPrezzo() != null ? immobile.getPrezzo() : null);
 
         immobileDto.setCap(immobile.getCap() != null ? immobile.getCap() : "");
@@ -47,15 +50,10 @@ public class ImmobileInformationMapper implements Function<Immobile, GetImmobile
         immobileDto.setCitta(immobile.getCitta() != null ? immobile.getCitta() : "");
 
         immobileDto.setIdProprietario(immobile.getProprietario().getIdUtente());
+        immobileDto.setLocali(immobile.getLocali() != null ? immobile.getLocali() : "");
+        immobileDto.setMetriQuadri(immobile.getMetriQuadri() != null ? immobile.getMetriQuadri() : "");
 
-        if(immobile.getListaImmagini()== null ||
-                immobile.getListaImmagini().isEmpty() || immobile.getListaImmagini().isBlank()){
-            immobileDto.setListaImmagini(List.of("C:\\progetto_ing_sw\\files\\no_image.jpg"));
-        }else{
-            immobileDto.setListaImmagini(
-                    List.of(immobile.getListaImmagini().split("\\|"))
-            );
-        }
+        immobileDto.setListaImmagini(getListaImamginiFromString(immobile.getListaImmagini()));
 
         List<DomandaImmobileDTO> domandeImmobile = new ArrayList<>();
 

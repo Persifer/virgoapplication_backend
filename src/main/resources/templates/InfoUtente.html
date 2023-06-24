@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Info utente</title>
+    <nav role="navigation" aria-label="Navigation">
+        <a href="/site/immobile/list/0/20">Home</a>
+        <a href="/site/utente/0/20">I tuoi immobili</a>
+        <a href="/site/utente/getListaOfferte">Offerte</a>
+        <a href="/site/utente/getInfo">Dati utente</a>
+    </nav>
+</head>
+    <body>
+
+    <h1>Queste sono le tue informazioni</h1>
+
+    <div th:if="${utente}">
+        <p><strong>email:</strong> <span th:text="${utente.email}"></span></p>
+        <p><strong>Nome:</strong> <span th:text="${utente.nome}"></span></p>
+        <p><strong>Cognome:</strong> <span th:text="${utente.cognome}"></span></p>
+        <p><strong>dataNascita:</strong> <span th:text="${utente.dataNascita}"></span></p>
+    </div>
+
+    </body>
+</html>

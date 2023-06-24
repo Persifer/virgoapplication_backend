@@ -134,9 +134,10 @@ public class ImmobileController {
             Optional<Utente> authenticatedUser = authService.getAuthUtente();
             if(authenticatedUser.isPresent()) {
                 // se l'utente è autenticato allora posso vedere i dati del singolo immobile
-                Optional<ImmobileDTO> storedImmobile = immobileService.getImmobileByIdToUpdate(idImmobile, authenticatedUser.get());
+                Optional<GetUtenteImmobiliDTO> storedImmobile = immobileService.getImmobileByIdToUpdate(idImmobile, authenticatedUser.get());
                 if(storedImmobile.isPresent()){
                     model.addAttribute("immobileToModify", storedImmobile.get());
+                    model.addAttribute("modifiedImmobile",new ImmobileDTO());
                     model.addAttribute("message", "Informazioni aggiornate con successo");
                     return "ModificaImmobile";
                 }else{
@@ -215,7 +216,7 @@ public class ImmobileController {
 
     // È l'url che permette di aggiornare le informazioni di un immobile, quando viene richiamato si inviamo tutte le
     // informazioni modificate di un immobile
-    @PutMapping("/updateInfo/{id_immobile}")
+    @PostMapping("/updateInfo/{id_immobile}")
     public String modifyImmobileInfo(@ModelAttribute ImmobileDTO tempUpdatedimmobileDTO,
                                      @PathVariable("id_immobile") Long idImmobile,
                                      ModelMap model){
@@ -226,7 +227,7 @@ public class ImmobileController {
                                                                         authenticatedUser.get(), idImmobile);
                 if(newImmobile.isPresent()){
                     model.addAttribute("message", "Domanda inserita con successo");
-                    return "Immobile";
+                    return "Utente";
                 }else{
                     model.addAttribute("error", "Impossibile trovare l'immobile");
                     return "Fail1";

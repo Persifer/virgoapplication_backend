@@ -9,7 +9,6 @@ import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.Domanda;
 import com.application.virgo.model.Immobile;
 import com.application.virgo.model.Utente;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -61,7 +60,7 @@ public interface ImmobileService {
      * @throws ImmobileException se non è possibile trovare l'immobile
      * @throws UtenteException   se non è possibile trovare l'utente autenticato
      */
-    public Optional<ImmobileDTO> getImmobileByIdToUpdate(Long idImmobile, Utente proprietario)
+    public Optional<GetUtenteImmobiliDTO> getImmobileByIdToUpdate(Long idImmobile, Utente proprietario)
             throws ImmobileException, UtenteException;
 
     /**
@@ -142,4 +141,5 @@ public interface ImmobileService {
     public Optional<GetImmobileInfoDTO> addNewDomandaToImmobile(Domanda Domanda, Utente authUser, Long idImmobileInteressato)
             throws ImmobileException, UtenteException;
 
+    public String getTitoloImmboileById(Long idImmobile) throws ImmobileException;
 }

@@ -7,41 +7,45 @@
 <body>
 <h2>Modifica Immobili</h2>
 
-<form action="#" th:action="@{'/site/immobile/infoToModify/' + ${immobile.idImmobile}}" th:object="${immobile}" method="post">
+<form action="#" th:action="@{'/site/immobile/updateInfo/' + ${immobileToModify.idImmobile}}" th:object="${immobileToModify}" method="post">
     <!-- Campi per le informazioni dell'immobile -->
     <label for="titolo">Titolo:</label>
-    <input type="text" id="titolo" th:field="*{titolo}" th:value="${titolo}" required><br>
-
+    <input type="text" id="titolo" th:field="*{titolo}" th:value="${immobileToModify.titolo}" required><br>
+0
     <label for="descrizione">Descrizione:</label>
-    <textarea id="descrizione" th:field="*{descrizione}" th:value="${descrizione}" rows="4" cols="50"></textarea><br>
+    <textarea id="descrizione" th:field="*{descrizione}" th:value="${immobileToModify.descrizione}" rows="4" cols="50"></textarea><br>
 
     <label for="prezzo">Prezzo:</label>
-    <input type="number" id="prezzo" th:field="*{prezzo}" th:value="${prezzo}" required><br>
+    <input type="number" id="prezzo" th:field="*{prezzo}" th:value="${immobileToModify.prezzo}" required><br>
 
     <!-- Campi per i dettagli dell'immobile -->
     <label for="locali">Locali:</label>
-    <input type="text" id="locali" th:field="*{locali}" th:value="${locali}" pattern="[1-9]*" required><br>
+    <input type="text" id="locali" th:field="*{locali}" th:value="${immobileToModify.locali}" pattern="[1-9]*" required><br>
 
     <label for="metriQuadri">Metri Quadrati:</label>
-    <input type="text" id="metriQuadri" th:field="*{metriQuadri}" th:value="${metriQuadri}" pattern="[0-9]*" required><br>
+    <input type="text" id="metriQuadri" th:field="*{metriQuadri}" th:value="${immobileToModify.metriQuadri}" pattern="[0-9]*" required><br>
 
     <!-- Campi per l'indirizzo di residenza -->
     <label for="via">Via:</label>
-    <input type="text" id="via" th:field="*{via}" th:value="${via}" required><br>
+    <input type="text" id="via" th:field="*{via}" th:value="${immobileToModify.via}" required><br>
 
     <label for="cap">CAP:</label>
-    <input type="text" id="cap" th:field="*{cap}" th:value="${cap}" pattern="[0-9]{6}" required><br>
+    <input type="text" id="cap" th:field="*{cap}" th:value="${immobileToModify.cap}" pattern="[0-9]{6}" required><br>
 
     <label for="citta">Città:</label>
-    <input type="text" id="citta" th:field="*{citta}" th:value="${citta}" required><br>
+    <input type="text" id="citta" th:field="*{citta}" th:value="${immobileToModify.citta}" required><br>
 
     <label for="provincia">Provincia:</label>
-    <input type="text" id="provincia" th:field="*{provincia}" th:value="${provincia}" pattern="[A-Z]{2}" required><br>
-    <div>
-        <input type="hidden" th:field="*{uploadedFile}" />
-        <label for="uploadedFile">Immagini dell'immobili che vuoi caricare</label>
-        <input type="file" id="uploadedFile" multiple="multiple" name="uploadedFile"/>
-    </div>
+    <input type="text" id="provincia" th:field="*{provincia}" th:value="${immobileToModify.provincia}" pattern="[A-Z]{2}" required><br>
+
+    <label for="titolo">data Acquisizione:</label>
+    <input type="text" id="dataAcquisizione" th:field="*{dataAcquisizione}" th:value="${immobileToModify.dataAcquisizione}" required><br>
+    <label for="titolo">data Creazione Immobile:</label>
+    <input type="text" id="dataCreazioneImmobile" th:field="*{dataCreazioneImmobile}" th:value="${immobileToModify.dataCreazioneImmobile}" required><br>
+    <label for="titolo">data Ultimo Restauro:</label>
+    <input type="text" id="dataUltimoRestauro" th:field="*{dataUltimoRestauro}" th:value="${immobileToModify.dataUltimoRestauro}" required><br>
+    <input type="checkbox" th:field="*{isEnabled}"  th:value="${immobileToModify.isEnabled}"  onchange="toggleEnable(this)">
+
     <button type="submit">Salva modifiche</button>
 </form>
 

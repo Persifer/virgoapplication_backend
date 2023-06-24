@@ -5,6 +5,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class Util {
@@ -19,6 +20,37 @@ public class Util {
         } else {
             throw new UsernameNotFoundException("Invalid email or password");
         }
+    }
+
+    /**
+     * Preleva la prima immagine di un immobile
+     * @return una stringa con il path dell'immagine
+     */
+    public static String getSingleImageFromList(String listaImmagini){
+        String image = "";
+
+        if(listaImmagini== null ||
+                listaImmagini.isBlank() || listaImmagini.isEmpty()){
+            image = "C:\\progetto_ing_sw\\files\\no_image.jpg";
+        }else {
+            image = List.of(listaImmagini.split("\\|")).get(0);
+        }
+
+
+       return image;
+    }
+
+    public static List<String> getListaImamginiFromString(String listaImmagini){
+        List<String> image;
+
+        if(listaImmagini== null ||
+                listaImmagini.isBlank() || listaImmagini.isEmpty()){
+            image = List.of("C:\\progetto_ing_sw\\files\\no_image.jpg");
+        }else {
+            image = List.of(listaImmagini.split("\\|"));
+        }
+
+        return image;
     }
 
 }

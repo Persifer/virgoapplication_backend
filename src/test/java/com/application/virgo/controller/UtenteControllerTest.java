@@ -170,7 +170,7 @@ class UtenteControllerTest {
     }*/
 
     @Test
-    void getOfferteRicevute_authenticatedUser_redirectSuccessfulToPage() throws OffertaUtenteException, UtenteException {
+    void getOfferteRicevute_authenticatedUser_redirectSuccessfulToPage() throws OffertaUtenteException, UtenteException, ImmobileException {
 
         when(authService.getAuthUtente()).thenReturn(authUser);
         when(utenteService.getListaProposte(authUser.get()))
@@ -198,7 +198,7 @@ class UtenteControllerTest {
 
     @Test
     void getOfferteRicevute_UtenteExceptionOrOffertaUtenteException_occurs_redirectErroneousToLogin()
-            throws UtenteException, OffertaUtenteException {
+            throws UtenteException, OffertaUtenteException, ImmobileException {
         Long offset = 0L;
         Long pageSize = 10L;
 

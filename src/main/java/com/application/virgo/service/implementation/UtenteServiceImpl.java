@@ -107,7 +107,7 @@ public class UtenteServiceImpl implements UtenteService {
      */
     @Override
     public List<ViewListaOfferteDTO> getListaProposte(Utente proprietario)
-            throws OffertaUtenteException, UtenteException {
+            throws OffertaUtenteException, UtenteException, ImmobileException {
 
         List<ViewListaOfferteDTO> listOfferteUtente =
                 offerteUtenteService.getOfferteForUtenteProprietario(proprietario);

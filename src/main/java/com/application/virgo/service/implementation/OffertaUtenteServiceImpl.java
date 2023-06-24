@@ -280,7 +280,7 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
      */
     @Override
     public List<ViewListaOfferteDTO> getOfferteForUtenteProprietario(Utente authUser)
-            throws UtenteException {
+            throws UtenteException, ImmobileException {
 
         List<Long> listIdOfferenti =  offertaUtenteRepository.getAllOfferteUtenteAsProprietario(
                 authUser.getIdUtente());
@@ -293,11 +293,12 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
             for(Long idImmobile : listImmobili){
                 Optional<Utente> utenteProp = getInformationUtente(idOfferente);
                 if(utenteProp.isPresent()){
+
                     resultList.add(
                             new ViewListaOfferteDTO(utenteProp.get().getNome(),
                                     utenteProp.get().getCognome(),
                                     utenteProp.get().getIdUtente(),
-                                    idImmobile)
+                                    idImmobile, immobileService.getTitoloImmboileById(idImmobile))
                     );
                 }else{
                     throw new UtenteException("Impossibile trovare l'utente proprietario");

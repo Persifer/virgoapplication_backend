@@ -14,6 +14,8 @@ public class GetUtenteImmobiliDTO {
 
     private Long idImmobile;
     private LocalDate dataCreazioneImmobile;
+    private LocalDate dataAcquisizione;
+    private LocalDate dataUltimoRestauro;
 
     private String descrizione;
     private String titolo;
@@ -29,4 +31,6 @@ public class GetUtenteImmobiliDTO {
     private String cap;
     private String citta;
     private String provincia;
+
+    private String listaImmagini;
 }

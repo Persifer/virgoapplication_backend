@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.function.Function;
 
+import static com.application.virgo.utilities.Util.getListaImamginiFromString;
+import static com.application.virgo.utilities.Util.getSingleImageFromList;
+
 @Component
 public class HomeImmobileMapper implements Function<Immobile, HomeImmobileDTO> {
 
@@ -22,14 +25,7 @@ public class HomeImmobileMapper implements Function<Immobile, HomeImmobileDTO> {
 
         immobileDto.setPrezzo(immobile.getPrezzo()!=null?immobile.getPrezzo():null);
 
-        if(immobile.getListaImmagini()== null ||
-                immobile.getListaImmagini().isEmpty() || immobile.getListaImmagini().isBlank()){
-            immobileDto.setImmagineImmobile("C:\\progetto_ing_sw\\files\\no_image.jpg");
-        }else{
-            immobileDto.setImmagineImmobile(
-                    List.of(immobile.getListaImmagini().split("\\|")).get(0)
-            );
-        }
+        immobileDto.setImmagineImmobile(getSingleImageFromList(immobile.getListaImmagini()));
 
 
         return immobileDto;

@@ -32,6 +32,9 @@ public class ImmobiliDataUtente implements Function<Immobile, GetUtenteImmobiliD
         immobileDto.setProvincia(immobile.getProvincia() != null ? immobile.getProvincia() : "");
         immobileDto.setCitta(immobile.getCitta() != null ? immobile.getCitta() : "");
 
+        immobileDto.setDataAcquisizione(immobile.getDataAcquisizione() != null ? immobile.getDataAcquisizione() : null );
+        immobileDto.setDataCreazioneImmobile(immobile.getDataCreazioneImmobile() != null ? immobile.getDataCreazioneImmobile() : null);
+
 
 
         return immobileDto;

@@ -3,9 +3,9 @@
 <head>
     <nav role="navigation" aria-label="Navigation">
         <a href="/site/immobile/list/0/20">Home</a>
-        <a href="/site/utente/0/20">Utente</a>
-        <a href="/site/offerte">Offerte</a>
-        <a href="/login">Login</a>
+        <a href="/site/utente/0/20">I tuoi immobili</a>
+        <a href="/site/utente/getListaOfferte">Offerte</a>
+        <a href="/site/utente/getInfo">Dati utente</a>
     </nav>
     <title>Le tue Offerte</title>
     <style>
@@ -23,7 +23,7 @@
         }
         nav {
             display: flex;
-            justify-content: center;
+            justify-content: space-evenly;
             align-items: center;
             background-color: green;
             border-radius: 5px;
@@ -40,6 +40,7 @@
     <tr>
         <th>nome Controparte</th>
         <th>cognome Controparte</th>
+        <th>titolo immobile</th>
         <th>Chat</th>
     </tr>
     </thead>
@@ -48,6 +49,8 @@
     <tr th:each="offerta : ${listaOfferte}">
         <td th:text="${offerta.nomeControparte}"></td>
         <td th:text="${offerta.cognomeControparte}"></td>
+        <td th:text="${offerta.titoloImmobile}"></td>
+
         <td><a th:href="@{'/site/utente/getListaOfferte/storico/' + ${offerta.idControparte} + '/' + ${offerta.idImmobile}}">Apri chat</a></td>
     </tr>
     </tbody>

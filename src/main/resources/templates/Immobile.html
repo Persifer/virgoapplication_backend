@@ -4,8 +4,8 @@
     <nav role="navigation" aria-label="Navigation">
         <a href="/site/immobile/list/0/20">Home</a>
         <a href="/site/utente/0/20">Utente</a>
-        <a href="/site/offerte">Offerte</a>
-        <a href="/login">Login</a>
+        <a href="/site/utente/getListaOfferte">Offerte</a>
+        <a href="/site/utente/getInfo">Dati utente</a>
     </nav>
     <title>Dettagli immobile</title>
 </head>
@@ -73,6 +73,7 @@
      <input type="hidden" name="idProprietario" th:value="${wantedImmobile.idProprietario}">
     <input type="submit" value="Invia">
 </form>
+<p th:text="${message}"></p>
 
 
 

@@ -3,9 +3,9 @@
 <head>
     <nav role="navigation" aria-label="Navigation">
         <a href="/site/immobile/list/0/20">Home</a>
-        <a href="/site/utente/0/20">Utente</a>
-        <a href="/site/offerte">Offerte</a>
-        <a href="/login">Login</a>
+        <a href="/site/utente/0/20">I tuoi immobili</a>
+        <a href="/site/utente/getListaOfferte">Offerte</a>
+        <a href="/site/utente/getInfo">Dati utente</a>
     </nav>
     <meta charset="UTF-8">
     <title>Pagina Utente</title>
@@ -24,7 +24,7 @@
         }
         nav {
             display: flex;
-            justify-content: center;
+            justify-content: space-evenly;
             align-items: center;
             background-color: green;
             border-radius: 5px;
@@ -35,54 +35,16 @@
     </style>
 </head>
 <body>
-<h1>Dati Utente</h1>
-<!--<form th:action="@{/site/utente/updateData/{id_utente}(id_utente=${userId})}" method="post">
-    <label>Nome:</label>
-    <input type="text" th:field="*{nome}" />
-
-    <label>Cognome:</label>
-    <input type="text" th:field="*{cognome}" />
-
-    <label>Email:</label>
-    <input type="email" th:field="*{email}" />
-
-    <label>Via:</label>
-    <input type="text" th:field="*{via}" />
-
-    <label>Cap:</label>
-    <input type="text" th:field="*{cap}" />
-
-    <label>Città:</label>
-    <input type="text" th:field="*{citta}" />
-
-    <label>Provincia:</label>
-    <input type="text" th:field="*{provincia}" />
-
-    <label>Data di Nascita:</label>
-    <input type="text" th:field="*{dataNascita}" />
-
-    <input type="submit" value="Aggiorna" />
-</form> -->
 
 <h1>Lista Immobili</h1>
 <table>
-    <thead>
-    <tr>
-        <th>Titolo</th>
-        <th>Indirizzo</th>
-        <th>Prezzo</th>
-    </tr>
-    </thead>
     <tbody>
     <!-- Loop attraverso gli immobili caricati -->
     <tr th:each="immobile : ${listaImmobiliUtente}">
         <th>Titolo<td><a th:href="@{/site/immobile/viewImmobile/{id}(id=${immobile.idImmobile})}" th:text="${immobile.titolo}"></a></td></th>
         <th>Indirizzo<td th:text="${immobile.via}" /></th>
         <th>Prezzo<td th:text="${immobile.prezzo}" /></th>
-        <th><a th:href="@{/site/immobile/infoToModify/{id} (id=${storedImmobile.idImmobile})}" th:text="${storedImmobile.titolo}"}/>
-
-
-            modifica immobile</th>
+        <th><a th:href="@{/site/immobile/infoToModify/{id} (id=${immobile.idImmobile})}"}/>modifica immobile</th>
     </tr>
     </tbody>
 </table>

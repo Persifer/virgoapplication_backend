@@ -51,7 +51,7 @@ public class ImmobileServiceImpl implements ImmobileService {
         Integer iterator;
         String fileName = "";
 
-        if(imageList.isBlank() || imageList.isEmpty()){
+        if(imageList==null || imageList.isBlank() || imageList.isEmpty()){
             uploadedImages = new StringBuilder();
             iterator = 1;
         }else{
@@ -156,7 +156,7 @@ public class ImmobileServiceImpl implements ImmobileService {
 
     //Restituisce i dati da modificare di un singolo immobile
     @Override
-    public Optional<ImmobileDTO> getImmobileByIdToUpdate(Long idImmobile, Utente authUser)
+    public Optional<GetUtenteImmobiliDTO> getImmobileByIdToUpdate(Long idImmobile, Utente authUser)
             throws ImmobileException, UtenteException {
         Optional<Immobile> tempToUpdateImmobile = immobileRepo.getImmobilesByIdImmobile(idImmobile);
         if(tempToUpdateImmobile.isPresent()){
@@ -165,8 +165,7 @@ public class ImmobileServiceImpl implements ImmobileService {
             // controllo che il proprietario dell'immobile selezionato sia lo stesso di quello loggato che, si presume, sia l'utente
             // proprietario dell'immobile
             if(toUpdateImmobile.getProprietario().getIdUtente().equals(authUser.getIdUtente())){
-                ImmobileDTO immobileToUpdate = mapperImmobile.apply(toUpdateImmobile);
-                return Optional.of(immobileToUpdate);
+                return Optional.of(mapperUtenteInformation.apply(toUpdateImmobile));
             }else{
                 throw new UtenteException("Non sei autorizzato a modificare i dati di questo immobile!");
             }
@@ -282,11 +281,18 @@ public class ImmobileServiceImpl implements ImmobileService {
                 }
 
 // =====================================================================================================================
+                if(tempUpdatedImmobile.getIsEnabled()){
+                    toCheckImmobile.setIsEnabled(Boolean.TRUE);
+                }else{
+                    toCheckImmobile.setIsEnabled(Boolean.FALSE);
+                }
 
-                toCheckImmobile.setIsEnabled(tempUpdatedImmobile.getIsEnabled());
 
-                uploadPhotosToImmobile(tempUpdatedImmobile.getUploadedFile(), tempToCheckImmobile.get().getListaImmagini(),
-                        tempToCheckImmobile.get(),authUser.getIdUtente());
+                if(tempUpdatedImmobile.getUploadedFile() != null){
+                    uploadPhotosToImmobile(tempUpdatedImmobile.getUploadedFile(), tempToCheckImmobile.get().getListaImmagini(),
+                            tempToCheckImmobile.get(),authUser.getIdUtente());
+                }
+
 
                 if(error.isBlank() || error.isEmpty()){
 
@@ -389,5 +395,15 @@ public class ImmobileServiceImpl implements ImmobileService {
         }
 
 
+    }
+
+    @Override
+    public String getTitoloImmboileById(Long idImmobile) throws ImmobileException {
+        Optional<Immobile> tempImmobile = immobileRepo.getImmobilesByIdImmobile(idImmobile);
+        if(tempImmobile.isPresent()){
+            return tempImmobile.get().getTitolo();
+        }else{
+            throw new ImmobileException("L'immobile cercato non esiste!");
+        }
     }
 }

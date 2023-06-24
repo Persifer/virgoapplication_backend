@@ -4,7 +4,21 @@
     <meta charset="UTF-8">
     <title>Offerta</title>
 </head>
-<body>
-    Singola offerta
-</body>
+    <body>
+
+
+    <div th:if="${#lists.isEmpty(listaOfferte)}">
+        <!-- Mostra questo div se la lista è vuota -->
+        <p>La chat con questa persona è vuota.</p>
+    </div>
+    <div th:unless="${#lists.isEmpty(listaOfferte)}">
+        <h1 th:text="${'Chat con ' + listaOfferte[0].nomeControparte}"></h1>
+        <!-- Mostra questa lista se la lista non è vuota -->
+        <ul>
+            <li th:each="offerta : ${listaOfferte}" th:text="${offerta.nomeOfferente}"></li>
+        </ul>
+    </div>
+
+
+    </body>
 </html>

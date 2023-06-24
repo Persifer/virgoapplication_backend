@@ -18,4 +18,10 @@ public class ViewListaOfferteDTO {
 
     private String titoloImmobile;
 
+    public ViewListaOfferteDTO(String nomeControparte, String cognomeControparte, Long idControparte, Long idImmobile) {
+        this.nomeControparte = nomeControparte;
+        this.cognomeControparte = cognomeControparte;
+        this.idControparte = idControparte;
+        this.idImmobile = idImmobile;
+    }
 }

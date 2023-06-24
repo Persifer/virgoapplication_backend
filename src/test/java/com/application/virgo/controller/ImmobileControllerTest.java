@@ -152,7 +152,7 @@ class ImmobileControllerTest {
     @Test
     void testGetImmobileInformationForUpdate() throws ImmobileException, UtenteException {
         // Setup
-        ImmobileDTO storedImmobile = new ImmobileDTO();
+        GetUtenteImmobiliDTO storedImmobile = new GetUtenteImmobiliDTO();
 
         when(authService.getAuthUtente()).thenReturn(authUser);
         when(immobileService.getImmobileByIdToUpdate(1L, authUser.get())).thenReturn(Optional.of(storedImmobile));

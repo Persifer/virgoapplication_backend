@@ -35,4 +35,5 @@ public interface ImmobileJpaRepository extends JpaRepository<Immobile, Long> {
     public Long countByIdImmobile();
 
     public Page<Immobile> findAllByIsEnabledTrue(Pageable pageable);
+
 }

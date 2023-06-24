@@ -101,7 +101,7 @@ public class UtenteController {
             Optional<Utente> utenteInfo = authService.getAuthUtente();
             if(utenteInfo.isPresent()){
                 model.addAttribute("utente", utenteInfo.get());
-                return "Utente";
+                return "InfoUtente";
             }else{
                 model.addAttribute("error", "Utente non trovato");
                 return "Fail";
@@ -125,7 +125,7 @@ public class UtenteController {
                 model.addAttribute("error", "Utente non autenticato");
                 return "Login";
             }
-        }catch (UtenteException | OffertaUtenteException error){
+        }catch (UtenteException | OffertaUtenteException | ImmobileException error){
             model.addAttribute("error", "Utente non trovato");
             return "Utente";
         }
@@ -157,6 +157,7 @@ public class UtenteController {
             if(authUser.isPresent()){
                 List<ViewListaOfferteDTO> listaOfferte = utenteService.getListaOfferte(authUser.get());
                 model.addAttribute("listaOfferte", listaOfferte);
+                //System.out.println("");
                 return "Offerte";
             }else{
                 model.addAttribute("error", "Utente non autenticato");

@@ -45,7 +45,7 @@ public interface OffertaUtenteService {
      * @throws OffertaUtenteException nel caso in cui la grandezza della pagina superi quella impostata dal server
      */
     public List<ViewListaOfferteDTO> getOfferteForUtenteProprietario(Utente offerente)
-            throws OffertaUtenteException, UtenteException;
+            throws OffertaUtenteException, UtenteException, ImmobileException;
 
     /**
      * Metodo per prelevare tutte le offerte scambiate tra due utenti dove l'utente autenticato è il proprietario
