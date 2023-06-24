@@ -39,8 +39,8 @@ public interface OffertaUtenteJpaRepository extends JpaRepository<OfferteUtente,
                 "JOIN Offerta offer ON (offerta.offertaInteressata.idOfferta = offer.idOfferta)" +
                 "JOIN Immobile immobile ON (offer.idImmobileInteressato.idImmobile = immobile.idImmobile)" +
                 "JOIN Utente user ON (immobile.proprietario.idUtente = user.idUtente)" +
-            "WHERE utente.idUtente = :idOfferente AND offerta.proprietario.idUtente = :idRequestedUtente " +
-            "AND immobile.idImmobile = :idImmobile AND user.idUtente=:idRequestedUtente")
+            "WHERE utente.idUtente = :idRequestedUtente AND offerta.proprietario.idUtente = :idRequestedUtente " +
+            "AND immobile.idImmobile = :idImmobile AND user.idUtente=:idOfferente")
     public List<OfferteUtente> getAllOfferteBetweenUtenti(
                                                           @Param("idRequestedUtente") Long idProprietario,
                                                           @Param("idOfferente") Long idOfferente,
