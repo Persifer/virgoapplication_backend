@@ -88,7 +88,7 @@ public class OffertaController {
     @PostMapping("/rilancia/{id_proposta}/{madeByProp}")
     public String rilanciaOfferta(@PathVariable("id_proprietario") Long idProprietario,
                                   @PathVariable("id_immobile") Long idImmobile,
-                                  @PathVariable("madeByProp") Boolean madeByProprietario,
+                                  @PathVariable("madeByProp") Integer madeByProprietario,
                                   @ModelAttribute InsertOffertaDTO tempOffertaDTO,
                                   ModelMap model){
         try {
@@ -102,7 +102,8 @@ public class OffertaController {
                         if(newOfferta.isPresent()){
                             Optional<OfferteUtente> newOffertaToUtente =
                                     offertaUtenteService.rilanciaOffertaToUtente(authenticatedUser.get(),
-                                            newOfferta.get(), idProprietario, madeByProprietario);
+                                            newOfferta.get(), idProprietario,
+                                            madeByProprietario >= 1 ? Boolean.TRUE : Boolean.FALSE);
                             if(newOffertaToUtente.isPresent()){
                                 model.addAttribute("message", "offerta creata correttamente");
                                 model.addAttribute("newOffertaToUtente", newOffertaToUtente.get());
@@ -135,7 +136,7 @@ public class OffertaController {
             return "Fail";
         }
     }
-    @PutMapping("/accept/{id_proposta}")
+    @PostMapping("/accept/{id_proposta}")
     public String acceptOfferta(@PathVariable("id_proposta") Long idOfferta,
                                 ModelMap model) {
         try{
@@ -165,7 +166,7 @@ public class OffertaController {
 
     }
 
-    @PutMapping("/decline/{id_proposta}")
+    @PostMapping("/decline/{id_proposta}")
     public String declineOfferta(@PathVariable("id_proposta") Long idOfferta,
                                 ModelMap model){
 

@@ -16,7 +16,7 @@ public class ViewOfferteBtwnUtentiMapper implements Function<OfferteUtente, View
     public ViewOfferteBetweenUtentiDTO apply(OfferteUtente offerteUtente) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm")
-                .withZone(ZoneId.of("Europe/Rome"));
+                .withZone(ZoneId.of("Europe/Rome")); //Europe/Rome (UTC+02:00)
 
 
         ViewOfferteBetweenUtentiDTO offertaDTO = new ViewOfferteBetweenUtentiDTO();
