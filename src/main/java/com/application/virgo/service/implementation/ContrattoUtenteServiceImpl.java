@@ -11,6 +11,7 @@ import com.application.virgo.model.ComposedRelationship.ContrattoUtente;
 import com.application.virgo.model.Contratto;
 import com.application.virgo.model.Utente;
 import com.application.virgo.repositories.ContrattoUtenteJpaRepository;
+import com.application.virgo.service.interfaces.ContrattoService;
 import com.application.virgo.service.interfaces.ContrattoUtenteService;
 import com.application.virgo.utilities.Constants;
 import lombok.AllArgsConstructor;
@@ -31,6 +32,8 @@ public class ContrattoUtenteServiceImpl implements ContrattoUtenteService {
     private final ContrattoUtenteJpaRepository contrattoUtenteRepo;
 
     private final ContrattiUtenteMapper contrattiUtenteMapper;
+
+    private final ContrattoService contrattoService;
 
 
     @Override
@@ -144,4 +147,27 @@ public class ContrattoUtenteServiceImpl implements ContrattoUtenteService {
             throw new UtenteException("Bisogna essere autenticati per avere la lista dei contratti");
         }
     }
+
+    @Override
+    public Optional<ContrattoUtente> getContrattoByIdUtenteAndIdContratto(Utente authUser, Long idContratto)
+            throws ContrattoUtenteException, ContrattoException {
+        if (authUser != null) {
+            Optional<Contratto> tempContratto = contrattoService.getContrattoById(idContratto);
+            if (tempContratto.isPresent()) {
+                Contratto contratto = tempContratto.get();
+                Optional<ContrattoUtente> tempFinalContratto =
+                        contrattoUtenteRepo.getContrattoUtenteByIdContrattoAndIdUtente(contratto.getIdContratto(), authUser.getIdUtente());
+                if (tempFinalContratto.isPresent()) {
+                    return tempFinalContratto;
+                } else {
+                    throw new ContrattoUtenteException("Contratto non trovato");
+                }
+            }
+        } else {
+            throw new ContrattoUtenteException("Utente non autenticato per contratto");
+        }
+        return Optional.empty();
+    }
+
+
 }

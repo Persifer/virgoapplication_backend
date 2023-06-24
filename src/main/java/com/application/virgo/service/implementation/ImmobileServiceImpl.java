@@ -316,7 +316,7 @@ public class ImmobileServiceImpl implements ImmobileService {
 
         if(inidiceIniziale < pageSize - immobileRepo.countByIdImmobile() ){
             if(pageSize < Constants.PAGE_SIZE){
-                Page<Immobile> listImmobili = immobileRepo.findAll(PageRequest.of(inidiceIniziale.intValue(), pageSize.intValue()));
+                Page<Immobile> listImmobili = immobileRepo.findAllByIsEnabledTrue(PageRequest.of(inidiceIniziale.intValue(), pageSize.intValue()));
                 // converte con la stream una page di immobili in una lista di getImmobileInfoDTO
                 return listImmobili.stream().map(mapperHomeInformation).collect(Collectors.toList());
             }else {

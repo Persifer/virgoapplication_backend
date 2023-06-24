@@ -36,4 +36,18 @@ public class ContrattoServiceImpl implements ContrattoService {
             throw new ImmobileException("L'immobile selezionato non esiste");
         }
     }
+
+    @Override
+    public Optional<Contratto> getContrattoById(Long contratto) throws ContrattoException {
+        if(contratto != null){
+            Optional<Contratto> wantedContratto = contrattoRepo.getContrattoByIdContratto(contratto);
+            if(wantedContratto.isPresent()){
+                return wantedContratto;
+            }else{
+                throw new ContrattoException("Impossibile trovare il contratto");
+            }
+        }else{
+            throw new ContrattoException("Inserire un id contratto valido");
+        }
+    }
 }

@@ -18,4 +18,6 @@ public interface ContrattoService {
      * @throws ImmobileException se l'immobile non esiste
      */
     public Optional<Contratto> createNewContratto(Immobile immobileInteressato, Float prezzoFinale) throws ImmobileException;
+
+    public Optional<Contratto> getContrattoById(Long contratto) throws ContrattoException;
 }

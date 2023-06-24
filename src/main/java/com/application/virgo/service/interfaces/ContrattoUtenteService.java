@@ -51,5 +51,8 @@ public interface ContrattoUtenteService {
      * @throws UtenteException se l'utente non è autenticato
      * @throws ContrattoUtenteException se il contratto non esiste
      */
-    public Optional<DettagliContrattoDTO> getDettagliContratto(Utente authUSer, Long idContratto) throws UtenteException, ContrattoUtenteException;
+    public Optional<DettagliContrattoDTO> getDettagliContratto(Utente authUSer, Long idContratto)
+            throws UtenteException, ContrattoUtenteException;
+
+    public Optional<ContrattoUtente> getContrattoByIdUtenteAndIdContratto(Utente proprietario, Long idContratto) throws ContrattoUtenteException, ContrattoException;
 }
