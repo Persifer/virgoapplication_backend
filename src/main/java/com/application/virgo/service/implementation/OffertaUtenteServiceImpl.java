@@ -57,12 +57,7 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
         OfferteUtente offertaToProprietario = new OfferteUtente(compoundKeyProprietario,
                 utenteProprietario, offerente,offertaProposta);
 
-        if(madeByProprietario){
-            offertaToProprietario.setVisionataDaPropietario(Boolean.TRUE);
-        }else{
-            offertaToProprietario.setVisionataDaPropietario(Boolean.FALSE);
-        }
-
+        offertaToProprietario.setMadeByProprietario(madeByProprietario);
 
         return Optional.of(offertaUtenteRepository.save(offertaToProprietario));
     }
@@ -89,7 +84,7 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
     }
 
     @Override
-    public Optional<OfferteUtente> rilanciaOffertaToUtente(Utente venditore, Offerta offertaProposta, Long idOfferente)
+    public Optional<OfferteUtente> rilanciaOffertaToUtente(Utente venditore, Offerta offertaProposta, Long idOfferente, Boolean madeByProp)
             throws UtenteException, OffertaUtenteException{
 
         Optional<Utente> utenteVenditore = getInformationUtente(idOfferente);
@@ -97,7 +92,7 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
         if(utenteVenditore.isPresent()){
             // allora creiamo l'offerta
             Optional<OfferteUtente> newOfferta =
-                    saveOffertaCommonMethod(utenteVenditore.get(), offertaProposta, venditore, Boolean.TRUE);
+                    saveOffertaCommonMethod(utenteVenditore.get(), offertaProposta, venditore, madeByProp);
 
             if(newOfferta.isPresent()){
                 offertaUtenteRepository.updateOldOfferte(

@@ -32,7 +32,7 @@ public interface OffertaUtenteService {
      * @return Un optional contenente l'offerta creata da un utente
      * @throws UtenteException nel caso in cui non trova l'utente proprietario
      */
-    public Optional<OfferteUtente> rilanciaOffertaToUtente(Utente offerente, Offerta offertaProposta, Long idVenditore)
+    public Optional<OfferteUtente> rilanciaOffertaToUtente(Utente offerente, Offerta offertaProposta, Long idVenditore, Boolean madeByProp)
             throws UtenteException, OffertaUtenteException;
     /**
      * Permette di prelevare tutte le offerte ricevute dall'utente proprietario di un immobile
