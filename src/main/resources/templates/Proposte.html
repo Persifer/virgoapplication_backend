@@ -26,7 +26,8 @@
     <tr>
         <th>Proposta ID</th>
         <th>Nome Utente</th>
-        <th>Titolo Proposta</th>
+        <th>Titolo Immobile</th>
+        <th>Apri chat</th>
     </tr>
     </thead>
     <tbody>
@@ -34,7 +35,8 @@
     <tr th:each="proposta : ${listaProposte}">
         <td th:text="${proposta.nomeControparte}"></td>
         <td th:text="${proposta.cognomeControparte}"></td>
-        <a href="@{'/site/utente/getListProposte/storico/' + ${proposta.idControparte} + ${proposta.idImmobile}}">Apri chat</td></a>
+        <td th:text="${proposta.titoloImmobile}"></td>
+        <td><a th:href="@{'/site/utente/getListProposte/storico/' + ${proposta.idControparte} + '/' + ${proposta.idImmobile}}">Apri chat</a></td>
     </tr>
     </tbody>
 </table>

@@ -11,7 +11,7 @@
     <!-- Campi per le informazioni dell'immobile -->
     <label for="titolo">Titolo:</label>
     <input type="text" id="titolo" th:field="*{titolo}" th:value="${immobileToModify.titolo}" required><br>
-0
+
     <label for="descrizione">Descrizione:</label>
     <textarea id="descrizione" th:field="*{descrizione}" th:value="${immobileToModify.descrizione}" rows="4" cols="50"></textarea><br>
 
@@ -44,11 +44,9 @@
     <input type="text" id="dataCreazioneImmobile" th:field="*{dataCreazioneImmobile}" th:value="${immobileToModify.dataCreazioneImmobile}" required><br>
     <label for="titolo">data Ultimo Restauro:</label>
     <input type="text" id="dataUltimoRestauro" th:field="*{dataUltimoRestauro}" th:value="${immobileToModify.dataUltimoRestauro}" required><br>
-    <input type="checkbox" th:field="*{isEnabled}"  th:value="${immobileToModify.isEnabled}"  onchange="toggleEnable(this)">
 
     <button type="submit">Salva modifiche</button>
 </form>
-
 
 </body>
 </html>

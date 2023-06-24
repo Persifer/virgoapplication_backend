@@ -78,18 +78,21 @@
 <p th:text="${message}"></p>
 
 
+<h3>Commenti</h3>
+<table>
+    <tr th:each="domanda:${wantedImmobile.listaDomandeImmobile}">
+        <th><td><span th:text="${domanda.contenuto}"></span></td></th>
+    </tr>
+</table>
+
 
 <h2>Commenta immobile</h2>
 <form  action="#" th:action="@{'/site/immobile/addQuestion/' + ${wantedImmobile.idImmobile}}" th:object="${tempNewDomandaDTO}" method="post">
     <textarea name="commento" th:field="*{contenuto}" rows="4" cols="50" required></textarea><br>
     <button type="submit">Invia commento</button>
 </form>
-<table>
-<tr th:each="domanda:${wantedImmobile.listaDomandeImmobile}">
+<p class="okmessage" th:text="${message}"></p>
 
-    <th><td><span th:text="${domanda.contenuto}"></span></td></th>
-</tr>
-</table>
 
 </body>
 

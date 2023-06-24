@@ -15,3 +15,10 @@ th, td {
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
+
+.okmessage{
+    color: green;
+}
+.errorMessage{
+    color: red;
+}

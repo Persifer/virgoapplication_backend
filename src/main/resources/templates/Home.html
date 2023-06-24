@@ -22,6 +22,7 @@
     </thead>
     <tbody>
     <tr th:each="immobile:${listImmobili}">
+        <th>Immagini<td><img th:src="${immobile.immagineImmobile}"/></td></th>
       <th>Titolo<td><a th:href="@{/site/immobile/viewImmobile/{id}(id=${immobile.idImmobile})}" th:text="${immobile.titolo}"></a></td></th>
         <th>Descrizione <td><span th:text="${immobile.descrizione}"></td></th>
         <th>prezzo di partenza  <td><span th:text="${immobile.prezzo}"></td></th>

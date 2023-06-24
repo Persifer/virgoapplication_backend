@@ -246,6 +246,7 @@ public class ImmobileController {
     public String modifyImmobileInfo(@ModelAttribute ImmobileDTO tempUpdatedimmobileDTO,
                                      @PathVariable("id_immobile") Long idImmobile,
                                      ModelMap model){
+        System.out.println("CiaoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         try{
             Optional<Utente> authenticatedUser = authService.getAuthUtente();
             if(authenticatedUser.isPresent()) {
@@ -256,16 +257,16 @@ public class ImmobileController {
                     return "Utente";
                 }else{
                     model.addAttribute("error", "Impossibile trovare l'immobile");
-                    return "Fail1";
+                    return "Fail";
                 }
             }else{
                 model.addAttribute("error", "Bisogna essere autenticati per prendere questa informazione");
-                return "Fail2";
+                return "Fail";
             }
 
         }catch (UtenteException | ImmobileException error){
             model.addAttribute("error", error.getMessage());
-            return "Fail3";
+            return "Fail";
         }
 
     }
