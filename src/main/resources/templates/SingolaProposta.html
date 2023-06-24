@@ -1,13 +1,84 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <title>Proposta</title>
-    </head>
-    <body>
-        <h1>Singola proposta</h1>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/Style.css}">
 
-        <form th:action="@{/accept/{id_proposta}(id_proposta=${idOfferta})}" method="put">
-            <input type="submit" value="Accetta Offerta">
-        </form>
-    </body>
+    <nav role="navigation" aria-label="Navigation">
+        <a href="/site/immobile/list/0/20">Home</a>
+        <a href="/site/utente/0/20">I tuoi immobili</a>
+        <a href="/site/utente/getListaOfferte">Chat con venditori</a>
+        <a href="/site/utente/getListProposte">Chat con acquirenti</a>
+        <a href="/site/utente/getInfo">Dati utente</a>
+    </nav>
+    <style>
+        .chatContainer{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .messaggiContainer{
+            width: 80%;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .messaggioControparte{
+            width: 50%;
+            background-color: aqua;
+            align-self: flex-end;
+            border-radius: 10px 10px 0 10px;
+            padding: 10px;
+        }
+        .messaggioUtente{
+            width: 50%;
+            background-color: bisque;
+            align-self: flex-start;
+            border-radius: 10px 10px 10px 0;
+            padding: 10px;
+        }
+        .buttons{
+            display: flex;
+            justify-content: space-evenly;
+        }
+    </style>
+</head>
+<body>
+
+
+<div th:if="${#lists.isEmpty(listaOfferte)}">
+    <!-- Mostra questo div se la lista è vuota -->
+    <p>La chat con questa persona è vuota.</p>
+</div>
+<div th:unless="${#lists.isEmpty(listaOfferte)}" class="chatContainer">
+
+    <h1 th:text="${'Chat con ' + listaOfferte.get(0).nomeOfferente}"></h1>
+
+    <p th:text="${okmessage}"></p>
+
+    <!-- Elenco di messaggi (offerte) di entrambi i lati -->
+    <div class="messaggiContainer">
+        <div th:each="offerta : ${listaOfferte}" th:class="${offerta.inviatoDaProprietario ? 'messaggioControparte' : 'messaggioUtente'}">
+            <div th:if="${offerta.commento != null}"><p th:text="${offerta.commento}"></p></div>
+            <div th:if="${offerta.prezzo != null}"><p th:text="${'prezzo: ' + offerta.prezzo} + '€'"></p></div>
+            <div th:if="${offerta.dataOfferta != null}"><p th:text="${'data offerta: ' + offerta.dataOfferta}"></p></div>
+
+            <!-- se questo messaggio è stato inviato dalla controparte -->
+            <div class="buttons" th:if="${offerta.inviatoDaProprietario == false}">
+                <form method="post" th:action="@{'/site/offerte/accept/' + ${offerta.idOfferta} + '/' + ${isAcquirente}}">
+                    <button>Accetta</button>
+                </form>
+                <form method="post" th:action="@{'/site/offerte/decline/' + ${offerta.idOfferta} + '/' + ${isAcquirente}}">
+                    <button>Declina</button>
+                </form>
+                <form method="post" th:action="@{'/site/offerte/rilancia/' + ${offerta.idOfferta} + '/' + ${isAcquirente}}">
+                    <button>Rilancia</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
 </html>
