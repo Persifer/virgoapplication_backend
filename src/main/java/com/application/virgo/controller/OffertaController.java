@@ -148,23 +148,7 @@ public class OffertaController {
                 if(acceptedOfferta.isPresent()){
                     model.addAttribute("okmessage", "Congratulazioni, hai accettato l'offerta");
 
-                    if(authenticatedUser.get().getIdUtente().equals(acceptedOfferta.get().getAcquirente().getIdUtente())){
-                        model.addAttribute("isAcquirente", "1");
-
-                    }else{
-                        model.addAttribute("isAcquirente", "0");
-                    }
-
-                    if(isAcquirente==1){ // /getListaOfferte/storico/{id_utente}/{id_immobile}
-                        return "redirect:/site/utente/getListaOfferte/storico/"
-                                +acceptedOfferta.get().getAcquirente().getIdUtente()+"/"
-                                +acceptedOfferta.get().getContrattoInteressato().getImmobileInteressato().getIdImmobile();
-                    }else{
-                        ///getListProposte/storico/{idOfferente}/{idImmobile}
-                        return "redirect:/site/utente/getListProposte/storico/"
-                                +acceptedOfferta.get().getAcquirente().getIdUtente()+"/"
-                                +acceptedOfferta.get().getContrattoInteressato().getImmobileInteressato().getIdImmobile();
-                    }
+                    return "redirect:/site/utente/getInfo";
 
                 }else{
                     model.addAttribute("error", "Errore nell'accettazione dell'offerta");
@@ -208,12 +192,12 @@ public class OffertaController {
 
                     if(isAcquirente==1){ // /getListaOfferte/storico/{id_utente}/{id_immobile}
                         return "redirect:/site/utente/getListaOfferte/storico/"
-                                +acceptedOfferta.get().getOfferente().getIdUtente()+"/"
+                                +acceptedOfferta.get().getProprietario().getIdUtente()+"/"
                                 +acceptedOfferta.get().getOffertaInteressata().getIdImmobileInteressato().getIdImmobile();
                     }else{
                         ///getListProposte/storico/{idOfferente}/{idImmobile}
                         return "redirect:/site/utente/getListProposte/storico/"
-                                +acceptedOfferta.get().getProprietario().getIdUtente()+"/"
+                                +acceptedOfferta.get().getOfferente().getIdUtente()+"/"
                                 +acceptedOfferta.get().getOffertaInteressata().getIdImmobileInteressato().getIdImmobile();
                     }
                 }else{

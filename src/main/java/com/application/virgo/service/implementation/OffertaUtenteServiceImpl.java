@@ -193,8 +193,10 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
                     //SE TRUE ALLORA HO ACCETTATO,
                     if(isAccettata){
                         offertaToAccept.setData_accettazione(Instant.now());
+                        offertaToAccept.setIsAccettato(Boolean.TRUE);
                     }else{
                         offertaToAccept.setData_declino(Instant.now());
+                        offertaToAccept.setIsDeclinato(Boolean.FALSE);
                     }
 
                     return Optional.of(offertaUtenteRepository.save(offertaToAccept));
@@ -280,7 +282,7 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
     @Override
     public Optional<OfferteUtente> declineOfferta(Long idOfferta, Utente authUser)
             throws OffertaException, OffertaUtenteException, UtenteException {
-        return methodForAcceptAndDenyOfferta(idOfferta, authUser, false);
+        return methodForAcceptAndDenyOfferta(idOfferta, authUser, Boolean.FALSE);
     }
 
 

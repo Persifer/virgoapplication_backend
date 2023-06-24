@@ -48,18 +48,20 @@ public interface OffertaUtenteJpaRepository extends JpaRepository<OfferteUtente,
                                                           @Param("idImmobile") Long idImmobile);
 
     // Permette di selezionare tutte le offerte proposte di un determinato utente
-    @Query("SELECT offerta.proprietario.idUtente " +
-            "FROM OfferteUtente offerta " +
-            "JOIN Utente utente ON (offerta.offerente.idUtente = utente.idUtente)" +
-            "WHERE utente.idUtente = :idRequestedUtente " +
-                "GROUP BY offerta.proprietario.idUtente")
+    @Query(value = "select offerta.id_proprietario" +
+            "    from offerte_utente offerta " +
+            "        JOIN utente utente ON (offerta.id_offerente = utente.id_utente) " +
+            "        JOIN offerta offer ON (offerta.id_offerta = offer.id_offerta) " +
+            "        JOIN immobile immobile ON (offer.id_immobile = immobile.id_immobile) " +
+            "    WHERE utente.id_utente = :idRequestedUtente and immobile.is_enabled = 1" +
+            "    group by offerta.id_proprietario ", nativeQuery = true)
     public List<Long> getAllOfferteUtenteAsOfferente(@Param("idRequestedUtente") Long idOfferente);
 
     @Query(value = "select immobile.id_immobile from offerte_utente " +
             "join offerta on (offerte_utente.id_offerta = offerta.id_offerta) " +
             "join immobile on (offerta.id_immobile = immobile.id_immobile) " +
             "where offerte_utente.id_proprietario = :idProprietario " +
-            "and offerte_utente.id_offerente=:idOfferente " +
+            "and offerte_utente.id_offerente=:idOfferente and immobile.is_enabled = 1 " +
             "group by immobile.id_immobile", nativeQuery = true)
     public List<Long> getImmobiliInteressati(@Param("idOfferente") Long idOfferente, @Param("idProprietario") Long idProrietario);
 
