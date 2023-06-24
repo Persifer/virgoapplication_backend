@@ -261,7 +261,7 @@ class UtenteControllerTest {
      * Test per controllare il corretto funzionamento del metodo getOfferte quando tutti i dati passati sono passasti correttamente
      */
     @Test
-    void getOfferte_autenticated_redirecSuccessfullToCiao() throws UtenteException, OffertaUtenteException {
+    void getOfferte_autenticated_redirecSuccessfullToCiao() throws UtenteException, OffertaUtenteException, ImmobileException {
         Long offset = 0L;
         Long pageSize = 10L;
 
@@ -300,7 +300,7 @@ class UtenteControllerTest {
      * che richiamo per eseguire la business logic
      */
     @Test
-    void getOfferte_unautenticated_inService_redirectErroneousToLogin() throws UtenteException, OffertaUtenteException {
+    void getOfferte_unautenticated_inService_redirectErroneousToLogin() throws UtenteException, OffertaUtenteException, ImmobileException {
 
         when(authService.getAuthUtente()).thenThrow(UtenteException.class);
         when(utenteService.getListaOfferte(Mockito.any(Utente.class)))

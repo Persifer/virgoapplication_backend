@@ -155,9 +155,8 @@ public class UtenteController {
         try{
             Optional<Utente> authUser = authService.getAuthUtente();
             if(authUser.isPresent()){
-                List<ViewListaOfferteDTO> listaChat = utenteService.getListaOfferte(authUser.get());
-                model.addAttribute("listaChat", listaChat);
-                //System.out.println("");
+                List<ViewListaOfferteDTO> listaOfferte = utenteService.getListaOfferte(authUser.get());
+                model.addAttribute("listaOfferte", listaOfferte);
                 return "Offerte";
             }else{
                 model.addAttribute("error", "Utente non autenticato");

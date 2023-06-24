@@ -3,31 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>List of Immobili</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-        }
-        nav {
-            display: flex;
-            justify-content: space-evenly;
-            align-items: center;
-            background-color: green;
-            border-radius: 5px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/Style.css}">
 
     <nav role="navigation" aria-label="Navigation">
         <a href="/site/immobile/list/0/20">Home</a>
         <a href="/site/utente/0/20">I tuoi immobili</a>
-        <a href="/site/utente/getListaOfferte">Offerte</a>
+        <a href="/site/utente/getListaOfferte">Chat</a>
         <a href="/site/utente/getInfo">Dati utente</a>
     </nav>
 </head>

@@ -1,0 +1,17 @@
+nav {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: green;
+    border-radius: 5px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
