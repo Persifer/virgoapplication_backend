@@ -5,6 +5,8 @@ import com.application.virgo.model.ComposedRelationship.OfferteUtente;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.function.Function;
 
 @Component
@@ -12,6 +14,10 @@ public class ViewOfferteBtwnUtentiMapper implements Function<OfferteUtente, View
 
     @Override
     public ViewOfferteBetweenUtentiDTO apply(OfferteUtente offerteUtente) {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm")
+                .withZone(ZoneId.of("Europe/Rome"));
+
 
         ViewOfferteBetweenUtentiDTO offertaDTO = new ViewOfferteBetweenUtentiDTO();
 
@@ -35,7 +41,7 @@ public class ViewOfferteBtwnUtentiMapper implements Function<OfferteUtente, View
                 offerteUtente.getOfferente().getCognome() : "");
 
         offertaDTO.setDataOfferta(offerteUtente.getData_proposta() != null ?
-                offerteUtente.getData_proposta().toString() : Instant.now().toString());
+                formatter.format(offerteUtente.getData_proposta()) : formatter.format(Instant.now()));
 
         offertaDTO.setPrezzo(offerteUtente.getOffertaInteressata().getPrezzoProposto() != null ?
                 offerteUtente.getOffertaInteressata().getPrezzoProposto().toString() : "--");
