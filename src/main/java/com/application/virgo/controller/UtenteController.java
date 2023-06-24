@@ -155,8 +155,8 @@ public class UtenteController {
         try{
             Optional<Utente> authUser = authService.getAuthUtente();
             if(authUser.isPresent()){
-                List<ViewListaOfferteDTO> listaOfferte = utenteService.getListaOfferte(authUser.get());
-                model.addAttribute("listaOfferte", listaOfferte);
+                List<ViewListaOfferteDTO> listaChat = utenteService.getListaOfferte(authUser.get());
+                model.addAttribute("listaChat", listaChat);
                 //System.out.println("");
                 return "Offerte";
             }else{
