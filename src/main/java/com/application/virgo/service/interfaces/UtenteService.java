@@ -108,7 +108,7 @@ public interface UtenteService {
      * @throws UtenteException        se l'utente non è autenticato oppure se non è stato possibile reperirlo dal database
      */
     List<ViewListaOfferteDTO> getListaOfferte(Utente proprietario)
-            throws OffertaUtenteException, UtenteException;
+            throws OffertaUtenteException, UtenteException, ImmobileException;
 
     /**
      * Ottiene una lista di proposte tra l'utente proprietario, l'offerente specificato e l'immobile specificato

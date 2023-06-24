@@ -129,7 +129,7 @@ public class UtenteServiceImpl implements UtenteService {
      */
     @Override
     public List<ViewListaOfferteDTO> getListaOfferte(Utente offerente)
-            throws OffertaUtenteException, UtenteException {
+            throws OffertaUtenteException, UtenteException, ImmobileException {
 
         List<ViewListaOfferteDTO> listOfferteUtente = offerteUtenteService.getOfferteProposte(offerente);
         if(!listOfferteUtente.isEmpty()){

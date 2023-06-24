@@ -166,7 +166,7 @@ public class UtenteController {
         }catch (UtenteException error){
             model.addAttribute("error", error.getMessage());
             return "Login";
-        }catch (OffertaUtenteException error){
+        }catch (OffertaUtenteException | ImmobileException error){
             model.addAttribute("error", error.getMessage());
             return "Utente";
         }

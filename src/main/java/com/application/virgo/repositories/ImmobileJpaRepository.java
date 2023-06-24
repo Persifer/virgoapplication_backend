@@ -34,6 +34,6 @@ public interface ImmobileJpaRepository extends JpaRepository<Immobile, Long> {
     @Query("SELECT COUNT(immobile.idImmobile) FROM Immobile immobile WHERE immobile.isEnabled = true")
     public Long countByIdImmobile();
 
-
-
+    @Query("SELECT immobile FROM Immobile immobile WHERE immobile.proprietario.idUtente != :idUtente")
+    public Page<Immobile> findAllByIsEnabledTrue(Pageable pageable, @Param("idUtente") Long idUtente);
 }
