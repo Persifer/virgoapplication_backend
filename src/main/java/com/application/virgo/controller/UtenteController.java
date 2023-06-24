@@ -120,6 +120,7 @@ public class UtenteController {
             if(authUser.isPresent()){
                 List<ViewListaOfferteDTO> listaProposte = utenteService.getListaProposte(authUser.get());
                 model.addAttribute("listaProposte", listaProposte);
+                model.addAttribute("isAcquirente", "0");
                 return "Proposte";
             }else{
                 model.addAttribute("error", "Utente non autenticato");
@@ -181,6 +182,7 @@ public class UtenteController {
                 List<ViewOfferteBetweenUtentiDTO> listaOfferte =
                         utenteService.getAllOfferteBetweenUtenti(authUser.get(), idUtente, idImmobile);
                 model.addAttribute("listaOfferte", listaOfferte);
+                model.addAttribute("isAcquirente", "1");
                 return "SingolaOfferta";
             }else{
                 model.addAttribute("error", "Utente non autenticato");

@@ -147,6 +147,14 @@ public class OffertaController {
 
                 if(acceptedOfferta.isPresent()){
                     model.addAttribute("error", "Congratulazioni, hai accettato l'offerta");
+
+                    if(authenticatedUser.get().getIdUtente().equals(acceptedOfferta.get().getAcquirente().getIdUtente())){
+                        model.addAttribute("isAcquirente", "1");
+
+                    }else{
+                        model.addAttribute("isAcquirente", "0");
+                    }
+
                     if(isAcquirente==1){ // /getListaOfferte/storico/{id_utente}/{id_immobile}
                         return "redirect:/getListaOfferte/storico/"
                                 +acceptedOfferta.get().getVenditore().getIdUtente()+"/"
@@ -177,7 +185,7 @@ public class OffertaController {
 
     }
 
-    @PostMapping("/decline/{id_proposta}")
+    @PostMapping("/decline/{id_proposta}/{isAcquirente}")
     public String declineOfferta(@PathVariable("id_proposta") Long idOfferta,
                                  @PathVariable("isAcquirente") Integer isAcquirente,
                                 ModelMap model){
@@ -189,6 +197,15 @@ public class OffertaController {
 
                 if(acceptedOfferta.isPresent()){
                     model.addAttribute("message", "Peccato, hai rifiutato l'offerta");
+
+                    if(authenticatedUser.get().getIdUtente().equals(acceptedOfferta.get().getOfferente().getIdUtente())){
+                        model.addAttribute("isAcquirente", "1");
+
+                    }else{
+                        model.addAttribute("isAcquirente", "0");
+                    }
+
+
                     if(isAcquirente==1){ // /getListaOfferte/storico/{id_utente}/{id_immobile}
                         return "redirect:/getListaOfferte/storico/"
                                 +acceptedOfferta.get().getOfferente().getIdUtente()+"/"
