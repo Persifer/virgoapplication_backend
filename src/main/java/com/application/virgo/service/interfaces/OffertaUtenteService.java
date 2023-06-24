@@ -105,7 +105,7 @@ public interface OffertaUtenteService {
      * @throws OffertaUtenteException nel caso in cui la grandezza della pagina superi quella impostata dal server
      */
     public List<ViewListaOfferteDTO> getOfferteProposte(Utente offerente)
-            throws OffertaUtenteException, UtenteException;
+            throws OffertaUtenteException, UtenteException, ImmobileException;
 
 
     /**

@@ -66,6 +66,8 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
 
         return Optional.of(offertaUtenteRepository.save(offertaToProprietario));
     }
+
+
     @Override
     public Optional<OfferteUtente> saveOffertaToUtente(Utente offerente, Offerta offertaProposta, Long idVenditore)
             throws UtenteException, OffertaUtenteException {
@@ -94,7 +96,21 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
 
         if(utenteVenditore.isPresent()){
             // allora creiamo l'offerta
-            return saveOffertaCommonMethod(utenteVenditore.get(), offertaProposta, venditore, Boolean.TRUE);
+            Optional<OfferteUtente> newOfferta =
+                    saveOffertaCommonMethod(utenteVenditore.get(), offertaProposta, venditore, Boolean.TRUE);
+
+            if(newOfferta.isPresent()){
+                offertaUtenteRepository.updateOldOfferte(
+                        newOfferta.get().getProprietario().getIdUtente(),
+                        newOfferta.get().getOfferente().getIdUtente(),
+                        Instant.now(),
+                        newOfferta.get().getOffertaInteressata().getIdOfferta()
+                );
+
+                return newOfferta;
+            }else{
+                throw new OffertaUtenteException("Non si può effetturare un'offerta su un immobile con proprietario diverso da quello indicato!");
+            }
         }else{
             throw new OffertaUtenteException("Non si può effetturare un'offerta su un immobile con proprietario diverso da quello indicato!");
         }
@@ -322,7 +338,7 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
      */
     @Override
     public List<ViewListaOfferteDTO> getOfferteProposte(Utente authUser)
-            throws UtenteException {
+            throws UtenteException, ImmobileException {
 
         List<Long> listIdProprietari =  offertaUtenteRepository.getAllOfferteUtenteAsOfferente(
                 authUser.getIdUtente());
@@ -339,7 +355,7 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
                             new ViewListaOfferteDTO(utenteProp.get().getNome(),
                                     utenteProp.get().getCognome(),
                                     utenteProp.get().getIdUtente(),
-                                    idImmobile)
+                                    idImmobile, immobileService.getTitoloImmboileById(idImmobile))
                     );
                 }else{
                     throw new UtenteException("Impossibile trovare l'utente proprietario");

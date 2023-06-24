@@ -34,6 +34,7 @@ public class OffertaController {
     public String get(ModelMap model) {
         return "Offerte";
     }
+
     @PostMapping("/propose/{id_proprietario}/{id_immobile}")
     public String createProposta(@PathVariable("id_proprietario") Long idProprietario,
                                                   @PathVariable("id_immobile") Long idImmobile,
@@ -84,9 +85,54 @@ public class OffertaController {
         }
     }
 
-    @PutMapping("/rilancia/{id_proposta}")
-    public String rilanciaOfferta(@PathVariable("id_proposta") Long idOfferta, ModelMap model){
-        return "";
+    @PostMapping("/rilancia/{id_proposta}")
+    public String rilanciaOfferta(@PathVariable("id_proprietario") Long idProprietario,
+                                  @PathVariable("id_immobile") Long idImmobile,
+                                  @ModelAttribute InsertOffertaDTO tempOffertaDTO,
+                                  ModelMap model){
+        try {
+            Optional<Utente> authenticatedUser = authService.getAuthUtente();
+            if(authenticatedUser.isPresent()) {
+                if (idProprietario != null) {
+                    tempOffertaDTO.setIdProprietario(idProprietario);
+                    if (idImmobile != null) {
+                        tempOffertaDTO.setIdImmobile(idImmobile);
+                        Optional<Offerta> newOfferta = offertaService.createNewOfferta(tempOffertaDTO);
+                        if(newOfferta.isPresent()){
+                            Optional<OfferteUtente> newOffertaToUtente =
+                                    offertaUtenteService.rilanciaOffertaToUtente(authenticatedUser.get(),
+                                            newOfferta.get(), idProprietario);
+                            if(newOffertaToUtente.isPresent()){
+                                model.addAttribute("message", "offerta creata correttamente");
+                                model.addAttribute("newOffertaToUtente", newOffertaToUtente.get());
+                                return "SingolaOfferta";
+                            }else{
+                                model.addAttribute("error", "2 - Errore nella creazione di un offerta");
+                                return "Fail";
+                            }
+
+                        }else {
+                            model.addAttribute("error", "1 - Errore nella creazione di un offerta");
+                            return "Fail";
+                        }
+
+                    } else {
+                        model.addAttribute("error", "Immobile non trovato");
+                        return "Fail";
+                    }
+                } else {
+                    model.addAttribute("error", "Proprietario non trovato");
+                    return "Fail";
+                }
+
+            } else {
+                model.addAttribute("error", "Bisogna essere loggati per quest'azione");
+                return "Login";
+            }
+        } catch (Exception error) {
+            model.addAttribute("error", error.getMessage());
+            return "Fail";
+        }
     }
     @PutMapping("/accept/{id_proposta}")
     public String acceptOfferta(@PathVariable("id_proposta") Long idOfferta,

@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -88,5 +89,14 @@ public interface OffertaUtenteJpaRepository extends JpaRepository<OfferteUtente,
     )
     public List<OfferteUtente> getListOfferteRelatedToImmobile(@Param("idReqImmobile") Long idImmobile,
                                                                @Param("idOfferente") Long idOfferente);
+
+    @Query(value = "UPDATE offerte_utente " +
+            "SET isDeclinato = 1 AND data_declino= :dataAttuale " +
+            "WHERE idOffernte = :idOfferente AND idProprietario = :idProprietario AND idOfferta != :idOfferta;",
+                nativeQuery = true)
+    public void updateOldOfferte(@Param("idProprietario") Long idProprietario,
+                                 @Param("idOfferente") Long idOfferente,
+                                 @Param("dataAttuale") Instant instant,
+                                 @Param("idOfferta") Long idOfferta );
 
 }
