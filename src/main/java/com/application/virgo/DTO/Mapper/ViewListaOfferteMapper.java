@@ -18,6 +18,8 @@ public class ViewListaOfferteMapper implements Function<OfferteUtente, ViewLista
         viewListaOfferteDTO.setIdControparte(offerteUtente.getOfferente().getIdUtente());
         viewListaOfferteDTO.setIdImmobile(offerteUtente.getOffertaInteressata().getIdImmobileInteressato().getIdImmobile());
 
+        viewListaOfferteDTO.setTitoloImmobile(offerteUtente.getOffertaInteressata().getIdImmobileInteressato().getTitolo());
+
         return viewListaOfferteDTO;
     }
 }

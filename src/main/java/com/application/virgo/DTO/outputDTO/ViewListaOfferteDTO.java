@@ -16,4 +16,6 @@ public class ViewListaOfferteDTO {
     private Long idControparte;
     private Long idImmobile;
 
+    private String titoloImmobile;
+
 }
