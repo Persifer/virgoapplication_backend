@@ -39,7 +39,8 @@ public interface OffertaUtenteJpaRepository extends JpaRepository<OfferteUtente,
                 " JOIN offerta offer ON (offerta.id_offerta = offer.id_offerta)" +
                 " JOIN immobile ON (offer.id_immobile = immobile.id_immobile)" +
                 " JOIN utente venditore ON (immobile.id_utente = venditore.id_utente)" +
-            " WHERE offerente.id_utente = :idOfferente AND venditore.id_utente = :idProprietario AND immobile.id_immobile = :idImmobile;"
+            " WHERE offerente.id_utente = :idOfferente AND venditore.id_utente = :idRequestedUtente" +
+            " AND immobile.id_immobile = :idImmobile;"
             ,nativeQuery = true)
     public List<OfferteUtente> getAllOfferteBetweenUtenti(
                                                           @Param("idRequestedUtente") Long idProprietario,
@@ -95,6 +96,15 @@ public interface OffertaUtenteJpaRepository extends JpaRepository<OfferteUtente,
             "WHERE idOffernte = :idOfferente AND idProprietario = :idProprietario AND idOfferta != :idOfferta;",
                 nativeQuery = true)
     public void updateOldOfferte(@Param("idProprietario") Long idProprietario,
+                                 @Param("idOfferente") Long idOfferente,
+                                 @Param("dataAttuale") Instant instant,
+                                 @Param("idOfferta") Long idOfferta );
+
+    @Query(value = "UPDATE offerte_utente " +
+            "SET visionata_da_propietario = 1 " +
+            "WHERE idOffernte = :idOfferente AND idProprietario = :idProprietario AND idOfferta != :idOfferta;",
+            nativeQuery = true)
+    public void setAVisionato(@Param("idProprietario") Long idProprietario,
                                  @Param("idOfferente") Long idOfferente,
                                  @Param("dataAttuale") Instant instant,
                                  @Param("idOfferta") Long idOfferta );

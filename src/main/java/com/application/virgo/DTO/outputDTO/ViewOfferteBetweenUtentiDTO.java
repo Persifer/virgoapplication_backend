@@ -20,6 +20,7 @@ public class ViewOfferteBetweenUtentiDTO {
 
     private String dataOfferta;
     private String prezzo;
+    private String commento;
 
     private Long idOfferta;
     private Long idPropietario;

@@ -42,6 +42,8 @@ public class ViewOfferteBtwnUtentiMapper implements Function<OfferteUtente, View
 
         offertaDTO.setInviatoDaProprietario(offerteUtente.getMadeByProprietario());
 
+        offertaDTO.setCommento(offerteUtente.getOffertaInteressata().getCommento());
+
         if(offerteUtente.getData_declino() != null){
             offertaDTO.setDataDeclino(offerteUtente.getData_declino().toString());
             offertaDTO.setIsDeclinato(true);
