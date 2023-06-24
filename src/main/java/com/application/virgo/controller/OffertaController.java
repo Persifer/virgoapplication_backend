@@ -136,8 +136,9 @@ public class OffertaController {
             return "Fail";
         }
     }
-    @PostMapping("/accept/{id_proposta}")
+    @PostMapping("/accept/{id_proposta}/{isAcquirente}")
     public String acceptOfferta(@PathVariable("id_proposta") Long idOfferta,
+                                @PathVariable("isAcquirente") Integer isAcquirente,
                                 ModelMap model) {
         try{
             Optional<Utente> authenticatedUser = authService.getAuthUtente();
@@ -146,7 +147,17 @@ public class OffertaController {
 
                 if(acceptedOfferta.isPresent()){
                     model.addAttribute("error", "Congratulazioni, hai accettato l'offerta");
-                    return "Offerte";
+                    if(isAcquirente==1){ // /getListaOfferte/storico/{id_utente}/{id_immobile}
+                        return "redirect:/getListaOfferte/storico/"
+                                +acceptedOfferta.get().getVenditore().getIdUtente()+"/"
+                                +acceptedOfferta.get().getContrattoInteressato().getImmobileInteressato().getIdImmobile();
+                    }else{
+                        ///getListProposte/storico/{idOfferente}/{idImmobile}
+                        return "redirect:/getListProposte/storico/"
+                                +acceptedOfferta.get().getAcquirente().getIdUtente()+"/"
+                                +acceptedOfferta.get().getContrattoInteressato().getImmobileInteressato().getIdImmobile();
+                    }
+
                 }else{
                     model.addAttribute("error", "Errore nell'accettazione dell'offerta");
                     return "Fail";
@@ -168,6 +179,7 @@ public class OffertaController {
 
     @PostMapping("/decline/{id_proposta}")
     public String declineOfferta(@PathVariable("id_proposta") Long idOfferta,
+                                 @PathVariable("isAcquirente") Integer isAcquirente,
                                 ModelMap model){
 
         try{
@@ -176,8 +188,17 @@ public class OffertaController {
                 Optional<OfferteUtente> acceptedOfferta = offertaUtenteService.declineOfferta(idOfferta, authenticatedUser.get());
 
                 if(acceptedOfferta.isPresent()){
-                    model.addAttribute("error", "Peccato, hai rifiutato l'offerta");
-                    return "Offerte";
+                    model.addAttribute("message", "Peccato, hai rifiutato l'offerta");
+                    if(isAcquirente==1){ // /getListaOfferte/storico/{id_utente}/{id_immobile}
+                        return "redirect:/getListaOfferte/storico/"
+                                +acceptedOfferta.get().getOfferente().getIdUtente()+"/"
+                                +acceptedOfferta.get().getOffertaInteressata().getIdImmobileInteressato().getIdImmobile();
+                    }else{
+                        ///getListProposte/storico/{idOfferente}/{idImmobile}
+                        return "redirect:/getListProposte/storico/"
+                                +acceptedOfferta.get().getProprietario().getIdUtente()+"/"
+                                +acceptedOfferta.get().getOffertaInteressata().getIdImmobileInteressato().getIdImmobile();
+                    }
                 }else{
                     model.addAttribute("error", "Errore nel rifiuto dell'offerta");
                     return "fail";
