@@ -101,7 +101,7 @@ public class ImmobileServiceImpl implements ImmobileService {
                         // ====== SETTING LISTE
                         newImmobile.setDomandeImmobile(List.of());
                         // ===================
-
+                        newImmobile.setIsEnabled(Boolean.TRUE);
                         newImmobile.setListaImmagini("");
                         // Salvataggio dell'immobile
                         Immobile savedImmobile = immobileRepo.save(newImmobile);
@@ -281,12 +281,6 @@ public class ImmobileServiceImpl implements ImmobileService {
                 }
 
 // =====================================================================================================================
-                if(tempUpdatedImmobile.getIsEnabled()){
-                    toCheckImmobile.setIsEnabled(Boolean.TRUE);
-                }else{
-                    toCheckImmobile.setIsEnabled(Boolean.FALSE);
-                }
-
 
                 if(tempUpdatedImmobile.getUploadedFile() != null){
                     uploadPhotosToImmobile(tempUpdatedImmobile.getUploadedFile(), tempToCheckImmobile.get().getListaImmagini(),

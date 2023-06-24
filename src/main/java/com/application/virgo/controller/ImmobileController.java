@@ -57,8 +57,7 @@ public class ImmobileController {
      * /immobile/addnew
      **/
     @PostMapping(value = "/addnew", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-    public String createNewImmobile(@ModelAttribute ImmobileDTO tempNewImmobile, ModelMap model
-                                    /*@RequestPart("images") MultipartFile[] uploadedFile */) {
+    public String createNewImmobile(@ModelAttribute ImmobileDTO tempNewImmobile, ModelMap model) {
 
         try{
             Optional<Utente> authenticatedUser = authService.getAuthUtente();

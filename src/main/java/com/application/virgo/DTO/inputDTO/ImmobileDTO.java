@@ -51,6 +51,5 @@ public class ImmobileDTO {
     private String provincia;
 // ============================
 
-    private Boolean isEnabled;
     private MultipartFile[] uploadedFile;
 }

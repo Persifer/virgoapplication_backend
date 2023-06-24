@@ -59,7 +59,7 @@ public interface OffertaUtenteJpaRepository extends JpaRepository<OfferteUtente,
             "join offerta on (offerte_utente.id_offerta = offerta.id_offerta) " +
             "join immobile on (offerta.id_immobile = immobile.id_immobile) " +
             "where offerte_utente.id_proprietario = :idProprietario " +
-            "and offerte_utente.id_offerente=:idOfferente and immobile.is_enabled=1" +
+            "and offerte_utente.id_offerente=:idOfferente " +
             "group by immobile.id_immobile", nativeQuery = true)
     public List<Long> getImmobiliInteressati(@Param("idOfferente") Long idOfferente, @Param("idProprietario") Long idProrietario);
 
