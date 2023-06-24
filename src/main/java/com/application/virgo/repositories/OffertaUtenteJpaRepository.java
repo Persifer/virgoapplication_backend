@@ -28,7 +28,7 @@ public interface OffertaUtenteJpaRepository extends JpaRepository<OfferteUtente,
             "    FROM immobile" +
             "        JOIN utente ON (immobile.id_utente = utente.id_utente)" +
             "    WHERE utente.id_utente = :idRequestedUtente)" +
-            "GROUP BY offerte_utente.id_offerente;", nativeQuery = true)
+            "GROUP BY offerte_utente.id_offerente", nativeQuery = true)
     public List<Long> getAllOfferteUtenteAsProprietario(@Param("idRequestedUtente") Long idProprietario );
 
 
@@ -40,7 +40,7 @@ public interface OffertaUtenteJpaRepository extends JpaRepository<OfferteUtente,
                 " JOIN immobile ON (offer.id_immobile = immobile.id_immobile)" +
                 " JOIN utente venditore ON (immobile.id_utente = venditore.id_utente)" +
             " WHERE offerente.id_utente = :idOfferente AND venditore.id_utente = :idRequestedUtente" +
-            " AND immobile.id_immobile = :idImmobile;"
+            " AND immobile.id_immobile = :idImmobile"
             ,nativeQuery = true)
     public List<OfferteUtente> getAllOfferteBetweenUtenti(
                                                           @Param("idRequestedUtente") Long idProprietario,
@@ -60,7 +60,7 @@ public interface OffertaUtenteJpaRepository extends JpaRepository<OfferteUtente,
             "join immobile on (offerta.id_immobile = immobile.id_immobile) " +
             "where offerte_utente.id_proprietario = :idProprietario " +
             "and offerte_utente.id_offerente=:idOfferente " +
-            "group by immobile.id_immobile;", nativeQuery = true)
+            "group by immobile.id_immobile", nativeQuery = true)
     public List<Long> getImmobiliInteressati(@Param("idOfferente") Long idOfferente, @Param("idProprietario") Long idProrietario);
 
 
@@ -86,27 +86,27 @@ public interface OffertaUtenteJpaRepository extends JpaRepository<OfferteUtente,
             "FROM OfferteUtente offerta " +
                     "JOIN Offerta offer ON (offerta.offertaInteressata.idOfferta = offer.idOfferta)" +
                     "JOIN Immobile immobile ON (offer.idImmobileInteressato.idImmobile = immobile.idImmobile )" +
-            "WHERE immobile.idImmobile = :idReqImmobile AND offerta.offerente.idUtente != :idOfferente"
+            "WHERE immobile.idImmobile = :idReqImmobile AND offerta.offerente.idUtente <> :idOfferente"
     )
     public List<OfferteUtente> getListOfferteRelatedToImmobile(@Param("idReqImmobile") Long idImmobile,
                                                                @Param("idOfferente") Long idOfferente);
 
     @Query(value = "UPDATE offerte_utente " +
             "SET isDeclinato = 1 AND data_declino= :dataAttuale " +
-            "WHERE idOffernte = :idOfferente AND idProprietario = :idProprietario AND idOfferta != :idOfferta;",
+            "WHERE idOffernte = :idOfferente AND idProprietario = :idProprietario AND idOfferta <> :idOfferta",
                 nativeQuery = true)
     public void updateOldOfferte(@Param("idProprietario") Long idProprietario,
                                  @Param("idOfferente") Long idOfferente,
                                  @Param("dataAttuale") Instant instant,
                                  @Param("idOfferta") Long idOfferta );
 
-    @Query(value = "UPDATE offerte_utente " +
+    /*@Query(value = "UPDATE offerte_utente " +
             "SET visionata_da_propietario = 1 " +
-            "WHERE idOffernte = :idOfferente AND idProprietario = :idProprietario AND idOfferta != :idOfferta;",
+            "WHERE idOffernte = :idOfferente AND idProprietario = :idProprietario AND idOfferta <> :idOfferta",
             nativeQuery = true)
     public void setAVisionato(@Param("idProprietario") Long idProprietario,
                                  @Param("idOfferente") Long idOfferente,
                                  @Param("dataAttuale") Instant instant,
-                                 @Param("idOfferta") Long idOfferta );
+                                 @Param("idOfferta") Long idOfferta ); */
 
 }
