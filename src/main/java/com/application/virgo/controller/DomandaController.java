@@ -60,7 +60,7 @@ public class DomandaController {
                         model.addAttribute("message", "Domanda inserita con successo");
                         model.addAttribute("wantedImmobile", newImmobile.get());
                         model.addAttribute("tempNewDomandaDTO", new DomandaDTO());
-                        return "Immobile";
+                        return "redirect:/site/immobile/viewImmobile/"+newImmobile.get().getIdImmobile();
                     }else{
                         model.addAttribute("error", "L'immobile selezionato non esiste");
                         return "Fail";
