@@ -33,14 +33,13 @@ public interface OffertaUtenteJpaRepository extends JpaRepository<OfferteUtente,
 
 
     // Permette di selezionare tutte le offerte inviate e ricevute tra il proprietario dell'immobile ed un possibile acquirente
-    @Query("SELECT offerta " +
-            "FROM OfferteUtente offerta " +
-                "JOIN Utente utente ON (offerta.proprietario.idUtente = utente.idUtente)" +
-                "JOIN Offerta offer ON (offerta.offertaInteressata.idOfferta = offer.idOfferta)" +
-                "JOIN Immobile immobile ON (offer.idImmobileInteressato.idImmobile = immobile.idImmobile)" +
-                "JOIN Utente user ON (immobile.proprietario.idUtente = user.idUtente)" +
-            "WHERE utente.idUtente = :idRequestedUtente AND offerta.proprietario.idUtente = :idRequestedUtente " +
-            "AND immobile.idImmobile = :idImmobile AND user.idUtente=:idOfferente")
+    @Query(value = "SELECT offerta.* " +
+            "FROM offerte_utente offerta  " +
+                "JOIN utente offerente ON (offerta.id_offerente = offerente.id_utente) " +
+                "JOIN offerta offer ON (offerta.id_offerta = offer.id_offerta) " +
+                "JOIN immobile ON (offer.id_immobile = immobile.id_immobile) " +
+                "JOIN utente venditore ON (immobile.id_utente = venditore.id_utente) " +
+            "WHERE offerente.id_utente = :idOfferente AND venditore.id_utente = :idProprietario AND immobile.id_immobile = :idImmobile;",nativeQuery = true)
     public List<OfferteUtente> getAllOfferteBetweenUtenti(
                                                           @Param("idRequestedUtente") Long idProprietario,
                                                           @Param("idOfferente") Long idOfferente,
