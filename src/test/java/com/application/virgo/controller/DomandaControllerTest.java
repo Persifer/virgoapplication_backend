@@ -78,8 +78,6 @@ public class DomandaControllerTest {
         when(domandaService.addNewDomanda(domandaDTO, authUser.get(),1L))
                 .thenReturn(domanda);
 
-        when(immobileService.addNewDomandaToImmobile(newDomanda, authUser.get(), 1L))
-                .thenReturn(newImmobile);
 
         String viewName = domandaController.addDomandaToImmobile(domandaDTO, 1L, model);
 
@@ -101,8 +99,6 @@ public class DomandaControllerTest {
         when(domandaService.addNewDomanda(domandaDTO, authUser.get(),1L))
                 .thenThrow(UtenteException.class);
 
-        when(immobileService.addNewDomandaToImmobile(newDomanda, authUser.get(), 1L))
-                .thenThrow(UtenteException.class);
 
         String viewName = domandaController.addDomandaToImmobile(domandaDTO, 1L, model);
 
@@ -124,8 +120,6 @@ public class DomandaControllerTest {
         when(domandaService.addNewDomanda(domandaDTO, authUser.get(),1L))
                 .thenReturn(Optional.empty());
 
-        when(immobileService.addNewDomandaToImmobile(newDomanda, authUser.get(), 1L))
-                .thenReturn(newImmobile);
 
         String viewName = domandaController.addDomandaToImmobile(domandaDTO, 1L, model);
 
@@ -149,8 +143,7 @@ public class DomandaControllerTest {
         when(rispostaService.addNewRisposta(rispostaDTO, 1L, authUser.get(),1L))
                 .thenReturn(risposta);
 
-        when(domandaService.replyToDomanda(risposta.get(), 1L))
-                .thenReturn(domanda);
+
 
         when(immobileService.getImmobileById(1l)).thenReturn(newImmobile);
 
@@ -172,8 +165,6 @@ public class DomandaControllerTest {
         when(rispostaService.addNewRisposta(rispostaDTO, 1L, authUser.get(),1L))
                 .thenReturn(risposta);
 
-        when(immobileService.addNewDomandaToImmobile(newDomanda, authUser.get(), 1L))
-                .thenReturn(newImmobile);
 
         String viewName = domandaController.addRispostaToDomanda(rispostaDTO,1L, 1L, model);
 
@@ -194,8 +185,7 @@ public class DomandaControllerTest {
         when(rispostaService.addNewRisposta(rispostaDTO, 1L, authUser.get(),1L))
                 .thenReturn(Optional.empty());
 
-        when(domandaService.replyToDomanda(risposta.get(), 1L))
-                .thenReturn(domanda);
+
 
         String viewName = domandaController.addRispostaToDomanda(rispostaDTO,1L, 1L, model);
 

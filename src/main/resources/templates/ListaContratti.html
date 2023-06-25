@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista dei contratti</title>
+</head>
+<body>
+<h1>Lista dei contratti</h1>
+<table>
+    <tbody>
+    <!-- Loop attraverso i contratti caricati -->
+    <tr th:each="contratti : ${listaContratti}">
+        <th>Nome<td><a th:href="@{/getListaContratti/contratto/{id}(id=${contratti.idContratto})}" th:text="${contratti.nomeAcquirente}"></a></td></th>
+        <th>Cognome<td th:text="${contratti.cognomeAcquirente}" /></th>
+        <th>Data<td th:text="${contratti.dataStipulazioneContratto}" /></th>
+
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

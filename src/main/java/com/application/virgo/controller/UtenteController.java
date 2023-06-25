@@ -205,7 +205,7 @@ public class UtenteController {
                 List<ContrattiUtenteDTO> listContrattiUtente = contrattoUtenteService.getListaContrattiForUtente(authUser.get(),
                         offset, pageSize);
                 model.addAttribute("listaContratti", listContrattiUtente);
-                return "Offerte";
+                return "ListaContratti";
             }else{
                 model.addAttribute("error", "Utente non trovato");
                 return "Login";
@@ -227,7 +227,7 @@ public class UtenteController {
                 Optional<DettagliContrattoDTO> listContrattiUtente = contrattoUtenteService.getDettagliContratto(authUser.get(),
                         idContratto);
                 model.addAttribute("listaContratti", listContrattiUtente);
-                return "SingolaProposta";
+                return "SingoloContratto";
             }else{
                 model.addAttribute("error", "Utente non trovato");
                 return "Login";

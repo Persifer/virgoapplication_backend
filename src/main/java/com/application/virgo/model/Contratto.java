@@ -23,7 +23,7 @@ public class Contratto {
 
     private Float prezzo;
 
-    @OneToMany(mappedBy = "contrattoInteressato")
+    @OneToMany(mappedBy = "contrattoInteressato", fetch = FetchType.EAGER)
     private Set<ContrattoUtente> utenteInteressati;
 
     @OneToOne(cascade = CascadeType.ALL)

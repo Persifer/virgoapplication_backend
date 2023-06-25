@@ -27,7 +27,7 @@ public class ContrattoUtente {
     @JoinColumn(name="id_acquirente")
     private Utente acquirente;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("idContratto") // serve a mappare la colonna id_utente con la colonna idUtente dell'embeddedId
     @JoinColumn(name="id_contratto")
     private Contratto contrattoInteressato;
