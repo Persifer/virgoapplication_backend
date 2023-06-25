@@ -6,8 +6,9 @@ import com.application.virgo.model.Utente;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public interface PdfGeneratorService {
 
-    public void exportPDF(Utente idUtente, Long idContratto, HttpServletResponse response) throws ContrattoException, ContrattoUtenteException, FileNotFoundException;
+    public void exportPDF(Utente idUtente, Long idContratto, HttpServletResponse response) throws ContrattoException, ContrattoUtenteException, IOException;
 }
