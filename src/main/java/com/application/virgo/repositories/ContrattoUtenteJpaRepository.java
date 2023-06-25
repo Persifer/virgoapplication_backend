@@ -15,14 +15,13 @@ import java.util.Optional;
 @Repository
 public interface ContrattoUtenteJpaRepository extends JpaRepository<ContrattoUtente, ContrattoUtenteCompoundKey> {
 
-    public Page<ContrattoUtente> getContrattoUtenteByVenditore(Pageable page, Utente venditore);
+    @Query(value = "select * from contratto_utente where (id_acquirente = :idUtente or id_venditore = :idUtente)",
+            nativeQuery = true)
+    public Page<ContrattoUtente> findContrattiRelatedToUtente(Pageable page, @Param("idUtente") Long venditore);
 
     public Long countByVenditore(Utente venditore);
 
-    @Query("SELECT ContrattoUtente " +
-            "FROM ContrattoUtente contratto " +
-                "JOIN Contratto contract ON (contratto.contrattoInteressato.idContratto = contract.idContratto)" +
-            "WHERE contract.idContratto = :idContratto")
+    @Query(value = "select * from contratto_utente where contratto_utente.id_contratto = :idContratto", nativeQuery = true)
     public Optional<ContrattoUtente> getContrattoUtenteByIdContratto(@Param("idContratto") Long idContratto);
 
 
