@@ -15,4 +15,5 @@ public class InsertOffertaDTO {
 
     private Float prezzoProposto;
     private String commento;
+    private Boolean inviatoDaProprietario;
 }

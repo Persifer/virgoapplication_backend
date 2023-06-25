@@ -64,14 +64,14 @@
                 <div th:if="${offerta.dataOfferta != null}"><p th:text="${'data offerta: ' + offerta.dataOfferta}"></p></div>
 
                 <!-- se questo messaggio è stato inviato dalla controparte -->
-                <div class="buttons" th:if="${offerta.inviatoDaProprietario == false}">
+                <div class="buttons" th:if="${offerta.inviatoDaProprietario == true}">
                     <form method="post" th:action="@{'/site/offerte/accept/' + ${offerta.idOfferta} +'/'+ ${offerta.idImmobile}  '/' + ${isAcquirente}}">
                         <button>Accetta</button>
                     </form>
                     <form method="post" th:action="@{'/site/offerte/decline/' + ${offerta.idOfferta} + '/' + ${isAcquirente}}">
                         <button>Declina</button>
                     </form>
-                    <form method="post" th:action="@{'/site/offerte/goToRilancio/' + ${offerta.idPropietario} + '/' + ${offerta.idImmobile} + '/' + ${offerta.inviatoDaProprietario}}">
+                    <form method="get" th:action="@{'/site/offerte/goToRilancio/' + ${offerta.idPropietario} + '/' + ${offerta.idImmobile} + '/' + ${offerta.inviatoDaProprietario}}">
                         <button>Rilancia</button>
                     </form>
                 </div>

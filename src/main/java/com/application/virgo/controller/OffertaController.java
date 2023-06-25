@@ -9,12 +9,7 @@ import com.application.virgo.model.Utente;
 import com.application.virgo.service.interfaces.AuthService;
 import com.application.virgo.service.interfaces.OffertaService;
 import com.application.virgo.service.interfaces.OffertaUtenteService;
-import com.application.virgo.wrapperclass.SecuredUser;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
@@ -89,12 +84,13 @@ public class OffertaController {
     @GetMapping("/goToRilancio/{id_proprietario}/{id_immobile}/{madeByProp}")
     public String getToInsertRilancio(ModelMap model, @PathVariable("id_proprietario") Long idProprietario,
                                       @PathVariable("id_immobile") Long idImmobile,
-                                      @PathVariable("madeByProp") Integer madeByProprietario){ // madeByProprietario deve essere un booleano
+                                      @PathVariable("madeByProp") Boolean madeByProprietario){ // madeByProprietario deve essere un booleano
 
+
+        model.addAttribute("tempOffertaDTO", new InsertOffertaDTO());
         model.addAttribute("idProprietario", idProprietario);
         model.addAttribute("idImmobile", idImmobile);
-        model.addAttribute("madeByProprietario", madeByProprietario);
-        model.addAttribute("insertOffertaDTO", new InsertOffertaDTO());
+        model.addAttribute("inviatoDaProprietario", madeByProprietario);
 
         return "Rilancio";
     }
