@@ -11,6 +11,7 @@ import com.application.virgo.service.interfaces.OffertaService;
 import com.application.virgo.service.interfaces.OffertaUtenteService;
 import com.application.virgo.wrapperclass.SecuredUser;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -85,7 +86,20 @@ public class OffertaController {
         }
     }
 
-    @PostMapping("/rilancia/{id_proposta}/{madeByProp}")
+    @GetMapping("/goToRilancio/{id_proprietario}/{id_immobile}/{madeByProp}")
+    public String getToInsertRilancio(ModelMap model, @PathVariable("id_proprietario") Long idProprietario,
+                                      @PathVariable("id_immobile") Long idImmobile,
+                                      @PathVariable("madeByProp") Integer madeByProprietario){
+
+        model.addAttribute("idProprietario", idProprietario);
+        model.addAttribute("idImmobile", idImmobile);
+        model.addAttribute("madeByProprietario", madeByProprietario);
+        model.addAttribute("insertOffertaDTO", new InsertOffertaDTO());
+
+        return "Rilancio";
+    }
+
+    @PostMapping("/rilancia/{id_proprietario}/{id_immobile}/{madeByProp}")
     public String rilanciaOfferta(@PathVariable("id_proprietario") Long idProprietario,
                                   @PathVariable("id_immobile") Long idImmobile,
                                   @PathVariable("madeByProp") Integer madeByProprietario,
