@@ -119,7 +119,7 @@ class OffertaControllerTest {
             ImmobileException, OffertaUtenteException{
         Long idOfferta = 1L;
 
-        String result = offertaController.rilanciaOfferta(idOfferta, 1L, 1 ,new InsertOffertaDTO() ,model);
+        String result = offertaController.rilanciaOfferta(1, new InsertOffertaDTO() ,model);
 
         assertEquals("", result);
         assertEquals(0, model.size());

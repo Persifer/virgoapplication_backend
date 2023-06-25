@@ -99,24 +99,20 @@ public class OffertaController {
         return "Rilancio";
     }
 
-    @PostMapping("/rilancia/{id_proprietario}/{id_immobile}/{madeByProp}")
-    public String rilanciaOfferta(@PathVariable("id_proprietario") Long idProprietario,
-                                  @PathVariable("id_immobile") Long idImmobile,
-                                  @PathVariable("madeByProp") Integer madeByProprietario,
+    @PostMapping("/rilancia/{madeByProp}")
+    public String rilanciaOfferta(@PathVariable("madeByProp") Integer madeByProprietario,
                                   @ModelAttribute InsertOffertaDTO tempOffertaDTO,
                                   ModelMap model){
         try {
             Optional<Utente> authenticatedUser = authService.getAuthUtente();
             if(authenticatedUser.isPresent()) {
-                if (idProprietario != null) {
-                    tempOffertaDTO.setIdProprietario(idProprietario);
-                    if (idImmobile != null) {
-                        tempOffertaDTO.setIdImmobile(idImmobile);
+                if (tempOffertaDTO.getIdProprietario() != null) {
+                    if (tempOffertaDTO.getIdImmobile() != null) {
                         Optional<Offerta> newOfferta = offertaService.createNewOfferta(tempOffertaDTO);
                         if(newOfferta.isPresent()){
                             Optional<OfferteUtente> newOffertaToUtente =
                                     offertaUtenteService.rilanciaOffertaToUtente(authenticatedUser.get(),
-                                            newOfferta.get(), idProprietario,
+                                            newOfferta.get(), tempOffertaDTO.getIdProprietario(),
                                             madeByProprietario >= 1 ? Boolean.TRUE : Boolean.FALSE);
                             if(newOffertaToUtente.isPresent()){
                                 model.addAttribute("message", "offerta creata correttamente");
