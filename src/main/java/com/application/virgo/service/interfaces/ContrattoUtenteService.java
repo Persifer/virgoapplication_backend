@@ -28,7 +28,7 @@ public interface ContrattoUtenteService {
      * @throws ContrattoUtenteException   se i numeri di offset e paginazione sono errati
      */
     public List<ContrattiUtenteDTO> getListaContrattiForUtente(Utente venditore, Long offset, Long pageSize)
-            throws UtenteException, ContrattoUtenteException;
+            throws UtenteException, ContrattoUtenteException, ContrattoException;
 
     /**
      * Salva un contratto tra un venditore e un acquirente specificati

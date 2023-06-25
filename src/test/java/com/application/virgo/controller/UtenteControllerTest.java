@@ -2,10 +2,7 @@ package com.application.virgo.controller;
 
 import com.application.virgo.DTO.inputDTO.UtenteDTO;
 import com.application.virgo.DTO.outputDTO.*;
-import com.application.virgo.exception.ContrattoUtenteException;
-import com.application.virgo.exception.ImmobileException;
-import com.application.virgo.exception.OffertaUtenteException;
-import com.application.virgo.exception.UtenteException;
+import com.application.virgo.exception.*;
 import com.application.virgo.model.Utente;
 import com.application.virgo.service.interfaces.AuthService;
 import com.application.virgo.service.interfaces.ContrattoUtenteService;
@@ -383,7 +380,7 @@ class UtenteControllerTest {
      */
     @Test
     void getListaContratti_autenticated_redirectSuccessfullToUtente()
-            throws UtenteException, ContrattoUtenteException {
+            throws UtenteException, ContrattoUtenteException, ContrattoException {
 
         Long offset = 1L;
         Long pageSize = 1L;

@@ -55,7 +55,7 @@ public class ContrattoUtenteServiceImpl implements ContrattoUtenteService {
                             );
                     if(!listContratti.isEmpty()){
                         for(ContrattoUtente contrattoUtente : listContratti){
-                            Optional<Contratto> contract = contrattoService.getContrattoById(contrattoUtente.getContrattoInteressato().getIdContratto());
+                            Optional<Contratto> contract = contrattoService.getContrattoById(contrattoUtente.getIdContrattoUtente().getIdContratto());
                             if (contract.isPresent()){
                                 contrattoUtente.setContrattoInteressato(contract.get());
                                 result.add(contrattiUtenteMapper.apply(contrattoUtente));

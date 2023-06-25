@@ -2,10 +2,7 @@ package com.application.virgo.controller;
 
 import com.application.virgo.DTO.inputDTO.UtenteDTO;
 import com.application.virgo.DTO.outputDTO.*;
-import com.application.virgo.exception.ContrattoUtenteException;
-import com.application.virgo.exception.ImmobileException;
-import com.application.virgo.exception.OffertaUtenteException;
-import com.application.virgo.exception.UtenteException;
+import com.application.virgo.exception.*;
 import com.application.virgo.model.Utente;
 import com.application.virgo.service.interfaces.AuthService;
 import com.application.virgo.service.interfaces.ContrattoUtenteService;
@@ -216,6 +213,9 @@ public class UtenteController {
             return "Login";
         }catch (ContrattoUtenteException error){
             model.addAttribute("error", error.getMessage());
+            return "Utente";
+        } catch (ContrattoException e) {
+            e.printStackTrace();
             return "Utente";
         }
     }
