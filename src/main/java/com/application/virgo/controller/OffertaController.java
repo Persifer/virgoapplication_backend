@@ -100,7 +100,7 @@ public class OffertaController {
     }
 
     @PostMapping("/rilancia/{madeByProp}")
-    public String rilanciaOfferta(@PathVariable("madeByProp") Integer madeByProprietario,
+    public String rilanciaOfferta(@PathVariable("madeByProp") Boolean madeByProprietario,
                                   @ModelAttribute InsertOffertaDTO tempOffertaDTO,
                                   ModelMap model){
         try {
@@ -113,7 +113,7 @@ public class OffertaController {
                             Optional<OfferteUtente> newOffertaToUtente =
                                     offertaUtenteService.rilanciaOffertaToUtente(authenticatedUser.get(),
                                             newOfferta.get(), tempOffertaDTO.getIdProprietario(),
-                                            madeByProprietario >= 1 ? Boolean.TRUE : Boolean.FALSE);
+                                            madeByProprietario ? Boolean.TRUE : Boolean.FALSE);
                             if(newOffertaToUtente.isPresent()){
                                 model.addAttribute("message", "offerta creata correttamente");
                                 model.addAttribute("newOffertaToUtente", newOffertaToUtente.get());

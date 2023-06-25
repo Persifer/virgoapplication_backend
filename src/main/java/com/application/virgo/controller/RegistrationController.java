@@ -7,6 +7,7 @@ import com.application.virgo.model.Utente;
 import com.application.virgo.service.interfaces.EmailSenderService;
 import com.application.virgo.service.interfaces.UtenteService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
@@ -36,7 +37,7 @@ public class RegistrationController {
     }
 
     @PostMapping()
-    public String postActionRegister(@ModelAttribute UtenteDTO newUtente) {
+    public String postActionRegister(@ModelAttribute @Valid UtenteDTO newUtente) {
 
         try {
 
