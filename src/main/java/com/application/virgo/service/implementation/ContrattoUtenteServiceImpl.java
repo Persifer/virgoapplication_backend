@@ -20,6 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -39,19 +40,27 @@ public class ContrattoUtenteServiceImpl implements ContrattoUtenteService {
     @Override
     public List<ContrattiUtenteDTO> getListaContrattiForUtente(Utente venditore, Long inidiceIniziale, Long pageSize)
             throws UtenteException, ContrattoUtenteException {
+        List<ContrattiUtenteDTO> result = new ArrayList<>();
         // controllo che il venditore passato sia presente
         if(venditore != null){
             // se l'indice iniziale non supera il limite impsoto
             if(inidiceIniziale < pageSize - contrattoUtenteRepo.countByVenditore(venditore) ){
                 // se la page non supera il limite imposto
                 if(pageSize < Constants.PAGE_SIZE){
+
                     // prelevo e metto in una Page<ContrattoUtente> tutti i contratti legati ad un utente
                     Page<ContrattoUtente> listContratti = contrattoUtenteRepo.getContrattoUtenteByVenditore(
                             PageRequest.of(inidiceIniziale.intValue(), pageSize.intValue()),
                             venditore
                             );
+                    if(!listContratti.isEmpty()){
+                        for(ContrattoUtente contrattoUtente : listContratti){
+                            System.out.println("\n -> " + contrattoUtente.getContrattoInteressato().toString());
+                        }
+                    }
+
                     // converte con la stream una page di ContrattoUtente in una lista di ContrattiUtenteDTO
-                    return listContratti.stream().map(contrattiUtenteMapper).collect(Collectors.toList());
+                    return result;
                 }else {
                     throw new ContrattoUtenteException("2 - Attenzione il numero dell'elemento da cui partire è troppo alto " + pageSize);
                 }

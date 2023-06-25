@@ -131,7 +131,8 @@ public class ImmobileController {
             Optional<Utente> authenticatedUser = authService.getAuthUtente();
             if(authenticatedUser.isPresent()) {
                 // se l'utente è autenticato allora posso vedere i dati del singolo immobile
-                Optional<GetImmobileInfoDTO> storedImmobile = immobileService.getImmobileByIdAsProprietario(authenticatedUser.get(), idImmobile);
+                Optional<GetImmobileInfoDTO> storedImmobile =
+                        immobileService.getImmobileByIdAsProprietario(authenticatedUser.get(), idImmobile);
                 if(storedImmobile.isPresent()){
                     model.addAttribute("wantedImmobile", storedImmobile.get());
                     model.addAttribute("tempNewDomandaDTO", new DomandaDTO());

@@ -43,7 +43,14 @@ public class DomandaController {
     private final AuthService authService;
 
 
-    // metodo che permette di aggiungere una domanda relativa ad un immobile
+
+    /**
+     * Metodo che permette di aggiungere una domanda relativa ad un immobile
+     * @param tempNewDomandaDTO i dati della domanda da inserire per l'immobile
+     * @param idImmobile l'id immobile a cui inserire la domanda
+     * @param model l'istanza della classe model che permette di passare i parametri al front-end
+     * @return una view che ridireziona in base al risultato ricevuto dal back-end
+     */
     @PostMapping("/addQuestion/{id_immobile}")
     public String addDomandaToImmobile(@ModelAttribute DomandaDTO tempNewDomandaDTO,
                                                        @PathVariable("id_immobile") Long idImmobile, ModelMap model){
@@ -72,6 +79,12 @@ public class DomandaController {
     }
 
 
+    /**
+     * Metodo che permette di disabilitare una domanda da parte del proprietario di un immobile
+     * @param idDomanda id domanda da disabilitare
+     * @param model l'istanza della classe model che permette di passare i parametri al front-end
+     * @return una view che ridireziona in base al risultato ricevuto dal back-end
+     */
     @PostMapping("/disableQuestion/{id_domanda}")
     public String disableDomandaOfImmobile(@PathVariable("id_domanda") Long idDomanda, ModelMap model){
 
@@ -81,7 +94,7 @@ public class DomandaController {
                 Optional<Domanda> modifiedDomanda = domandaService.disabilitaDomanda( authenticatedUser.get(), idDomanda);
                 if(modifiedDomanda.isPresent()){
                     model.addAttribute("message", "Domanda inserita con successo");
-                    return "redirect:/site/immobile/viewImmobile/"+modifiedDomanda.get().getImmobileInteressato().getIdImmobile();
+                    return "redirect:/site/immobile/mioImmobile/"+modifiedDomanda.get().getImmobileInteressato().getIdImmobile();
                 }else{
                     model.addAttribute("error", "Problemi con la creazione della domanda");
                     return "Fail";
@@ -99,12 +112,19 @@ public class DomandaController {
 
     }
 
-    // metodo che permette di aggiungere una risposta ad una domanda
+    //
+
+    /**
+     * Metodo che permette di aggiungere una risposta ad una domanda
+     * @param tempNewRispostaDTO i dati della risposta da aggiungere
+     * @param idDomanda id domanda a cui rispondere
+     * @param idImmobile id immobile a cui aggiungere la domanda
+     * @param model l'istanza della classe model che permette di passare i parametri al front-end
+     * @return una view che ridireziona in base al risultato ricevuto dal back-end
+     */
     @PostMapping("/reply/{id_domanda}/{id_immobile}")
-    public String addRispostaToDomanda(@ModelAttribute RispostaDTO tempNewRispostaDTO,
-                                                       @PathVariable("id_domanda") Long idDomanda,
-                                                       @PathVariable("id_immobile") Long idImmobile,
-                                                       ModelMap model){
+    public String addRispostaToDomanda(@ModelAttribute RispostaDTO tempNewRispostaDTO, @PathVariable("id_domanda") Long idDomanda,
+                                                       @PathVariable("id_immobile") Long idImmobile, ModelMap model){
 
         try{
             Optional<Utente> authenticatedUser = authService.getAuthUtente();
@@ -125,16 +145,10 @@ public class DomandaController {
 
         }catch (UtenteException error){
             model.addAttribute("error", error.getMessage());
-            return "errore4";
-        }catch (ImmobileException error){
+            return "Login";
+        }catch (ImmobileException | DomandaException error){
             model.addAttribute("error", error.getMessage());
-            return "errore5";
-       /* }catch (RispostaException error){
-            model.addAttribute("error", error.getMessage());
-            return "errore6";*/
-        }catch (DomandaException error){
-            model.addAttribute("error", error.getMessage());
-            return "errore7";
+            return "Fail";
         }
 
 
