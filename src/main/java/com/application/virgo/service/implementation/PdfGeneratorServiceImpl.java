@@ -56,17 +56,40 @@ public class PdfGeneratorServiceImpl implements PdfGeneratorService {
                 Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
                 fontTitle.setSize(18);
 
-                Paragraph paragraph = new Paragraph("Contratto.", fontTitle);
+                String titolo = "Contratto digitale riferito a: " + contratto.getIdContratto();
+
+                Paragraph paragraph = new Paragraph(titolo, fontTitle);
                 paragraph.setAlignment(Paragraph.ALIGN_CENTER);
 
                 Font fontParagraph = FontFactory.getFont(FontFactory.HELVETICA);
                 fontParagraph.setSize(12);
 
-              //  Paragraph paragraph2 = new Paragraph(, fontParagraph);
-               // paragraph2.setAlignment(Paragraph.ALIGN_LEFT);
+                String stipulazione = "Stipulato in data: "+ contratto.getDataStipulazione();
+
+                Paragraph paragraph2 = new Paragraph(stipulazione, fontParagraph);
+                paragraph2.setAlignment(Paragraph.ALIGN_RIGHT);
+
+
+                String nomiParti = "Nome acquirente: " + contrattoUtente.getAcquirente().getNome() +"\n" +
+                                    "Cognome acquirente: " + contrattoUtente.getAcquirente().getCognome() +"\n\n" +
+                                    "Nome venditore: " + contrattoUtente.getVenditore().getNome() +"\n" +
+                                    "Cognome acquirente: " + contrattoUtente.getVenditore().getCognome() +"\n"  +
+                                    "Prezzo concordato: " + contratto.getPrezzo() +"\n"  ;
+
+                Paragraph paragraph3 = new Paragraph(nomiParti, fontParagraph);
+                paragraph3.setAlignment(Paragraph.ALIGN_LEFT);
+
+                String immobile = "Il contratto riguarda l'immobile in via" + contratto.getImmobileInteressato().getVia() +
+                        "Nella città di: " + contratto.getImmobileInteressato().getCitta()
+                        ;
+
+                Paragraph paragraph4 = new Paragraph(immobile, fontParagraph);
+                paragraph4.setAlignment(Paragraph.ALIGN_LEFT);
 
                 document.add(paragraph);
-              //  document.add(paragraph2);
+                document.add(paragraph2);
+                document.add(paragraph3);
+                document.add(paragraph4);
                 document.close();
             }
         }
