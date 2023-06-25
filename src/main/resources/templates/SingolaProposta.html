@@ -66,7 +66,7 @@
 
             <!-- se questo messaggio è stato inviato dalla controparte -->
             <div class="buttons" th:if="${offerta.inviatoDaProprietario == false}">
-                <form method="post" th:action="@{'/site/offerte/accept/' + ${offerta.idOfferta} + ${offerta.idImmobile} + '/' + ${isAcquirente}}">
+                <form method="post" th:action="@{'/site/offerte/accept/' + ${offerta.idOfferta} +'/'+ ${offerta.idImmobile} + '/' + ${isAcquirente}}">
                     <button>Accetta</button>
                 </form>
                 <form method="post" th:action="@{'/site/offerte/decline/' + ${offerta.idOfferta} + '/' + ${isAcquirente}}">
