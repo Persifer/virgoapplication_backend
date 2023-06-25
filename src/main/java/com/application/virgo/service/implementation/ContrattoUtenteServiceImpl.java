@@ -49,10 +49,11 @@ public class ContrattoUtenteServiceImpl implements ContrattoUtenteService {
                 if(pageSize < Constants.PAGE_SIZE){
 
                     // prelevo e metto in una Page<ContrattoUtente> tutti i contratti legati ad un utente
-                    Page<ContrattoUtente> listContratti = contrattoUtenteRepo.getContrattoUtenteByVenditore(
+                    Page<ContrattoUtente> listContratti = contrattoUtenteRepo.findContrattiRelatedToUtente(
                             PageRequest.of(inidiceIniziale.intValue(), pageSize.intValue()),
-                            venditore
+                            venditore.getIdUtente()
                             );
+
                     if(!listContratti.isEmpty()){
                         for(ContrattoUtente contrattoUtente : listContratti){
                             Optional<Contratto> contract = contrattoService.getContrattoById(contrattoUtente.getIdContrattoUtente().getIdContratto());
@@ -117,42 +118,49 @@ public class ContrattoUtenteServiceImpl implements ContrattoUtenteService {
 
     @Override
     public Optional<DettagliContrattoDTO> getDettagliContratto(Utente authUser, Long idContratto)
-            throws UtenteException, ContrattoUtenteException {
+            throws UtenteException, ContrattoUtenteException, ContrattoException {
         if(authUser !=  null){
             //prelevo il contratto dal database
-            Optional<ContrattoUtente> tempRequestedContratto = contrattoUtenteRepo.getContrattoUtenteByIdContratto(idContratto);
+            Optional<ContrattoUtente> tempRequestedContrattoUtente = contrattoUtenteRepo.getContrattoUtenteByIdContratto(idContratto);
+            Optional<Contratto> tempWantedContratto;
 
             // controllo se il contratto esiste veramente
-            if(tempRequestedContratto.isPresent()){
+            if(tempRequestedContrattoUtente.isPresent()){
                 // lo prelevo dall'optional
-                ContrattoUtente requestedContratto = tempRequestedContratto.get();
+                ContrattoUtente requestedContrattoUtente = tempRequestedContrattoUtente.get();
+                tempWantedContratto = contrattoService.getContrattoById(
+                        requestedContrattoUtente.getIdContrattoUtente().getIdContratto());
+               if(tempWantedContratto.isPresent()){
+                   Contratto wantedContratto = tempWantedContratto.get();
+                   // controllo che l'utente che ha fatto la richiesta sia o il venditore o l'acquirente, altrimenti lancio errore
+                   if(authUser.getIdUtente().equals(requestedContrattoUtente.getAcquirente().getIdUtente()) ||
+                           authUser.getIdUtente().equals(requestedContrattoUtente.getVenditore().getIdUtente())){
 
-                // controllo che l'utente che ha fatto la richiesta sia o il venditore o l'acquirente, altrimenti lancio errore
-                if(authUser.getIdUtente().equals(requestedContratto.getAcquirente().getIdUtente()) ||
-                    authUser.getIdUtente().equals(requestedContratto.getVenditore().getIdUtente())){
+                       // ====================================== CREAZIONE IMMOBILE DTO PER IL PASSAGGIO DELLE INFORMAZIONI =======================================
+                       DettagliContrattoDTO dettagliContrattoDTO = new DettagliContrattoDTO();
 
-            // ====================================== CREAZIONE IMMOBILE DTO PER IL PASSAGGIO DELLE INFORMAZIONI =======================================
-                    DettagliContrattoDTO dettagliContrattoDTO = new DettagliContrattoDTO();
+                       dettagliContrattoDTO.setPrezzoDelContratto(wantedContratto.getPrezzo());
+                       dettagliContrattoDTO.setDataStipulazioneContratto(wantedContratto.getDataStipulazione().toString());
 
-                    dettagliContrattoDTO.setPrezzoDelContratto(requestedContratto.getContrattoInteressato().getPrezzo());
-                    dettagliContrattoDTO.setDataStipulazioneContratto(requestedContratto.getContrattoInteressato().getDataStipulazione().toString());
+                       dettagliContrattoDTO.setTitoloImmobile(wantedContratto.getImmobileInteressato().getTitolo());
+                       dettagliContrattoDTO.setIdImmobile(wantedContratto.getImmobileInteressato().getIdImmobile());
 
-                    dettagliContrattoDTO.setTitoloImmobile(requestedContratto.getContrattoInteressato().getImmobileInteressato().getTitolo());
-                    dettagliContrattoDTO.setIdImmobile(requestedContratto.getContrattoInteressato().getImmobileInteressato().getIdImmobile());
+                       if(authUser.getIdUtente().equals(requestedContrattoUtente.getAcquirente().getIdUtente())){
+                           dettagliContrattoDTO.setNomeControparte(requestedContrattoUtente.getVenditore().getNome());
+                           dettagliContrattoDTO.setNomeControparte(requestedContrattoUtente.getVenditore().getCognome());
+                       }else{
+                           dettagliContrattoDTO.setNomeControparte(requestedContrattoUtente.getAcquirente().getNome());
+                           dettagliContrattoDTO.setNomeControparte(requestedContrattoUtente.getAcquirente().getCognome());
+                       }
+                       // ========================================================================================================================================
 
-                    if(authUser.getIdUtente().equals(requestedContratto.getAcquirente().getIdUtente())){
-                        dettagliContrattoDTO.setNomeControparte(requestedContratto.getVenditore().getNome());
-                        dettagliContrattoDTO.setNomeControparte(requestedContratto.getVenditore().getCognome());
-                    }else{
-                        dettagliContrattoDTO.setNomeControparte(requestedContratto.getAcquirente().getNome());
-                        dettagliContrattoDTO.setNomeControparte(requestedContratto.getAcquirente().getCognome());
-                    }
-            // ========================================================================================================================================
-
-                    return Optional.of(dettagliContrattoDTO);
-                }else{
-                    throw new ContrattoUtenteException("L'utente che ha richiesto i dettagli del contratto non è nè l'acquirente nè il venditore");
-                }
+                       return Optional.of(dettagliContrattoDTO);
+                   }else{
+                       throw new ContrattoUtenteException("L'utente che ha richiesto i dettagli del contratto non è nè l'acquirente nè il venditore");
+                   }
+               }else{
+                   throw new ContrattoUtenteException("Contratto non trovato");
+               }
             }else{
                 throw new ContrattoUtenteException("Impossibile richiedere il contratto desiderato");
             }

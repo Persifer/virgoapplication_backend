@@ -52,7 +52,7 @@ public interface ContrattoUtenteService {
      * @throws ContrattoUtenteException se il contratto non esiste
      */
     public Optional<DettagliContrattoDTO> getDettagliContratto(Utente authUSer, Long idContratto)
-            throws UtenteException, ContrattoUtenteException;
+            throws UtenteException, ContrattoUtenteException, ContrattoException;
 
     public Optional<ContrattoUtente> getContrattoByIdUtenteAndIdContratto(Utente proprietario, Long idContratto) throws ContrattoUtenteException, ContrattoException;
 }

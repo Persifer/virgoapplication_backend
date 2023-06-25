@@ -224,8 +224,14 @@ public class UtenteController {
             if(authUser.isPresent()){
                 Optional<DettagliContrattoDTO> listContrattiUtente = contrattoUtenteService.getDettagliContratto(authUser.get(),
                         idContratto);
-                model.addAttribute("listaContratti", listContrattiUtente);
-                return "SingoloContratto";
+                if(listContrattiUtente.isPresent()){
+                    model.addAttribute("contratto", listContrattiUtente.get());
+                    return "SingoloContratto";
+                }else{
+                    model.addAttribute("error", "Errore nel reperire contratti");
+                    return "redirect:/site/utente/getListaContratti/0/20";
+                }
+
             }else{
                 model.addAttribute("error", "Utente non trovato");
                 return "Login";
@@ -233,7 +239,7 @@ public class UtenteController {
         }catch (UtenteException error){
             model.addAttribute("error", error.getMessage());
             return "Login";
-        }catch (ContrattoUtenteException error){
+        }catch (ContrattoUtenteException | ContrattoException error){
             model.addAttribute("error", error.getMessage());
             return "Utente";
         }

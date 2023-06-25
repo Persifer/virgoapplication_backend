@@ -4,6 +4,7 @@ import com.application.virgo.exception.ContrattoException;
 import com.application.virgo.exception.ContrattoUtenteException;
 import com.application.virgo.model.ComposedRelationship.ContrattoUtente;
 import com.application.virgo.model.Utente;
+import com.application.virgo.service.interfaces.ContrattoService;
 import com.application.virgo.service.interfaces.ContrattoUtenteService;
 import com.application.virgo.service.interfaces.PdfGeneratorService;
 import com.lowagie.text.Paragraph;
@@ -25,6 +26,7 @@ import java.util.Optional;
 public class PdfGeneratorServiceImpl implements PdfGeneratorService {
 
     private final ContrattoUtenteService contrattoUtenteService;
+    private final ContrattoService contrattoService;
 
 
     /*@Override
@@ -40,6 +42,7 @@ public class PdfGeneratorServiceImpl implements PdfGeneratorService {
             throws ContrattoException, ContrattoUtenteException, FileNotFoundException {
 
         Optional<ContrattoUtente> contrattoUtente = contrattoUtenteService.getContrattoByIdUtenteAndIdContratto(authUser, idContratto);
+
         if(contrattoUtente.isPresent()) {
 
 

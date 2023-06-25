@@ -10,7 +10,7 @@
     <tbody>
     <!-- Loop attraverso i contratti caricati -->
     <tr th:each="contratti : ${listaContratti}">
-        <th>Nome<td><a th:href="@{/getListaContratti/contratto/{id}(id=${contratti.idContratto})}" th:text="${contratti.nomeAcquirente}"></a></td></th>
+        <th>Nome<td><a th:href="@{/site/utente/getListaContratti/contratto/{id}(id=${contratti.idContratto})}" th:text="${contratti.nomeAcquirente}"></a></td></th>
         <th>Cognome<td th:text="${contratti.cognomeAcquirente}" /></th>
         <th>Data<td th:text="${contratti.dataStipulazione}" /></th>
 
