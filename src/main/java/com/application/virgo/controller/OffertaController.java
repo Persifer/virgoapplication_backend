@@ -89,7 +89,7 @@ public class OffertaController {
     @GetMapping("/goToRilancio/{id_proprietario}/{id_immobile}/{madeByProp}")
     public String getToInsertRilancio(ModelMap model, @PathVariable("id_proprietario") Long idProprietario,
                                       @PathVariable("id_immobile") Long idImmobile,
-                                      @PathVariable("madeByProp") Integer madeByProprietario){
+                                      @PathVariable("madeByProp") Integer madeByProprietario){ // madeByProprietario deve essere un booleano
 
         model.addAttribute("idProprietario", idProprietario);
         model.addAttribute("idImmobile", idImmobile);

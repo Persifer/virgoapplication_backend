@@ -28,5 +28,4 @@ public class ViewOfferteBetweenUtentiDTO {
 
     private Boolean inviatoDaProprietario;
 
-
 }

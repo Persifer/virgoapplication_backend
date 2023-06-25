@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rilancio</title>
+</head>
+<body>
+
+    <h1>Inserisci i dati del rilancio</h1>
+
+    <form action="#" th:action="@{'/site/offerte/rilancia/' + ${offerta.inviatoDaProprietario}}" method="post" th:object="${tempOffertaDTO}">
+
+        <label for="prezzoProposto">prezzoProposto: </label>
+        <input type="text" id="prezzoProposto" th:field="*{prezzoProposto}" />
+
+        <label for="commento">commento: </label>
+        <input type="text" id="commento" th:field="*{commento}" />
+
+        <input id="idProprietario" type="hidden" th:value="${messaggio.idPropietario}" />
+
+        <input id="idImmobile" type="hidden" th:value="${valoreNascosto.idImmobile}" />
+
+        <button type="submit">Invia</button>
+    </form>
+
+</body>
+</html>

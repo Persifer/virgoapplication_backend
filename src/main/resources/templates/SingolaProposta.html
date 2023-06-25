@@ -19,7 +19,7 @@
             align-items: center;
         }
         .messaggiContainer{
-            width: 80%;
+            width: 90%;
             display: flex;
             flex-direction: column;
             gap: 5px;
@@ -72,7 +72,7 @@
                 <form method="post" th:action="@{'/site/offerte/decline/' + ${offerta.idOfferta} + '/' + ${isAcquirente}}">
                     <button>Declina</button>
                 </form>
-                <form method="post" th:action="@{'/site/offerte/rilancia/' + ${offerta.idOfferta} + '/' + ${isAcquirente}}">
+                <form method="post" th:action="@{'/site/offerte/goToRilancio/' + ${offerta.inviatoDaProprietario}}">
                     <button>Rilancia</button>
                 </form>
             </div>

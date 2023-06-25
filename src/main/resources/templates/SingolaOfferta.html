@@ -19,19 +19,19 @@
             align-items: center;
         }
         .messaggiContainer{
-            width: 80%;
+            width: 90%;
             display: flex;
             flex-direction: column;
             gap: 5px;
         }
-        .messaggioControparte{
+        .messaggioUtente{
             width: 50%;
             background-color: aqua;
             align-self: flex-end;
             border-radius: 10px 10px 0 10px;
             padding: 10px;
         }
-        .messaggioUtente{
+        .messaggioControparte{
             width: 50%;
             background-color: bisque;
             align-self: flex-start;
@@ -45,7 +45,6 @@
     </style>
 </head>
 <body>
-
 
     <div th:if="${#lists.isEmpty(listaOfferte)}">
         <!-- Mostra questo div se la lista è vuota -->
@@ -72,7 +71,8 @@
                     <form method="post" th:action="@{'/site/offerte/decline/' + ${offerta.idOfferta} + '/' + ${isAcquirente}}">
                         <button>Declina</button>
                     </form>
-                    <form method="post" th:action="@{'/site/offerte/rilancia/' + ${offerta.idOfferta} + '/' + ${isAcquirente}}">
+                    <form method="post" th:action="@{'/site/offerte/goToRilancio/' + ${offerta.idPropietario} + '/' + ${offerta.idImmobile} + '/' + ${offerta.inviatoDaProprietario
+                    }}">
                         <button>Rilancia</button>
                     </form>
                 </div>

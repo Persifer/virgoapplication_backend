@@ -20,21 +20,21 @@ public class OfferteUtente {
     @EmbeddedId
     private OffertaUtenteCompoundKey idOffertaUtente;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("idProprietario") // serve a mappare la colonna id_utente con la colonna idUtente dell'embeddedId
     @JoinColumn(name="id_proprietario", insertable = false, updatable = false)
    // @Column(insertable=false, updatable=false)
     // proprietario è colui a cui è stata fatta l'offerta
     private Utente proprietario;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("idOfferente") // serve a mappare la colonna id_utente con la colonna idUtente dell'embeddedId
     @JoinColumn(name="id_offerente", insertable = false, updatable = false)
     //@Column(insertable=false, updatable=false)
     // colui che ha proposto l'offerta
     private Utente offerente;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("idOfferta") // serve a mappare la colonna id_utente con la colonna idUtente dell'embeddedId
     @JoinColumn(name="id_offerta")
     private Offerta offertaInteressata;
