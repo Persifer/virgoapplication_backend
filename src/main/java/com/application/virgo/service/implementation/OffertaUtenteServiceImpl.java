@@ -57,7 +57,8 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
         OfferteUtente offertaToProprietario = new OfferteUtente(compoundKeyProprietario,
                 utenteProprietario, offerente,offertaProposta);
 
-        offertaToProprietario.setMadeByProprietario(madeByProprietario);
+        offertaToProprietario.setMadeByProprietario(madeByProprietario ? Boolean.TRUE : Boolean.FALSE);
+        offertaToProprietario.setIsEnabled(Boolean.TRUE);
 
         return Optional.of(offertaUtenteRepository.save(offertaToProprietario));
     }
@@ -180,7 +181,7 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
             if(offertaSelezionata.isPresent()){
                 //Prelevo l'offerta in base al proprietario e al'id dell'offerta
                 Optional<OfferteUtente> tempOffertaToAccept =
-                        offertaUtenteRepository.getOfferteUtenteByProprietarioAndOffertaInteressata(
+                        offertaUtenteRepository.getOfferteUtenteByOfferenteAndOffertaInteressata(
                                 authUser.getIdUtente(),offertaSelezionata.get().getIdOfferta());
                 // se l'offerta voluta esiste
                 if(tempOffertaToAccept.isPresent()){

@@ -223,7 +223,7 @@ public class OffertaController {
 
         }catch (UtenteException | OffertaException | OffertaUtenteException error){
             model.addAttribute("error", error.getMessage());
-            return "fail";
+            return "Fail";
         }
 
 

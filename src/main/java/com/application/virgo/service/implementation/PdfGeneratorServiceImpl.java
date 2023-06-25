@@ -46,8 +46,6 @@ public class PdfGeneratorServiceImpl implements PdfGeneratorService {
             ContrattoUtente contratto = contrattoUtente.get();
             Document documento = new Document();
 
-            PdfWriter.getInstance(documento, new FileOutputStream("C:\\progetto_ing_sw\\files\\pdf"));
-
             documento.open();
             documento.add(new Paragraph("Dettagli Contratto:"));
             documento.add(new Paragraph("Contratto id: " + contratto.getContrattoInteressato().getIdContratto()));

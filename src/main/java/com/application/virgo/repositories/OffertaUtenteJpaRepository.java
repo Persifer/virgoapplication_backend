@@ -82,9 +82,15 @@ public interface OffertaUtenteJpaRepository extends JpaRepository<OfferteUtente,
 
 
     @Query("SELECT offertaUtente FROM OfferteUtente offertaUtente " +
-            "WHERE offertaUtente.offerente.idUtente = :idUtente AND offertaUtente.offertaInteressata.idOfferta = :idOfferta")
-    public Optional<OfferteUtente> getOfferteUtenteByProprietarioAndOffertaInteressata(@Param("idUtente") Long idUtente,
+            "WHERE offertaUtente.offerente.idUtente = :idUtente OR offertaUtente.proprietario.idUtente = :idUtente " +
+            "AND offertaUtente.offertaInteressata.idOfferta = :idOfferta")
+    public Optional<OfferteUtente> getOfferteUtenteByOfferenteAndOffertaInteressata(@Param("idUtente") Long idUtente,
                                                                                        @Param("idOfferta") Long idOfferta);
+
+    /*@Query("SELECT offertaUtente FROM OfferteUtente offertaUtente " +
+            "WHERE offertaUtente.proprietario.idUtente = :idUtente AND offertaUtente.offertaInteressata.idOfferta = :idOfferta")
+    public Optional<OfferteUtente> getOfferteUtenteByProprietarioAndOffertaInteressata(@Param("idUtente") Long idUtente,
+                                                                                       @Param("idOfferta") Long idOfferta); */
 
     @Query(
             "SELECT offerta " +

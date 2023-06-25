@@ -140,6 +140,7 @@ public class UtenteController {
                 List<ViewOfferteBetweenUtentiDTO> listaOfferte =
                         utenteService.getAllProposteBetweenUtenti(authUser.get(), idOfferente, idImmobile);
                 model.addAttribute("listaOfferte", listaOfferte);
+                model.addAttribute("isAcquirente", "0");
                 return "SingolaProposta";
             }else{
                 model.addAttribute("error", "Utente non autenticato");
