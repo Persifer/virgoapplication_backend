@@ -17,17 +17,17 @@ public class ContrattoUtente {
     @EmbeddedId
     private ContrattoUtenteCompoundKey idContrattoUtente;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("idVenditore") // serve a mappare la colonna id_utente con la colonna idUtente dell'embeddedId
     @JoinColumn(name="id_venditore")
     private Utente venditore;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("idAcquirente") // serve a mappare la colonna id_utente con la colonna idUtente dell'embeddedId
     @JoinColumn(name="id_acquirente")
     private Utente acquirente;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("idContratto") // serve a mappare la colonna id_utente con la colonna idUtente dell'embeddedId
     @JoinColumn(name="id_contratto")
     private Contratto contrattoInteressato;
