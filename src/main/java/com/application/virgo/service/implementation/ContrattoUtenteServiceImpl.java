@@ -39,7 +39,7 @@ public class ContrattoUtenteServiceImpl implements ContrattoUtenteService {
 
     @Override
     public List<ContrattiUtenteDTO> getListaContrattiForUtente(Utente venditore, Long inidiceIniziale, Long pageSize)
-            throws UtenteException, ContrattoUtenteException {
+            throws UtenteException, ContrattoUtenteException, ContrattoException {
         List<ContrattiUtenteDTO> result = new ArrayList<>();
         // controllo che il venditore passato sia presente
         if(venditore != null){
@@ -55,7 +55,11 @@ public class ContrattoUtenteServiceImpl implements ContrattoUtenteService {
                             );
                     if(!listContratti.isEmpty()){
                         for(ContrattoUtente contrattoUtente : listContratti){
-                            System.out.println("\n -> " + contrattoUtente.getContrattoInteressato().toString());
+                            Optional<Contratto> contract = contrattoService.getContrattoById(contrattoUtente.getContrattoInteressato().getIdContratto());
+                            if (contract.isPresent()){
+                                contrattoUtente.setContrattoInteressato(contract.get());
+                                result.add(contrattiUtenteMapper.apply(contrattoUtente));
+                            }
                         }
                     }
 
