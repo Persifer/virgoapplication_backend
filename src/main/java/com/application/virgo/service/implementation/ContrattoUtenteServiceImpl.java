@@ -147,10 +147,10 @@ public class ContrattoUtenteServiceImpl implements ContrattoUtenteService {
 
                        if(authUser.getIdUtente().equals(requestedContrattoUtente.getAcquirente().getIdUtente())){
                            dettagliContrattoDTO.setNomeControparte(requestedContrattoUtente.getVenditore().getNome());
-                           dettagliContrattoDTO.setNomeControparte(requestedContrattoUtente.getVenditore().getCognome());
+                           dettagliContrattoDTO.setCognomeControparte(requestedContrattoUtente.getVenditore().getCognome());
                        }else{
                            dettagliContrattoDTO.setNomeControparte(requestedContrattoUtente.getAcquirente().getNome());
-                           dettagliContrattoDTO.setNomeControparte(requestedContrattoUtente.getAcquirente().getCognome());
+                           dettagliContrattoDTO.setCognomeControparte(requestedContrattoUtente.getAcquirente().getCognome());
                        }
                        // ========================================================================================================================================
 

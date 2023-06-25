@@ -10,7 +10,6 @@ public class DettagliContrattoDTO {
 
     private String nomeControparte;
     private String cognomeControparte;
-
     private Float prezzoDelContratto;
     private String dataStipulazioneContratto;
 

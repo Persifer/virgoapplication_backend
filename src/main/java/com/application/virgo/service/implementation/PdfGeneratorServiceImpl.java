@@ -62,11 +62,11 @@ public class PdfGeneratorServiceImpl implements PdfGeneratorService {
                 Font fontParagraph = FontFactory.getFont(FontFactory.HELVETICA);
                 fontParagraph.setSize(12);
 
-                Paragraph paragraph2 = new Paragraph(, fontParagraph);
-                paragraph2.setAlignment(Paragraph.ALIGN_LEFT);
+              //  Paragraph paragraph2 = new Paragraph(, fontParagraph);
+               // paragraph2.setAlignment(Paragraph.ALIGN_LEFT);
 
                 document.add(paragraph);
-                document.add(paragraph2);
+              //  document.add(paragraph2);
                 document.close();
             }
         }
