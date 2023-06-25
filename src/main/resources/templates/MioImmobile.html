@@ -15,9 +15,9 @@
 <h1>Dettagli immobile selezionato</h1>
 <table>
     <th>immagini</th>
-   <tr th:each="immobile:${wantedImmobile}">
-       <img th:src="${wantedImmobile.listaImmagini}">
-   </tr>
+    <tr th:each="immobile:${wantedImmobile}">
+        <img th:src="${wantedImmobile.listaImmagini}">
+    </tr>
     <tr>
         <th>Titolo</th>
         <td th:text="${wantedImmobile.titolo}"></td>
@@ -69,36 +69,37 @@
 </table>
 
 
-
-<h3>Crea Proposta</h3>
-
-<form action="#" th:action="@{'/site/offerte/propose/'+ ${wantedImmobile.idProprietario} + '/' + ${wantedImmobile.idImmobile} }" th:object="${tempOffertaDTO}" method="post">
-    <input type="text" name="prezzoProposto"  th:field="*{prezzoProposto}" placeholder="Inserisci la proposta" required><br>
-    <input type="text" name="commento"  th:field="*{commento}" placeholder="Inserisci altre informazioni"><br>
-      <input type="hidden" name="idImmobile" th:value="${wantedImmobile.idImmobile}">
-     <input type="hidden" name="idProprietario" th:value="${wantedImmobile.idProprietario}">
-    <input type="submit" value="Invia">
-</form>
-<p th:text="${message}"></p>
-
-
 <h3>Commenti</h3>
-<table>
-    <tr th:each="domanda:${wantedImmobile.listaDomandeImmobile}">
+<table th:each="domanda:${wantedImmobile.listaDomandeImmobile}">
+    <tr >
 
         <th>
-        <td>Da: <span th:text="${domanda.nomeProprietario}"></span> &nbsp; <span th:text="${domanda.cognomeProprietario}"></span></td>
-        <td> </td>
-        <td><span th:text="${domanda.contenuto}"></span></td></th>
+            <td>Da: <span th:text="${domanda.nomeProprietario}"></span> &nbsp; <span th:text="${domanda.cognomeProprietario}"></span></td>
+            <td> </td>
+            <td><span th:text="${domanda.contenuto}"></span></td>
+        </th>
+        <td></td>
+    </tr>
+    <tr>
+        <th>
+            <td></td>
+            <td> </td>
+            <td></td>
+        </th>
+        <td th:if="${#strings.isEmpty(domanda.risposta)}">
+            <form  action="#" th:action="@{'/site/immobile/reply/' + ${domanda.idDomanda}+'/'+ ${wantedImmobile.idImmobile}}" th:object="${tempNewDomandaDTO}" method="post">
+                <textarea name="commento" th:field="*{contenuto}" rows="1" cols="50" required></textarea><br>
+                <button type="submit">Invia risposta</button>
+            </form>
+        </td>
+        <td th:unless="${#strings.isEmpty(domanda.risposta)}">
+            <span th:text="${domanda.risposta}"></span>
+        </td>
+
     </tr>
 </table>
+<h2>Risposta immobile</h2>
 
-
-<h2>Commenta immobile</h2>
-<form  action="#" th:action="@{'/site/immobile/addQuestion/' + ${wantedImmobile.idImmobile}}" th:object="${tempNewDomandaDTO}" method="post">
-    <textarea name="commento" th:field="*{contenuto}" rows="4" cols="50" required></textarea><br>
-    <button type="submit">Invia commento</button>
-</form>
 <p class="okmessage" th:text="${message}"></p>
 
 

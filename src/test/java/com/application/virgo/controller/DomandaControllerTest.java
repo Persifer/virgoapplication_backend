@@ -161,7 +161,7 @@ public class DomandaControllerTest {
     }
 
     @Test
-    void addRispostaToDomanda_unautenticated_unsuccess() throws UtenteException, ImmobileException {
+    void addRispostaToDomanda_unautenticated_unsuccess() throws UtenteException, ImmobileException, DomandaException {
         Optional<Risposta> risposta = Optional.of(new Risposta());
         Optional<GetImmobileInfoDTO> newImmobile = Optional.of(new GetImmobileInfoDTO());
         RispostaDTO rispostaDTO = new RispostaDTO();

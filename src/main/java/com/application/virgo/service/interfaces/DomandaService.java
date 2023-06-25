@@ -34,5 +34,8 @@ public interface DomandaService {
      * @throws UtenteException se non è possibile reperire l'utente autenticato
      * @throws RispostaException se non è possibile reperire la risposta da pubblicare
      */
-    public Optional<Domanda> replyToDomanda(Risposta risposta, Long idDomanda) throws DomandaException, UtenteException, RispostaException;
+    public Optional<Domanda> replyToDomanda(Risposta risposta, Long idDomanda)
+            throws DomandaException, UtenteException, RispostaException;
+
+    public Optional<Domanda> getDomandainternalInformationById(Long idDomanda) throws DomandaException;
 }

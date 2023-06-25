@@ -84,4 +84,14 @@ public class DomandaServiceImpl implements DomandaService {
             throw new DomandaException("La domanda selezionata non esiste, sceglierne un'altra");
         }
     }
+
+    @Override
+    public Optional<Domanda> getDomandainternalInformationById(Long idDomanda) throws DomandaException {
+        Optional<Domanda> tempDomaanda = domandaRepository.getByIdDomanda(idDomanda);
+        if (tempDomaanda.isPresent()){
+            return tempDomaanda;
+        }else{
+            throw new DomandaException("Domanda non trovata");
+        }
+    }
 }

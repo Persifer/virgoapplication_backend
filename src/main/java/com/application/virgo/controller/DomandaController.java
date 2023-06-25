@@ -131,19 +131,20 @@ public class DomandaController {
                         Optional<GetImmobileInfoDTO> newImmobile = immobileService.getImmobileById(idImmobile);
                         model.addAttribute("message", "Risposta inserita con successo");
                         model.addAttribute("wantedImmobile", newImmobile.get());
-                        return "riuscito";
+
+                        return "redirect:/site/immobile/mioImmobile/"+newImmobile.get().getIdImmobile();
                     }else{
                         model.addAttribute("error", " 2 - Errore nell'inserimento della risposta");
-                        return "errore1";
+                        return "Fail";
                     }
                 }else{
                     model.addAttribute("error", "1 - Errore inserimento della risposta");
-                    return "errore2";
+                    return "Fail";
                 }
 
             }else{
                 model.addAttribute("error", "Bisogna essere autorizzati per inserire una risposta");
-                return "errore3";
+                return "Fail";
             }
 
         }catch (UtenteException error){

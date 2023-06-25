@@ -1,6 +1,7 @@
 package com.application.virgo.service.interfaces;
 
 import com.application.virgo.DTO.inputDTO.RispostaDTO;
+import com.application.virgo.exception.DomandaException;
 import com.application.virgo.exception.ImmobileException;
 import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.Risposta;
@@ -20,5 +21,5 @@ public interface RispostaService{
      * @throws ImmobileException se l'immobile non è presente
      * @throws UtenteException se l'utente non è presente
      */
-    public Optional<Risposta> addNewRisposta(RispostaDTO tempNewRisposta, Long idDomanda, Utente authUser, Long idImmobile) throws ImmobileException, UtenteException;
+    public Optional<Risposta> addNewRisposta(RispostaDTO tempNewRisposta, Long idDomanda, Utente authUser, Long idImmobile) throws ImmobileException, UtenteException, DomandaException;
 }

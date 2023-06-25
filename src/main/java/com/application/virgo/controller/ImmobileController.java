@@ -138,7 +138,7 @@ public class ImmobileController {
                     model.addAttribute("tempNewDomandaDTO", new DomandaDTO());
                     model.addAttribute("tempOffertaDTO", new InsertOffertaDTO());
 
-                    return "Immobile";
+                    return "MioImmobile";
                 }else{
                     model.addAttribute("error", "L'immobile voluto non è presente");
                     return "Fail";

@@ -21,7 +21,7 @@
     <tbody>
     <!-- Loop attraverso gli immobili caricati -->
     <tr th:each="immobile : ${listaImmobiliUtente}">
-        <th>Titolo<td><a th:href="@{/site/immobile/viewImmobile/{id}(id=${immobile.idImmobile})}" th:text="${immobile.titolo}"></a></td></th>
+        <th>Titolo<td><a th:href="@{/site/immobile/mioImmobile/{id}(id=${immobile.idImmobile})}" th:text="${immobile.titolo}"></a></td></th>
         <th>Indirizzo<td th:text="${immobile.via}" /></th>
         <th>Prezzo<td th:text="${immobile.prezzo}" /></th>
         <th><a th:href="@{/site/immobile/infoToModify/{id} (id=${immobile.idImmobile})}"}/>modifica immobile</th>
