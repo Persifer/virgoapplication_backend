@@ -12,7 +12,7 @@
     <tr th:each="contratti : ${listaContratti}">
         <th>Nome<td><a th:href="@{/getListaContratti/contratto/{id}(id=${contratti.idContratto})}" th:text="${contratti.nomeAcquirente}"></a></td></th>
         <th>Cognome<td th:text="${contratti.cognomeAcquirente}" /></th>
-        <th>Data<td th:text="${contratti.dataStipulazioneContratto}" /></th>
+        <th>Data<td th:text="${contratti.dataStipulazione}" /></th>
 
     </tr>
     </tbody>

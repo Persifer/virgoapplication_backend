@@ -2,9 +2,35 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Contratto selezionato</title>
 </head>
 <body>
-
+<h1>Dettagli contratto selezionato</h1>
+<table>
+    <th>nome Controparte</th>
+    <tr th:each="contratto:${listaContratti}">
+        <img th:src="${contratto.nomeControparte}">
+    </tr>
+    <tr>
+        <th>cognome Controparte</th>
+        <td th:text="${contratto.cognomeControparte}"></td>
+    </tr>
+    <tr>
+        <th>Descrizione</th>
+        <td th:text="${contratto.descrizione}"></td>
+    </tr>
+    <tr>
+        <th>prezzo Del Contratto</th>
+        <td th:text="${contratto.prezzoDelContratto}"></td>
+    </tr>
+    <tr>
+        <th>prezzo Del Contratto</th>
+        <td th:text="${contratto.dataStipulazioneContratto}"></td>
+    </tr>
+    <tr>
+        <th>titolo</th>
+        <td th:text="${contratto.titoloImmobile}"></td>
+    </tr>
+</table>
 </body>
 </html>
