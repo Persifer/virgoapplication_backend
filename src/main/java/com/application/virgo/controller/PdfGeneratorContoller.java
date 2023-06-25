@@ -36,7 +36,7 @@ public class PdfGeneratorContoller {
 
                 String currentDateTime = dateFormatter.format(new Date());
                 String headerKey = "Content-Disposition";
-                String headerValue = "attachment; filename=pdf_" + currentDateTime + ".pdf";
+                String headerValue = "attachment; filename=pdf_elemento.pdf";
                 response.setHeader(headerKey, headerValue);
                 pdfGeneratorService.exportPDF(authUser.get(), idContratto, response);
 
