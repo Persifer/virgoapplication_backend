@@ -67,25 +67,6 @@ public class DomandaServiceImpl implements DomandaService {
     }
 
     @Override
-    public Optional<Domanda> replyToDomanda(Risposta risposta, Long idDomanda)
-            throws DomandaException, UtenteException, RispostaException {
-        Optional<Domanda> tempDomandaInteressata = domandaRepository.findByIdDomanda(idDomanda);
-
-        if(tempDomandaInteressata.isPresent()){
-            Domanda domandaInteressata = tempDomandaInteressata.get();
-            if(risposta!=null){
-                domandaInteressata.setRisposta(risposta);
-                return Optional.of(domandaRepository.save(domandaInteressata));
-            }else {
-                throw new RispostaException("Impossibile trovare la risposta, riprovare");
-            }
-
-        }else{
-            throw new DomandaException("La domanda selezionata non esiste, sceglierne un'altra");
-        }
-    }
-
-    @Override
     public Optional<Domanda> getDomandainternalInformationById(Long idDomanda) throws DomandaException {
         Optional<Domanda> tempDomaanda = domandaRepository.getByIdDomanda(idDomanda);
         if (tempDomaanda.isPresent()){

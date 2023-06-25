@@ -132,18 +132,6 @@ public interface ImmobileService {
     public List<GetUtenteImmobiliDTO> getUtenteListaImmobili(Long indiceIniziale, Long pageSize, Utente proprietario)
             throws ImmobileException, UtenteException;
 
-    /**
-     * Permette di aggiungere una domanda ad un immobile
-     *
-     * @param Domanda               domanda da aggiungere all'immobile
-     * @param authUser              utente autenticato che aggiunge la domanda
-     * @param idImmobileInteressato id immobile a cui aggiungere la domanda
-     * @return L'immobile con la domanda aggiunta
-     * @throws ImmobileException se l'immobile non è stato trovato
-     * @throws UtenteException   se l'utente autenticato non esiste
-     */
-    public Optional<GetImmobileInfoDTO> addNewDomandaToImmobile(Domanda Domanda, Utente authUser, Long idImmobileInteressato)
-            throws ImmobileException, UtenteException;
 
     public String getTitoloImmboileById(Long idImmobile) throws ImmobileException;
 }

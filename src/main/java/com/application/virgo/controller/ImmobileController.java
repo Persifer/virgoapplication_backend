@@ -127,7 +127,6 @@ public class ImmobileController {
     @GetMapping("/mioImmobile/{id_immobile}")
     public String getImmobileInformationAsProprietarioImmobile(@PathVariable("id_immobile") Long idImmobile,
                                          ModelMap model){
-
         try{
             Optional<Utente> authenticatedUser = authService.getAuthUtente();
             if(authenticatedUser.isPresent()) {

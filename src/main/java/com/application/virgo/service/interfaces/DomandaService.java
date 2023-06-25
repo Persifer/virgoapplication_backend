@@ -23,19 +23,20 @@ public interface DomandaService {
     public Optional<Domanda> addNewDomanda(DomandaDTO tempDomandaDTO, Utente authUser, Long idImmobile)
             throws UtenteException, ImmobileException;
 
+    /**
+     * Permette di disabiliatare una domanda da parte dell'utente proprietario dell'immobile
+     * @param auhtUser utente autenticato
+     * @param idDomanda domanda da disabilitare
+     * @return ritorna la domanda disabitata
+     * @throws DomandaException se la domanda non esiste
+     */
     public Optional<Domanda> disabilitaDomanda(Utente auhtUser, Long idDomanda) throws DomandaException;
 
     /**
-     * Permette di rispondere ad una domanda da parte del proprietario
-     * @param risposta rispsota da associare ad una domanda
-     * @param idDomanda id domanda selezionata
-     * @return la domanda a cui abbiamo aggiunto al risposta
-     * @throws DomandaException se non è possibile reperire la domanda
-     * @throws UtenteException se non è possibile reperire l'utente autenticato
-     * @throws RispostaException se non è possibile reperire la risposta da pubblicare
+     * Permette di prelevare i dati di una domanda dal database
+     * @param idDomanda id domanda da prelevare
+     * @return la domanda richiesta
+     * @throws DomandaException se la domanda non esiste
      */
-    public Optional<Domanda> replyToDomanda(Risposta risposta, Long idDomanda)
-            throws DomandaException, UtenteException, RispostaException;
-
     public Optional<Domanda> getDomandainternalInformationById(Long idDomanda) throws DomandaException;
 }

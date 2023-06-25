@@ -377,37 +377,6 @@ public class ImmobileServiceImpl implements ImmobileService {
     }
 
     @Override
-    public Optional<GetImmobileInfoDTO> addNewDomandaToImmobile(Domanda domanda, Utente authUser, Long idImmobileInteressato)
-            throws ImmobileException, UtenteException {
-
-        // controllo che ci sia effettivamente un utente loggato
-        if(authUser != null){
-            // prelevo l'immobile dal database
-            Optional<Immobile> tempImmobileInteressato = getImmobileInternalInformationById(idImmobileInteressato);
-
-            if(tempImmobileInteressato.isPresent()){
-                Immobile immobileInteressato = tempImmobileInteressato.get();
-                // aggiungo la domanda all'immobile
-                List<Domanda> domandeImmobile = immobileInteressato.getDomandeImmobile();
-                domandeImmobile.add(domanda);
-                immobileInteressato.setDomandeImmobile(domandeImmobile);
-
-                // aggiungo la domanda all'utente e restistuisco il mapper contenente le informazioni del dto
-                // in modo tale che si possa aggiornare la pagina dell'immobile
-
-                return Optional.of(mapperInformation.apply(immobileRepo.save(immobileInteressato)));
-
-            }else{
-                throw new ImmobileException("Attenzione l'immobile selezionato non esiste");
-            }
-        }else{
-            throw new UtenteException("Bisogna essere loggati per poter pubblicare una domanda");
-        }
-
-
-    }
-
-    @Override
     public String getTitoloImmboileById(Long idImmobile) throws ImmobileException {
         Optional<Immobile> tempImmobile = immobileRepo.getImmobilesByIdImmobile(idImmobile);
         if(tempImmobile.isPresent()){

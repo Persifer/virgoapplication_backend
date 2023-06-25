@@ -53,18 +53,7 @@ public class DomandaController {
             if(authenticatedUser.isPresent()){
                 Optional<Domanda> addedDomanda = domandaService.addNewDomanda(tempNewDomandaDTO, authenticatedUser.get(), idImmobile);
                 if(addedDomanda.isPresent()){
-                    Optional<GetImmobileInfoDTO> newImmobile = immobileService.addNewDomandaToImmobile(addedDomanda.get(),
-                            authenticatedUser.get(), idImmobile);
-
-                    if(newImmobile.isPresent()){
-                        model.addAttribute("message", "Domanda inserita con successo");
-                        model.addAttribute("wantedImmobile", newImmobile.get());
-                        model.addAttribute("tempNewDomandaDTO", new DomandaDTO());
-                        return "redirect:/site/immobile/viewImmobile/"+newImmobile.get().getIdImmobile();
-                    }else{
-                        model.addAttribute("error", "L'immobile selezionato non esiste");
-                        return "Fail";
-                    }
+                    return "redirect:/site/immobile/viewImmobile/"+addedDomanda.get().getImmobileInteressato().getIdImmobile();
                 }else{
                     model.addAttribute("error", "Problemi con la creazione della domanda");
                     return "Fail";
@@ -123,20 +112,7 @@ public class DomandaController {
                 Optional<Risposta> addedRisposta = rispostaService.addNewRisposta(tempNewRispostaDTO, idDomanda,
                         authenticatedUser.get(), idImmobile);
                 if(addedRisposta.isPresent()){
-
-                    Optional<Domanda> newDomandaConRisposta = domandaService.replyToDomanda(addedRisposta.get(),
-                            idDomanda);
-
-                    if(newDomandaConRisposta.isPresent()){
-                        Optional<GetImmobileInfoDTO> newImmobile = immobileService.getImmobileById(idImmobile);
-                        model.addAttribute("message", "Risposta inserita con successo");
-                        model.addAttribute("wantedImmobile", newImmobile.get());
-
-                        return "redirect:/site/immobile/mioImmobile/"+newImmobile.get().getIdImmobile();
-                    }else{
-                        model.addAttribute("error", " 2 - Errore nell'inserimento della risposta");
-                        return "Fail";
-                    }
+                        return "redirect:/site/immobile/mioImmobile/"+addedRisposta.get().getDomandaDiRiferimento().getImmobileInteressato().getIdImmobile();
                 }else{
                     model.addAttribute("error", "1 - Errore inserimento della risposta");
                     return "Fail";
@@ -153,9 +129,9 @@ public class DomandaController {
         }catch (ImmobileException error){
             model.addAttribute("error", error.getMessage());
             return "errore5";
-        }catch (RispostaException error){
+       /* }catch (RispostaException error){
             model.addAttribute("error", error.getMessage());
-            return "errore6";
+            return "errore6";*/
         }catch (DomandaException error){
             model.addAttribute("error", error.getMessage());
             return "errore7";
