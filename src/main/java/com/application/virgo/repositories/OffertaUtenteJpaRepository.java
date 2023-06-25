@@ -27,7 +27,7 @@ public interface OffertaUtenteJpaRepository extends JpaRepository<OfferteUtente,
             "    SELECT immobile.id_immobile" +
             "    FROM immobile" +
             "        JOIN utente ON (immobile.id_utente = utente.id_utente)" +
-            "    WHERE utente.id_utente = :idRequestedUtente)" +
+            "    WHERE utente.id_utente = :idRequestedUtente) AND offerte_utente.is_enabled = 1 " +
             "GROUP BY offerte_utente.id_offerente", nativeQuery = true)
     public List<Long> getAllOfferteUtenteAsProprietario(@Param("idRequestedUtente") Long idProprietario );
 
@@ -53,7 +53,7 @@ public interface OffertaUtenteJpaRepository extends JpaRepository<OfferteUtente,
             "        JOIN utente utente ON (offerta.id_offerente = utente.id_utente) " +
             "        JOIN offerta offer ON (offerta.id_offerta = offer.id_offerta) " +
             "        JOIN immobile immobile ON (offer.id_immobile = immobile.id_immobile) " +
-            "    WHERE utente.id_utente = :idRequestedUtente and immobile.is_enabled = 1" +
+            "    WHERE utente.id_utente = :idRequestedUtente and immobile.is_enabled = 1 and offerta.is_enabled = 1" +
             "    group by offerta.id_proprietario ", nativeQuery = true)
     public List<Long> getAllOfferteUtenteAsOfferente(@Param("idRequestedUtente") Long idOfferente);
 

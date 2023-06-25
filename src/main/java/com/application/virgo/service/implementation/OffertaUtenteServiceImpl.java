@@ -225,6 +225,7 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
             //Prelevo la classe OffertaUtente che rappresenta l'offerta tra due utenti
             OfferteUtente acceptedOfferta = tempAcceptedOfferta.get();
 
+            // setto l'immobile come non più disponibile
             acceptedOfferta.getOffertaInteressata().getIdImmobileInteressato().setIsEnabled(Boolean.FALSE);
             immobileService.internalImmobileUpdate(acceptedOfferta.getOffertaInteressata().getIdImmobileInteressato());
 
