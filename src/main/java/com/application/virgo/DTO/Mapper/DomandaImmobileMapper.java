@@ -4,7 +4,10 @@ import com.application.virgo.DTO.outputDTO.DomandaImmobileDTO;
 import com.application.virgo.model.Domanda;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.function.Function;
+
+import static com.application.virgo.utilities.Constants.FORMATTER;
 
 @Component
 public class DomandaImmobileMapper implements Function<Domanda, DomandaImmobileDTO> {
@@ -17,7 +20,8 @@ public class DomandaImmobileMapper implements Function<Domanda, DomandaImmobileD
         domandaDTO.setCognomeProprietario(domanda.getProprietarioDomanda().getCognome());
 
         domandaDTO.setContenuto(domanda.getContenuto() != null ? domanda.getContenuto() : "--");
-        domandaDTO.setDataPubblicazione(domanda.getDataPubblicazione().toString());
+        domandaDTO.setDataPubblicazione( domanda.getDataPubblicazione() == null ?
+                FORMATTER.format(domanda.getDataPubblicazione()) : FORMATTER.format(Instant.now()));
 
         if(domanda.getRisposta() == null || domanda.getRisposta().getContenuto().isEmpty()
                 || domanda.getRisposta().getContenuto().isBlank()){

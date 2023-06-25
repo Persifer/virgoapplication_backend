@@ -82,6 +82,34 @@ public class DomandaController {
 
     }
 
+
+    @PostMapping("/disableQuestion/{id_domanda}")
+    public String disableDomandaOfImmobile(@PathVariable("id_domanda") Long idDomanda, ModelMap model){
+
+        try{
+            Optional<Utente> authenticatedUser = authService.getAuthUtente();
+            if(authenticatedUser.isPresent()){
+                Optional<Domanda> modifiedDomanda = domandaService.disabilitaDomanda( authenticatedUser.get(), idDomanda);
+                if(modifiedDomanda.isPresent()){
+                    model.addAttribute("message", "Domanda inserita con successo");
+                    return "redirect:/site/immobile/viewImmobile/"+modifiedDomanda.get().getImmobileInteressato().getIdImmobile();
+                }else{
+                    model.addAttribute("error", "Problemi con la creazione della domanda");
+                    return "Fail";
+                }
+
+            }else{
+                model.addAttribute("error", "Bisogna essere autenticati per inserire una domanda");
+                return "Login";
+            }
+
+        }catch ( Exception error){
+            model.addAttribute("error", error.getMessage());
+            return "Fail";
+        }
+
+    }
+
     // metodo che permette di aggiungere una risposta ad una domanda
     @PostMapping("/reply/{id_domanda}/{id_immobile}")
     public String addRispostaToDomanda(@ModelAttribute RispostaDTO tempNewRispostaDTO,

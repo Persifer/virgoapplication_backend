@@ -9,14 +9,15 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.function.Function;
 
+import static com.application.virgo.utilities.Constants.FORMATTER;
+
 @Component
 public class ViewOfferteBtwnUtentiMapper implements Function<OfferteUtente, ViewOfferteBetweenUtentiDTO> {
 
     @Override
     public ViewOfferteBetweenUtentiDTO apply(OfferteUtente offerteUtente) {
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm")
-                .withZone(ZoneId.of("Europe/Rome")); //Europe/Rome (UTC+02:00)
+
 
 
         ViewOfferteBetweenUtentiDTO offertaDTO = new ViewOfferteBetweenUtentiDTO();
@@ -41,7 +42,7 @@ public class ViewOfferteBtwnUtentiMapper implements Function<OfferteUtente, View
                 offerteUtente.getOfferente().getCognome() : "");
 
         offertaDTO.setDataOfferta(offerteUtente.getData_proposta() != null ?
-                formatter.format(offerteUtente.getData_proposta()) : formatter.format(Instant.now()));
+                FORMATTER.format(offerteUtente.getData_proposta()) : FORMATTER.format(Instant.now()));
 
         offertaDTO.setPrezzo(offerteUtente.getOffertaInteressata().getPrezzoProposto() != null ?
                 offerteUtente.getOffertaInteressata().getPrezzoProposto().toString() : "--");

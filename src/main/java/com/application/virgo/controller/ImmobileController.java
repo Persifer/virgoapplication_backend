@@ -124,6 +124,38 @@ public class ImmobileController {
         }
     }
 
+    @GetMapping("/mioImmobile/{id_immobile}")
+    public String getImmobileInformationAsProprietarioImmobile(@PathVariable("id_immobile") Long idImmobile,
+                                         ModelMap model){
+
+        try{
+            Optional<Utente> authenticatedUser = authService.getAuthUtente();
+            if(authenticatedUser.isPresent()) {
+                // se l'utente è autenticato allora posso vedere i dati del singolo immobile
+                Optional<GetImmobileInfoDTO> storedImmobile = immobileService.getImmobileByIdAsProprietario(authenticatedUser.get(), idImmobile);
+                if(storedImmobile.isPresent()){
+                    model.addAttribute("wantedImmobile", storedImmobile.get());
+                    model.addAttribute("tempNewDomandaDTO", new DomandaDTO());
+                    model.addAttribute("tempOffertaDTO", new InsertOffertaDTO());
+
+                    return "Immobile";
+                }else{
+                    model.addAttribute("error", "L'immobile voluto non è presente");
+                    return "Fail";
+                }
+            }else{
+                model.addAttribute("error", "Bisogna essere autenticato per richiedere un immobile");
+                return "Login";
+            }
+
+
+        }catch (ImmobileException | UtenteException error){
+            model.addAttribute("error", error.getMessage());
+            System.out.println("oci");
+            return "Fail";
+        }
+    }
+
     // Permette di ottenere i dati da modificare dell'immobile, serve per creare la pagina di modifica dei dati
     // PER PEPPE, DEVI FARE MODO CHE QUANDO L'UTENE CERCHI LA PAGINA DI MODIFICA PRIMA FA QUESTA RICHIESTA, METTE NEI CAMPI I VALORI GIA'
     // PRESENTI NEL DB NELLA PAGINA HTML E POI PUO' MODIFICARLO. SE HAI DUBBI CHIEDI

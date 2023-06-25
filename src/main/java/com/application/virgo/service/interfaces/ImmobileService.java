@@ -51,6 +51,8 @@ public interface ImmobileService {
      */
     public Optional<GetImmobileInfoDTO> getImmobileById(Long idImmobile) throws ImmobileException;
 
+    public Optional<GetImmobileInfoDTO> getImmobileByIdAsProprietario(Utente authUser, Long idImmobile) throws ImmobileException;
+
     /**
      * Ottiene i dati dell'immobile con l'ID specificato per l'aggiornamento delle informazioni
      *

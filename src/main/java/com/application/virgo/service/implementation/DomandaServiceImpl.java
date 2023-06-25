@@ -39,6 +39,7 @@ public class DomandaServiceImpl implements DomandaService {
             Optional<Immobile> immobileInteressato = immobileService.getImmobileInternalInformationById(idImmobile);
             if(immobileInteressato.isPresent()){
                 newDomanda.setImmobileInteressato(immobileInteressato.get());
+                newDomanda.setIsEnabled(Boolean.TRUE);
                 // creo la nuova domanda
                 return Optional.of(domandaRepository.save(newDomanda));
             }else{
@@ -46,6 +47,22 @@ public class DomandaServiceImpl implements DomandaService {
             }
         }else{
             throw new UtenteException("Bisogna essere loggati per poter pubblicare una domanda");
+        }
+    }
+
+    @Override
+    public Optional<Domanda> disabilitaDomanda(Utente auhtUser, Long idDomanda) throws DomandaException {
+        Optional<Domanda> tempRequestedDomanda = domandaRepository.findByIdDomanda(idDomanda);
+        if(tempRequestedDomanda.isPresent()){
+            Domanda requestedDomanda = tempRequestedDomanda.get();
+            if(requestedDomanda.getImmobileInteressato().getProprietario().getIdUtente().equals(auhtUser.getIdUtente())){
+                requestedDomanda.setIsEnabled(Boolean.FALSE);
+                return Optional.of(domandaRepository.save(requestedDomanda));
+            }else{
+                throw new DomandaException("Non puoi disabilitare una domanda non tua");
+            }
+        }else{
+            throw new DomandaException("Domanda non trovata, riprovare");
         }
     }
 

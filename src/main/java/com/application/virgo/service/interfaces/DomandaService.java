@@ -23,6 +23,8 @@ public interface DomandaService {
     public Optional<Domanda> addNewDomanda(DomandaDTO tempDomandaDTO, Utente authUser, Long idImmobile)
             throws UtenteException, ImmobileException;
 
+    public Optional<Domanda> disabilitaDomanda(Utente auhtUser, Long idDomanda) throws DomandaException;
+
     /**
      * Permette di rispondere ad una domanda da parte del proprietario
      * @param risposta rispsota da associare ad una domanda

@@ -137,10 +137,8 @@ public class ImmobileServiceImpl implements ImmobileService {
         }
     }
 
-    @Override
-    public Optional<GetImmobileInfoDTO> getImmobileById(Long idImmobile) throws ImmobileException{
 
-        Optional<Immobile> tempImmobile = immobileRepo.getImmobilesByIdImmobile(idImmobile);
+    private Optional<GetImmobileInfoDTO> setImmobileInformationCommonMethod(Optional<Immobile> tempImmobile) throws ImmobileException {
         if(tempImmobile.isPresent()){
             Immobile requestedImmobile = tempImmobile.get();
             requestedImmobile.setDomandeImmobile(immobileRepo.domandeImmobile(requestedImmobile.getIdImmobile()));
@@ -150,7 +148,20 @@ public class ImmobileServiceImpl implements ImmobileService {
         }else{
             throw new ImmobileException("L'immobile cercato non esiste!");
         }
+    }
 
+    @Override
+    public Optional<GetImmobileInfoDTO> getImmobileById(Long idImmobile) throws ImmobileException{
+
+        return setImmobileInformationCommonMethod(immobileRepo.getImmobilesByIdImmobile(idImmobile));
+
+    }
+
+    @Override
+    public Optional<GetImmobileInfoDTO> getImmobileByIdAsProprietario(Utente authUser, Long idImmobile) throws ImmobileException{
+
+        return setImmobileInformationCommonMethod(
+                immobileRepo.getImmobilesByIdImmobileAsProprietario(idImmobile, authUser.getIdUtente()));
 
     }
 
