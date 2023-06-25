@@ -73,6 +73,7 @@ public class ImmobileServiceImpl implements ImmobileService {
                 uploadedImages
                         .append("http://localhost:8080/")
                         .append(fileStorageService.save(file, idProprietario.toString(), fileName))
+                        .append("/")
                         .append(fileName)
                         .append("~");
                 iterator++;

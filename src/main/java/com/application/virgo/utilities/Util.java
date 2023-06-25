@@ -33,7 +33,7 @@ public class Util {
                 listaImmagini.isBlank() || listaImmagini.isEmpty()){
             image = "http://localhost:8080/no_image.jpg";
         }else {
-            image = List.of(listaImmagini.split("\\|")).get(0);
+            image = List.of(listaImmagini.split("~")).get(0);
         }
 
 

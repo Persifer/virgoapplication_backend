@@ -1,8 +1,14 @@
 package com.application.virgo.controller;
 
+import com.application.virgo.DTO.outputDTO.DettagliContrattoDTO;
+import com.application.virgo.exception.ContrattoException;
+import com.application.virgo.exception.ContrattoUtenteException;
+import com.application.virgo.exception.PreventivoException;
+import com.application.virgo.exception.UtenteException;
 import com.application.virgo.model.Utente;
 import com.application.virgo.service.interfaces.AuthService;
 import com.application.virgo.service.interfaces.CalcoloPreventiviService;
+import com.application.virgo.service.interfaces.ContrattoUtenteService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -24,6 +30,7 @@ public class ContrattoController {
 
     private AuthService authService;
     private CalcoloPreventiviService calcoloPreventiviService;
+    private final ContrattoUtenteService contrattoUtenteService;
 
     /**
      * Metodo che fa da end-point per la generazione di un preventivo di un contratto
@@ -34,29 +41,37 @@ public class ContrattoController {
      */
     @GetMapping("/calculate/{id_contratto}/{id_azienda}")
     public String calcolaPreventivo(ModelMap model, @PathVariable("id_contratto") Long idContratto,
-                                    @PathVariable("id_azienda") Integer selettoreAzienda){
-        try{
+                                    @PathVariable("id_azienda") Integer selettoreAzienda)
+            throws ContrattoException, ContrattoUtenteException, UtenteException {
+        try {
             // controlla che l'utente sia autenticato
             Optional<Utente> authUser = authService.getAuthUtente();
-            if(authUser.isPresent()){
+            if (authUser.isPresent()) {
                 // se autenticato procedo a calcolare il prezzo del preventivo
                 Double prezzoContratto = calcoloPreventiviService.calcolaPreventivoImmobile(idContratto, selettoreAzienda);
                 // lo aggiungo alla model
-                model.addAttribute("risultato", prezzoContratto);
-                // ritorno
-                return "redirect:/site/utente/getListaContratti/contratto/"+idContratto;
+                Optional<DettagliContrattoDTO> listContrattiUtente = contrattoUtenteService.getDettagliContratto(authUser.get(),
+                        idContratto);
 
-            }else{
+                if (listContrattiUtente.isPresent()) {
+                    // ritorno
+                    model.addAttribute("contratto", listContrattiUtente.get());
+                    model.addAttribute("risultato", "Risultato preventivo: " + prezzoContratto);
+                    return "SingoloContratto";
+                }else{
+                    return "redirect:/site/utente/getInfo";
+                }
+            } else {
                 // entro se l'utente non è autenticato
                 model.addAttribute("error", "Bisogna essere loggati per ");
                 return "Fail";
             }
-        }catch (Exception error){
+        } catch (Exception error) {
             // entro in caso di errore
             model.addAttribute("error", error.getMessage());
             return "Fail";
         }
-    }
 
+    }
 
 }

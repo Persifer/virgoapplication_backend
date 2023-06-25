@@ -15,6 +15,7 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.stream.Stream;
 
 @Service
@@ -50,12 +51,13 @@ public class FileStorageServiceImpl implements FileStorageService {
             }
 
             // salvo il file
-            Files.copy(file.getInputStream(), Path.of(pathForUtente+"\\"+nomeFile));
+            Files.copy(file.getInputStream(), Path.of(pathForUtente+"\\"+nomeFile), StandardCopyOption.REPLACE_EXISTING);
 
             // resituisco l'id utente
             return idUtente;
 
         } catch (Exception e) {
+             e.printStackTrace();
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
         }
     }

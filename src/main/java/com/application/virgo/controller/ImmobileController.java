@@ -81,16 +81,16 @@ public class ImmobileController {
                     return "Home";
                 } else {
                     model.addAttribute("error", "Errore nella creazione di un immobile, riprovare");
-                    return "Fail1";
+                    return "Fail";
                 }
             }else{
                 model.addAttribute("error", "Errore");
-                return "Fail2";
+                return "Fail";
             }
 
         }catch (Exception error){
             model.addAttribute("error", error.getMessage());
-            return "Fail3";
+            return "Fail";
         }
     }
 
