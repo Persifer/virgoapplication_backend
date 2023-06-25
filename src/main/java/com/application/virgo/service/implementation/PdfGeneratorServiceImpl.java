@@ -48,7 +48,7 @@ public class PdfGeneratorServiceImpl implements PdfGeneratorService {
 
             documento.open();
             documento.add(new Paragraph("Dettagli Contratto:"));
-            documento.add(new Paragraph("Contratto id: " + contratto.getContrattoInteressato().getIdContratto()));
+            documento.add(new Paragraph("Contratto id: " + contratto.getIdContrattoUtente().getIdContratto()));
 
             documento.add(new Paragraph("Venditore: " +
                     contratto.getVenditore().getCognome() + " " + contratto.getVenditore().getNome()));
