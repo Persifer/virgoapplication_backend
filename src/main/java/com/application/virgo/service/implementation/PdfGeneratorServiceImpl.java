@@ -9,6 +9,7 @@ import com.application.virgo.service.interfaces.PdfGeneratorService;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.Document;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +36,7 @@ public class PdfGeneratorServiceImpl implements PdfGeneratorService {
     }*/
 
     @Override
-    public void exportPDF(Utente authUser, Long idContratto)
+    public void exportPDF(Utente authUser, Long idContratto, HttpServletResponse response)
             throws ContrattoException, ContrattoUtenteException, FileNotFoundException {
 
         Optional<ContrattoUtente> contrattoUtente = contrattoUtenteService.getContrattoByIdUtenteAndIdContratto(authUser, idContratto);
@@ -46,6 +47,7 @@ public class PdfGeneratorServiceImpl implements PdfGeneratorService {
             Document documento = new Document();
 
             PdfWriter.getInstance(documento, new FileOutputStream("C:\\progetto_ing_sw\\files\\pdf"));
+
             documento.open();
             documento.add(new Paragraph("Dettagli Contratto:"));
             documento.add(new Paragraph("Contratto id: " + contratto.getContrattoInteressato().getIdContratto()));
