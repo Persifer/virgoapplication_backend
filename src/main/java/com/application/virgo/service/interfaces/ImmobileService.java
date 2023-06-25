@@ -6,7 +6,6 @@ import com.application.virgo.DTO.outputDTO.GetUtenteImmobiliDTO;
 import com.application.virgo.DTO.outputDTO.HomeImmobileDTO;
 import com.application.virgo.exception.ImmobileException;
 import com.application.virgo.exception.UtenteException;
-import com.application.virgo.model.Domanda;
 import com.application.virgo.model.Immobile;
 import com.application.virgo.model.Utente;
 
@@ -113,7 +112,7 @@ public interface ImmobileService {
      * @param immobileToUpdate L'immobile da aggiornare
      * @return True se l'aggiornamento è avvenuto correttamente, False altrimenti
      */
-    public Boolean internalImmobileUpdate(Immobile immobileToUpdate);
+    public Boolean updateImmobileAfterAcceptance(Long immobileToUpdate) throws ImmobileException;
 
     // =====================================================================================================================
 

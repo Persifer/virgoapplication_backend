@@ -211,11 +211,8 @@ public class UtenteController {
         }catch (UtenteException error){
             model.addAttribute("error", error.getMessage());
             return "Login";
-        }catch (ContrattoUtenteException error){
+        }catch (ContrattoUtenteException | ContrattoException error){
             model.addAttribute("error", error.getMessage());
-            return "Utente";
-        } catch (ContrattoException e) {
-            e.printStackTrace();
             return "Utente";
         }
     }

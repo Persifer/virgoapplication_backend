@@ -47,7 +47,7 @@ public class Immobile {
     private Utente proprietario;
 
     // Proposte in cui è presente il singolo immobile
-    @OneToMany(mappedBy = "idImmobileInteressato")
+    @OneToMany(mappedBy = "idImmobileInteressato", fetch = FetchType.EAGER)
     private Set<Offerta> proposteLegateImmobile;
 
     @OneToOne(mappedBy = "immobileInteressato")

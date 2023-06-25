@@ -31,7 +31,7 @@ public class Util {
 
         if(listaImmagini== null ||
                 listaImmagini.isBlank() || listaImmagini.isEmpty()){
-            image = "C:\\progetto_ing_sw\\files\\no_image.jpg";
+            image = "http://localhost:8080/no_image.jpg";
         }else {
             image = List.of(listaImmagini.split("\\|")).get(0);
         }
@@ -45,7 +45,7 @@ public class Util {
 
         if(listaImmagini== null ||
                 listaImmagini.isBlank() || listaImmagini.isEmpty()){
-            image = List.of("C:\\progetto_ing_sw\\files\\no_image.jpg");
+            image = List.of("http://localhost:8080/no_image.jpg");
         }else {
             image = List.of(listaImmagini.split("\\|"));
         }

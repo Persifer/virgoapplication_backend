@@ -133,11 +133,11 @@ class OffertaControllerTest {
         ContrattoUtente acceptedOfferta = new ContrattoUtente();
 
         when(authService.getAuthUtente()).thenReturn(Optional.of(authenticatedUser));
-        when(offertaUtenteService.acceptOfferta(idOfferta, authenticatedUser)).thenReturn(Optional.of(acceptedOfferta));
+        when(offertaUtenteService.acceptOfferta(idOfferta, authenticatedUser, 1L)).thenReturn(Optional.of(acceptedOfferta));
 
-        String viewName = offertaController.acceptOfferta(idOfferta, 1,model);
+        String viewName = offertaController.acceptOfferta(idOfferta, 1l,1,model);
 
-        verify(offertaUtenteService).acceptOfferta(idOfferta, authenticatedUser);
+        verify(offertaUtenteService).acceptOfferta(idOfferta, authenticatedUser,1l);
         assertEquals("Offerta", viewName);
         assertTrue(model.containsKey("error"));
     }
@@ -149,11 +149,11 @@ class OffertaControllerTest {
 
         when(authService.getAuthUtente()).thenReturn(Optional.empty());
 
-        String viewName = offertaController.acceptOfferta(idOfferta, 1, model);
+        String viewName = offertaController.acceptOfferta(idOfferta, 1l,1, model);
 
         assertEquals("Login", viewName);
         assertTrue(model.containsKey("error"));
-        verify(offertaUtenteService, never()).acceptOfferta(anyLong(), any());
+        verify(offertaUtenteService, never()).acceptOfferta(anyLong(), any(),1l);
     }
 
     @Test

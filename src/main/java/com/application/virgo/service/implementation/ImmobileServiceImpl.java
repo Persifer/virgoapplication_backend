@@ -320,8 +320,13 @@ public class ImmobileServiceImpl implements ImmobileService {
 
     }
 
-    public Boolean internalImmobileUpdate(Immobile immobileToUpdate){
-        immobileRepo.save(immobileToUpdate);
+    public Boolean updateImmobileAfterAcceptance(Long immobileToUpdate) throws ImmobileException {
+        Optional<Immobile> immobile = getImmobileInternalInformationById(immobileToUpdate);
+        if(immobile.isPresent()){
+            Immobile getImmobile = immobile.get();
+            getImmobile.setIsEnabled(Boolean.FALSE);
+            immobileRepo.save(getImmobile);
+        }
         return Boolean.TRUE;
 
     }

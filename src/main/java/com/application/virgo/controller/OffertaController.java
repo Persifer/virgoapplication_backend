@@ -146,14 +146,15 @@ public class OffertaController {
             return "Fail";
         }
     }
-    @PostMapping("/accept/{id_proposta}/{isAcquirente}")
+    @PostMapping("/accept/{id_proposta}/{id_immobile}/{isAcquirente}")
     public String acceptOfferta(@PathVariable("id_proposta") Long idOfferta,
+                                @PathVariable("id_immobile") Long idImmobile,
                                 @PathVariable("isAcquirente") Integer isAcquirente,
                                 ModelMap model) {
         try{
             Optional<Utente> authenticatedUser = authService.getAuthUtente();
             if(authenticatedUser.isPresent()) {
-                Optional<ContrattoUtente> acceptedOfferta = offertaUtenteService.acceptOfferta(idOfferta, authenticatedUser.get());
+                Optional<ContrattoUtente> acceptedOfferta = offertaUtenteService.acceptOfferta(idOfferta, authenticatedUser.get(), idImmobile);
 
                 if(acceptedOfferta.isPresent()){
                     model.addAttribute("okmessage", "Congratulazioni, hai accettato l'offerta");

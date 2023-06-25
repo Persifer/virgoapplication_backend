@@ -38,8 +38,6 @@ public interface OffertaUtenteService {
      * Permette di prelevare tutte le offerte ricevute dall'utente proprietario di un immobile
      *
      * @param offerente l'utente autenticato che è proprietario dell'immobile
-     * @param offset    indice iniziale per la paginazione
-     * @param pageSize  dimensione della pagina
      * @return La lista di tutti gli id degli utenti con cui l'utente ha una contrattazione aperta su un suo immobile
      * @throws UtenteException        nel caso in cui l'utente autenticato non sia stato passato correttamente
      * @throws OffertaUtenteException nel caso in cui la grandezza della pagina superi quella impostata dal server
@@ -79,7 +77,7 @@ public interface OffertaUtenteService {
      * @throws ContrattoException se non è stato possibile creare il contratto
      * @throws ContrattoUtenteException se non è stato possibile associare il contratto ai due utenti
      */
-    public Optional<ContrattoUtente> acceptOfferta(Long idOfferta, Utente authUser)
+    public Optional<ContrattoUtente> acceptOfferta(Long idOfferta, Utente authUser, Long idImmobile)
             throws OffertaException, OffertaUtenteException, UtenteException, ImmobileException, ContrattoException, ContrattoUtenteException;
 
     /**

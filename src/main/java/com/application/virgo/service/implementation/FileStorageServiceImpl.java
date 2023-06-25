@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 
 public class FileStorageServiceImpl implements FileStorageService {
 
-    private final Path root = Paths.get("C:\\progetto_ing_sw\\files\\images");
+    private final Path root = Paths.get("C:\\progetto_ing_sw\\src\\main\\resources\\static");
 
     private Path setPathUtente(String idUtente){
         return Path.of(root+"\\"+idUtente);

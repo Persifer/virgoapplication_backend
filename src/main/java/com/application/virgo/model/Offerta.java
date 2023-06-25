@@ -24,7 +24,7 @@ public class Offerta {
     @OneToMany(mappedBy = "offertaInteressata")
     private Set<OfferteUtente> offerteLegate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_immobile")
     private Immobile idImmobileInteressato;
 

@@ -192,12 +192,14 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
                     offertaToAccept.setIsDeclinato(!isAccettata);
 
                     //SE TRUE ALLORA HO ACCETTATO,
-                    if(isAccettata){
+                    if(isAccettata == Boolean.FALSE){
                         offertaToAccept.setData_accettazione(Instant.now());
                         offertaToAccept.setIsAccettato(Boolean.TRUE);
+                        offertaToAccept.setIsDeclinato(Boolean.FALSE);
                     }else{
                         offertaToAccept.setData_declino(Instant.now());
-                        offertaToAccept.setIsDeclinato(Boolean.FALSE);
+                        offertaToAccept.setIsDeclinato(Boolean.TRUE);
+                        offertaToAccept.setIsAccettato(Boolean.FALSE);
                     }
 
                     return Optional.of(offertaUtenteRepository.save(offertaToAccept));
@@ -214,7 +216,7 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
 
 
     @Override
-    public Optional<ContrattoUtente> acceptOfferta(Long idOfferta, Utente proprietarioImmobile)
+    public Optional<ContrattoUtente> acceptOfferta(Long idOfferta, Utente proprietarioImmobile, Long idImmobile)
             throws ContrattoException, OffertaUtenteException, UtenteException, ImmobileException,
             OffertaException, ContrattoUtenteException {
 
@@ -224,11 +226,14 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
         // Controllo che l'accettazione abbia avuto successo
         if(tempAcceptedOfferta.isPresent()){
             //Prelevo la classe OffertaUtente che rappresenta l'offerta tra due utenti
-            OfferteUtente acceptedOfferta = tempAcceptedOfferta.get();
 
-            // setto l'immobile come non più disponibile
-            acceptedOfferta.getOffertaInteressata().getIdImmobileInteressato().setIsEnabled(Boolean.FALSE);
-            immobileService.internalImmobileUpdate(acceptedOfferta.getOffertaInteressata().getIdImmobileInteressato());
+            OfferteUtente acceptedOfferta = tempAcceptedOfferta.get();
+            Optional<Offerta> offertaProposta = offertaService.getOffertaDetails(idOfferta);
+            if(offertaProposta.isPresent()){
+                immobileService.updateImmobileAfterAcceptance(offertaProposta.get().getIdImmobileInteressato().getIdImmobile());
+            }
+
+
 
 
             //Dalla classe OffertaUtente prelevo i dati per la creazione del contratto
