@@ -153,7 +153,7 @@ public class UtenteController {
      * Permette di prelevare la lista delle offerte inviate di un utente
      * @param model classe contenitore per passare dati tra il controller e la vista
      * @return la view delle liste delle offerte con altri utenti
-     *//
+     */
     @GetMapping("/getListaOfferte")
     public String getOfferte(ModelMap model){
         try{
