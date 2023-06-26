@@ -102,7 +102,7 @@ public class DomandaControllerTest {
 
         String viewName = domandaController.addDomandaToImmobile(domandaDTO, 1L, model);
 
-        assertEquals("errore4", viewName);
+        assertEquals("Fail", viewName);
         assertTrue(model.containsAttribute("error"));
 
     }
@@ -123,7 +123,7 @@ public class DomandaControllerTest {
 
         String viewName = domandaController.addDomandaToImmobile(domandaDTO, 1L, model);
 
-        assertEquals("errore2", viewName);
+        assertEquals("Fail", viewName);
         assertTrue(model.containsAttribute("error"));
     }
 
@@ -143,13 +143,11 @@ public class DomandaControllerTest {
         when(rispostaService.addNewRisposta(rispostaDTO, 1L, authUser.get(),1L))
                 .thenReturn(risposta);
 
-
-
         when(immobileService.getImmobileById(1l)).thenReturn(newImmobile);
 
         String viewName = domandaController.addRispostaToDomanda(rispostaDTO,1L, 1L, model);
 
-        assertEquals("riuscito", viewName);
+        assertEquals("redirect:/site/immobile/mioImmobile/1", viewName);
         assertTrue(model.containsAttribute("message"));
     }
 
@@ -168,7 +166,7 @@ public class DomandaControllerTest {
 
         String viewName = domandaController.addRispostaToDomanda(rispostaDTO,1L, 1L, model);
 
-        assertEquals("errore4", viewName);
+        assertEquals("Login", viewName);
         assertTrue(model.containsAttribute("error"));
     }
 
@@ -189,7 +187,7 @@ public class DomandaControllerTest {
 
         String viewName = domandaController.addRispostaToDomanda(rispostaDTO,1L, 1L, model);
 
-        assertEquals("errore2", viewName);
+        assertEquals("Fail", viewName);
         assertTrue(model.containsAttribute("error"));
     }
 
