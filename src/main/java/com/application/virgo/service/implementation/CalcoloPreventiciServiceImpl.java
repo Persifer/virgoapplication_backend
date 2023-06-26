@@ -45,8 +45,10 @@ public class CalcoloPreventiciServiceImpl implements CalcoloPreventiviService {
                     throw new PreventivoException("L'azienda selezionata non esiste");
             }
 
-            return contextPreventivi.calcolaPreventivo(immobileContratto.getPrezzo(),
+            Double elem = contextPreventivi.calcolaPreventivo(immobileContratto.getPrezzo(),
                     Integer.parseInt(immobileContratto.getLocali()), Integer.parseInt(immobileContratto.getMetriQuadri()));
+
+            return elem;
         }
 
         return 0.0d;

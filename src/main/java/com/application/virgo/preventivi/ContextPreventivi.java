@@ -1,5 +1,6 @@
 package com.application.virgo.preventivi;
 
+import com.application.virgo.preventivi.implementation.AlgoritmoAziendaXYZ;
 import com.application.virgo.preventivi.interfaccia.AlgoritmoDiPreventivo;
 
 public class ContextPreventivi {
