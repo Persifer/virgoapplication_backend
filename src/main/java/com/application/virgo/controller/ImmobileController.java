@@ -3,6 +3,7 @@ package com.application.virgo.controller;
 import com.application.virgo.DTO.inputDTO.DomandaDTO;
 import com.application.virgo.DTO.inputDTO.ImmobileDTO;
 import com.application.virgo.DTO.inputDTO.InsertOffertaDTO;
+import com.application.virgo.DTO.outputDTO.DomandaImmobileDTO;
 import com.application.virgo.DTO.outputDTO.GetImmobileInfoDTO;
 import com.application.virgo.DTO.outputDTO.GetUtenteImmobiliDTO;
 import com.application.virgo.DTO.outputDTO.HomeImmobileDTO;

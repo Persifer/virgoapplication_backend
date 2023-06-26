@@ -11,17 +11,17 @@
 
     <form action="#" th:action="@{'/site/offerte/rilancia/' + ${inviatoDaProprietario}}" method="post" th:object="${tempOffertaDTO}">
 
-        <label for="prezzoProposto">prezzoProposto: </label>
+        <label for="prezzoProposto">prezzoProposto: </label><br>
         <input type="text" id="prezzoProposto" th:field="*{prezzoProposto}" />
         <br><br>
-        <label for="commento">commento: </label>
+        <label for="commento">commento: </label><br>
         <input type="text" id="commento" th:field="*{commento}" />
 
         <input type="hidden" id="idProprietario" name="idProprietario" th:value="${idProprietario}" />
-
         <input type="hidden" id="idImmobile" name="idImmobile"  th:value="${idImmobile}" />
+
         <br><br>
-        <button type="submit">Invia</button>
+        <input type="submit" value="Invia"></input>
     </form>
 
 </body>

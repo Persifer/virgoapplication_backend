@@ -8,22 +8,6 @@
             justify-content: space-between;
             align-items: center;
         }
-        .cardEffect {
-            border-radius: 4px;
-            box-shadow: 0 2px 2px rgba(0, 0, 0, 0.14),
-            0 1px 5px rgba(0, 0, 0, 0.12),
-            0 3px 1px -2px rgba(0, 0, 0, 0.2);
-            background-color: #fff;
-            padding: 16px;
-            transition: box-shadow 0.3s;
-        }
-
-        .cardEffect:hover {
-            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.14),
-            0 1px 18px rgba(0, 0, 0, 0.12),
-            0 3px 5px -1px rgba(0, 0, 0, 0.2);
-        }
-
     </style>
     <nav role="navigation" aria-label="Navigation">
         <a href="/site/immobile/list/0/20">Home</a>
@@ -99,32 +83,37 @@
 <br><br>
 
 <h2 style="text-align: center;">Commenti</h2>
-    <div style="display: flex;justify-content: center">
+    <div style="display: flex;justify-content: center;width: 80%">
         <div class="cardEffect">
-            <table th:each="domanda:${wantedImmobile.listaDomandeImmobile}">
+            <table>
+                <thead>
                 <tr>
-                    <th>
-                    <td>Da: <span th:text="${domanda.nomeProprietario}"></span> <span th:text="${domanda.cognomeProprietario}"></span></td>
-                    <td> </td>
-                    <td><span th:text="${domanda.contenuto}"></span></td>
-                    </th>
-                    <td></td>
+                    <th>Inviato da</th>
+                    <th>Domanda</th>
+                    <th>Risposta</th>
                 </tr>
-                <tr>
-                    <th>
-                    <td></td>
-                    <td> </td>
-                    <td></td>
-                    </th>
-                    <td th:if="${#strings.isEmpty(domanda.risposta)}">
-                        <form  action="#" th:action="@{'/site/immobile/reply/' + ${domanda.idDomanda}+'/'+ ${wantedImmobile.idImmobile}}" th:object="${tempNewDomandaDTO}" method="post">
-                            <textarea name="commento" th:field="*{contenuto}" rows="1" cols="50" required></textarea><br>
-                            <button type="submit">Invia risposta</button>
-                        </form>
-                    </td>
-                    <td th:unless="${#strings.isEmpty(domanda.risposta)}">
-                        <span th:text="${domanda.risposta}"></span>
-                    </td>
+                </thead>
+                <tbody>
+                    <tr th:each="domanda:${wantedImmobile.listaDomandeImmobile}">
+                        <td>Da: <span th:text="${domanda.nomeProprietario}"></span> &nbsp; <span th:text="${domanda.cognomeProprietario}"></span></td>
+                        <td><span th:text="${domanda.contenuto}"></span></td>
+                        <td th:unless="${#strings.isEmpty(domanda.risposta)}">
+                            <span th:text="${domanda.risposta}"></span>
+                        </td>
+                        <td th:if="${#strings.isEmpty(domanda.risposta)}">
+                            <form  action="#" th:action="@{'/site/immobile/reply/' + ${domanda.idDomanda}+'/'+ ${wantedImmobile.idImmobile}}" th:object="${tempNewDomandaDTO}" method="post">
+                                <textarea name="commento" th:field="*{contenuto}" rows="1" cols="50" required></textarea><br>
+                                <button type="submit">Invia risposta</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form  method="post" th:action="@{/site/immobile/disableQuestion/{idDomanda}(idDomanda=${domanda.idDomanda})}">
+                                <button class="deleteButton" type="submit">Disabilita commento</button>
+                            </form>
+                        </td>
+
+                    </tr>
+                </tbody>
 
                 </tr>
             </table>
