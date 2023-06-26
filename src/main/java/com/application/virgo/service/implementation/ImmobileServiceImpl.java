@@ -62,16 +62,21 @@ public class ImmobileServiceImpl implements ImmobileService {
             );
         }
 
-        for(MultipartFile file : uploadedFile){
-            fileName = iterator+"_"+savedImmobile.getIdImmobile().toString()+"_"+file.getOriginalFilename();
-            fileStorageService.save(file, idProprietario.toString(), fileName);
-            uploadedImages
-                    .append("http://localhost:8080/")
-                    .append(fileStorageService.save(file, idProprietario.toString(), fileName))
-                    .append(fileName)
-                    .append("~");
-            iterator++;
+        if(uploadedFile.length != 0){
+            for(MultipartFile file : uploadedFile){
+                fileName = iterator+"_"+savedImmobile.getIdImmobile().toString()+"_"+file.getOriginalFilename();
+                fileStorageService.save(file, idProprietario.toString(), fileName);
+                uploadedImages
+                        .append("http://localhost:8080/")
+                        .append(fileStorageService.save(file, idProprietario.toString(), fileName))
+                        .append(fileName)
+                        .append("~");
+                iterator++;
+            }
+        }else{
+            uploadedImages = new StringBuilder("");
         }
+
 
         savedImmobile.setListaImmagini(uploadedImages.toString());
 
