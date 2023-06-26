@@ -252,7 +252,7 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
                     offertaToAccept.setIsDeclinato(!isAccettata);
 
                     //SE TRUE ALLORA HO ACCETTATO,
-                    if(isAccettata){
+                    if(!isAccettata){
                         offertaToAccept.setData_accettazione(Instant.now());
                         offertaToAccept.setIsAccettato(Boolean.TRUE);
                         offertaToAccept.setIsDeclinato(Boolean.FALSE);
