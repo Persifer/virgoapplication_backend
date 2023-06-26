@@ -234,8 +234,8 @@ public class UtenteServiceImpl implements UtenteService {
      */
     public Optional<Utente> tryRegistrationHandler(UtenteDTO tempNewUtente) throws UtenteException {
 
-
-        if(utenteRepo.getUtenteByEmail(tempNewUtente.getEmail()).isPresent()){
+        Optional<Utente> checkedUtente = utenteRepo.getUtenteByEmail(tempNewUtente.getEmail());
+        if(checkedUtente.isEmpty()){
             Utente newUtente = mapperUtente.apply(tempNewUtente);
 
             // Controllo che la data di nascita inserita correttamente
@@ -249,6 +249,11 @@ public class UtenteServiceImpl implements UtenteService {
                     //  setto il ruolo dell'utente
                     newUtente.setUserRole(Set.of(tempRuolo.get()));
                     newUtente.setDomandeUtente(Set.of());
+
+                    newUtente.setIsAccountNonExpired(Boolean.TRUE);
+                    newUtente.setIsAccountNonLocked(Boolean.TRUE);
+                    newUtente.setIsCredentialsNonExpired(Boolean.TRUE);
+                    newUtente.setIsEnabled(Boolean.TRUE);
 
                     return Optional.of(utenteRepo.save(newUtente));
                 }else{

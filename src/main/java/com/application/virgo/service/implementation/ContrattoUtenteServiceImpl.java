@@ -62,15 +62,15 @@ public class ContrattoUtenteServiceImpl implements ContrattoUtenteService {
                 if(pageSize < Constants.PAGE_SIZE){
 
                     // prelevo e metto in una Page<ContrattoUtente> tutti i contratti legati ad un utente
-                    Page<ContrattoUtente> listContratti = contrattoUtenteRepo.findContrattiRelatedToUtente(
-                            PageRequest.of(inidiceIniziale.intValue(), pageSize.intValue()),
+                    List<ContrattoUtente> listContratti = contrattoUtenteRepo.findContrattiRelatedToUtente(
                             venditore.getIdUtente()
                             );
 
                     if(!listContratti.isEmpty()){
                         // se non è vuota estraggo tutti i dati dei contratti per singolo contratto_utente
                         for(ContrattoUtente contrattoUtente : listContratti){
-                            Optional<Contratto> contract = contrattoService.getContrattoById(contrattoUtente.getIdContrattoUtente().getIdContratto());
+                            Optional<Contratto> contract =
+                                    contrattoService.getContrattoById(contrattoUtente.getContrattoInteressato().getIdContratto());
                             if (contract.isPresent()){
                                 contrattoUtente.setContrattoInteressato(contract.get());
                                 result.add(contrattiUtenteMapper.apply(contrattoUtente));

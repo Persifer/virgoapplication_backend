@@ -46,7 +46,7 @@ public class RegistrationController {
      * @return la login page
      */
     @PostMapping()
-    public String postActionRegister(@ModelAttribute @Valid UtenteDTO newUtente) {
+    public String postActionRegister(@ModelAttribute UtenteDTO newUtente) {
 
         try {
 

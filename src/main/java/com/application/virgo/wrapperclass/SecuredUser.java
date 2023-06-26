@@ -8,6 +8,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Wrapper class che racchiude le informazioni di un utente in una variabile UserDetails
+ */
 public class SecuredUser implements UserDetails {
 
 

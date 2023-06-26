@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -17,7 +18,7 @@ public interface ContrattoUtenteJpaRepository extends JpaRepository<ContrattoUte
 
     @Query(value = "select * from contratto_utente where (id_acquirente = :idUtente or id_venditore = :idUtente)",
             nativeQuery = true)
-    public Page<ContrattoUtente> findContrattiRelatedToUtente(Pageable page, @Param("idUtente") Long venditore);
+    public List<ContrattoUtente> findContrattiRelatedToUtente(@Param("idUtente") Long venditore);
 
     public Long countByVenditore(Utente venditore);
 
