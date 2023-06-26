@@ -71,6 +71,7 @@
                     <form method="post" th:action="@{'/site/offerte/decline/' + ${offerta.idOfferta} + '/' + ${isAcquirente}}">
                         <button>Declina</button>
                     </form>
+
                     <form method="get" th:action="@{'/site/offerte/goToRilancio/' + ${offerta.idPropietario} + '/' + ${offerta.idImmobile} + '/' + ${offerta.inviatoDaProprietario}}">
                         <button>Rilancia</button>
                     </form>

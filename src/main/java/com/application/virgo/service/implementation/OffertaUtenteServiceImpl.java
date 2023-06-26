@@ -63,6 +63,8 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
         return Optional.of(offertaUtenteRepository.save(offertaToProprietario));
     }
 
+    /* TODO -> avvisare peppe che mette le offerte fatte dall'utente nella sezione sbagliata
+      */
 
     @Override
     public Optional<OfferteUtente> saveOffertaToUtente(Utente offerente, Offerta offertaProposta, Long idVenditore)
@@ -85,26 +87,39 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
     }
 
     @Override
-    public Optional<OfferteUtente> rilanciaOffertaToUtente(Utente venditore, Offerta offertaProposta,
-                                                           Long idOfferente, Boolean madeByProp)
+    public Optional<OfferteUtente> rilanciaOffertaToUtente(Utente authUser, Offerta offertaProposta,
+                                                           Long idControparte, Boolean madeByProp)
             throws UtenteException, OffertaUtenteException{
 
-        Optional<Utente> utenteVenditore = getInformationUtente(idOfferente);
+        Optional<Utente> controparte = getInformationUtente(idControparte);
+        Optional<OfferteUtente> newOfferta ;
+        if(controparte.isPresent()){
+            // allora creiamo l'offerta // ho in ordine offerente offertaProposta proprietario
+            // se l'offerta è fatta dal proprietario
+            if(!madeByProp){
+                // allora la controparte è l'offerente e l'utente autenticato è il proprietario
+                 newOfferta = saveOffertaCommonMethod(controparte.get(), offertaProposta, authUser, Boolean.TRUE);
+            }else{
+                // allora la controparte è il proprietario e l'utente autenticato è l'offerente
+                newOfferta = saveOffertaCommonMethod(authUser, offertaProposta, controparte.get(), Boolean.FALSE);
+            }
 
-        if(utenteVenditore.isPresent()){
-            // allora creiamo l'offerta
-            Optional<OfferteUtente> newOfferta =
-                    saveOffertaCommonMethod(utenteVenditore.get(), offertaProposta, venditore, madeByProp);
 
             if(newOfferta.isPresent()){
+                OfferteUtente offertaUtente = newOfferta.get();
+
+                System.out.println("-> idProp: " + offertaUtente.getProprietario().getIdUtente() +
+                        "-> idOfferente: " + offertaUtente.getOfferente().getIdUtente() +
+                        "-> idOfferta: " + offertaUtente.getOffertaInteressata().getIdOfferta()
+                         );
                 offertaUtenteRepository.updateOldOfferte(
                         newOfferta.get().getProprietario().getIdUtente(),
                         newOfferta.get().getOfferente().getIdUtente(),
-                        Instant.now(),
+                        Instant.now(), offertaProposta.getIdImmobileInteressato().getIdImmobile(),
                         newOfferta.get().getOffertaInteressata().getIdOfferta()
                 );
 
-                return newOfferta;
+            return newOfferta;
             }else{
                 throw new OffertaUtenteException("Non si può effetturare un'offerta su un immobile con proprietario diverso da quello indicato!");
             }

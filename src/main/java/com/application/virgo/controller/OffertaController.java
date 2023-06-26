@@ -81,8 +81,8 @@ public class OffertaController {
         }
     }
 
-    @GetMapping("/goToRilancio/{id_proprietario}/{id_immobile}/{madeByProp}")
-    public String getToInsertRilancio(ModelMap model, @PathVariable("id_proprietario") Long idProprietario,
+    @GetMapping("/goToRilancio/{id_controparte}/{id_immobile}/{madeByProp}")
+    public String getToInsertRilancio(ModelMap model, @PathVariable("id_controparte") Long idProprietario,
                                       @PathVariable("id_immobile") Long idImmobile,
                                       @PathVariable("madeByProp") Boolean madeByProprietario){ // madeByProprietario deve essere un booleano
 
@@ -106,6 +106,8 @@ public class OffertaController {
                     if (tempOffertaDTO.getIdImmobile() != null) {
                         Optional<Offerta> newOfferta = offertaService.createNewOfferta(tempOffertaDTO);
                         if(newOfferta.isPresent()){
+                            // qui made by proprietario è significativo e mi permette di capire chi sta facendo l'offerta
+                            // io passo, in ordine: utenteAutenticato, nuovaOfferta, idControparte, madeByProp
                             Optional<OfferteUtente> newOffertaToUtente =
                                     offertaUtenteService.rilanciaOffertaToUtente(authenticatedUser.get(),
                                             newOfferta.get(), tempOffertaDTO.getIdProprietario(),
@@ -113,7 +115,17 @@ public class OffertaController {
                             if(newOffertaToUtente.isPresent()){
                                 model.addAttribute("message", "offerta creata correttamente");
                                 model.addAttribute("newOffertaToUtente", newOffertaToUtente.get());
-                                return "SingolaOfferta";
+
+                                if(madeByProprietario){ // /getListaOfferte/storico/{id_utente}/{id_immobile}
+                                    return "redirect:/site/utente/getListaOfferte/storico/"
+                                            +newOffertaToUtente.get().getProprietario().getIdUtente()+"/"
+                                            +newOffertaToUtente.get().getOffertaInteressata().getIdImmobileInteressato().getIdImmobile();
+                                }else{
+                                    ///getListProposte/storico/{idOfferente}/{idImmobile}
+                                    return "redirect:/site/utente/getListProposte/storico/"
+                                            +newOffertaToUtente.get().getOfferente().getIdUtente()+"/"
+                                            +newOffertaToUtente.get().getOffertaInteressata().getIdImmobileInteressato().getIdImmobile();
+                                }
                             }else{
                                 model.addAttribute("error", "2 - Errore nella creazione di un offerta");
                                 return "Fail";

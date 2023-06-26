@@ -8,6 +8,7 @@ import com.application.virgo.model.Utente;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -102,13 +103,19 @@ public interface OffertaUtenteJpaRepository extends JpaRepository<OfferteUtente,
     public List<OfferteUtente> getListOfferteRelatedToImmobile(@Param("idReqImmobile") Long idImmobile,
                                                                @Param("idOfferente") Long idOfferente);
 
-    @Query(value = "UPDATE offerte_utente " +
-            "SET isDeclinato = 1 AND data_declino= :dataAttuale " +
-            "WHERE idOffernte = :idOfferente AND idProprietario = :idProprietario AND idOfferta <> :idOfferta",
+    @Modifying
+    @Query(value = "update offerte_utente " +
+            "    join offerta on (offerte_utente.id_offerta = offerta.id_offerta) " +
+            "    join immobile on (offerta.id_immobile = immobile.id_immobile)" +
+            "set offerte_utente.is_declinato = 1, offerte_utente.is_accettato = 1, offerte_utente.data_declino = :dataAttuale" +
+            " where offerte_utente.id_offerente = :idOfferente" +
+            " and offerte_utente.id_proprietario = :idProprietario and offerte_utente.id_offerta != :idOfferta " +
+            "and immobile.id_immobile = :idImmobile ",
                 nativeQuery = true)
     public void updateOldOfferte(@Param("idProprietario") Long idProprietario,
                                  @Param("idOfferente") Long idOfferente,
                                  @Param("dataAttuale") Instant instant,
+                                 @Param("idImmobile") Long idImmobile,
                                  @Param("idOfferta") Long idOfferta );
 
     /*@Query(value = "UPDATE offerte_utente " +
