@@ -16,7 +16,7 @@
 <table>
     <th>immagini</th>
     <tr th:each="immobile:${wantedImmobile}">
-        <img th:src="${wantedImmobile.listaImmagini}">
+        <img th:src="${immobile.listaImmagini}" width="150px" height="150px">
     </tr>
     <tr>
         <th>Titolo</th>

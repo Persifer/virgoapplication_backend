@@ -11,6 +11,6 @@ public class Constants {
 
     public final static Long PAGE_SIZE = 50L;
 
-    public final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm")
+    public final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
             .withZone(ZoneId.of("Europe/Rome")); //Europe/Rome (UTC+02:00)
 }

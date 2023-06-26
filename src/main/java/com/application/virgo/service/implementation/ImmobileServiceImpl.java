@@ -64,12 +64,11 @@ public class ImmobileServiceImpl implements ImmobileService {
 
         for(MultipartFile file : uploadedFile){
             fileName = iterator+"_"+savedImmobile.getIdImmobile().toString()+"_"+file.getOriginalFilename();
-
+            fileStorageService.save(file, idProprietario.toString(), fileName);
             uploadedImages
-                    .append(fileStorageService.save(file, idProprietario.toString(), fileName))
-                    .append("\\")
+                    .append("localhost:8080/")
                     .append(fileName)
-                    .append("|");
+                    .append("~");
             iterator++;
         }
 
