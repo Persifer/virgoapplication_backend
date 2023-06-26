@@ -26,7 +26,7 @@ public class Contratto {
     @OneToMany(mappedBy = "contrattoInteressato", fetch = FetchType.EAGER)
     private Set<ContrattoUtente> utenteInteressati;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_immobile")
     private Immobile immobileInteressato;
 
