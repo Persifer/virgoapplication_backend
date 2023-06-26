@@ -2,6 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <link rel="stylesheet" type="text/css" th:href="@{/css/Style.css}">
+    <style>
+        .container{
+            display: flex;
+            justify-content: space-evenly;
+        }
+    </style>
     <nav role="navigation" aria-label="Navigation">
         <a href="/site/immobile/list/0/20">Home</a>
         <a href="/site/utente/0/20">I tuoi immobili</a>
@@ -15,10 +21,9 @@
 <body>
 <h1>Dettagli immobile selezionato</h1>
 <table>
-    <th>immagini</th>
-   <tr th:each="immobile:${wantedImmobile}">
-       <img th:src="${wantedImmobile.listaImmagini}">
-   </tr>
+    <tr th:each="immobile:${wantedImmobile}">
+        <img th:src="${wantedImmobile.listaImmagini}">
+    </tr>
     <tr>
         <th>Titolo</th>
         <td th:text="${wantedImmobile.titolo}"></td>
@@ -69,39 +74,52 @@
     </tr>
 </table>
 
+<br><br>
+
+    <div class="container">
+        <form class="cardEffect" action="#" th:action="@{'/site/offerte/propose/'+ ${wantedImmobile.idProprietario} + '/' + ${wantedImmobile.idImmobile} }" th:object="${tempOffertaDTO}" method="post">
+            <h2>Crea Proposta</h2>
+            <input type="text" name="prezzoProposto"  th:field="*{prezzoProposto}" placeholder="Inserisci la proposta" required><br>
+            <input type="text" name="commento"  th:field="*{commento}" placeholder="Inserisci altre informazioni"><br>
+            <input type="hidden" name="idImmobile" th:value="${wantedImmobile.idImmobile}">
+            <input type="hidden" name="idProprietario" th:value="${wantedImmobile.idProprietario}">
+            <input type="submit" value="Invia">
+        </form>
+        <form class="cardEffect" action="#" th:action="@{'/site/immobile/addQuestion/' + ${wantedImmobile.idImmobile}}" th:object="${tempNewDomandaDTO}" method="post">
+            <h2>Commenta immobile</h2>
+            <textarea name="commento" th:field="*{contenuto}" rows="4" cols="50" required></textarea><br>
+            <input type="submit" value="Invia commento"></input>
+        </form>
+    </div>
 
 
-<h3>Crea Proposta</h3>
+    <p th:text="${message}"></p>
 
-<form action="#" th:action="@{'/site/offerte/propose/'+ ${wantedImmobile.idProprietario} + '/' + ${wantedImmobile.idImmobile} }" th:object="${tempOffertaDTO}" method="post">
-    <input type="text" name="prezzoProposto"  th:field="*{prezzoProposto}" placeholder="Inserisci la proposta" required><br>
-    <input type="text" name="commento"  th:field="*{commento}" placeholder="Inserisci altre informazioni"><br>
-      <input type="hidden" name="idImmobile" th:value="${wantedImmobile.idImmobile}">
-     <input type="hidden" name="idProprietario" th:value="${wantedImmobile.idProprietario}">
-    <input type="submit" value="Invia">
-</form>
-<p th:text="${message}"></p>
+    <div style="display: flex; justify-content: center">
+        <div style="width: 80%">
+            <h2>Commenti</h2>
+            <table class="cardEffect">
+                <thead>
+                    <tr>
+                        <th>Messaggio da:</th>
+                        <th>Contenuto</th>
+                        <th>Risposta</th>
+                        <th>Data risposta</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="domanda:${wantedImmobile.listaDomandeImmobile}">
+                        <td>Da: <span th:text="${domanda.nomeProprietario}"></span> &nbsp; <span th:text="${domanda.cognomeProprietario}"></span></td>
+                        <td><span th:text="${domanda.contenuto}"></span></td></th>
+                        <td><span th:text="${domanda.risposta}"></span></td>
+                        <td><span th:text="${domanda.dataRisposta}"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-
-<h3>Commenti</h3>
-<table>
-    <tr th:each="domanda:${wantedImmobile.listaDomandeImmobile}">
-
-        <th>
-        <td>Da: <span th:text="${domanda.nomeProprietario}"></span> &nbsp; <span th:text="${domanda.cognomeProprietario}"></span></td>
-        <td> </td>
-        <td><span th:text="${domanda.contenuto}"></span></td></th>
-    </tr>
-</table>
-
-
-<h2>Commenta immobile</h2>
-<form  action="#" th:action="@{'/site/immobile/addQuestion/' + ${wantedImmobile.idImmobile}}" th:object="${tempNewDomandaDTO}" method="post">
-    <textarea name="commento" th:field="*{contenuto}" rows="4" cols="50" required></textarea><br>
-    <button type="submit">Invia commento</button>
-</form>
-<p class="okmessage" th:text="${message}"></p>
-
+    <p class="okmessage" th:text="${message}"></p>
 
 </body>
 

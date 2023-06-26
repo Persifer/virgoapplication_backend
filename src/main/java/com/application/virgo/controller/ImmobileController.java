@@ -3,6 +3,7 @@ package com.application.virgo.controller;
 import com.application.virgo.DTO.inputDTO.DomandaDTO;
 import com.application.virgo.DTO.inputDTO.ImmobileDTO;
 import com.application.virgo.DTO.inputDTO.InsertOffertaDTO;
+import com.application.virgo.DTO.outputDTO.DomandaImmobileDTO;
 import com.application.virgo.DTO.outputDTO.GetImmobileInfoDTO;
 import com.application.virgo.DTO.outputDTO.GetUtenteImmobiliDTO;
 import com.application.virgo.DTO.outputDTO.HomeImmobileDTO;
@@ -100,7 +101,11 @@ public class ImmobileController {
             if(authenticatedUser.isPresent()) {
                 // se l'utente è autenticato allora posso vedere i dati del singolo immobile
                 Optional<GetImmobileInfoDTO> storedImmobile = immobileService.getImmobileById(idImmobile);
-
+                System.out.println('[');
+                for (DomandaImmobileDTO pippo : storedImmobile.get().getListaDomandeImmobile()) {
+                    System.out.println(pippo.getRisposta());
+                }
+                System.out.println(']');
                 if(storedImmobile.isPresent()){
                     model.addAttribute("wantedImmobile", storedImmobile.get());
                     model.addAttribute("tempNewDomandaDTO", new DomandaDTO());
