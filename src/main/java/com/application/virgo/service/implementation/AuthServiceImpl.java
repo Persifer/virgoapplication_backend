@@ -19,7 +19,14 @@ public class AuthServiceImpl implements AuthService {
 
     private final UtenteService utenteService;
 
+    /**
+     * Metodo che permette di prelevare dal contesto di Spring Security l'utente autenticato
+     *
+     * @return Un optional contenente l'utente autenticato
+     * @throws UtenteException se l'utente non esiste
+     */
     public Optional<Utente> getAuthUtente() throws UtenteException{
+        // prelevo l'utente autenticato dal contesto spring
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return utenteService.getUtenteClassByEmail(auth.getName());
     }

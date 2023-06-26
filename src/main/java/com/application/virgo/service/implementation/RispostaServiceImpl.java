@@ -29,16 +29,29 @@ public class RispostaServiceImpl implements RispostaService {
     private final DomandaService domandaService;
     private final RispostaJpaRepository rispostaRepository;
 
+    /**
+     * Permette di aggiungere una risposta ad una domanda
+     * @param tempNewRisposta dati della nuova risposta
+     * @param idDomanda domanda a cui rispondere
+     * @param authUser utente autenticato
+     * @param idImmobile immobile su cui è presente la domanda
+     * @return La risposta salvata nel database
+     * @throws ImmobileException se l'immobile non è presente
+     * @throws UtenteException se l'utente non è presente
+     */
     @Override
     public Optional<Risposta> addNewRisposta(RispostaDTO tempNewRisposta, Long idDomanda, Utente authUser, Long idImmobile)
             throws ImmobileException, UtenteException, DomandaException {
+        // preleva l'immobile interessato dal database
         Optional<Immobile> tempImmobileInteressato = immobileService.getImmobileInternalInformationById(idImmobile);
         if(tempImmobileInteressato.isPresent()){
+            //estrae l'immobile
             Immobile immobileInteressato = tempImmobileInteressato.get();
 
             // solo il proprietario può rispondere alle domande
             if(immobileInteressato.getProprietario().getIdUtente().equals(authUser.getIdUtente())){
 
+                //creo una nuova risposta
                 Risposta newRisposta = new Risposta(tempNewRisposta.getContenuto(), Instant.now());
                 newRisposta.setProprietarioRisposta(authUser);
                 newRisposta.setIsEnabled(Boolean.TRUE);

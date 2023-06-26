@@ -3,6 +3,9 @@ package com.application.virgo.DTO.inputDTO;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
+/**
+ * Dati utente in input dal front-end per login
+ */
 public class LoginUtenteDTO {
 
     @NotNull

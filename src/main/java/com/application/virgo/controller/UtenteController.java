@@ -33,14 +33,23 @@ public class UtenteController {
     private AuthService authService;
     private ContrattoUtenteService contrattoUtenteService;
 
+    /**
+     * Permette di avere la home page dell'utente
+     * @param model classe contenitore per passare dati tra il controller e la vista
+     * @param offset indice iniziale
+     * @param pageSize numero elementi
+     * @return la view della home utente
+     */
     @GetMapping("/{offset}/{pageSize}")
     public String get(ModelMap model,@PathVariable("offset") Long offset,
                       @PathVariable("pageSize") Long pageSize) {
         try{
             Optional<Utente> authUser = authService.getAuthUtente();
             if(authUser.isPresent()){
+                // se l'utente p autenticato preleva la sua lista di immobili
                 List<GetUtenteImmobiliDTO> listImmobili = immobileService.getUtenteListaImmobili(offset, pageSize, authUser.get());
                 if(!listImmobili.isEmpty()){
+                    // ritorna la view utente con la lista
                     model.addAttribute("listaImmobiliUtente", listImmobili);
                     return "Utente";
                 }else{
@@ -63,29 +72,6 @@ public class UtenteController {
 
     }
 
-    @PutMapping("/updateData")
-    public String updateUtenteInformation(@PathVariable("id_utente") Long idUtenteDaModificare,
-                                          @ModelAttribute UtenteDTO updatedUtente,
-                                          ModelMap model){
-
-
-        try{
-            Optional<Utente> authUser = authService.getAuthUtente();
-            if(authUser.isPresent()){
-                utenteService.updateUtenteInfoById(idUtenteDaModificare, updatedUtente);
-                model.addAttribute("message", "Utente aggiornato correttamente");
-                return "Utente";
-            }else{
-                model.addAttribute("error", "Bisogna essere autenticati per modificare i dati!");
-                return "Login";
-            }
-
-        }catch (UtenteException error){
-            model.addAttribute("error", error.getMessage());
-            return "Fail";
-        }
-
-    }
 
     /**
      * Pagine che serve per reperire le informazioni di un utente per l'aggiornamento
@@ -110,11 +96,17 @@ public class UtenteController {
         }
     }
 
+    /**
+     * Permette di prelevare la lista delle proposte ricevute di un utente
+     * @param model classe contenitore per passare dati tra il controller e la vista
+     * @return la view delle liste delle proposte
+     */
     @GetMapping("/getListProposte")
     public String getOfferteRicevute(ModelMap model){
         try{
             Optional<Utente> authUser = authService.getAuthUtente();
             if(authUser.isPresent()){
+                // se l'utente è autenticato ritorno la lista degli utenti con cui ha una chat
                 List<ViewListaOfferteDTO> listaProposte = utenteService.getListaProposte(authUser.get());
                 model.addAttribute("listaProposte", listaProposte);
                 model.addAttribute("isAcquirente", "0");
@@ -129,11 +121,19 @@ public class UtenteController {
         }
     }
 
+    /**
+     * Permette di avere la lista degli scambi tra due utenti
+     * @param model classe contenitore per passare dati tra il controller e la vista
+     * @param idOfferente id utente controparte
+     * @param idImmobile id immobile interessante
+     * @return la view della chat
+     */
     @GetMapping("/getListProposte/storico/{idOfferente}/{idImmobile}")
     public String getOfferteBetweenUtenti(ModelMap model, @PathVariable("idOfferente") Long idOfferente, @PathVariable("idImmobile") Long idImmobile){
         try{
             Optional<Utente> authUser = authService.getAuthUtente();
             if(authUser.isPresent()){
+                // ritorna la lsita degli scambi tra due utenti
                 List<ViewOfferteBetweenUtentiDTO> listaOfferte =
                         utenteService.getAllProposteBetweenUtenti(authUser.get(), idOfferente, idImmobile);
                 model.addAttribute("listaOfferte", listaOfferte);
@@ -149,11 +149,17 @@ public class UtenteController {
         }
     }
 
+    /**
+     * Permette di prelevare la lista delle offerte inviate di un utente
+     * @param model classe contenitore per passare dati tra il controller e la vista
+     * @return la view delle liste delle offerte con altri utenti
+     *//
     @GetMapping("/getListaOfferte")
     public String getOfferte(ModelMap model){
         try{
             Optional<Utente> authUser = authService.getAuthUtente();
             if(authUser.isPresent()){
+                // ritorna la lsita delle chat con altri utenti
                 List<ViewListaOfferteDTO> listaOfferte = utenteService.getListaOfferte(authUser.get());
                 model.addAttribute("listaOfferte", listaOfferte);
                 return "Offerte";
@@ -170,6 +176,13 @@ public class UtenteController {
         }
     }
 
+    /**
+     * Permette di avere la lista degli scambi tra due utenti
+     * @param model classe contenitore per passare dati tra il controller e la vista
+     * @param idUtente id utente controparte
+     * @param idImmobile id immobile interessante
+     * @return la view della chat
+     */
     @GetMapping("/getListaOfferte/storico/{id_utente}/{id_immobile}")
     public String getStoricoOfferte(ModelMap model,
                                     @PathVariable("id_utente") Long idUtente,
@@ -195,6 +208,13 @@ public class UtenteController {
         }
     }
 
+    /**
+     * Permette di avere la lista dei contratti di un determinato utente
+     * @param model classe contenitore per passare dati tra il controller e la vista
+     * @param offset indice iniziale
+     * @param pageSize numero elementi
+     * @return la view della lista contratti
+     */
     @GetMapping("/getListaContratti/{offset}/{pageSize}")
     public String getListaContratti(ModelMap model, @PathVariable("offset") Long offset, @PathVariable("pageSize") Long pageSize){
         try{
@@ -217,6 +237,12 @@ public class UtenteController {
         }
     }
 
+    /**
+     * Permette di avere i dettagli di un singolo contratto
+     * @param model classe contenitore per passare dati tra il controller e la vista
+     * @param idContratto id contratto interessato
+     * @return la view
+     */
     @GetMapping("/getListaContratti/contratto/{id_contratto}")
     public String getSingleContratto(ModelMap model, @PathVariable("id_contratto") Long idContratto){
         try{

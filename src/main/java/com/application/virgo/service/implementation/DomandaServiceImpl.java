@@ -26,6 +26,14 @@ public class DomandaServiceImpl implements DomandaService {
 
     private final DomandaJpaRepository domandaRepository;
     private final ImmobileService immobileService;
+
+    /**
+     * Permette di pubblicare una domanda sotto un immobile
+     * @param tempDomandaDTO dati relativi alla domanda
+     * @param authUser utente autenticato
+     * @return La domanda pubblicata
+     * @throws UtenteException se l'utente autenticato non esiste
+     */
     @Override
     public Optional<Domanda> addNewDomanda(DomandaDTO tempDomandaDTO, Utente authUser, Long idImmobile)
             throws UtenteException, ImmobileException {
@@ -35,9 +43,10 @@ public class DomandaServiceImpl implements DomandaService {
 
             newDomanda.setProprietarioDomanda(authUser);
 
-
+          // prelevo l'immobile interessato
             Optional<Immobile> immobileInteressato = immobileService.getImmobileInternalInformationById(idImmobile);
             if(immobileInteressato.isPresent()){
+                // aggiungo la domanda all'immobile
                 newDomanda.setImmobileInteressato(immobileInteressato.get());
                 newDomanda.setIsEnabled(Boolean.TRUE);
                 // creo la nuova domanda
@@ -50,12 +59,21 @@ public class DomandaServiceImpl implements DomandaService {
         }
     }
 
+    /**
+     * Permette di disabiliatare una domanda da parte dell'utente proprietario dell'immobile
+     * @param auhtUser utente autenticato
+     * @param idDomanda domanda da disabilitare
+     * @return ritorna la domanda disabitata
+     * @throws DomandaException se la domanda non esiste
+     */
     @Override
     public Optional<Domanda> disabilitaDomanda(Utente auhtUser, Long idDomanda) throws DomandaException {
+        // preleva la domanda
         Optional<Domanda> tempRequestedDomanda = domandaRepository.findByIdDomanda(idDomanda);
         if(tempRequestedDomanda.isPresent()){
             Domanda requestedDomanda = tempRequestedDomanda.get();
             if(requestedDomanda.getImmobileInteressato().getProprietario().getIdUtente().equals(auhtUser.getIdUtente())){
+                // se l'utente è proprietario immobile allora disabilita domanda
                 requestedDomanda.setIsEnabled(Boolean.FALSE);
                 return Optional.of(domandaRepository.save(requestedDomanda));
             }else{
@@ -66,6 +84,13 @@ public class DomandaServiceImpl implements DomandaService {
         }
     }
 
+
+    /**
+     * Permette di prelevare i dati di una domanda dal database
+     * @param idDomanda id domanda da prelevare
+     * @return la domanda richiesta
+     * @throws DomandaException se la domanda non esiste
+     */
     @Override
     public Optional<Domanda> getDomandainternalInformationById(Long idDomanda) throws DomandaException {
         Optional<Domanda> tempDomaanda = domandaRepository.getByIdDomanda(idDomanda);

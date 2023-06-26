@@ -28,6 +28,12 @@ public interface ImmobileService {
     public Optional<ImmobileDTO> createNewImmobile(ImmobileDTO tempNewImmobile, Utente proprietario)
             throws ImmobileException, UtenteException;
 
+    /**
+     * Permette di prelevare le informazioni di un immobile quando lo richiede la stampa contratto
+     * @param idImmobile  id immobile da prelevare
+     * @return l'immobile selezionato
+     * @throws ImmobileException se l'immobile non esiste
+     */
     public Optional<Immobile> getImmobileInfoForContratto(Long idImmobile) throws ImmobileException;
 
 
@@ -51,32 +57,17 @@ public interface ImmobileService {
      */
     public Optional<GetImmobileInfoDTO> getImmobileById(Long idImmobile) throws ImmobileException;
 
+    /**
+     * Ottiene le informazioni dell'immobile con l'ID specificato dove l'utente che ha fatto la richiesta è
+     * il proprietario dell'immobile
+     *
+     * @param idImmobile L'ID dell'immobile
+     * @return Un oggetto Optional contenente il GetImmobileInfoDTO se presente
+     * @throws ImmobileException se non è possibile trovare l'immobile
+     */
     public Optional<GetImmobileInfoDTO> getImmobileByIdAsProprietario(Utente authUser, Long idImmobile) throws ImmobileException;
 
-    /**
-     * Ottiene i dati dell'immobile con l'ID specificato per l'aggiornamento delle informazioni
-     *
-     * @param idImmobile     L'ID dell'immobile
-     * @param proprietario   Il proprietario dell'immobile
-     * @return Un oggetto Optional contenente l'ImmobileDTO se presente
-     * @throws ImmobileException se non è possibile trovare l'immobile
-     * @throws UtenteException   se non è possibile trovare l'utente autenticato
-     */
-    public Optional<GetUtenteImmobiliDTO> getImmobileByIdToUpdate(Long idImmobile, Utente proprietario)
-            throws ImmobileException, UtenteException;
 
-    /**
-     * Aggiorna le informazioni dell'immobile specificato
-     *
-     * @param tempUpdatedImmobile   L'oggetto ImmobileDTO con le informazioni aggiornate
-     * @param proprietario          Il proprietario dell'immobile
-     * @param idImmobileToUpdate    L'ID dell'immobile da aggiornare
-     * @return Un oggetto Optional contenente l'Immobile se l'aggiornamento è avvenuto con successo
-     * @throws ImmobileException se non è possibile trovare l'immobile
-     * @throws UtenteException   se non è possibile trovare l'utente autenticato
-     */
-    public Optional<Immobile> updateImmobileInformation(ImmobileDTO tempUpdatedImmobile, Utente proprietario, Long idImmobileToUpdate)
-            throws ImmobileException, UtenteException;
 
     /**
      * Ottiene una lista di immobili paginati per la pagina iniziale
@@ -88,23 +79,14 @@ public interface ImmobileService {
      */
     public List<HomeImmobileDTO> getAllImmobiliPaginated(Long idUtente, Long indiceIniziale, Long pageSize) throws ImmobileException;
 
-    public int immobileToDisable(Long idImmobile);
-
     /**
-     * Ottiene una lista di immobili filtrati in base ad un filtro specifiato dall'utente
-     *
-     * @param filter Il filtro per la ricerca degli immobili
-     * @return Una lista di GetImmobileInfoDTO filtrati
+     * Permette di eliminare un immobile
+     * @param idImmobile immobile da eliminare
+     * @param utente utente proprietario immobile
+     * @return numero righe affette
      */
-    public List<GetImmobileInfoDTO> getFilteredImmobiliPaginated(String filter);
+    public int immobileToDisable(Long idImmobile, Utente utente);
 
-    /**
-     * Ottiene una lista di immobili in base alla parola chiave specificata
-     *
-     * @param keyword La parola chiave per la ricerca degli immobili
-     * @return Una lista di GetImmobileInfoDTO
-     */
-    public List<GetImmobileInfoDTO> getImmobiliByKeyword(String keyword);
 
     /**
      * Aggiorna le informazioni interne dell'immobile specificato, essendo "interno" viene richiamato da un metodo

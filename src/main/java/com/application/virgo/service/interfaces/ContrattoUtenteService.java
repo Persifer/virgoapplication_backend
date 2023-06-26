@@ -54,5 +54,14 @@ public interface ContrattoUtenteService {
     public Optional<DettagliContrattoDTO> getDettagliContratto(Utente authUSer, Long idContratto)
             throws UtenteException, ContrattoUtenteException, ContrattoException;
 
-    public Optional<ContrattoUtente> getContrattoByIdUtenteAndIdContratto(Utente proprietario, Long idContratto) throws ContrattoUtenteException, ContrattoException;
+    /**
+     * Permette di prelevare un contratto dato id contratto e proprietario
+     * @param proprietario proprietario contratto
+     * @param idContratto id contratto
+     * @return il contratto voluto
+     * @throws ContrattoUtenteException se non esiste l'associazione
+     * @throws ContrattoException se non esiste il contratto
+     */
+    public Optional<ContrattoUtente> getContrattoByIdUtenteAndIdContratto(Utente proprietario, Long idContratto)
+            throws ContrattoUtenteException, ContrattoException;
 }

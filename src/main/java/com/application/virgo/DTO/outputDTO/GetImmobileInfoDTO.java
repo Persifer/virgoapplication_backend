@@ -6,6 +6,9 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Dati singolo Immobile in output dalla business logic
+ */
 @Getter
 @Setter
 @AllArgsConstructor

@@ -30,12 +30,21 @@ public class RegistrationController {
     private final UtenteService utenteService;
     private final EmailSenderService emailService;
 
+    /**
+     * Preleva la view dalla registrazione
+     * @return la view Registrazione
+     */
     @GetMapping
     public String get() {
         //model.addAttribute("newUtente", newUtente);
         return "Registrazione";
     }
 
+    /**
+     * Metodo che richiama la business logic per la registrazione
+     * @param newUtente dati utente
+     * @return la login page
+     */
     @PostMapping()
     public String postActionRegister(@ModelAttribute @Valid UtenteDTO newUtente) {
 

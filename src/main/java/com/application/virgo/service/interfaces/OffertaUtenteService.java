@@ -96,8 +96,6 @@ public interface OffertaUtenteService {
      * Permette di prelevare tutte le offerte inviate dall'utente autenticato ad altri utenti
      *
      * @param offerente l'utente autenticato che è proprietario dell'immobile
-     * @param offset    indice iniziale per la paginazione
-     * @param pageSize  dimensione della pagina
      * @return Una Page<> contenente la lista delle offerte che l'utente ha inviato
      * @throws UtenteException        nel caso in cui l'utente autenticato non sia stato passato correttamente
      * @throws OffertaUtenteException nel caso in cui la grandezza della pagina superi quella impostata dal server

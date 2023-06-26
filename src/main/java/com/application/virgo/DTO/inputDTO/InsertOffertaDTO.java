@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+/**
+ * Dati offerta in input dal front-end
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

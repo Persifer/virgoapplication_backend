@@ -26,18 +26,6 @@ public class VirgoApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(VirgoApplication.class, args);
 	}
-
-
 }
-
-	/*
-	* TODO
-	*  6. Sorting dei risultati di immobile
-	*     7.1 parole chiave
-	* 	  7.2 parametri specifici di filtraggio
-	*  9. Test
-	*  12. Implementa modifica utente
-	*  16. Creazione metodo eliminazione immobile --> si può fare front-end spedendo i dati con isEnabled a false
-	* */
 
 

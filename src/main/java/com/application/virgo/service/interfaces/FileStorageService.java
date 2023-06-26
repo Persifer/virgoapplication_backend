@@ -22,28 +22,4 @@ public interface FileStorageService {
      */
     public String save(MultipartFile file, String idUtente, String nomeFile);
 
-    /**
-     * Carica una foto dato il nome del file e l'idUtente
-     *
-     * @param filename Il nome del file da caricare.
-     * @param idUtente L'ID dell'utente.
-     * @return La risorsa che rappresenta il file caricato.
-     */
-    public Resource load(String filename, String idUtente);
-
-    /**
-     * Cancella tutti i file associati ad un determianto utente.
-     *
-     * @param idUtente L'ID dell'utente.
-     * @throws IOException se si verifica un errore di I/O durante il processo di eliminazione.
-     */
-    public void deleteAll(String idUtente) throws IOException;
-
-    /**
-     * Cancella tutti i file associati ad un determianto utente
-     *
-     * @param idUtente L'ID dell'utente.
-     * @return Uno stream di percorsi che rappresentano i file caricati.
-     */
-    public Stream<Path> loadAll(String idUtente);
 }

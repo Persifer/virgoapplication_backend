@@ -35,6 +35,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Classe che contiene tutti gli endpoint per la gestione degli immobili
+ */
 @Controller
 @RequestMapping(path="/site/immobile")
 @Validated
@@ -45,6 +48,11 @@ public class ImmobileController {
     private final AuthService authService;
     //private static final String URL_SUFFIX = "/immobile/";
 
+    /**
+     * Ritorna la view per la creazione di un immobile
+     * @param model classe contenitore per passare dati tra il controller e la vista
+     * @return Ritorna la view per la creazione di un immobile
+     */
     @GetMapping
     public String returnCreaImmobilePage(ModelMap model){
         model.addAttribute("immobileDTO", new ImmobileDTO());
@@ -60,12 +68,14 @@ public class ImmobileController {
     public String createNewImmobile(@ModelAttribute ImmobileDTO tempNewImmobile, ModelMap model) {
 
         try{
+            // controllo l'utente autenticato
             Optional<Utente> authenticatedUser = authService.getAuthUtente();
             if(authenticatedUser.isPresent()) {
-
+                // prelevo le informaizoni dell'immobile appena creato dalla business logic
                 Optional<ImmobileDTO> newImmobile = immobileService.createNewImmobile(tempNewImmobile,
                         authenticatedUser.get());
                 if (newImmobile.isPresent()) {
+                    // se tutto okay ritorno alla home
                     model.addAttribute("message", "Immobile creato con successo");
                     return "Home";
                 } else {
@@ -96,12 +106,14 @@ public class ImmobileController {
                                                                      ModelMap model){
 
         try{
+            // controllo che l'utente è autenticato
             Optional<Utente> authenticatedUser = authService.getAuthUtente();
             if(authenticatedUser.isPresent()) {
                 // se l'utente è autenticato allora posso vedere i dati del singolo immobile
                 Optional<GetImmobileInfoDTO> storedImmobile = immobileService.getImmobileById(idImmobile);
 
                 if(storedImmobile.isPresent()){
+                    // se tutto okay allora vado alla pagina immobile
                     model.addAttribute("wantedImmobile", storedImmobile.get());
                     model.addAttribute("tempNewDomandaDTO", new DomandaDTO());
                     model.addAttribute("tempOffertaDTO", new InsertOffertaDTO());
@@ -124,16 +136,24 @@ public class ImmobileController {
         }
     }
 
+    /**
+     * Permette di arrivare alla view per gestire un immobile da parte dell'utentre proprietario
+     * @param idImmobile id immobile da visionare
+     * @param model classe contenitore per passare dati tra il controller e la vista
+     * @return la view dove l'utente modificherà i dati dell'immobile scelto
+     */
     @GetMapping("/mioImmobile/{id_immobile}")
     public String getImmobileInformationAsProprietarioImmobile(@PathVariable("id_immobile") Long idImmobile,
                                          ModelMap model){
         try{
+            // controlla che l'utente è autenticato
             Optional<Utente> authenticatedUser = authService.getAuthUtente();
             if(authenticatedUser.isPresent()) {
                 // se l'utente è autenticato allora posso vedere i dati del singolo immobile
                 Optional<GetImmobileInfoDTO> storedImmobile =
                         immobileService.getImmobileByIdAsProprietario(authenticatedUser.get(), idImmobile);
                 if(storedImmobile.isPresent()){
+                    // se è tutto okay vado alla pagina immobile
                     model.addAttribute("wantedImmobile", storedImmobile.get());
                     model.addAttribute("tempNewDomandaDTO", new DomandaDTO());
                     model.addAttribute("tempOffertaDTO", new InsertOffertaDTO());
@@ -156,45 +176,21 @@ public class ImmobileController {
         }
     }
 
-    // Permette di ottenere i dati da modificare dell'immobile, serve per creare la pagina di modifica dei dati
-    // PER PEPPE, DEVI FARE MODO CHE QUANDO L'UTENE CERCHI LA PAGINA DI MODIFICA PRIMA FA QUESTA RICHIESTA, METTE NEI CAMPI I VALORI GIA'
-    // PRESENTI NEL DB NELLA PAGINA HTML E POI PUO' MODIFICARLO. SE HAI DUBBI CHIEDI
-    @GetMapping("/infoToModify/{id_immobile}")
-    public String getImmobileInformationForUpdate(@PathVariable("id_immobile") Long idImmobile, ModelMap model){
-        try{
-            Optional<Utente> authenticatedUser = authService.getAuthUtente();
-            if(authenticatedUser.isPresent()) {
-                // se l'utente è autenticato allora posso vedere i dati del singolo immobile
-                Optional<GetUtenteImmobiliDTO> storedImmobile = immobileService.getImmobileByIdToUpdate(idImmobile, authenticatedUser.get());
-                if(storedImmobile.isPresent()){
-                    model.addAttribute("immobileToModify", storedImmobile.get());
-                    model.addAttribute("modifiedImmobile",new ImmobileDTO());
-                    model.addAttribute("message", "Informazioni aggiornate con successo");
-                    return "ModificaImmobile";
-                }else{
-                    model.addAttribute("error", "Errore nell'aggiornamento delle informazioni dell'utente");
-                    return "Fail";
-                }
-            }else{
-                model.addAttribute("error", "Bisogna esssere autenticati per aggiornare le informazioni");
-                return "Login";
-            }
-
-
-        }catch (ImmobileException | UtenteException error){
-            model.addAttribute("error", error.getMessage());
-            return "Fail";
-        }
-    }
-
+    /**
+     * Permette di eliminare un immobile di un utente
+     * @param idImmobile id immobile da eliminare
+     * @param model classe contenitore per passare dati tra il controller e la vista
+     * @return
+     */
     @PostMapping("/disable/{id_immobile}")
     public String getImmobileToDisable(@PathVariable("id_immobile") Long idImmobile, ModelMap model){
         try{
             Optional<Utente> authenticatedUser = authService.getAuthUtente();
             if(authenticatedUser.isPresent()) {
                 // se l'utente è autenticato allora posso vedere i dati del singolo immobile
-                int righeAggiornate = immobileService.immobileToDisable(idImmobile);
+                int righeAggiornate = immobileService.immobileToDisable(idImmobile, authenticatedUser.get());
                 if(righeAggiornate == 1){
+                    // se tutto okay, allora torno alla pagina info utente
                     model.addAttribute("message", "Informazioni aggiornate con successo");
                     return "redirect:/site/utente/getInfo";
                 }else{
@@ -213,21 +209,32 @@ public class ImmobileController {
         }
     }
 
-    // Permette di far visualizzare all'utente la lista di tutti gli immobili da lui caricati
+    //
+
+    /**
+     * Permette di far visualizzare all'utente la lista di tutti gli immobili da lui caricati
+     * @param offset indice di partenza della lista
+     * @param pageSize grandezza pagina
+     * @param model classe contenitore per passare dati tra il controller e la vista
+     * @return la lista degli immobili trovati
+     */
     @GetMapping("/getImmobiliUtente/{offset}/{pageSize}")
     public String getListaImmobiliUtente(@PathVariable("offset") Long offset,
                                          @PathVariable("pageSize") @Min(1) @Max(20) Long pageSize,
                                          ModelMap model){
         try{
-
+            // controllo se l'utente è autenticato
             Optional<Utente> authenticatedUser = authService.getAuthUtente();
             if(authenticatedUser.isPresent()) {
+                // se autenticato prelevo la lista degli immobili di quell'utente
                 List<GetUtenteImmobiliDTO> foundedImmobili = immobileService.getUtenteListaImmobili(offset, pageSize,
                         authenticatedUser.get());
                 if(!foundedImmobili.isEmpty()){
+                    // se non vuota torno la lista
                     model.addAttribute("listaImmobili", foundedImmobili);
                     return "Utente";
                 }else{
+                    // altrimenti torno la lista vuota
                     model.addAttribute("listaImmobili", List.of());
                     return "Utente";
                 }
@@ -242,9 +249,13 @@ public class ImmobileController {
         }
     }
 
-    // Permette di prendere le informazioni dal database senza riempire troppo la memoria heap di Java tramite paginazione
-    // Offset -> indice da cui iniziare a prendere
-    // PageSize -> quanti elementi prendere
+    /**
+     * Permette di prendere le informazioni dal database senza riempire troppo la memoria heap di Java tramite paginazione
+     * @param offset indice iniziale della paginazine
+     * @param pageSize numero di elementi da prendere
+     * @param model classe contenitore per passare dati tra il controller e la vista
+     * @return una stringa con la view contenente la lista degli immobili
+     */
     @GetMapping("/list/{offset}/{pageSize}")
     public String getListImmobili(@PathVariable("offset") Long offset,
                                   @PathVariable("pageSize") Long pageSize,
@@ -252,12 +263,15 @@ public class ImmobileController {
         try{
             Optional<Utente> securedUser = authService.getAuthUtente();
             if(securedUser.isPresent()){
+                // prendo la lista degli immobili da mettere nella home
                 List<HomeImmobileDTO> foundedImmobili =
                         immobileService.getAllImmobiliPaginated(securedUser.get().getIdUtente(),offset, pageSize);
                 if(!foundedImmobili.isEmpty()){
+                    // se non vuota la ritorno
                     model.addAttribute("listImmobili", foundedImmobili);
                     return "Home";
                 }else{
+                    // altrimetni torno una lista vuota
                     model.addAttribute("message", "");
                     model.addAttribute("listImmobili", List.of());
                     return "Home";
@@ -273,34 +287,5 @@ public class ImmobileController {
         }
     }
 
-    // È l'url che permette di aggiornare le informazioni di un immobile, quando viene richiamato si inviamo tutte le
-    // informazioni modificate di un immobile
-    @PostMapping("/updateInfo/{id_immobile}")
-    public String modifyImmobileInfo(@ModelAttribute ImmobileDTO tempUpdatedimmobileDTO,
-                                     @PathVariable("id_immobile") Long idImmobile,
-                                     ModelMap model){
-        try{
-            Optional<Utente> authenticatedUser = authService.getAuthUtente();
-            if(authenticatedUser.isPresent()) {
-                Optional<Immobile> newImmobile = immobileService.updateImmobileInformation(tempUpdatedimmobileDTO,
-                                                                        authenticatedUser.get(), idImmobile);
-                if(newImmobile.isPresent()){
-                    model.addAttribute("message", "Domanda inserita con successo");
-                    return "Utente";
-                }else{
-                    model.addAttribute("error", "Impossibile trovare l'immobile");
-                    return "Fail";
-                }
-            }else{
-                model.addAttribute("error", "Bisogna essere autenticati per prendere questa informazione");
-                return "Fail";
-            }
-
-        }catch (UtenteException | ImmobileException error){
-            model.addAttribute("error", error.getMessage());
-            return "Fail";
-        }
-
-    }
 
 }
