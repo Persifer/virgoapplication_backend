@@ -15,8 +15,8 @@
 <h1>Dettagli immobile selezionato</h1>
 <table>
     <th>immagini</th>
-    <tr th:each="immobile:${wantedImmobile}">
-        <img th:src="${immobile.listaImmagini}" width="150px" height="150px">
+    <tr th:each="immagine:${wantedImmobile.listaImmagini}">
+        <img th:src="${immagine}" width="150px" height="150px">
     </tr>
     <tr>
         <th>Titolo</th>

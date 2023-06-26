@@ -8,17 +8,16 @@ import com.application.virgo.model.Utente;
 import com.application.virgo.service.interfaces.ContrattoService;
 import com.application.virgo.service.interfaces.ContrattoUtenteService;
 import com.application.virgo.service.interfaces.PdfGeneratorService;
-import com.lowagie.text.*;
-import com.lowagie.text.Font;
-import com.lowagie.text.pdf.PdfWriter;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.*;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -35,66 +34,49 @@ public class PdfGeneratorServiceImpl implements PdfGeneratorService {
     public void exportPDF(Utente authUser, Long idContratto, HttpServletResponse response)
             throws ContrattoException, ContrattoUtenteException, IOException {
 
-        Optional<ContrattoUtente> tempContrattoUtente =
-                contrattoUtenteService.getContrattoByIdUtenteAndIdContratto(authUser, idContratto);
+        try (PDDocument document = new PDDocument()) {
 
-        Optional<Contratto> tempContratto;
+            Optional<ContrattoUtente> tempContrattoUtente =
+                    contrattoUtenteService.getContrattoByIdUtenteAndIdContratto(authUser, idContratto);
 
-        if(tempContrattoUtente.isPresent()){
+            Optional<Contratto> tempContratto;
 
-            ContrattoUtente contrattoUtente = tempContrattoUtente.get(); // accede ai dati degli utenti nel contratto
+            if(tempContrattoUtente.isPresent()){
 
-            tempContratto = contrattoService.getContrattoById(contrattoUtente.getIdContrattoUtente().getIdContratto());
+                ContrattoUtente contrattoUtente = tempContrattoUtente.get(); // accede ai dati degli utenti nel contratto
 
-            if(tempContratto.isPresent()){
-                Contratto contratto = tempContratto.get(); // accede ai dati del contratto vero e proprio
-                Document document = new Document(PageSize.A4);
+                tempContratto = contrattoService.getContrattoById(contrattoUtente.getIdContrattoUtente().getIdContratto());
 
-                PdfWriter.getInstance(document, response.getOutputStream());
+                PDPage page = new PDPage(PDRectangle.A4);
+                document.addPage(page);
 
-                document.open();
-                Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
-                fontTitle.setSize(18);
+                PDPageContentStream contentStream = new PDPageContentStream(document, page);
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+                contentStream.beginText();
+                contentStream.newLineAtOffset(50, 700);
+                contentStream.showText("CONTRATTO DI VENDITA");
+                contentStream.setFont(PDType1Font.HELVETICA, 12);
+                contentStream.newLineAtOffset(0, -20);
+                contentStream.showText("Acquirente: " + contrattoUtente.getAcquirente().getNome()+ " "
+                        + contrattoUtente.getAcquirente().getCognome());
+                contentStream.newLineAtOffset(0, -20);
+                contentStream.showText("Prezzo: " + tempContratto.get().getPrezzo() + " € / EUR");
+                contentStream.endText();
+                contentStream.close();
 
-                String titolo = "Contratto digitale riferito a: " + contratto.getIdContratto();
+                response.setContentType("application/pdf");
+                response.setHeader("Content-Disposition", "attachment; filename=contratto.pdf");
+                document.save(response.getOutputStream());
 
-                Paragraph paragraph = new Paragraph(titolo, fontTitle);
-                paragraph.setAlignment(Paragraph.ALIGN_CENTER);
-
-                Font fontParagraph = FontFactory.getFont(FontFactory.HELVETICA);
-                fontParagraph.setSize(12);
-
-                String stipulazione = "Stipulato in data: "+ contratto.getDataStipulazione();
-
-                Paragraph paragraph2 = new Paragraph(stipulazione, fontParagraph);
-                paragraph2.setAlignment(Paragraph.ALIGN_RIGHT);
-
-
-                String nomiParti = "Nome acquirente: " + contrattoUtente.getAcquirente().getNome() +"\n" +
-                                    "Cognome acquirente: " + contrattoUtente.getAcquirente().getCognome() +"\n\n" +
-                                    "Nome venditore: " + contrattoUtente.getVenditore().getNome() +"\n" +
-                                    "Cognome acquirente: " + contrattoUtente.getVenditore().getCognome() +"\n"  +
-                                    "Prezzo concordato: " + contratto.getPrezzo() +"\n"  ;
-
-                Paragraph paragraph3 = new Paragraph(nomiParti, fontParagraph);
-                paragraph3.setAlignment(Paragraph.ALIGN_LEFT);
-
-                String immobile = "Il contratto riguarda l'immobile in via" + contratto.getImmobileInteressato().getVia() +
-                        "Nella città di: " + contratto.getImmobileInteressato().getCitta()
-                        ;
-
-                Paragraph paragraph4 = new Paragraph(immobile, fontParagraph);
-                paragraph4.setAlignment(Paragraph.ALIGN_LEFT);
-
-                document.add(paragraph);
-                document.add(paragraph2);
-                document.add(paragraph3);
-                document.add(paragraph4);
-                document.close();
             }
+
+
         }
+
 
     }
 
-
 }
+
+
+

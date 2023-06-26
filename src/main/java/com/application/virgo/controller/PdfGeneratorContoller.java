@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.text.DateFormat;
@@ -26,21 +27,13 @@ public class PdfGeneratorContoller {
     private final AuthService authService;
 
     @GetMapping("/generate/{id_contratto}")
-    public String exportPDF(ModelMap model, Long idContratto, HttpServletResponse response){
+    public String exportPDF(ModelMap model, @PathVariable("id_contratto") Long idContratto, HttpServletResponse response){
 
         try{
             Optional<Utente> authUser = authService.getAuthUtente();
             if(authUser.isPresent()){
-                response.setContentType("application/pdf");
-                DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd:hh:mm:ss");
 
-                String currentDateTime = dateFormatter.format(new Date());
-                String headerKey = "Content-Disposition";
-                String headerValue = "attachment; filename=pdf_elemento.pdf";
-                response.setHeader(headerKey, headerValue);
                 pdfGeneratorService.exportPDF(authUser.get(), idContratto, response);
-
-
 
                 return "Page";
             }else{

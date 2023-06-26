@@ -25,9 +25,9 @@ public interface ContrattoUtenteJpaRepository extends JpaRepository<ContrattoUte
     public Optional<ContrattoUtente> getContrattoUtenteByIdContratto(@Param("idContratto") Long idContratto);
 
 
-    @Query("SELECT ContrattoUtente " +
-            "FROM ContrattoUtente contratto " +
-            "WHERE contratto.venditore.idUtente = :idUtente AND contratto.contrattoInteressato.idContratto = :idContratto")
+    @Query(value = "select * from contratto_utente " +
+            "where (contratto_utente.id_venditore = :idUtente or contratto_utente.id_acquirente = :idUtente) " +
+            "and contratto_utente.id_contratto = :idContratto", nativeQuery = true)
     public Optional<ContrattoUtente> getContrattoUtenteByIdContrattoAndIdUtente(@Param("idContratto") Long idContratto,
                                                                                 @Param("idUtente") Long idUtente);
 }

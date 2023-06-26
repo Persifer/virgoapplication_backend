@@ -66,7 +66,8 @@ public class ImmobileServiceImpl implements ImmobileService {
             fileName = iterator+"_"+savedImmobile.getIdImmobile().toString()+"_"+file.getOriginalFilename();
             fileStorageService.save(file, idProprietario.toString(), fileName);
             uploadedImages
-                    .append("localhost:8080/")
+                    .append("http://localhost:8080/")
+                    .append(fileStorageService.save(file, idProprietario.toString(), fileName))
                     .append(fileName)
                     .append("~");
             iterator++;

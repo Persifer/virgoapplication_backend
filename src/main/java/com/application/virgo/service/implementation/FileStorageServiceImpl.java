@@ -40,7 +40,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 
             Files.copy(file.getInputStream(), Path.of(pathForUtente+"\\"+nomeFile));
 
-            return pathForUtente.toString();
+            return idUtente;
 
         } catch (Exception e) {
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
