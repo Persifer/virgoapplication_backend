@@ -53,24 +53,24 @@ public class ViewOfferteBtwnUtentiMapper implements Function<OfferteUtente, View
 
         if(offerteUtente.getData_declino() != null){
             offertaDTO.setDataDeclino(offerteUtente.getData_declino().toString());
-            offertaDTO.setIsDeclinato(true);
+            offertaDTO.setIsDeclinato(Boolean.TRUE);
 
-            offertaDTO.setIsAccettato(false);
+            offertaDTO.setIsAccettato(Boolean.FALSE);
             offertaDTO.setDataAccettazione("");
         }else{
             offertaDTO.setDataDeclino("");
-            offertaDTO.setIsDeclinato(null);
+            offertaDTO.setIsDeclinato(Boolean.FALSE);
         }
 
         if(offerteUtente.getData_accettazione() != null){
             offertaDTO.setDataAccettazione(offerteUtente.getData_accettazione().toString());
-            offertaDTO.setIsAccettato(true);
+            offertaDTO.setIsAccettato(Boolean.TRUE);
 
-            offertaDTO.setIsDeclinato(false);
+            offertaDTO.setIsDeclinato(Boolean.FALSE);
             offertaDTO.setDataDeclino("");
         }else{
             offertaDTO.setDataAccettazione("");
-            offertaDTO.setIsDeclinato(null);
+            offertaDTO.setIsDeclinato(Boolean.FALSE);
         }
 
 

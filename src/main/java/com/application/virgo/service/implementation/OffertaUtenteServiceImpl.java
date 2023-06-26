@@ -120,6 +120,7 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
 
         Optional<Utente> controparte = getInformationUtente(idControparte);
         Optional<OfferteUtente> newOfferta ;
+
         if(controparte.isPresent()){
             // allora creiamo l'offerta // ho in ordine offerente offertaProposta proprietario
             // se l'offerta è fatta dal proprietario
@@ -278,7 +279,7 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
     /**
      * Metodo che permette di accettare un offerta
      * @param idOfferta Id dell'offerta da accettare
-     * @param authUser utentte autenticato, proprietario dell'immobile, che ha accettato la richiesta
+     * @param proprietarioImmobile utente autenticato, proprietario dell'immobile, che ha accettato la richiesta
      * @return Il contratto formato tra due utenti
      * @throws OffertaException Se l'offerta non esiste
      * @throws OffertaUtenteException se la richiesta di offerta non esiste oppure se non è possibile accettare il contratto
@@ -416,7 +417,7 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
     /**
      * Permette di prelevare tutte le offerte inviate dall'utente autenticato ad altri utenti
      *
-     * @param offerente l'utente autenticato che è proprietario dell'immobile
+     * @param authUser l'utente autenticato che è proprietario dell'immobile
      * @return Una Page<> contenente la lista delle offerte che l'utente ha inviato
      * @throws UtenteException        nel caso in cui l'utente autenticato non sia stato passato correttamente
      * @throws OffertaUtenteException nel caso in cui la grandezza della pagina superi quella impostata dal server
