@@ -226,6 +226,7 @@ public class UtenteController {
                         idContratto);
                 if(listContrattiUtente.isPresent()){
                     model.addAttribute("contratto", listContrattiUtente.get());
+                    model.addAttribute("risultato", "");
                     return "SingoloContratto";
                 }else{
                     model.addAttribute("error", "Errore nel reperire contratti");

@@ -33,5 +33,17 @@
         <td th:text="${contratto.titoloImmobile}"></td>
     </tr>
 </table>
+<form method="get" th:action="@{'/site/pdf/generate/' + ${contratto.idContratto}}">
+    <button>Genera contratto</button>
+</form>
+<form method="get" th:action="@{'/site/contratto/calculate/' + ${contratto.idContratto} + '/1'}">
+    <button type="submit">Calcola Preventivo con azienda xyz</button>
+</form>
+        <span th:text="${risultato}"></span>
+<!-- Secondo bottone -->
+<form method="get" th:action="@{'/site/contratto/calculate/' + ${contratto.idContratto} + '/2'}">
+    <button type="submit">Calcola Preventivo MTP </button>
+</form>
+<span th:text="${risultato}"></span>
 </body>
 </html>

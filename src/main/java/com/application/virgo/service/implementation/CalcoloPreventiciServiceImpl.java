@@ -25,12 +25,15 @@ public class CalcoloPreventiciServiceImpl implements CalcoloPreventiviService {
     @Override
     public Double calcolaPreventivoImmobile(Long idContratto, Integer selettoreAzienda)
             throws ContrattoException, PreventivoException, NumberFormatException {
+
         Optional<Contratto> tempContratto = contrattoService.getContrattoById(idContratto);
+
         if(tempContratto.isPresent()){
             Contratto contratto = tempContratto.get();
             Immobile immobileContratto = contratto.getImmobileInteressato();
 
             ContextPreventivi contextPreventivi = new ContextPreventivi();
+
             switch (selettoreAzienda){
                 case 1:
                     contextPreventivi.setAlgoritmo(new AlgoritmoAziendaXYZ());
