@@ -143,6 +143,16 @@ public class ImmobileServiceImpl implements ImmobileService {
     }
 
 
+    public Optional<Immobile> getImmobileInfoForContratto(Long idImmobile) throws ImmobileException{
+        Optional<Immobile> requestImmobile = immobileRepo.getImmobilesByIdImmobileAfterContratto(idImmobile);
+        if(requestImmobile.isPresent()){
+            return requestImmobile;
+        }else{
+            throw new ImmobileException("L'immobile cercato non esiste, inserire un nuovo id");
+        }
+    }
+
+
     private Optional<GetImmobileInfoDTO> setImmobileInformationCommonMethod(Optional<Immobile> tempImmobile) throws ImmobileException {
         if(tempImmobile.isPresent()){
             Immobile requestedImmobile = tempImmobile.get();

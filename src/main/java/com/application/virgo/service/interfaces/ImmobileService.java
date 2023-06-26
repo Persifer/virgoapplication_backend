@@ -21,13 +21,14 @@ public interface ImmobileService {
      *
      * @param tempNewImmobile L'oggetto ImmobileDTO con le informazioni del nuovo immobile
      * @param proprietario    Il proprietario dell'immobile
-     * @param uploadedFile    I file caricati relativi all'immobile
      * @return Un oggetto Optional contenente l'ImmobileDTO che rappresenta i dati dell'immobile salvato
      * @throws ImmobileException se non è possibile creare l'immobile
      * @throws UtenteException   se non esiste l'utente autenticato
      */
     public Optional<ImmobileDTO> createNewImmobile(ImmobileDTO tempNewImmobile, Utente proprietario)
             throws ImmobileException, UtenteException;
+
+    public Optional<Immobile> getImmobileInfoForContratto(Long idImmobile) throws ImmobileException;
 
 
     /**

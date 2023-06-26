@@ -37,8 +37,9 @@ public class PdfGeneratorServiceImpl implements PdfGeneratorService {
 
 
     @Override
-    public void exportPDF(Utente authUser, Long idContratto, HttpServletResponse response)
+    public Long exportPDF(Utente authUser, Long idContratto, HttpServletResponse response)
             throws ContrattoException, ContrattoUtenteException, IOException, ImmobileException {
+
             try (PDDocument document = new PDDocument()) {
 
                 Optional<ContrattoUtente> tempContrattoUtente =
@@ -51,8 +52,9 @@ public class PdfGeneratorServiceImpl implements PdfGeneratorService {
                     ContrattoUtente contrattoUtente = tempContrattoUtente.get(); // accede ai dati degli utenti nel contratto
 
                     contratto = contrattoService.getContrattoById(contrattoUtente.getIdContrattoUtente().getIdContratto()).get();
+
                     Immobile immobile =
-                            immobileService.getImmobileInternalInformationById(contratto.getImmobileInteressato().getIdImmobile()).get();
+                            immobileService.getImmobileInfoForContratto(contratto.getImmobileInteressato().getIdImmobile()).get();
 
                     PDPage page = new PDPage(PDRectangle.A4);
                     document.addPage(page);
@@ -141,12 +143,14 @@ public class PdfGeneratorServiceImpl implements PdfGeneratorService {
                             FORMATTER.format(contratto.getDataStipulazione()).replace(" ","_")+".pdf");
                     document.save(response.getOutputStream());
 
+                    return contratto.getIdContratto();
+
                 }
 
 
             }
 
-
+            return idContratto;
         }
 
     }
