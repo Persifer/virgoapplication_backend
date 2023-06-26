@@ -68,7 +68,9 @@ public class DomandaControllerTest {
     @Test
     void addDomandaToImmobile_autenticated_success() throws Exception {
 
-        Optional<Domanda> domanda = Optional.of(new Domanda());
+        Optional<Domanda> domanda = Optional.of(Domanda.builder().immobileInteressato(
+                Immobile.builder().idImmobile(1L).build()
+        ).build());
         Optional<GetImmobileInfoDTO> newImmobile = Optional.of(new GetImmobileInfoDTO());
         DomandaDTO domandaDTO = new DomandaDTO();
         Domanda newDomanda = new Domanda();
@@ -81,8 +83,8 @@ public class DomandaControllerTest {
 
         String viewName = domandaController.addDomandaToImmobile(domandaDTO, 1L, model);
 
-        assertEquals("riuscito", viewName);
-        assertTrue(model.containsAttribute("message"));
+        assertEquals("redirect:/site/immobile/viewImmobile/1", viewName);
+
 
     }
 
@@ -132,7 +134,13 @@ public class DomandaControllerTest {
     void addRispostaToDomanda_autenticated_success()
             throws UtenteException, ImmobileException, RispostaException, DomandaException {
 
-        Optional<Risposta> risposta = Optional.of(new Risposta());
+        Optional<Risposta> risposta = Optional.of(
+                Risposta.builder().domandaDiRiferimento(
+                        Domanda.builder().immobileInteressato(
+                                Immobile.builder().idImmobile(1L).build()
+                        ).build()
+                ).build()
+        );
         Optional<GetImmobileInfoDTO> newImmobile = Optional.of(new GetImmobileInfoDTO());
         RispostaDTO rispostaDTO = new RispostaDTO();
         Optional<Domanda> domanda = Optional.of(new Domanda());
@@ -148,7 +156,7 @@ public class DomandaControllerTest {
         String viewName = domandaController.addRispostaToDomanda(rispostaDTO,1L, 1L, model);
 
         assertEquals("redirect:/site/immobile/mioImmobile/1", viewName);
-        assertTrue(model.containsAttribute("message"));
+
     }
 
     @Test

@@ -4,10 +4,7 @@ import com.application.virgo.model.ComposedRelationship.CompoundKey.OffertaUtent
 import com.application.virgo.model.Offerta;
 import com.application.virgo.model.Utente;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.Instant;
 
@@ -15,6 +12,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class OfferteUtente {
 
     @EmbeddedId

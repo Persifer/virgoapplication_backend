@@ -71,7 +71,8 @@ class OffertaControllerTest {
 
         when(authService.getAuthUtente()).thenReturn(Optional.of(authenticatedUser));
         when(offertaService.createNewOfferta(tempOffertaDTO)).thenReturn(Optional.of(newOfferta));
-        when(offertaUtenteService.saveOffertaToUtente(authenticatedUser, newOfferta, idProprietario)).thenReturn(Optional.of(newOffertaToUtente));
+        when(offertaUtenteService.saveOffertaToUtente(authenticatedUser, newOfferta, idProprietario))
+                .thenReturn(Optional.of(newOffertaToUtente));
 
         String viewName = offertaController.createProposta(idProprietario, idImmobile, tempOffertaDTO, model);
 
