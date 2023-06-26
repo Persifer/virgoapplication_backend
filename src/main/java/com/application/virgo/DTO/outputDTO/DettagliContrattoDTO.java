@@ -16,4 +16,6 @@ public class DettagliContrattoDTO {
     private String titoloImmobile;
     private Long idImmobile;
 
+    private Long idContratto;
+
 }

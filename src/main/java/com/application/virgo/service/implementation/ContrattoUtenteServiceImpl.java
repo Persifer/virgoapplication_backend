@@ -145,6 +145,8 @@ public class ContrattoUtenteServiceImpl implements ContrattoUtenteService {
                        dettagliContrattoDTO.setTitoloImmobile(wantedContratto.getImmobileInteressato().getTitolo());
                        dettagliContrattoDTO.setIdImmobile(wantedContratto.getImmobileInteressato().getIdImmobile());
 
+                       dettagliContrattoDTO.setIdContratto(wantedContratto.getIdContratto());
+
                        if(authUser.getIdUtente().equals(requestedContrattoUtente.getAcquirente().getIdUtente())){
                            dettagliContrattoDTO.setNomeControparte(requestedContrattoUtente.getVenditore().getNome());
                            dettagliContrattoDTO.setCognomeControparte(requestedContrattoUtente.getVenditore().getCognome());
