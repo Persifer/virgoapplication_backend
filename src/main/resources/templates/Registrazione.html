@@ -3,34 +3,102 @@
     <head>
         <meta charset="UTF-8">
         <title>Registrazione</title>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/Style.css}">
+        <style>
+            body {
+                font-size: x-large;
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f2f2f2;
+            }
+
+            .pageContainer{
+                display: flex;
+                justify-content: center;
+            }
+
+            .formContainer{
+                margin: 100px;
+            }
+
+            .error-message {
+                color: #ff0000;
+                margin-bottom: 10px;
+            }
+
+            form {
+                display: flex;
+                flex-direction: column;
+            }
+
+            form label {
+                margin-bottom: 10px;
+            }
+
+            form input[type="date"],
+            form input[type="email"],
+            form input[type="text"],
+            form input[type="password"] {
+                padding: 10px;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+                font-size: x-large;
+            }
+
+            form input[type="submit"] {
+                padding: 10px 20px;
+                margin-top: 10px;
+                background-color: #4CAF50;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: x-large;
+            }
+
+            form input[type="submit"]:hover {
+                background-color: #45a049;
+            }
+        </style>
     </head>
     <body>
-        <h1>Registrati ed inizia a vedere i nostri immobili, sono i migliori!</h1>
 
-        <form th:action="@{/registration}" method="post">
+    <div class="pageContainer">
+        <div class="formContainer">
+            <form th:action="@{/registration}" method="post">
+                <div>
+                    <label for="nome">Nome:</label><br>
+                    <input type="text" id="nome" name="nome" required>
+                </div>
+                <div>
+                    <label for="cognome">Cognome:</label><br>
+                    <input type="text" id="cognome" name="cognome" required>
+                </div>
+                <div>
+                    <label for="email">Email:</label><br>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div>
+                    <label for="password">Password:</label><br>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div>
+                    <label for="dataNascita">Data di nascita:</label><br>
+                    <input type="date" id="dataNascita" name="dataNascita" required>
+                </div>
+                <div style="display: flex;justify-content: flex-end;">
+                    <input class="btn btn-primary flex-fill" type="submit" value="Registrati">
+                </div>
+            </form>
+
             <div>
-                <label for="nome">Nome:</label>
-                <input type="text" id="nome" name="nome" required>
+                <a href="http://localhost:8080/login">Accedi</a>
             </div>
-            <div>
-                <label for="cognome">Cognome:</label>
-                <input type="text" id="cognome" name="cognome" required>
-            </div>
-            <div>
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div>
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <div>
-                <label for="dataNascita">Data di nascita:</label>
-                <input type="date" id="dataNascita" name="dataNascita" required>
-            </div>
-            <div>
-                <input class="btn btn-primary flex-fill" type="submit" value="Registrati">
-            </div>
-        </form>
+
+        </div>
+    </div>
+
+
     </body>
 </html>

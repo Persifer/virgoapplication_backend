@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/Style.css}">
 </head>
 <body>
 
@@ -13,21 +14,25 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/Style.css}">
     <nav role="navigation" aria-label="Navigation">
         <a href="/site/immobile/list/0/20">Home</a>
-        <a href="/site/utente">I tuoi immobili</a>
+        <a href="/site/utente/0/20">I tuoi immobili</a>
         <a href="/site/utente/getListaOfferte">Chat con venditori</a>
         <a href="/site/utente/getListProposte">Chat con acquirenti</a>
         <a href="/site/utente/getInfo">Dati utente</a>
+        <a href="/logout">Disconnettiti</a>
     </nav>
     <title>Le tue Offerte</title>
 </head>
 <body>
+
+<h2>Queste sono le chat che hai in sospeso con gli acquirenti</h2>
+
 <table>
     <thead>
     <tr>
         <th>Proposta ID</th>
         <th>Nome Utente</th>
         <th>Titolo Immobile</th>
-        <th>Apri chat</th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -36,7 +41,7 @@
         <td th:text="${proposta.nomeControparte}"></td>
         <td th:text="${proposta.cognomeControparte}"></td>
         <td th:text="${proposta.titoloImmobile}"></td>
-        <td><a th:href="@{'/site/utente/getListProposte/storico/' + ${proposta.idControparte} + '/' + ${proposta.idImmobile}}">Apri chat</a></td>
+        <td><a class="basicButton" th:href="@{'/site/utente/getListProposte/storico/' + ${proposta.idControparte} + '/' + ${proposta.idImmobile}}">Apri chat</a></td>
     </tr>
     </tbody>
 </table>

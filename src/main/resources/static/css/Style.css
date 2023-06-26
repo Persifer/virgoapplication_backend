@@ -2,8 +2,30 @@ nav {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    background-color: green;
+    background-color: #4CAF50;
     border-radius: 5px;
+    padding: 20px;
+    font-size: x-large;
+}
+nav a{
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+h1{
+    font-size: xxx-large;
+}
+h2{
+    font-size: xx-large;
+}
+nav a:hover {
+    background-color: #45a049;
 }
 
 table {
@@ -14,6 +36,7 @@ th, td {
     padding: 8px;
     text-align: left;
     border-bottom: 1px solid #ddd;
+    font-size: large;
 }
 
 .okmessage{
@@ -21,4 +44,57 @@ th, td {
 }
 .errorMessage{
     color: red;
+}
+
+
+
+
+/* bottoni */
+
+.newButton{
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 100px;
+    font-size: x-large;
+}
+
+.deleteButton{
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #f44336;
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: large;
+}
+.deleteButton:hover {
+    background-color: #d32f2f;
+}
+
+.basicButton {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    color: #333333;
+    text-decoration: none;
+    border: 1px solid #333333;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.basicButton:hover {
+    color: white;
+    background-color: #333333;
 }

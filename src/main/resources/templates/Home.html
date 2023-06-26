@@ -5,33 +5,50 @@
     <title>List of Immobili</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/Style.css}">
 
+    <style>
+        .titleAndNewImmobileContainer{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+    </style>
+
     <nav role="navigation" aria-label="Navigation">
         <a href="/site/immobile/list/0/20">Home</a>
         <a href="/site/utente/0/20">I tuoi immobili</a>
         <a href="/site/utente/getListaOfferte">Chat con venditori</a>
         <a href="/site/utente/getListProposte">Chat con acquirenti</a>
         <a href="/site/utente/getInfo">Dati utente</a>
+        <a href="/logout">Disconnettiti</a>
     </nav>
 </head>
 <body>
-<h1>Immobili disponibili</h1>
+
+<div class="titleAndNewImmobileContainer">
+    <h1 style="width: 50%">Immobili disponibili</h1>
+    <a class="newButton" href="/site/immobile">Crea un altro immobile</a>
+</div>
 
 <table>
     <thead>
-    <p>Informazioni generali</p>
+        <tr>
+            <th>Immagine</th>
+            <th>Titolo</th>
+            <th>Descrizione</th>
+            <th>Prezzo di partenza</th>
+        </tr>
     </thead>
     <tbody>
     <tr th:each="immobile:${listImmobili}">
-        <th>Immagini<td><img th:src="${immobile.immagineImmobile}"/></td></th>
-      <th>Titolo<td><a th:href="@{/site/immobile/viewImmobile/{id}(id=${immobile.idImmobile})}" th:text="${immobile.titolo}"></a></td></th>
-        <th>Descrizione <td><span th:text="${immobile.descrizione}"></td></th>
-        <th>prezzo di partenza  <td><span th:text="${immobile.prezzo}"></td></th>
-
-
+        <td><img height="200px" th:src="${immobile.immagineImmobile}"/></td>
+        <td><a th:href="@{/site/immobile/viewImmobile/{id}(id=${immobile.idImmobile})}" th:text="${immobile.titolo}"></a></td>
+        <td><span th:text="${immobile.descrizione}"></td>
+        <td><span th:text="${immobile.prezzo}"></td>
     </tr>
     </tbody>
 </table>
-<a href="/site/immobile">Crea un altro immobile</a>
+
 
 </body>
 </html>

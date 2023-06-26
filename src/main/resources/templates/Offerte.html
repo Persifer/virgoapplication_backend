@@ -8,17 +8,21 @@
         <a href="/site/utente/getListaOfferte">Chat con venditori</a>
         <a href="/site/utente/getListProposte">Chat con acquirenti</a>
         <a href="/site/utente/getInfo">Dati utente</a>
+        <a href="/logout">Disconnettiti</a>
     </nav>
-    <title>Le tue Offerte</title>
+    <title>Chat</title>
 </head>
 <body>
+
+<h2>Queste sono le chat che hai in sospeso con i venditori</h2>
+
 <table>
     <thead>
     <tr>
         <th>nome Controparte</th>
         <th>cognome Controparte</th>
         <th>titolo immobile</th>
-        <th>Chat</th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -28,7 +32,7 @@
         <td th:text="${offerta.cognomeControparte}"></td>
         <td th:text="${offerta.titoloImmobile}"></td>
 
-        <td><a th:href="@{'/site/utente/getListaOfferte/storico/' + ${offerta.idControparte} + '/' + ${offerta.idImmobile}}">Apri chat</a></td>
+        <td><a class="basicButton" th:href="@{'/site/utente/getListaOfferte/storico/' + ${offerta.idControparte} + '/' + ${offerta.idImmobile}}">Apri chat</a></td>
     </tr>
     </tbody>
 </table>
