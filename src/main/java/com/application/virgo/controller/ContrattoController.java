@@ -29,6 +29,7 @@ public class ContrattoController {
             Optional<Utente> authUser = authService.getAuthUtente();
             if(authUser.isPresent()){
                 Double prezzoContratto = calcoloPreventiviService.calcolaPreventivoImmobile(idContratto, selettoreAzienda);
+                System.out.println("prezzo contratto: " + prezzoContratto);
                 model.addAttribute("risultato", prezzoContratto);
                 return "redirect:/site/utente/getListaContratti/contratto/"+idContratto;
 

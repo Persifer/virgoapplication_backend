@@ -51,6 +51,6 @@ public class CalcoloPreventiciServiceImpl implements CalcoloPreventiviService {
             return elem;
         }
 
-        return 0.0d;
+        return 10.0d;
     }
 }

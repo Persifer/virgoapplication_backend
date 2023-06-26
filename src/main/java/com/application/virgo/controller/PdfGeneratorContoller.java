@@ -33,9 +33,8 @@ public class PdfGeneratorContoller {
             Optional<Utente> authUser = authService.getAuthUtente();
             if(authUser.isPresent()){
 
-                pdfGeneratorService.exportPDF(authUser.get(), idContratto, response);
-
-                return "Page";
+                return "redirect:/site/utente/getListaContratti/contratto/" +
+                        pdfGeneratorService.exportPDF(authUser.get(), idContratto, response);
             }else{
                 model.addAttribute("error", "Bisogna essere loggati per scaricare un contratto");
                 return "Fail";

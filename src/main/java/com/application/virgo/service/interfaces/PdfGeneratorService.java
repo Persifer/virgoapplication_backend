@@ -11,5 +11,5 @@ import java.io.IOException;
 
 public interface PdfGeneratorService {
 
-    public void exportPDF(Utente idUtente, Long idContratto, HttpServletResponse response) throws ContrattoException, ContrattoUtenteException, IOException, ImmobileException;
+    public Long exportPDF(Utente idUtente, Long idContratto, HttpServletResponse response) throws ContrattoException, ContrattoUtenteException, IOException, ImmobileException;
 }

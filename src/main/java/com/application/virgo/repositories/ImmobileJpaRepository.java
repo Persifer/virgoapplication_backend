@@ -21,6 +21,10 @@ public interface ImmobileJpaRepository extends JpaRepository<Immobile, Long> {
     public Optional<Immobile> getImmobilesByIdImmobile(@Param("requestId") Long idImmobile);
 
     @Query("SELECT immobile FROM Immobile immobile "+
+            " WHERE immobile.idImmobile = :requestId")
+    public Optional<Immobile> getImmobilesByIdImmobileAfterContratto(@Param("requestId") Long idImmobile);
+
+    @Query("SELECT immobile FROM Immobile immobile "+
             " WHERE immobile.idImmobile = :requestId AND immobile.proprietario.idUtente = :idUtente" +
             " AND immobile.isEnabled=true")
     public Optional<Immobile> getImmobilesByIdImmobileAsProprietario(@Param("requestId") Long idImmobile,
