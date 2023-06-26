@@ -128,21 +128,21 @@ public class OffertaController {
                                 }
                             }else{
                                 model.addAttribute("error", "2 - Errore nella creazione di un offerta");
-                                return "Fail";
+                                return "Fail1";
                             }
 
                         }else {
                             model.addAttribute("error", "1 - Errore nella creazione di un offerta");
-                            return "Fail";
+                            return "Fail2";
                         }
 
                     } else {
                         model.addAttribute("error", "Immobile non trovato");
-                        return "Fail";
+                        return "Fail3";
                     }
                 } else {
                     model.addAttribute("error", "Proprietario non trovato");
-                    return "Fail";
+                    return "Fail4";
                 }
 
             } else {
@@ -196,12 +196,12 @@ public class OffertaController {
         try{
             Optional<Utente> authenticatedUser = authService.getAuthUtente();
             if(authenticatedUser.isPresent()) {
-                Optional<OfferteUtente> acceptedOfferta = offertaUtenteService.declineOfferta(idOfferta, authenticatedUser.get());
+                Optional<OfferteUtente> declineOfferta = offertaUtenteService.declineOfferta(idOfferta, authenticatedUser.get());
 
-                if(acceptedOfferta.isPresent()){
+                if(declineOfferta.isPresent()){
                     model.addAttribute("message", "Peccato, hai rifiutato l'offerta");
 
-                    if(authenticatedUser.get().getIdUtente().equals(acceptedOfferta.get().getOfferente().getIdUtente())){
+                    if(authenticatedUser.get().getIdUtente().equals(declineOfferta.get().getOfferente().getIdUtente())){
                         model.addAttribute("isAcquirente", "1");
 
                     }else{
@@ -211,13 +211,13 @@ public class OffertaController {
 
                     if(isAcquirente==1){ // /getListaOfferte/storico/{id_utente}/{id_immobile}
                         return "redirect:/site/utente/getListaOfferte/storico/"
-                                +acceptedOfferta.get().getProprietario().getIdUtente()+"/"
-                                +acceptedOfferta.get().getOffertaInteressata().getIdImmobileInteressato().getIdImmobile();
+                                +declineOfferta.get().getProprietario().getIdUtente()+"/"
+                                +declineOfferta.get().getOffertaInteressata().getIdImmobileInteressato().getIdImmobile();
                     }else{
                         ///getListProposte/storico/{idOfferente}/{idImmobile}
                         return "redirect:/site/utente/getListProposte/storico/"
-                                +acceptedOfferta.get().getOfferente().getIdUtente()+"/"
-                                +acceptedOfferta.get().getOffertaInteressata().getIdImmobileInteressato().getIdImmobile();
+                                +declineOfferta.get().getOfferente().getIdUtente()+"/"
+                                +declineOfferta.get().getOffertaInteressata().getIdImmobileInteressato().getIdImmobile();
                     }
                 }else{
                     model.addAttribute("error", "Errore nel rifiuto dell'offerta");

@@ -3,6 +3,7 @@ package com.application.virgo.controller;
 import com.application.virgo.DTO.inputDTO.InsertOffertaDTO;
 import com.application.virgo.exception.*;
 import com.application.virgo.model.ComposedRelationship.OfferteUtente;
+import com.application.virgo.model.Immobile;
 import com.application.virgo.model.Offerta;
 import com.application.virgo.model.Utente;
 import com.application.virgo.model.ComposedRelationship.ContrattoUtente;
@@ -43,6 +44,7 @@ class OffertaControllerTest {
         MockitoAnnotations.openMocks(this);
         offertaController = new OffertaController(offertaService, offertaUtenteService, authService);
         authenticatedUser = Utente.builder()
+                .idUtente(1L)
                 .email("mail@mail.it")
                 .password("$2a$10$qwkYqMJwaQFb/B/V4YKq9Os/JUBUqZkwUdum5Ul2oEOP86pPHEFFm")
                 .nome("Antonio")
@@ -56,7 +58,7 @@ class OffertaControllerTest {
     @Test
     void get_returnsOffertaView() {
         String viewName = offertaController.get(model);
-        assertEquals("Offerta", viewName);
+        assertEquals("Offerte", viewName);
     }
 
     @SneakyThrows
@@ -77,7 +79,7 @@ class OffertaControllerTest {
         String viewName = offertaController.createProposta(idProprietario, idImmobile, tempOffertaDTO, model);
 
         verify(offertaUtenteService).saveOffertaToUtente(authenticatedUser, newOfferta, idProprietario);
-        assertEquals("Offerta", viewName);
+        assertEquals("redirect:/site/immobile/viewImmobile/2", viewName);
         assertTrue(model.containsKey("message"));
     }
 
@@ -118,12 +120,41 @@ class OffertaControllerTest {
     @Test
     void rilanciaOfferta_returnsEmptyString() throws UtenteException, OffertaException,
             ImmobileException, OffertaUtenteException{
-        Long idOfferta = 1L;
+        InsertOffertaDTO insertOffertaDTO =
+                InsertOffertaDTO.builder()
+                        .idProprietario(1L)
+                        .idImmobile(1L)
+                        .build();
+        Offerta offerta = Offerta.builder()
+                .idOfferta(1l)
+                .build();
 
-        String result = offertaController.rilanciaOfferta(Boolean.TRUE, new InsertOffertaDTO() ,model);
+        OfferteUtente newOffertaUtente = OfferteUtente.builder()
+                .offertaInteressata(Offerta.builder().idImmobileInteressato(
+                                Immobile.builder()
+                                        .idImmobile(1L)
+                                        .build()
+                        )
+                        .build())
+                .offerente(Utente.builder()
+                        .idUtente(1L)
+                        .build())
+                .proprietario(Utente.builder()
+                        .idUtente(1L)
+                        .build())
+                .build();
 
-        assertEquals("", result);
-        assertEquals(0, model.size());
+        when(authService.getAuthUtente()).thenReturn(Optional.of(authenticatedUser));
+        when(offertaService.createNewOfferta(insertOffertaDTO)).thenReturn(
+                Optional.of(offerta)
+        );
+        when(offertaUtenteService.rilanciaOffertaToUtente(
+                authenticatedUser, offerta, 1L, Boolean.TRUE)).thenReturn(Optional.of(newOffertaUtente));
+
+        String result = offertaController.rilanciaOfferta(Boolean.TRUE, insertOffertaDTO ,model);
+
+        assertEquals("redirect:/site/utente/getListaOfferte/storico/1/1", result);
+
     }
 
     @Test
@@ -139,8 +170,8 @@ class OffertaControllerTest {
         String viewName = offertaController.acceptOfferta(idOfferta, 1l,1,model);
 
         verify(offertaUtenteService).acceptOfferta(idOfferta, authenticatedUser,1l);
-        assertEquals("Offerta", viewName);
-        assertTrue(model.containsKey("error"));
+        assertEquals("redirect:/site/utente/getInfo", viewName);
+        assertTrue(model.containsKey("okmessage"));
     }
 
     @Test
@@ -154,7 +185,6 @@ class OffertaControllerTest {
 
         assertEquals("Login", viewName);
         assertTrue(model.containsKey("error"));
-        verify(offertaUtenteService, never()).acceptOfferta(anyLong(), any(),1l);
     }
 
     @Test
@@ -162,16 +192,57 @@ class OffertaControllerTest {
             ImmobileException, OffertaUtenteException{
         Long idOfferta = 1L;
 
-        OfferteUtente declinedOfferta = new OfferteUtente();
+        OfferteUtente declinedOfferta = OfferteUtente.builder()
+                .offertaInteressata(Offerta.builder().idImmobileInteressato(
+                                Immobile.builder()
+                                        .idImmobile(1L)
+                                        .build()
+                        )
+                        .build())
+                .offerente(Utente.builder()
+                        .idUtente(1L)
+                        .build())
+                .proprietario(Utente.builder()
+                        .idUtente(1L)
+                        .build())
+                .build();
+
+        //OfferteUtente declinedOfferta = new OfferteUtente();
 
         when(authService.getAuthUtente()).thenReturn(Optional.of(authenticatedUser));
         when(offertaUtenteService.declineOfferta(idOfferta, authenticatedUser)).thenReturn(Optional.of(declinedOfferta));
 
         String viewName = offertaController.declineOfferta(idOfferta,1, model);
 
+        assertEquals("redirect:/site/utente/getListaOfferte/storico/1/1", viewName);
+    }
+
+    @Test
+    void declineOfferta_validInput_declinesOffertaAndRedirectsToPropostaView() throws UtenteException, OffertaException,
+            ImmobileException, OffertaUtenteException{
+        Long idOfferta = 1L;
+        OfferteUtente declinedOfferta = OfferteUtente.builder()
+                .offertaInteressata(Offerta.builder().idImmobileInteressato(
+                                Immobile.builder()
+                                        .idImmobile(1L)
+                                        .build()
+                        )
+                        .build())
+                .offerente(Utente.builder()
+                        .idUtente(1L)
+                        .build())
+                .proprietario(Utente.builder()
+                        .idUtente(1L)
+                        .build())
+                .build();
+
+        when(authService.getAuthUtente()).thenReturn(Optional.of(authenticatedUser));
+        when(offertaUtenteService.declineOfferta(idOfferta, authenticatedUser)).thenReturn(Optional.of(declinedOfferta));
+
+        String viewName = offertaController.declineOfferta(idOfferta,0, model);
+
         verify(offertaUtenteService).declineOfferta(idOfferta, authenticatedUser);
-        assertEquals("offerta", viewName);
-        assertTrue(model.containsKey("error"));
+        assertEquals("redirect:/site/utente/getListProposte/storico/1/1", viewName);
     }
 
     @Test

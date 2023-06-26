@@ -13,6 +13,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @EqualsAndHashCode
+@Builder
 public class OffertaUtenteCompoundKey implements Serializable {
 
     @Column(name = "id_utente")

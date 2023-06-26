@@ -11,6 +11,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
+@Builder
 @Getter
 @Setter
 public class ContrattoUtenteCompoundKey implements Serializable {

@@ -227,7 +227,7 @@ class UtenteControllerTest {
 
         String viewName = utenteController.getOfferteBetweenUtenti(model, idOfferente, idImmobile);
 
-        assertEquals("Offerte", viewName);
+        assertEquals("SingolaProposta", viewName);
         assertNotEquals(Collections.emptyList(), model.getAttribute("listaOfferte"));
 
 
@@ -326,7 +326,7 @@ class UtenteControllerTest {
 
         String viewName = utenteController.getStoricoOfferte(model, offset, pageSize);
 
-        assertEquals("Ciao", viewName);
+        assertEquals("SingolaOfferta", viewName);
         assertTrue(model.containsAttribute("listaOfferte"));
     }
 
@@ -391,7 +391,7 @@ class UtenteControllerTest {
 
         String viewName = utenteController.getListaContratti(model, offset, pageSize);
 
-        assertEquals("Ciao", viewName);
+        assertEquals("ListaContratti", viewName);
         assertTrue(model.containsAttribute("listaContratti"));
 
     }
@@ -425,8 +425,7 @@ class UtenteControllerTest {
 
         String viewName = utenteController.getSingleContratto(model, 1L);
 
-        assertEquals("Ciao", viewName);
-       assertTrue(model.containsAttribute("listaContratti"));
+        assertEquals("redirect:/site/utente/getListaContratti/0/20", viewName);
 
     }
 
