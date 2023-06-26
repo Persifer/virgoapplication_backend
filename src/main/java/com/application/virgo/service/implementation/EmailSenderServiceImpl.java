@@ -38,7 +38,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
 
         emailHandler.setFrom(destinatario);
 
-        emailHandler.setTo("giorgino.antonio32@gmail.com");
+        emailHandler.setTo(destinatario);
         emailHandler.setSubject("Virgo Platform - Welcome mail");
 
         emailHandler.setText(

@@ -89,6 +89,7 @@ public class PdfGeneratorServiceImpl implements PdfGeneratorService {
                             contrattoUtente.getAcquirente().getCognome());
                     contentStream.newLineAtOffset(0, -20);
                     contentStream.showText("Si stipula il presente contratto di acquisto immobiliare per");
+                    contentStream.newLineAtOffset(0, -20);
                     contentStream.showText(" la compravendita del seguente immobile:");
                     contentStream.newLineAtOffset(0, -20);
                     contentStream.showText("DESCRIZIONE DELL'IMMOBILE:"); contentStream.newLineAtOffset(0, -20);
@@ -140,11 +141,14 @@ public class PdfGeneratorServiceImpl implements PdfGeneratorService {
                     contentStream.showText("        Eventuali controversie saranno ");contentStream.newLineAtOffset(0, -20);
                     contentStream.showText("risolte presso il Tribunale di ." );contentStream.newLineAtOffset(0, -20);
                     contentStream.newLineAtOffset(0, -20);
-                    contentStream.showText("Le parti dichiarano di aver letto e compreso il contenuto di questo contratto" );
-                    contentStream.showText(" di acquisto immobiliare e accettano i termini e le condizioni in esso indicati." );
+                    contentStream.showText("Le parti dichiarano di aver letto e compreso il contenuto di questo " );
+                    contentStream.newLineAtOffset(0, -20);
+                    contentStream.showText("contratto di acquisto immobiliare e accettano i termini e");
+                    contentStream.newLineAtOffset(0, -20);
+                    contentStream.showText(" le condizioni in esso indicati." );
                     contentStream.newLineAtOffset(0, -20);
                     contentStream.newLineAtOffset(0, -20);
-                    contentStream.showText("Firmato in due copie originali in data ." + FORMATTER.format(contratto.getDataStipulazione()));
+                    contentStream.showText("Firmato in due copie originali in data " + FORMATTER.format(contratto.getDataStipulazione()));
                     contentStream.newLineAtOffset(0, -20);
                     contentStream.endText();
                     contentStream.close();
