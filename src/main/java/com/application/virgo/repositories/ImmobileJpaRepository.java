@@ -38,7 +38,7 @@ public interface ImmobileJpaRepository extends JpaRepository<Immobile, Long> {
 
     @Modifying
     @Query("UPDATE Immobile immobile SET immobile.isEnabled = false WHERE immobile.idImmobile = :idImmobile ")
-    public Optional<Immobile> disableImmobile(@Param("idImmobile") Long idImmobil);
+    public int disableImmobile(@Param("idImmobile") Long idImmobil);
 
     @Query("SELECT COUNT(immobile.idImmobile) FROM Immobile immobile WHERE immobile.isEnabled = true")
     public Long countByIdImmobile();

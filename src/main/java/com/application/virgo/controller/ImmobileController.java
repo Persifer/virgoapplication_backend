@@ -193,8 +193,8 @@ public class ImmobileController {
             Optional<Utente> authenticatedUser = authService.getAuthUtente();
             if(authenticatedUser.isPresent()) {
                 // se l'utente è autenticato allora posso vedere i dati del singolo immobile
-                Optional<Immobile> storedImmobile = immobileService.immobileToDisable(idImmobile);
-                if(storedImmobile.isPresent()){
+                int righeAggiornate = immobileService.immobileToDisable(idImmobile);
+                if(righeAggiornate == 1){
                     model.addAttribute("message", "Informazioni aggiornate con successo");
                     return "redirect:/site/utente/getInfo";
                 }else{

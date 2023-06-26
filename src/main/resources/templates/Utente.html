@@ -24,7 +24,9 @@
         <th>Titolo<td><a th:href="@{/site/immobile/mioImmobile/{id}(id=${immobile.idImmobile})}" th:text="${immobile.titolo}"></a></td></th>
         <th>Indirizzo<td th:text="${immobile.via}" /></th>
         <th>Prezzo<td th:text="${immobile.prezzo}" /></th>
-        <th><a th:href="@{/site/immobile/infoToModify/{id} (id=${immobile.idImmobile})}"}/>modifica immobile</th>
+        <th><form method="post" th:action="@{'/site/immobile/disable/' + ${immobile.idImmobile}}">
+            <button>disabilita immobile</button>
+        </form>
     </tr>
     </tbody>
 </table>

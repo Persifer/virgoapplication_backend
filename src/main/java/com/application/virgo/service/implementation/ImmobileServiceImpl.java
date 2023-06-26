@@ -170,7 +170,7 @@ public class ImmobileServiceImpl implements ImmobileService {
 
     }
 
-    public Optional<Immobile> immobileToDisable(Long idImmobile){
+    public int immobileToDisable(Long idImmobile){
         return immobileRepo.disableImmobile(idImmobile);
     }
 

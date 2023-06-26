@@ -87,7 +87,7 @@ public interface ImmobileService {
      */
     public List<HomeImmobileDTO> getAllImmobiliPaginated(Long idUtente, Long indiceIniziale, Long pageSize) throws ImmobileException;
 
-    public Optional<Immobile> immobileToDisable(Long idImmobile);
+    public int immobileToDisable(Long idImmobile);
 
     /**
      * Ottiene una lista di immobili filtrati in base ad un filtro specifiato dall'utente
