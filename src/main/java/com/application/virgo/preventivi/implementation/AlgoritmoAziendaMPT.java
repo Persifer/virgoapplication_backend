@@ -10,6 +10,6 @@ public class AlgoritmoAziendaMPT implements AlgoritmoDiPreventivo {
         Double test1 = Math.sin((locali+metriQuadri) * prezzo);
         Double test2 = test1 * prezzo;
 
-        return (Math.round(test2*100.0d) / 100.0d);
+        return test2;
     }
 }

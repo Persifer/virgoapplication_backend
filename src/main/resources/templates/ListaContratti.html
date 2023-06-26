@@ -4,19 +4,35 @@
     <meta charset="UTF-8">
     <title>Lista dei contratti</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/Style.css}">
+
+    <nav role="navigation" aria-label="Navigation">
+        <a href="/site/immobile/list/0/20">Home</a>
+        <a href="/site/utente/0/20">I tuoi immobili</a>
+        <a href="/site/utente/getListaOfferte">Chat con venditori</a>
+        <a href="/site/utente/getListProposte">Chat con acquirenti</a>
+        <a href="/site/utente/getInfo">Dati utente</a>
+        <a href="/logout">Disconnettiti</a>
+    </nav>
+
 </head>
 <body>
-<h1>Lista dei contratti</h1>
-<table>
-    <tbody>
-    <!-- Loop attraverso i contratti caricati -->
-    <tr th:each="contratti : ${listaContratti}">
-        <th>Nome<td><a th:href="@{/site/utente/getListaContratti/contratto/{id}(id=${contratti.idContratto})}" th:text="${contratti.nomeAcquirente}"></a></td></th>
-        <th>Cognome<td th:text="${contratti.cognomeAcquirente}" /></th>
-        <th>Data<td th:text="${contratti.dataStipulazione}" /></th>
-
-    </tr>
-    </tbody>
-</table>
+<h1 style="text-align: center">Lista dei contratti</h1>
+    <div style="display: flex;justify-content: center">
+        <table style="width: 60%" class="cardEffect">
+            <thead>
+            <th>Nome</th>
+            <th>Cognome</th>
+            <th>Data</th>
+            </thead>
+            <tbody>
+            <!-- Loop attraverso i contratti caricati -->
+            <tr th:each="contratti : ${listaContratti}">
+                <td><a th:href="@{/site/utente/getListaContratti/contratto/{id}(id=${contratti.idContratto})}" th:text="${contratti.nomeAcquirente}"></a></td>
+                <td th:text="${contratti.cognomeAcquirente}" /></td>
+                <td th:text="${contratti.dataStipulazione}" /></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>

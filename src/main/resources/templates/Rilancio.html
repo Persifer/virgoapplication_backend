@@ -12,7 +12,7 @@
     <form action="#" th:action="@{'/site/offerte/rilancia/' + ${inviatoDaProprietario}}" method="post" th:object="${tempOffertaDTO}">
 
         <label for="prezzoProposto">prezzoProposto: </label><br>
-        <input type="text" id="prezzoProposto" th:field="*{prezzoProposto}" />
+        <input type="number" id="prezzoProposto" th:field="*{prezzoProposto}" />
         <br><br>
         <label for="commento">commento: </label><br>
         <input type="text" id="commento" th:field="*{commento}" />

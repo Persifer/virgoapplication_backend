@@ -4,6 +4,21 @@
     <meta charset="UTF-8">
     <title>Contratto selezionato</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/Style.css}">
+    <style>
+        form{
+            margin: 50px;
+        }
+    </style>
+
+    <nav role="navigation" aria-label="Navigation">
+        <a href="/site/immobile/list/0/20">Home</a>
+        <a href="/site/utente/0/20">I tuoi immobili</a>
+        <a href="/site/utente/getListaOfferte">Chat con venditori</a>
+        <a href="/site/utente/getListProposte">Chat con acquirenti</a>
+        <a href="/site/utente/getInfo">Dati utente</a>
+        <a href="/logout">Disconnettiti</a>
+    </nav>
+
 </head>
 <body>
 <h1>Dettagli contratto selezionato</h1>
@@ -34,17 +49,20 @@
         <td th:text="${contratto.titoloImmobile}"></td>
     </tr>
 </table>
-<form method="get" th:action="@{'/site/pdf/generate/' + ${contratto.idContratto}}">
-    <button>Genera contratto</button>
-</form>
-<form method="get" th:action="@{'/site/contratto/calculate/' + ${contratto.idContratto} + '/1'}">
-    <button type="submit">Calcola Preventivo con azienda xyz</button>
-</form>
-        <span th:utext="${risultato}"></span>
-<!-- Secondo bottone -->
-<form method="get" th:action="@{'/site/contratto/calculate/' + ${contratto.idContratto} + '/2'}">
-    <button type="submit">Calcola Preventivo MTP </button>
-</form>
-    <span th:utext="${risultato}"></span>
+
+<div style="display: flex; justify-content: space-evenly">
+    <form method="get" th:action="@{'/site/pdf/generate/' + ${contratto.idContratto}}">
+        <button class="basicButton">Genera contratto</button>
+    </form>
+    <form method="get" th:action="@{'/site/contratto/calculate/' + ${contratto.idContratto} + '/1'}">
+        <button class="basicButton" type="submit">Calcola Preventivo con azienda xyz</button>
+    </form>
+    <!-- Secondo bottone -->
+    <form method="get" th:action="@{'/site/contratto/calculate/' + ${contratto.idContratto} + '/2'}">
+        <button class="basicButton" type="submit">Calcola Preventivo MTP </button>
+    </form>
+</div>
+
+    <p th:text="${risultato}"></p>
 </body>
 </html>

@@ -67,14 +67,14 @@
                 <!-- se questo messaggio è stato inviato dalla controparte -->
                 <div class="buttons" th:if="${offerta.inviatoDaProprietario == true}">
                     <form method="post" th:action="@{'/site/offerte/accept/' + ${offerta.idOfferta} +'/'+ ${offerta.idImmobile} +'/' + ${isAcquirente}}">
-                        <button>Accetta</button>
+                        <button class="basicButton">Accetta</button>
                     </form>
                     <form method="post" th:action="@{'/site/offerte/decline/' + ${offerta.idOfferta} + '/' + ${isAcquirente}}">
-                        <button>Declina</button>
+                        <button class="basicButton">Declina</button>
                     </form>
 
                     <form method="get" th:action="@{'/site/offerte/goToRilancio/' + ${offerta.idPropietario} + '/' + ${offerta.idImmobile} + '/' + ${offerta.inviatoDaProprietario}}">
-                        <button>Rilancia</button>
+                        <button class="basicButton">Rilancia</button>
                     </form>
                 </div>
             </div>

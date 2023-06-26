@@ -48,6 +48,9 @@ th, td {
 
 
 textarea,
+input[type="password"],
+input[type="email"],
+input[type="mail"],
 input[type="text"],
 input[type="number"],
 input[type="date"],
