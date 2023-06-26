@@ -3,6 +3,9 @@ package com.application.virgo.DTO.inputDTO;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
+/**
+ * Dati rispota in input dal front-end
+ */
 public class RispostaDTO {
 
     @NotNull

@@ -29,17 +29,30 @@ public class FileStorageServiceImpl implements FileStorageService {
         return Path.of(root+"\\"+idUtente);
     }
 
+    /**
+     * Salva il file all'interno del pc con nome file del tipo:
+     *  idUtente_idimmobile_nomeFile
+     * @param file     Il file da salvare.
+     * @param idUtente L'ID dell'utente.
+     * @param nomeFile Il nome del file.
+     * @return Una stringa che rappresenta l'identificatore del file salvato.
+     */
     @Override
     public String save(MultipartFile file, String idUtente, String nomeFile) {
         try {
+            // setto il path dove salvare i file
+
             Path pathForUtente = setPathUtente(idUtente);
 
+            // se non esiste la directory la creo
             if(!Files.isDirectory(pathForUtente)){
                 Files.createDirectory(pathForUtente);
             }
 
+            // salvo il file
             Files.copy(file.getInputStream(), Path.of(pathForUtente+"\\"+nomeFile));
 
+            // resituisco l'id utente
             return idUtente;
 
         } catch (Exception e) {
@@ -47,35 +60,4 @@ public class FileStorageServiceImpl implements FileStorageService {
         }
     }
 
-    @Override
-    public Resource load(String filename, String idUtente) {
-        try {
-
-            Path imageFilePath = setPathUtente(idUtente).resolve(filename);
-            Resource resource = new UrlResource(imageFilePath.toUri());
-
-            if (resource.exists() || resource.isReadable()) {
-                return resource;
-            } else {
-                throw new RuntimeException("Could not read the file!");
-            }
-        } catch (MalformedURLException e) {
-            throw new RuntimeException("Error: " + e.getMessage());
-        }
-    }
-
-    @Override
-    public void deleteAll(String idUtente) throws IOException {
-        FileSystemUtils.deleteRecursively(setPathUtente(idUtente));
-    }
-
-    @Override
-    public Stream<Path> loadAll(String idUtente) {
-        try {
-            Path pathForUtente = setPathUtente(idUtente);
-            return Files.walk(pathForUtente, 1).filter(path -> !path.equals(pathForUtente)).map(pathForUtente::relativize);
-        } catch (IOException e) {
-            throw new RuntimeException("Could not load the files!");
-        }
-    }
 }

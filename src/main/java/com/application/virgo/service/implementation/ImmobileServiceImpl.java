@@ -31,9 +31,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ImmobileServiceImpl implements ImmobileService {
 
-    //TODO -> Implementa pagination all'interno di get all immobili
-
-
     private final ImmobileJpaRepository immobileRepo;
 
     private FileStorageService fileStorageService;
@@ -44,6 +41,13 @@ public class ImmobileServiceImpl implements ImmobileService {
     private final ImmobiliDataUtente mapperUtenteInformation;
     private final DomandaImmobileMapper mapperDomande;
 
+    /**
+     * Metodo che permette l'upload delle foto di un immobile
+     * @param uploadedFile lista delle foto da caricare
+     * @param imageList stringa di partenza dell'immobile
+     * @param savedImmobile l'immobile salvato
+     * @param idProprietario il proprietario delle foto
+     */
     private void uploadPhotosToImmobile(MultipartFile[] uploadedFile, String imageList,
                                         Immobile savedImmobile, Long idProprietario){
 
@@ -83,7 +87,15 @@ public class ImmobileServiceImpl implements ImmobileService {
         immobileRepo.save(savedImmobile);
     }
 
-
+    /**
+     * Crea un nuovo immobile con le informazioni fornite, associandolo al proprietario specificato
+     *
+     * @param tempNewImmobile L'oggetto ImmobileDTO con le informazioni del nuovo immobile
+     * @param utenteProprietario    Il proprietario dell'immobile
+     * @return Un oggetto Optional contenente l'ImmobileDTO che rappresenta i dati dell'immobile salvato
+     * @throws ImmobileException se non è possibile creare l'immobile
+     * @throws UtenteException   se non esiste l'utente autenticato
+     */
     @Override
     public Optional<ImmobileDTO> createNewImmobile(ImmobileDTO tempNewImmobile, Utente utenteProprietario)
         throws ImmobileException, UtenteException {
@@ -129,8 +141,14 @@ public class ImmobileServiceImpl implements ImmobileService {
 
     }
 
-    // Metodo che permette di ottenere le informazioni di un immobile dal database. È un metodo "interno" che non
-    // serve per esporre dati al front-end e quindi, l'unico controllo che fa, è per vedere se l'immobile esiste
+    /**
+     * Ottiene le informazioni di un immobile dato l'id, è un metodo che viene usato "internamente" cioè da altri metodi
+     * e non da metodi che vengono richiamati dall'utente
+     *
+     * @param idImmobile L'ID dell'immobile
+     * @return Un oggetto Optional contenente l'Immobile se presente
+     * @throws ImmobileException se non è possibile trovare l'immobile
+     */
     @Override
     public Optional<Immobile> getImmobileInternalInformationById(Long idImmobile) throws ImmobileException{
         Optional<Immobile> requestImmobile = immobileRepo.getImmobilesByIdImmobile(idImmobile);
@@ -142,7 +160,12 @@ public class ImmobileServiceImpl implements ImmobileService {
         }
     }
 
-
+    /**
+     * Permette di prelevare le informazioni di un immobile quando lo richiede la stampa contratto
+     * @param idImmobile  id immobile da prelevare
+     * @return l'immobile selezionato
+     * @throws ImmobileException se l'immobile non esiste
+     */
     public Optional<Immobile> getImmobileInfoForContratto(Long idImmobile) throws ImmobileException{
         Optional<Immobile> requestImmobile = immobileRepo.getImmobilesByIdImmobileAfterContratto(idImmobile);
         if(requestImmobile.isPresent()){
@@ -153,6 +176,12 @@ public class ImmobileServiceImpl implements ImmobileService {
     }
 
 
+    /**
+     * Metodo comune a più metodi del sistema per reperire le informazioni di un immobile
+     * @param tempImmobile immobile desiderato
+     * @return l'immobile desiderato
+     * @throws ImmobileException se l'immobile non esiste
+     */
     private Optional<GetImmobileInfoDTO> setImmobileInformationCommonMethod(Optional<Immobile> tempImmobile) throws ImmobileException {
         if(tempImmobile.isPresent()){
             Immobile requestedImmobile = tempImmobile.get();
@@ -165,6 +194,14 @@ public class ImmobileServiceImpl implements ImmobileService {
         }
     }
 
+    /**
+     * Ottiene le informazioni dell'immobile con l'ID specificato inserendole all'interno di un DTO che serve, unicamente,
+     * per la rappresentazione nel front-end
+     *
+     * @param idImmobile L'ID dell'immobile
+     * @return Un oggetto Optional contenente il GetImmobileInfoDTO se presente
+     * @throws ImmobileException se non è possibile trovare l'immobile
+     */
     @Override
     public Optional<GetImmobileInfoDTO> getImmobileById(Long idImmobile) throws ImmobileException{
 
@@ -172,6 +209,14 @@ public class ImmobileServiceImpl implements ImmobileService {
 
     }
 
+    /**
+     * Ottiene le informazioni dell'immobile con l'ID specificato dove l'utente che ha fatto la richiesta è
+     * il proprietario dell'immobile
+     *
+     * @param idImmobile L'ID dell'immobile
+     * @return Un oggetto Optional contenente il GetImmobileInfoDTO se presente
+     * @throws ImmobileException se non è possibile trovare l'immobile
+     */
     @Override
     public Optional<GetImmobileInfoDTO> getImmobileByIdAsProprietario(Utente authUser, Long idImmobile) throws ImmobileException{
 
@@ -180,162 +225,26 @@ public class ImmobileServiceImpl implements ImmobileService {
 
     }
 
-    public int immobileToDisable(Long idImmobile){
-        return immobileRepo.disableImmobile(idImmobile);
-    }
-
-    //Restituisce i dati da modificare di un singolo immobile
+    /**
+     * Permette di eliminare un immobile
+     * @param idImmobile immobile da eliminare
+     * @param authUser utente proprietario immobile
+     * @return numero righe affette
+     */
     @Override
-    public Optional<GetUtenteImmobiliDTO> getImmobileByIdToUpdate(Long idImmobile, Utente authUser)
-            throws ImmobileException, UtenteException {
-        Optional<Immobile> tempToUpdateImmobile = immobileRepo.getImmobilesByIdImmobile(idImmobile);
-        if(tempToUpdateImmobile.isPresent()){
-
-            Immobile toUpdateImmobile = tempToUpdateImmobile.get();
-            // controllo che il proprietario dell'immobile selezionato sia lo stesso di quello loggato che, si presume, sia l'utente
-            // proprietario dell'immobile
-            if(toUpdateImmobile.getProprietario().getIdUtente().equals(authUser.getIdUtente())){
-                return Optional.of(mapperUtenteInformation.apply(toUpdateImmobile));
-            }else{
-                throw new UtenteException("Non sei autorizzato a modificare i dati di questo immobile!");
-            }
-        }else{
-            throw new ImmobileException("L'immobile selezionato non esiste");
-        }
+    public int immobileToDisable(Long idImmobile, Utente authUser){
+        return immobileRepo.disableImmobile(idImmobile, authUser.getIdUtente());
     }
 
-    // classe che permette l'attuazione delle modifiche dei dati di un singolo immobile dato:
-    //   -> DTO con i nuovi dati
-    //   -> proprietario dell'immobile
-    //   -> immobile da modificare
-    @Override
-    public Optional<Immobile> updateImmobileInformation(ImmobileDTO tempUpdatedImmobile, Utente authUser, Long idImmobileToUpdate)
-            throws ImmobileException, UtenteException {
-        // prelevo i dati dell'immobile di cui vorrei aggiornare i dati per il confronto
-        Optional<Immobile> tempToCheckImmobile = immobileRepo.getImmobilesByIdImmobile(idImmobileToUpdate);
-        String error = "";
-        // sel'immobile esiste allora continuo
-        if(tempToCheckImmobile.isPresent()){
-            //prendo la classe immobile dentro l'optional
-            Immobile toCheckImmobile = tempToCheckImmobile.get();
-            // controllo che il proprietario dell'immobile selezionato sia lo stesso di quello loggato che, si presume, sia l'utente
-            // proprietario dell'immobile
-            if(toCheckImmobile.getProprietario().getIdUtente().equals(authUser.getIdUtente())){
-
-                // controllo quali sono i campi che sono stati cambiati
-                if(!toCheckImmobile.getDataAcquisizione().equals(tempUpdatedImmobile.getDataAcquisizione())){
-                    if(tempUpdatedImmobile.getDataAcquisizione() != null ||
-                            tempUpdatedImmobile.getDataAcquisizione().isAfter(LocalDate.now())){
-                        toCheckImmobile.setDataAcquisizione(tempUpdatedImmobile.getDataAcquisizione());
-                    }else{
-                        error += "La data di acquisizione non esiste oppure è troppo grande!\n";
-                    }
-                }
-
-                if(!toCheckImmobile.getDataUltimoRestauro().equals(tempUpdatedImmobile.getDataUltimoRestauro())){
-                    // è possibile che l'ultimo restuaro sia programmato e non ancora avvenuto oppure non sia presente
-                    toCheckImmobile.setDataUltimoRestauro(tempUpdatedImmobile.getDataUltimoRestauro());
-                }
-
-                if(!toCheckImmobile.getLocali().equals(tempUpdatedImmobile.getLocali())){
-                    // controllo sul numero dei locali
-                    if(tempUpdatedImmobile.getLocali() == null ||
-                            tempUpdatedImmobile.getLocali().isEmpty() || tempUpdatedImmobile.getLocali().isBlank()){
-                        error += "Il numero dei locali non può essere vuoto o 0\n";
-                    }else{
-                        toCheckImmobile.setLocali(tempUpdatedImmobile.getLocali());
-                    }
-
-                }
-
-                if(!toCheckImmobile.getMetriQuadri().equals(tempUpdatedImmobile.getMetriQuadri())){
-                    // controllo sul numero dei locali
-                    if(tempUpdatedImmobile.getMetriQuadri() == null ||
-                            tempUpdatedImmobile.getMetriQuadri().isEmpty() || tempUpdatedImmobile.getMetriQuadri().isBlank()){
-                        error += "Il numero di metri quadri non può essere vuoto o 0\n";
-                    }else{
-                        toCheckImmobile.setMetriQuadri(tempUpdatedImmobile.getMetriQuadri());
-                    }
-
-                }
-
-                if(!toCheckImmobile.getDescrizione().equals(tempUpdatedImmobile.getDescrizione())){
-                    // do la possibilità all'utente di togliere la descrizione
-                    if(tempUpdatedImmobile.getDescrizione().isEmpty() || tempUpdatedImmobile.getDescrizione().isBlank()
-                        || tempUpdatedImmobile.getDescrizione() == null)
-                    {
-                        toCheckImmobile.setDescrizione("");
-                    }else{
-                        toCheckImmobile.setDescrizione(tempUpdatedImmobile.getDescrizione());
-                    }
-                }
-// ============================================= RESIDENZA =============================================================
-                if(!toCheckImmobile.getPrezzo().equals(tempUpdatedImmobile.getPrezzo())){
-                    if(tempUpdatedImmobile.getPrezzo() != null){
-                        toCheckImmobile.setPrezzo(tempUpdatedImmobile.getPrezzo());
-                    }else{
-                        error += "Il prezzo non può essere vuoto!\n";
-                    }
-                }
-
-                if(!toCheckImmobile.getCap().equals(tempUpdatedImmobile.getCap())){
-                    if(tempUpdatedImmobile.getPrezzo() != null){
-                        toCheckImmobile.setCap(tempUpdatedImmobile.getCap());
-                    }else{
-                        error += "Il CAP non può essere vuoto!\n";
-                    }
-                }
-
-                if(!toCheckImmobile.getCitta().equals(tempUpdatedImmobile.getCitta())){
-                    if(tempUpdatedImmobile.getPrezzo() != null){
-                        toCheckImmobile.setCitta(tempUpdatedImmobile.getCitta());
-                    }else{
-                        error += "La città non può essere vuota!\n";
-                    }
-                }
-
-                if(!toCheckImmobile.getProvincia().equals(tempUpdatedImmobile.getProvincia())){
-                    if(tempUpdatedImmobile.getPrezzo() != null){
-                        toCheckImmobile.setProvincia(tempUpdatedImmobile.getProvincia());
-                    }else{
-                        error += "La provincia non può essere vuota!\n";
-                    }
-                }
-
-                if(!toCheckImmobile.getVia().equals(tempUpdatedImmobile.getVia())){
-                    if(tempUpdatedImmobile.getPrezzo() != null){
-                        toCheckImmobile.setVia(tempUpdatedImmobile.getVia());
-                    }else{
-                        error += "La via non può essere vuota!\n";
-                    }
-                }
-
-// =====================================================================================================================
-
-                if(tempUpdatedImmobile.getUploadedFile() != null){
-                    uploadPhotosToImmobile(tempUpdatedImmobile.getUploadedFile(), tempToCheckImmobile.get().getListaImmagini(),
-                            tempToCheckImmobile.get(),authUser.getIdUtente());
-                }
-
-
-                if(error.isBlank() || error.isEmpty()){
-
-                    immobileRepo.save(toCheckImmobile);
-                    return Optional.of(toCheckImmobile);
-                }else{
-                    throw new ImmobileException(error);
-                }
-
-            }else{
-                throw new UtenteException("Non sei autorizzato a modificare i dati di questo immobile!");
-            }
-        }else{
-            throw new ImmobileException("L'immobile selezionato non esiste");
-        }
-
-    }
-
+    /**
+     * Aggiorna le informazioni interne dell'immobile specificato, essendo "interno" viene richiamato da un metodo
+     * che, per lui, ha già fatto tutti i controlli
+     *
+     * @param immobileToUpdate L'immobile da aggiornare
+     * @return True se l'aggiornamento è avvenuto correttamente, False altrimenti
+     */
     public Boolean updateImmobileAfterAcceptance(Long immobileToUpdate) throws ImmobileException {
+        // preleva le informazioni dell'immobili
         Optional<Immobile> immobile = getImmobileInternalInformationById(immobileToUpdate);
         if(immobile.isPresent()){
             Immobile getImmobile = immobile.get();
@@ -346,13 +255,23 @@ public class ImmobileServiceImpl implements ImmobileService {
 
     }
 
+    /**
+     * Ottiene una lista di immobili paginati per la pagina iniziale
+     *
+     * @param indiceIniziale L'indice di partenza per la paginazione
+     * @param pageSize      La dimensione di pagina per la paginazione
+     * @return Una lista di HomeImmobileDTO per la visualizzazione nella home page
+     * @throws ImmobileException se si verifica un'eccezione relativa all'immobile
+     */
     @Override
-    public List<HomeImmobileDTO> getAllImmobiliPaginated(Long idUtente, Long inidiceIniziale, Long pageSize) throws ImmobileException{
+    public List<HomeImmobileDTO> getAllImmobiliPaginated(Long idUtente, Long indiceIniziale, Long pageSize) throws ImmobileException{
 
-        if(inidiceIniziale < pageSize - immobileRepo.countByIdImmobile() ){
+        if(indiceIniziale < pageSize - immobileRepo.countByIdImmobile() ){
             if(pageSize < Constants.PAGE_SIZE){
+                // preleva gli immobili
                 Page<Immobile> listImmobili =
-                        immobileRepo.findAllByIsEnabledTrue(PageRequest.of(inidiceIniziale.intValue(), pageSize.intValue()), idUtente);
+                        immobileRepo.findAllByIsEnabledTrue(PageRequest.of(indiceIniziale.intValue(),
+                                pageSize.intValue()), idUtente);
                 // converte con la stream una page di immobili in una lista di getImmobileInfoDTO
                 return listImmobili.stream().map(mapperHomeInformation).collect(Collectors.toList());
             }else {
@@ -363,24 +282,24 @@ public class ImmobileServiceImpl implements ImmobileService {
         }
     }
 
+    /**
+     * Ottiene una lista di immobili paginati per l'utente loggato
+     *
+     * @param indiceIniziale L'indice di partenza per la paginazione
+     * @param pageSize      La dimensione di pagina per la paginazione
+     * @param authUser  L'utente proprietario degli immobili
+     * @return Una lista di GetUtenteImmobiliDTO da inserire nella pagina di visualizzazione immobili di un utente
+     * @throws ImmobileException se non è stato possibile trovare gli immobili
+     * @throws UtenteException   se l'utente autenticato non esiste
+     */
     @Override
-    public List<GetImmobileInfoDTO> getFilteredImmobiliPaginated(String filter) {
-        return null;
-    }
-
-    @Override
-    public List<GetImmobileInfoDTO> getImmobiliByKeyword(String keyword) {
-        return null;
-    }
-
-    @Override
-    public List<GetUtenteImmobiliDTO> getUtenteListaImmobili(Long inidiceIniziale, Long pageSize, Utente authUser)
+    public List<GetUtenteImmobiliDTO> getUtenteListaImmobili(Long indiceIniziale, Long pageSize, Utente authUser)
             throws ImmobileException, UtenteException {
         if(authUser != null){
-            if(inidiceIniziale < pageSize -immobileRepo.countByIdImmobile() ){
+            if(indiceIniziale < pageSize -immobileRepo.countByIdImmobile() ){
                 if(pageSize < Constants.PAGE_SIZE){
                     Page<Immobile> listImmobili = immobileRepo.getUtenteImmobiliList(authUser.getIdUtente(),
-                            PageRequest.of(inidiceIniziale.intValue(), pageSize.intValue()));
+                            PageRequest.of(indiceIniziale.intValue(), pageSize.intValue()));
                     // converte con la stream una page di immobili in una lista di getImmobileInfoDTO
                     return listImmobili.stream().map(mapperUtenteInformation).collect(Collectors.toList());
 
@@ -396,6 +315,12 @@ public class ImmobileServiceImpl implements ImmobileService {
 
     }
 
+    /**
+     * Permette di prelevare il titolo dell'immobile tramite id dell'immobile
+     * @param idImmobile id immobile selezionato
+     * @return immobile voluto
+     * @throws ImmobileException se l'immobile non esiste
+     */
     @Override
     public String getTitoloImmboileById(Long idImmobile) throws ImmobileException {
         Optional<Immobile> tempImmobile = immobileRepo.getImmobilesByIdImmobile(idImmobile);

@@ -31,6 +31,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Optional;
 
+/**
+ * Controller che si occupa di gestire ed esporre gli end-point che gestiscono la creazione e visualizzazione
+ * delle domande e delle risposte alle domande
+ */
 @Controller
 @RequestMapping(path="/site/immobile")
 @Validated
@@ -56,22 +60,28 @@ public class DomandaController {
                                                        @PathVariable("id_immobile") Long idImmobile, ModelMap model){
 
         try{
+            // controllo che l'utente i aautenticato
             Optional<Utente> authenticatedUser = authService.getAuthUtente();
             if(authenticatedUser.isPresent()){
+                // prelevo la domanda inserita dalla business-logic
                 Optional<Domanda> addedDomanda = domandaService.addNewDomanda(tempNewDomandaDTO, authenticatedUser.get(), idImmobile);
                 if(addedDomanda.isPresent()){
+                    // ritorno
                     return "redirect:/site/immobile/viewImmobile/"+addedDomanda.get().getImmobileInteressato().getIdImmobile();
                 }else{
+                    // entro se ci osno errori nel salvataggio
                     model.addAttribute("error", "Problemi con la creazione della domanda");
                     return "Fail";
                 }
 
             }else{
+                //entro se l'utente non è autenticato
                 model.addAttribute("error", "Bisogna essere autenticati per inserire una domanda");
                 return "Login";
             }
 
         }catch ( Exception error){
+            // entro in caso di errore
             model.addAttribute("error", error.getMessage());
             return "Fail";
         }
@@ -89,13 +99,17 @@ public class DomandaController {
     public String disableDomandaOfImmobile(@PathVariable("id_domanda") Long idDomanda, ModelMap model){
 
         try{
+            // controllo se l'utente è autenticato
             Optional<Utente> authenticatedUser = authService.getAuthUtente();
             if(authenticatedUser.isPresent()){
+                // prelevo la domanda modificata dalla business logic
                 Optional<Domanda> modifiedDomanda = domandaService.disabilitaDomanda( authenticatedUser.get(), idDomanda);
                 if(modifiedDomanda.isPresent()){
+                    // se presente ritorno senza alcun problema alla pagina immobile
                     model.addAttribute("message", "Domanda inserita con successo");
                     return "redirect:/site/immobile/mioImmobile/"+modifiedDomanda.get().getImmobileInteressato().getIdImmobile();
                 }else{
+                    // vado alla pagina di errore
                     model.addAttribute("error", "Problemi con la creazione della domanda");
                     return "Fail";
                 }
@@ -127,12 +141,15 @@ public class DomandaController {
                                                        @PathVariable("id_immobile") Long idImmobile, ModelMap model){
 
         try{
+            // controllo che l'utente sia autenticato
             Optional<Utente> authenticatedUser = authService.getAuthUtente();
             if(authenticatedUser.isPresent()){
+                // ritorno la risposta aggiunta dalla business logic
                 Optional<Risposta> addedRisposta = rispostaService.addNewRisposta(tempNewRispostaDTO, idDomanda,
                         authenticatedUser.get(), idImmobile);
                 if(addedRisposta.isPresent()){
-                        return "redirect:/site/immobile/mioImmobile/"+addedRisposta.get().getDomandaDiRiferimento().getImmobileInteressato().getIdImmobile();
+                    // se tutto okay allora ritorno alla pagina precedente
+                    return "redirect:/site/immobile/mioImmobile/"+addedRisposta.get().getDomandaDiRiferimento().getImmobileInteressato().getIdImmobile();
                 }else{
                     model.addAttribute("error", "1 - Errore inserimento della risposta");
                     return "Fail";

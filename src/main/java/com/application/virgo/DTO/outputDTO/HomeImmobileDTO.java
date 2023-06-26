@@ -4,7 +4,9 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
-
+/**
+ * Dati immobile per home page in output dalla business logic
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

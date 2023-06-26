@@ -19,15 +19,6 @@ import java.util.Optional;
 public interface UtenteService {
 
     /**
-     * Ottiene l'utente corrispondente all'indirizzo email e alla password forniti
-     *
-     * @param username L'indirizzo email dell'utente
-     * @param password La password dell'utente
-     * @return Un oggetto Optional contenente l'Utente se presente
-     */
-    Optional<Utente> getUtenteByEmailAndPassword(String username, String password);
-
-    /**
      * Ottiene le informazioni dell'utente, inserendole in un UtenteDTO, passando l'id dell'utente
      *
      * @param idUtenteToFound L'id dell'utente da trovare
@@ -45,15 +36,6 @@ public interface UtenteService {
      */
     Optional<Utente> getUtenteClassByEmail(String idUtenteToFound) throws UtenteException;
 
-    /**
-     * Aggiorna le informazioni dell'utente che ha fatto la richiesta tramite id
-     *
-     * @param idUtente   L'id dell'utente da aggiornare
-     * @param newUtente  L'oggetto UtenteDTO con le nuove informazioni dell'utente
-     * @return Un oggetto Optional contenente l'Utente se l'aggiornamento è andata a buon fine
-     * @throws UtenteException se l'utente non esiste oppure se non è stato possibile reperirlo dal database
-     */
-    Optional<Utente> updateUtenteInfoById(Long idUtente, UtenteDTO newUtente) throws UtenteException;
 
     /**
      * Permette di gestire la registrazione di un nuovo utente

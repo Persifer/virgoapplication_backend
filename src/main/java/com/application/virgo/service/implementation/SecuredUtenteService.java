@@ -11,6 +11,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Implementazione della classe UserDetailsService
+ */
 @Service
 public class SecuredUtenteService implements UserDetailsService {
 
@@ -21,6 +24,12 @@ public class SecuredUtenteService implements UserDetailsService {
         this.utenteRepo = userRepository;
     }
 
+    /**
+     * Metodo per il reperimento dell'utente che prova a fare il login dal database
+     * @param username email dell'utente
+     * @return lo user details dell'utente
+     * @throws UsernameNotFoundException se l'utente non è stato trovato
+     */
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

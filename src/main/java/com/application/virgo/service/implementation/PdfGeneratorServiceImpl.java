@@ -35,27 +35,38 @@ public class PdfGeneratorServiceImpl implements PdfGeneratorService {
     private final ImmobileService immobileService;
     private final ContrattoService contrattoService;
 
-
+    /**
+     * Permette di scaricare un pdf di riepilogo di un contratto
+     * @param authUser id utente interessato
+     * @param idContratto id contratto
+     * @param response risposta http
+     * @return id utente che ha richiesto il contratto
+     * @throws ContrattoException se il contratto non esiste
+     * @throws ContrattoUtenteException se l'assocazione contratto utente non esiste
+     * @throws IOException se ho problemi con il pdf
+     * @throws ImmobileException se l'immobile non esiste
+     */
     @Override
     public Long exportPDF(Utente authUser, Long idContratto, HttpServletResponse response)
             throws ContrattoException, ContrattoUtenteException, IOException, ImmobileException {
 
             try (PDDocument document = new PDDocument()) {
-
+                // prelevo informazioni contratto utente
                 Optional<ContrattoUtente> tempContrattoUtente =
                         contrattoUtenteService.getContrattoByIdUtenteAndIdContratto(authUser, idContratto);
 
                 Contratto contratto;
 
                 if(tempContrattoUtente.isPresent()){
-
+                    // get contratto utente from optional
                     ContrattoUtente contrattoUtente = tempContrattoUtente.get(); // accede ai dati degli utenti nel contratto
-
+                    // prelevo info contratto dal database
                     contratto = contrattoService.getContrattoById(contrattoUtente.getIdContrattoUtente().getIdContratto()).get();
 
+                    // prelevo informazioni immobile da database
                     Immobile immobile =
                             immobileService.getImmobileInfoForContratto(contratto.getImmobileInteressato().getIdImmobile()).get();
-
+// =============================================================== CREO PDF ===================================================
                     PDPage page = new PDPage(PDRectangle.A4);
                     document.addPage(page);
 
@@ -142,7 +153,7 @@ public class PdfGeneratorServiceImpl implements PdfGeneratorService {
                     response.setHeader("Content-Disposition", "attachment; filename=contratto_"+
                             FORMATTER.format(contratto.getDataStipulazione()).replace(" ","_")+".pdf");
                     document.save(response.getOutputStream());
-
+// ===========================================================================================================================00
                     return contratto.getIdContratto();
 
                 }

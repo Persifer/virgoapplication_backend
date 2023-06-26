@@ -59,12 +59,13 @@ public class UtenteServiceImpl implements UtenteService {
     private final RuoloJpaRepository ruoloRepo;
     private final EmailSenderService emailService;
 
-    // metodo che restituisce un utente tramite l'email e la password
-    @Override
-    public Optional<Utente> getUtenteByEmailAndPassword(String username, String password) {
-        return Optional.empty();
-    }
-
+    /**
+     * Ottiene le informazioni dell'utente, inserendole in un UtenteDTO, passando l'id dell'utente
+     *
+     * @param idUtenteToFound L'id dell'utente da trovare
+     * @return Un oggetto Optional contenente l'UtenteDTO se presente
+     * @throws UtenteException se l'utente non esiste oppure se non è stato possibile reperirlo dal database
+     */
     @Override
     public Optional<UtenteDTO> getUtenteById(Long idUtenteToFound) throws UtenteException{
         Optional<Utente> tempUtente = utenteRepo.getUtenteByIdUtente(idUtenteToFound);
@@ -76,6 +77,13 @@ public class UtenteServiceImpl implements UtenteService {
 
     }
 
+    /**
+     * Ottiene l'utente corrispondente all'indirizzo email specificato
+     *
+     * @param idUtenteToFound L'indirizzo email dell'utente richiesto
+     * @return Un oggetto Optional contenente l'Utente se trovato
+     * @throws UtenteException se l'utente non esiste oppure se non è stato possibile reperirlo dal database
+     */
     public Optional<Utente> getUtenteClassById(Long idUtenteToFound) throws UtenteException{
         Optional<Utente> tempUtente = utenteRepo.getUtenteByIdUtente(idUtenteToFound);
         if(tempUtente.isPresent()){
@@ -86,9 +94,15 @@ public class UtenteServiceImpl implements UtenteService {
 
     }
 
+
+    /**
+     * Permette di creare una lista di utenti dati gli id per le propsote
+     * @param listOfferteUtente lista id utenti in offerte
+     * @return lista di utenti
+     * @throws UtenteException se non trova l'utente
+     */
     private List<ListUtentiForProposteDTO> createListaUtentiForProposte(List<Long> listOfferteUtente) throws UtenteException {
         List<ListUtentiForProposteDTO> listUtenti = new ArrayList<>();
-        listUtenti.add(new ListUtentiForProposteDTO(1l, "Mariolone", "test"));
         for(Long idUtente : listOfferteUtente){
             Optional<Utente> tempUtente = getUtenteClassById(idUtente);
             tempUtente.ifPresent(utente -> listUtenti.add(listUtentiForProposteMapper.apply(utente)));
@@ -134,6 +148,16 @@ public class UtenteServiceImpl implements UtenteService {
         return offerteUtenteService.getOfferteProposte(offerente);
     }
 
+    /**
+     * Ottiene una lista di proposte tra l'utente proprietario, l'offerente specificato e l'immobile specificato
+     *
+     * @param proprietario L'utente proprietario delle proposte
+     * @param idOfferente  L'ID dell'offerente
+     * @param idImmobile   L'ID dell'immobile
+     * @return Una lista di ViewOfferteBetweenUtentiDTO
+     * @throws UtenteException   se si verifica un'eccezione relativa all'utente
+     * @throws ImmobileException se si verifica un'eccezione relativa all'immobile
+     */
     @Override
     public List<ViewOfferteBetweenUtentiDTO> getAllProposteBetweenUtenti(Utente proprietario, Long idOfferente, Long idImmobile)
             throws UtenteException, ImmobileException {
@@ -155,6 +179,16 @@ public class UtenteServiceImpl implements UtenteService {
         }
     }
 
+    /**
+     * Ottiene una lista di offerte tra l'utente proprietario, l'offerente specificato e l'immobile specificato
+     *
+     * @param proprietario L'utente proprietario delle offerte
+     * @param idOfferente  L'ID dell'offerente
+     * @param idImmobile   L'ID dell'immobile
+     * @return Una lista di ViewOfferteBetweenUtentiDTO
+     * @throws UtenteException   se si verifica un'eccezione relativa all'utente
+     * @throws ImmobileException se si verifica un'eccezione relativa all'immobile
+     */
     @Override
     public List<ViewOfferteBetweenUtentiDTO> getAllOfferteBetweenUtenti(Utente proprietario, Long idOfferente, Long idImmobile)
             throws UtenteException, ImmobileException {
@@ -188,35 +222,16 @@ public class UtenteServiceImpl implements UtenteService {
 
     // fa l'update delle informazioni di un utente identificato tramite id
 
+
+
     /**
-     * Permette di aggiornare le informazioni di un utente
-     * @param idUtente prende l'id dell'utente di cui si vogliono aggiornare le informazioni
-     * @param updatedUtenteDto Prende le informazioni aggiornate
-     * @return L'utente aggiornato
-     * @throws UtenteException se l'utente non è autenticato
+     * Permette di gestire la registrazione di un nuovo utente
+     *
+     * @param tempNewUtente L'oggetto UtenteDTO con le informazioni del nuovo utente
+     * @return Un oggetto Optional contenente l'Utente se la registrazione è avvenuta correttamente
+     * @throws UtenteException se l'utente non esiste oppure se non è stato possibile reperirlo dal database oppure se
+     *          un utente registrato presenta la mail che sta venendo usata per registrarsi
      */
-    @Override
-    public Optional<Utente> updateUtenteInfoById(Long idUtente, UtenteDTO updatedUtenteDto) throws UtenteException{
-        /*Optional<Utente> tempUtente = utenteRepo.findById(idUtente);
-        if(tempUtente.isPresent()){
-
-            Utente utenteToUpdate = tempUtente.get();
-            utenteToUpdate = mapperUtente.apply(updatedUtenteDto);
-
-                utenteRepo.save(updatedUtente);
-                return Optional.of(updatedUtente);
-            }else{
-                throw new UtenteException("Errore nella modifica dei dati dell'utente");
-            }
-        }else{
-            throw new UtenteException("L'utente che si vuole modificare non esiste");
-        }*/
-
-        return Optional.empty();
-    }
-
-
-    // Permette di registrare un nuovo utente
     public Optional<Utente> tryRegistrationHandler(UtenteDTO tempNewUtente) throws UtenteException {
 
 
@@ -251,6 +266,13 @@ public class UtenteServiceImpl implements UtenteService {
     }
 
 
+    /**
+     * Metodo per l'aggiunta di una domanda ad un utente, permette di tenere traccia di quali domande ha fatto l'utente
+     *
+     * @param authUser      L'utente autenticato
+     * @param domandaToAdd  La domanda da aggiungere
+     * @throws UtenteException se l'utente non esiste oppure se non è stato possibile reperirlo dal database
+     */
     @Override
     public void addDomandaToUtente(Utente authUser, Domanda domandaToAdd) throws UtenteException {
         if(authUser != null){

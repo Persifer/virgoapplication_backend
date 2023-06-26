@@ -39,6 +39,17 @@ public class ContrattoUtenteServiceImpl implements ContrattoUtenteService {
     private final ContrattoService contrattoService;
 
 
+    /**
+     * Restituisce una lista di ContrattiUtenteDTO che rappresentano tutti i contratti stipulati dall'utente
+     * per l'utente specificato, con offset e dimensione di pagina specificati.
+     *
+     * @param venditore     L'utente che ha messo in vendita l'immobile
+     * @param inidiceIniziale        L'offset che indica l'indice iniziale da cui iniziare la pagina
+     * @param pageSize      La dimensione di pagina per la paginazione.
+     * @return La lista di contratti stipulati dall'utente
+     * @throws UtenteException            se non è presente l'utente autenticato
+     * @throws ContrattoUtenteException   se i numeri di offset e paginazione sono errati
+     */
     @Override
     public List<ContrattiUtenteDTO> getListaContrattiForUtente(Utente venditore, Long inidiceIniziale, Long pageSize)
             throws UtenteException, ContrattoUtenteException, ContrattoException {
@@ -57,6 +68,7 @@ public class ContrattoUtenteServiceImpl implements ContrattoUtenteService {
                             );
 
                     if(!listContratti.isEmpty()){
+                        // se non è vuota estraggo tutti i dati dei contratti per singolo contratto_utente
                         for(ContrattoUtente contrattoUtente : listContratti){
                             Optional<Contratto> contract = contrattoService.getContrattoById(contrattoUtente.getIdContrattoUtente().getIdContratto());
                             if (contract.isPresent()){
@@ -79,8 +91,17 @@ public class ContrattoUtenteServiceImpl implements ContrattoUtenteService {
         }
     }
 
+    /**
+     * Salva un contratto tra un venditore e un acquirente specificati
+     *
+     * @param venditore             L'utente che ha messo in vendita l'immobile
+     * @param acquirente            L'utente che ha proposto l'offerta per l'immobile
+     * @param contrattoInteressato  Il contratto da associare tra due utenti
+     * @return Un oggetto Optional contenente il ContrattoUtente, se salvato correttamente
+     * @throws ContrattoUtenteException    se è impossibile reperire il contratto
+     * @throws ContrattoException          se è impossibile reperire l'acquirente o il venditore
+     */
     @Override
-
     public Optional<ContrattoUtente> saveContrattoBetweenUtenti(Utente venditore, Utente acquirente, Contratto contrattoInteressato)
             throws ContrattoUtenteException, ContrattoException {
         // controllo che il venditore passato sia presente
@@ -118,6 +139,14 @@ public class ContrattoUtenteServiceImpl implements ContrattoUtenteService {
 
     }
 
+    /**
+     * Permette di prelevare le informazioni di un contratto dato l'id del contratto interessato
+     * @param authUser Utente autenticato
+     * @param idContratto id contratto interessato
+     * @return DTO contente le informazioni utili al front-end
+     * @throws UtenteException se l'utente non è autenticato
+     * @throws ContrattoUtenteException se il contratto non esiste
+     */
     @Override
     public Optional<DettagliContrattoDTO> getDettagliContratto(Utente authUser, Long idContratto)
             throws UtenteException, ContrattoUtenteException, ContrattoException {
@@ -175,13 +204,24 @@ public class ContrattoUtenteServiceImpl implements ContrattoUtenteService {
         }
     }
 
+
+    /**
+     * Permette di prelevare un contratto dato id contratto e proprietario
+     * @param authUser proprietario contratto
+     * @param idContratto id contratto
+     * @return il contratto voluto
+     * @throws ContrattoUtenteException se non esiste l'associazione
+     * @throws ContrattoException se non esiste il contratto
+     */
     @Override
     public Optional<ContrattoUtente> getContrattoByIdUtenteAndIdContratto(Utente authUser, Long idContratto)
             throws ContrattoUtenteException, ContrattoException {
         if (authUser != null) {
+            // prelevo il contratto dal database
             Optional<Contratto> tempContratto = contrattoService.getContrattoById(idContratto);
             if (tempContratto.isPresent()) {
                 Contratto contratto = tempContratto.get();
+                // prelevo la contrattazione tramite id contratto e id utente
                 Optional<ContrattoUtente> tempFinalContratto =
                         contrattoUtenteRepo.getContrattoUtenteByIdContrattoAndIdUtente(contratto.getIdContratto(), authUser.getIdUtente());
                 if (tempFinalContratto.isPresent()) {

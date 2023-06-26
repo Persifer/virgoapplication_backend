@@ -11,6 +11,9 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Dati Utente in input dal front-end
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

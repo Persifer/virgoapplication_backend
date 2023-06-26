@@ -1,7 +1,9 @@
 package com.application.virgo.DTO.outputDTO;
 
 import lombok.*;
-
+/**
+ * Dati singola offerta/proposta di un utente in output dalla business logic
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

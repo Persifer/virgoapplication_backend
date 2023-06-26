@@ -1,7 +1,9 @@
 package com.application.virgo.DTO.outputDTO;
 
 import lombok.*;
-
+/**
+ * Dati lsita immobili per homepage in output dalla business logic
+ */
 @Getter
 @Setter
 @AllArgsConstructor

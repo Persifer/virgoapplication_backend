@@ -36,12 +36,13 @@ public class OffertaServiceImpl implements OffertaService {
     public Optional<Offerta> createNewOfferta(InsertOffertaDTO datiOfferta)
             throws OffertaException, ImmobileException {
 
+        // prelevo le informazioni dell'immobile interessato
         Optional<Immobile>  tempImmobileInteressato = immobileService.getImmobileInternalInformationById(datiOfferta.getIdImmobile());
 
         if(tempImmobileInteressato.isPresent()){
                Immobile immobileInteressato = tempImmobileInteressato.get();
             if(datiOfferta != null){
-
+                // manipolo i dati che mi serono
                 if(datiOfferta.getPrezzoProposto() <= 0){
                     throw new OffertaException("Inserire un prezzo maggiore di zero");
                 }
@@ -51,6 +52,7 @@ public class OffertaServiceImpl implements OffertaService {
                 }
                 Offerta newOfferta = new Offerta(datiOfferta.getCommento(), datiOfferta.getPrezzoProposto());
                 newOfferta.setIdImmobileInteressato(immobileInteressato);
+                // creo una nuova offerta e la salvo
                 return Optional.of(offertaRepository.save(newOfferta));
             }else{
                 throw new OffertaException("Impossibile inserire i dati di quest'offerta, riprovare");
@@ -68,6 +70,7 @@ public class OffertaServiceImpl implements OffertaService {
      * @throws OffertaException nel caso in cui non è stato possibile trovare l'offerta
      */
     public Optional<Offerta> getOffertaDetails(Long idOfferta) throws OffertaException {
+
         Optional<Offerta> requestedOfferta = offertaRepository.getOffertaByIdOfferta(idOfferta);
 
         if (requestedOfferta.isPresent()){

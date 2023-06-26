@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+/**
+ * Controller che gestisce tutte le offerte tra due utenti
+ */
 @Controller
 @RequestMapping("/site/offerte")
 @Validated
@@ -26,29 +29,48 @@ public class OffertaController {
     private final OffertaService offertaService;
     private final OffertaUtenteService offertaUtenteService;
     private final AuthService authService;
+
+    /**
+     * Ritorna pagina offerte
+     * @param model classe contenitore per passare dati tra il controller e la vista
+     * @return view Offerte
+     */
     @GetMapping
     public String get(ModelMap model) {
         return "Offerte";
     }
 
+    /**
+     * Permette di creare una proposta per un immobile
+     * @param idProprietario id proprietario immobile
+     * @param idImmobile id immobile ineteressato
+     * @param tempOffertaDTO dati offerta
+     * @param model classe contenitore per passare dati tra il controller e la vista
+     * @return la view con la pagina dell'immobile
+     */
     @PostMapping("/propose/{id_proprietario}/{id_immobile}")
     public String createProposta(@PathVariable("id_proprietario") Long idProprietario,
                                                   @PathVariable("id_immobile") Long idImmobile,
                                                   @ModelAttribute InsertOffertaDTO tempOffertaDTO,
                                                   ModelMap model) {
         try {
+            // se l'utente è autenticato
             Optional<Utente> authenticatedUser = authService.getAuthUtente();
             if(authenticatedUser.isPresent()) {
                 if (idProprietario != null) {
                     tempOffertaDTO.setIdProprietario(idProprietario);
                     if (idImmobile != null) {
                         tempOffertaDTO.setIdImmobile(idImmobile);
+                        // setto i parametri dentro il dto in modo da passarli alla business logic che si occuperà di
+                        // creare la nuova offerta
                         Optional<Offerta> newOfferta = offertaService.createNewOfferta(tempOffertaDTO);
                         if(newOfferta.isPresent()){
+                            // se l'offerta è stata creata correttamente la associo ai due utenti
                             Optional<OfferteUtente> newOffertaToUtente =
                                     offertaUtenteService.saveOffertaToUtente(authenticatedUser.get(),
                                     newOfferta.get(), idProprietario);
                             if(newOffertaToUtente.isPresent()){
+                                // se tutto okay ritorno la view dell'immobile
                                 model.addAttribute("message", "offerta creata correttamente");
                                 model.addAttribute("newOffertaToUtente", newOffertaToUtente.get());
                                 return "redirect:/site/immobile/viewImmobile/"+idImmobile;
@@ -81,6 +103,14 @@ public class OffertaController {
         }
     }
 
+    /**
+     * Permette di arrivare alla view della pagina di rilancio
+     * @param model classe contenitore per passare dati tra il controller e la vista
+     * @param idProprietario id proprietario immobile
+     * @param idImmobile id immobile imteressato
+     * @param madeByProprietario se l'offerta è stata fatta dal proprietario
+     * @return la view Rilancio
+     */
     @GetMapping("/goToRilancio/{id_controparte}/{id_immobile}/{madeByProp}")
     public String getToInsertRilancio(ModelMap model, @PathVariable("id_controparte") Long idProprietario,
                                       @PathVariable("id_immobile") Long idImmobile,
@@ -95,19 +125,29 @@ public class OffertaController {
         return "Rilancio";
     }
 
+    /**
+     * Permette di rilanciare un'offerta con una nuova offerta
+     * @param madeByProprietario se l'offerta è stata fatta dal proprietario
+     * @param tempOffertaDTO dati della nuova offerta
+     * @param model classe contenitore per passare dati tra il controller e la vista
+     * @return la chat tra i due utenti
+     */
     @PostMapping("/rilancia/{madeByProp}")
     public String rilanciaOfferta(@PathVariable("madeByProp") Boolean madeByProprietario,
                                   @ModelAttribute InsertOffertaDTO tempOffertaDTO,
                                   ModelMap model){
         try {
+            // se l'utente è autenticato
             Optional<Utente> authenticatedUser = authService.getAuthUtente();
             if(authenticatedUser.isPresent()) {
                 if (tempOffertaDTO.getIdProprietario() != null) {
                     if (tempOffertaDTO.getIdImmobile() != null) {
+                        // controllo che i dati non siano nulli e, se tutto okay, creo la nuova offerta
                         Optional<Offerta> newOfferta = offertaService.createNewOfferta(tempOffertaDTO);
                         if(newOfferta.isPresent()){
                             // qui made by proprietario è significativo e mi permette di capire chi sta facendo l'offerta
                             // io passo, in ordine: utenteAutenticato, nuovaOfferta, idControparte, madeByProp
+                            // associo l'offerta ai due utenti
                             Optional<OfferteUtente> newOffertaToUtente =
                                     offertaUtenteService.rilanciaOffertaToUtente(authenticatedUser.get(),
                                             newOfferta.get(), tempOffertaDTO.getIdProprietario(),
@@ -154,6 +194,15 @@ public class OffertaController {
             return "Fail";
         }
     }
+
+    /**
+     * Permette di accettare un'offerta tra due utenti
+     * @param idOfferta offerta da accettare
+     * @param idImmobile immobile interesssato
+     * @param isAcquirente se chi ha accettato è l'acquirente oppure no
+     * @param model classe contenitore per passare dati tra il controller e la vista
+     * @return la pagina utente
+     */
     @PostMapping("/accept/{id_proposta}/{id_immobile}/{isAcquirente}")
     public String acceptOfferta(@PathVariable("id_proposta") Long idOfferta,
                                 @PathVariable("id_immobile") Long idImmobile,
@@ -162,9 +211,11 @@ public class OffertaController {
         try{
             Optional<Utente> authenticatedUser = authService.getAuthUtente();
             if(authenticatedUser.isPresent()) {
+                // se l'utente è autenticaot allora richiamo il metodo per accettare l'offerta
                 Optional<ContrattoUtente> acceptedOfferta = offertaUtenteService.acceptOfferta(idOfferta, authenticatedUser.get(), idImmobile);
 
                 if(acceptedOfferta.isPresent()){
+                    //redirezioni, se tutto okay, alla pagina utente
                     model.addAttribute("okmessage", "Congratulazioni, hai accettato l'offerta");
 
                     return "redirect:/site/utente/getInfo";
@@ -188,6 +239,13 @@ public class OffertaController {
 
     }
 
+    /**
+     * Metodo per declinare un'offerta
+     * @param idOfferta id offeta da declinare
+     * @param isAcquirente sechi ha accettato è l'acquirente oppure no
+     * @param model classe contenitore per passare dati tra il controller e la vista
+     * @return la view della chat
+     */
     @PostMapping("/decline/{id_proposta}/{isAcquirente}")
     public String declineOfferta(@PathVariable("id_proposta") Long idOfferta,
                                  @PathVariable("isAcquirente") Integer isAcquirente,
@@ -196,9 +254,11 @@ public class OffertaController {
         try{
             Optional<Utente> authenticatedUser = authService.getAuthUtente();
             if(authenticatedUser.isPresent()) {
+                // richiamo la business logic per rifutare l'offerta
                 Optional<OfferteUtente> declineOfferta = offertaUtenteService.declineOfferta(idOfferta, authenticatedUser.get());
 
                 if(declineOfferta.isPresent()){
+                    // se tutto okay
                     model.addAttribute("message", "Peccato, hai rifiutato l'offerta");
 
                     if(authenticatedUser.get().getIdUtente().equals(declineOfferta.get().getOfferente().getIdUtente())){
@@ -208,7 +268,7 @@ public class OffertaController {
                         model.addAttribute("isAcquirente", "0");
                     }
 
-
+                    // redireziono alle due view in base a chi ha declinato, se proprietario o meno
                     if(isAcquirente==1){ // /getListaOfferte/storico/{id_utente}/{id_immobile}
                         return "redirect:/site/utente/getListaOfferte/storico/"
                                 +declineOfferta.get().getProprietario().getIdUtente()+"/"

@@ -19,7 +19,13 @@ import java.util.Optional;
 public class ContrattoServiceImpl implements ContrattoService {
 
     private final ContrattoJpaRepository contrattoRepo;
-
+    /**
+     * Metodo che permette la creazione di un nuovo contratto a seguito di un un'offerta accettata
+     * @param immobileInteressato l'entità immobile che è interessata nell'offerta
+     * @param prezzoFinale prezzo finale proposto nell'offerta
+     * @return il contratto creato tra due utenti
+     * @throws ImmobileException se l'immobile non esiste
+     */
     @Override
     public Optional<Contratto> createNewContratto(Immobile immobileInteressato, Float prezzoFinale)
             throws ImmobileException {

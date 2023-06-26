@@ -5,7 +5,9 @@ import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 import java.time.LocalDate;
-
+/**
+ * Dati immobili di un utente in output dalla business logic
+ */
 @Getter
 @Setter
 @AllArgsConstructor

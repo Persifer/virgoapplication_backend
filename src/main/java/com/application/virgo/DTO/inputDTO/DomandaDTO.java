@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Dati domanda in input dal front-end
+ */
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

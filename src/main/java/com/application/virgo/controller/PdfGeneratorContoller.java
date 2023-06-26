@@ -17,6 +17,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
+/**
+ * Permette di generare il pdf
+ */
 @Controller
 @RequestMapping(path="/site/pdf")
 @Validated
@@ -26,13 +29,21 @@ public class PdfGeneratorContoller {
     private final PdfGeneratorService pdfGeneratorService;
     private final AuthService authService;
 
+    /**
+     * Permette di generare il pdf di un contratto
+     * @param model classe contenitore per passare dati tra il controller e la vista
+     * @param idContratto id contratto da generae
+     * @param response la risposta http
+     * @return nulla, ma scarica il pdf
+     */
     @GetMapping("/generate/{id_contratto}")
     public String exportPDF(ModelMap model, @PathVariable("id_contratto") Long idContratto, HttpServletResponse response){
 
         try{
+
             Optional<Utente> authUser = authService.getAuthUtente();
             if(authUser.isPresent()){
-
+                // se l'utente è autenticato genero il pdf e ritorno alla pagina della view
                 return "redirect:/site/utente/getListaContratti/contratto/" +
                         pdfGeneratorService.exportPDF(authUser.get(), idContratto, response);
             }else{

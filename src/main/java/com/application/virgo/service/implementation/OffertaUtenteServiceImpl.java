@@ -36,6 +36,12 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
     private final ContrattoService contrattoService;
     private final ContrattoUtenteService contrattoUtenteService;
 
+    /**
+     * Permette di prelevare le informazioni di un utente
+     * @param idUtenteToFound id utente da cercare
+     * @return l'utente cercato
+     * @throws UtenteException se non esiste
+     */
     private Optional<Utente> getInformationUtente(Long idUtenteToFound) throws UtenteException{
         Optional<Utente> tempUtente = utenteRepo.getUtenteByIdUtente(idUtenteToFound);
         if(tempUtente.isPresent()){
@@ -46,6 +52,13 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
 
     }
 
+    /**
+     *  Metodo comune per vari metodi che necessitano di salvare un'offerta fatta ad un utente
+     * @param offerente dettagli dell'utente che ha proposto l'offerta
+     * @param offertaProposta dettagli dell'offerta proposta da un utente
+     * @return Un optional contenente l'offerta creata da un utente
+     * @throws UtenteException nel caso in cui non trova l'utente proprietario
+     */
     private Optional<OfferteUtente> saveOffertaCommonMethod(Utente offerente, Offerta offertaProposta,
                                                             Utente utenteProprietario, Boolean madeByProprietario){
 
@@ -63,9 +76,15 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
         return Optional.of(offertaUtenteRepository.save(offertaToProprietario));
     }
 
-    /* TODO -> avvisare peppe che mette le offerte fatte dall'utente nella sezione sbagliata
-      */
 
+    /**
+     *  Metodo per salvare un'offerta fatta ad un utente
+     * @param offerente dettagli dell'utente che ha proposto l'offerta
+     * @param offertaProposta dettagli dell'offerta proposta da un utente
+     * @param idVenditore id dell'utente che ha messo in vendita l'immobile
+     * @return Un optional contenente l'offerta creata da un utente
+     * @throws UtenteException nel caso in cui non trova l'utente proprietario
+     */
     @Override
     public Optional<OfferteUtente> saveOffertaToUtente(Utente offerente, Offerta offertaProposta, Long idVenditore)
             throws UtenteException, OffertaUtenteException {
@@ -86,6 +105,14 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
         return Optional.empty();
     }
 
+    /**
+     *  Metodo per salvare rilanciare un'offerta fatta da un altro utente
+     * @param authUser dettagli dell'utente che ha proposto l'offerta
+     * @param offertaProposta dettagli dell'offerta proposta da un utente
+     * @param idControparte id dell'utente che ha messo in vendita l'immobile
+     * @return Un optional contenente l'offerta creata da un utente
+     * @throws UtenteException nel caso in cui non trova l'utente proprietario
+     */
     @Override
     public Optional<OfferteUtente> rilanciaOffertaToUtente(Utente authUser, Offerta offertaProposta,
                                                            Long idControparte, Boolean madeByProp)
@@ -104,14 +131,10 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
                 newOfferta = saveOffertaCommonMethod(authUser, offertaProposta, controparte.get(), Boolean.FALSE);
             }
 
-
+            // se l'offerta è presente
             if(newOfferta.isPresent()){
                 OfferteUtente offertaUtente = newOfferta.get();
-
-                System.out.println("-> idProp: " + offertaUtente.getProprietario().getIdUtente() +
-                        "-> idOfferente: " + offertaUtente.getOfferente().getIdUtente() +
-                        "-> idOfferta: " + offertaUtente.getOffertaInteressata().getIdOfferta()
-                         );
+                // aggiorno disabilitando le offerte
                 offertaUtenteRepository.updateOldOfferte(
                         newOfferta.get().getProprietario().getIdUtente(),
                         newOfferta.get().getOfferente().getIdUtente(),
@@ -145,12 +168,15 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
             throws UtenteException, ImmobileException {
         if (authUser != null){
             if(offerente != null){
+                // prelevo i dati dell'immobile interessato nella contrattaizone
                 Optional<Immobile> immobile = immobileService.getImmobileInternalInformationById(idImmobile);
                 if(immobile.isPresent()){
                     if(isProprietario){
+                        // se l'utente è il proprietario allora ritorno la lista delle offerte dove lui è proprietario immobile
                         return offertaUtenteRepository.getAllOfferteBetweenUtenti(authUser.getIdUtente(),
                                 offerente.getIdUtente(), immobile.get().getIdImmobile());
                     }else{
+                        // se l'utente non è il proprietario allora ritorno la lista delle offerte dove lui è offerente
                         return offertaUtenteRepository.getAllOfferteBetweenUtenti(offerente.getIdUtente(),
                                 authUser.getIdUtente(), immobile.get().getIdImmobile());
                     }
@@ -166,12 +192,26 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
         }
     }
 
+    /**
+     * Metodo per prelevare tutte le offerte scambiate tra due utenti dove l'utente autenticato è il proprietario
+     * @param authUser utente autenticato che sta accettando o rifiutando
+     * @param offerente colui che ha proposto l'offerta
+     * @param idImmobile immobile interessato nella contrattazione
+     * @return La lista delle offerte ricevute da un utente
+     */
     @Override
     public List<OfferteUtente> allProposteBetweenUtenti(Utente authUser, Utente offerente, Long idImmobile)
             throws UtenteException, ImmobileException {
         return logicProposteBetweenUtenti(authUser, offerente, idImmobile, true);
     }
 
+    /**
+     * Metodo per prelevare tutte le offerte scambiate tra due utenti dove l'utente autenticato è colui che ha inviato la richiesta
+     * @param authUser utente autenticato che sta accettando o rifiutando
+     * @param offerente colui che ha proposto l'offerta
+     * @param idImmobile immobile interessato nella contrattazione
+     * @return La lista delle offerte ricevute da un utente
+     */
     @Override
     public List<OfferteUtente> allOfferteBetweenUtenti(Utente authUser, Utente offerente, Long idImmobile) throws UtenteException, ImmobileException {
         return logicProposteBetweenUtenti(authUser, offerente, idImmobile, false);
@@ -234,6 +274,19 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
     }
 
 
+
+    /**
+     * Metodo che permette di accettare un offerta
+     * @param idOfferta Id dell'offerta da accettare
+     * @param authUser utentte autenticato, proprietario dell'immobile, che ha accettato la richiesta
+     * @return Il contratto formato tra due utenti
+     * @throws OffertaException Se l'offerta non esiste
+     * @throws OffertaUtenteException se la richiesta di offerta non esiste oppure se non è possibile accettare il contratto
+     * @throws UtenteException se l'utente non è autenticato
+     * @throws ImmobileException Se l'immobile non è stato trovato
+     * @throws ContrattoException se non è stato possibile creare il contratto
+     * @throws ContrattoUtenteException se non è stato possibile associare il contratto ai due utenti
+     */
     @Override
     public Optional<ContrattoUtente> acceptOfferta(Long idOfferta, Utente proprietarioImmobile, Long idImmobile)
             throws ContrattoException, OffertaUtenteException, UtenteException, ImmobileException,
@@ -303,6 +356,16 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
         return Optional.empty();
     }
 
+
+    /**
+     * Metodo che permette di rifiutare un offerta
+     * @param idOfferta Id dell'offerta da accettare
+     * @param authUser utentte autenticato, proprietario dell'immobile, che ha accettato la richiesta
+     * @return L'offerta tra i due utenti rifiutata
+     * @throws OffertaException Se l'offerta non esiste
+     * @throws OffertaUtenteException se la richiesta di offerta non esiste oppure se non è possibile accettare il contratto
+     * @throws UtenteException se l'utente non è autenticato
+     */
     @Override
     public Optional<OfferteUtente> declineOfferta(Long idOfferta, Utente authUser)
             throws OffertaException, OffertaUtenteException, UtenteException {
@@ -313,7 +376,7 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
     /**
      * Permette di ottenere la lista con gli utenti con cui è aperta una contrattazione sugli immobili posseduti
      * @param authUser l'utente autenticato che è proprietario dell'immobile
-     * @return
+     * @return le offerte per un utente proprietario di un immobile
      * @throws UtenteException
      */
     @Override
@@ -351,12 +414,12 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
     }
 
     /**
-     * Permette id prelevare tutte le offerte ricevute dall'utente
+     * Permette di prelevare tutte le offerte inviate dall'utente autenticato ad altri utenti
      *
-     * @param authUser l'utente autenticato che è proprietario dell'immobile
-     * @return
-     * @throws OffertaUtenteException
-     * @throws UtenteException
+     * @param offerente l'utente autenticato che è proprietario dell'immobile
+     * @return Una Page<> contenente la lista delle offerte che l'utente ha inviato
+     * @throws UtenteException        nel caso in cui l'utente autenticato non sia stato passato correttamente
+     * @throws OffertaUtenteException nel caso in cui la grandezza della pagina superi quella impostata dal server
      */
     @Override
     public List<ViewListaOfferteDTO> getOfferteProposte(Utente authUser)
@@ -390,6 +453,10 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
         return resultList;
     }
 
+    /**
+     * Restituisce una coppia mail-valore per sapere, per ogni mail, quanti sono i messaggi da visualizzare
+     * @return Lista delle mail con il numero di messaggi da visualizzare
+     */
     @Override
     public List<ListUnviewMessageDTO> getListUnviewedMessaged() {
         return offertaUtenteRepository.getListUtenteWithUnreadMessages();
