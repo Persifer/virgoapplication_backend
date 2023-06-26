@@ -112,11 +112,7 @@ public class ImmobileController {
             if(authenticatedUser.isPresent()) {
                 // se l'utente è autenticato allora posso vedere i dati del singolo immobile
                 Optional<GetImmobileInfoDTO> storedImmobile = immobileService.getImmobileById(idImmobile);
-                System.out.println('[');
-                for (DomandaImmobileDTO pippo : storedImmobile.get().getListaDomandeImmobile()) {
-                    System.out.println(pippo.getRisposta());
-                }
-                System.out.println(']');
+
                 if(storedImmobile.isPresent()){
                     // se tutto okay allora vado alla pagina immobile
                     model.addAttribute("wantedImmobile", storedImmobile.get());
