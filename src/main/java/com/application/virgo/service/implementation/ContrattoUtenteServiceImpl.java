@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.application.virgo.utilities.Constants.FORMATTER;
+
 @Service
 @Transactional
 @AllArgsConstructor
@@ -140,7 +142,8 @@ public class ContrattoUtenteServiceImpl implements ContrattoUtenteService {
                        DettagliContrattoDTO dettagliContrattoDTO = new DettagliContrattoDTO();
 
                        dettagliContrattoDTO.setPrezzoDelContratto(wantedContratto.getPrezzo());
-                       dettagliContrattoDTO.setDataStipulazioneContratto(wantedContratto.getDataStipulazione().toString());
+                       dettagliContrattoDTO.setDataStipulazioneContratto(
+                               FORMATTER.format(wantedContratto.getDataStipulazione()));
 
                        dettagliContrattoDTO.setTitoloImmobile(wantedContratto.getImmobileInteressato().getTitolo());
                        dettagliContrattoDTO.setIdImmobile(wantedContratto.getImmobileInteressato().getIdImmobile());

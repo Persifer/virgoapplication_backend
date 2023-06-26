@@ -258,8 +258,9 @@ public class ImmobileController {
                     model.addAttribute("listImmobili", foundedImmobili);
                     return "Home";
                 }else{
-                    model.addAttribute("error", "Dentro else 2");
-                    return "Fail";
+                    model.addAttribute("message", "");
+                    model.addAttribute("listImmobili", List.of());
+                    return "Home";
                 }
             }else{
                 model.addAttribute("error", "Dentro else 1");
