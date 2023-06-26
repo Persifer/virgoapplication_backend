@@ -187,7 +187,8 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
      * @throws OffertaUtenteException se ci sono stati problemi con l'aggiornamento
      * @throws UtenteException se l'utente non è autenticato
      */
-    private Optional<OfferteUtente> methodForAcceptAndDenyOfferta(Long idOfferta, Utente authUser, Boolean isAccettata)
+    private Optional<OfferteUtente> methodForAcceptAndDenyOfferta(Long idOfferta, Utente authUser,
+                                                                  Boolean isAccettata)
             throws OffertaException, OffertaUtenteException, UtenteException{
         // controllo che l'utente è autenticato
         if(authUser != null){
@@ -199,6 +200,8 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
                 Optional<OfferteUtente> tempOffertaToAccept =
                         offertaUtenteRepository.getOfferteUtenteByOfferenteAndOffertaInteressata(
                                 authUser.getIdUtente(),offertaSelezionata.get().getIdOfferta());
+
+
                 // se l'offerta voluta esiste
                 if(tempOffertaToAccept.isPresent()){
                     // prelevo l'offerta interessata dall'optional
@@ -208,7 +211,7 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
                     offertaToAccept.setIsDeclinato(!isAccettata);
 
                     //SE TRUE ALLORA HO ACCETTATO,
-                    if(isAccettata == Boolean.FALSE){
+                    if(isAccettata){
                         offertaToAccept.setData_accettazione(Instant.now());
                         offertaToAccept.setIsAccettato(Boolean.TRUE);
                         offertaToAccept.setIsDeclinato(Boolean.FALSE);
@@ -237,7 +240,7 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
             OffertaException, ContrattoUtenteException {
 
         // Aggiorno l'offerta come accettata dall'utente
-        Optional<OfferteUtente> tempAcceptedOfferta = methodForAcceptAndDenyOfferta(idOfferta, proprietarioImmobile, true);
+        Optional<OfferteUtente> tempAcceptedOfferta = methodForAcceptAndDenyOfferta(idOfferta, proprietarioImmobile, Boolean.TRUE);
 
         // Controllo che l'accettazione abbia avuto successo
         if(tempAcceptedOfferta.isPresent()){
@@ -248,8 +251,6 @@ public class OffertaUtenteServiceImpl implements OffertaUtenteService{
             if(offertaProposta.isPresent()){
                 immobileService.updateImmobileAfterAcceptance(offertaProposta.get().getIdImmobileInteressato().getIdImmobile());
             }
-
-
 
 
             //Dalla classe OffertaUtente prelevo i dati per la creazione del contratto
